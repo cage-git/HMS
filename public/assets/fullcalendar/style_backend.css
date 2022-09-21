@@ -1,0 +1,254 @@
+.hide_elem {
+    display: none;
+}
+.login {
+    background: url('../images/login_bg.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    -webkit-font-smoothing: antialiased;
+}
+.login_content {
+    background: rgba(40, 57, 101, 0.65);
+    padding: 12px;
+}
+.error {
+    color: #e03535;
+}
+.required {
+    color: #e03535;
+}
+.select2-container {
+    height: 34px;
+}
+.select2-selection {
+    min-height: 34px !important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.tr-bg {
+    background: #EDEDED;
+    font-size: 15px;
+}
+.btn-cust {
+    color: #333;
+    background-color: #dbdbdb;
+    border-color: #ccc;
+}
+.h34 {
+    height: 34px !important;
+}
+.input-number {
+    min-width: 100px !important;
+}
+.search-btn, .export-btn {
+    margin-top: 8px;
+}
+.p-left-0 {
+    padding-left: 0px !important;
+}
+.p-right-0 {
+    padding-right: 0px !important;
+}
+.p-top-1 {
+    padding-top: 1px !important;
+}
+.bg-eee {
+    background: #eee !important;
+}
+.color-cbc {
+    color: #cbcbcb !important;
+}
+.color-9e9 {
+    color: #9e9c9c;
+}
+.color-ff4 {
+    color: #ff4848;
+}
+.bgcolor-eee{
+    background: #eee;
+}
+.f-15{
+    font-size: 15px;
+}
+.page-class-1 {
+    height: 33px !important;
+}
+.page-class-2 {
+    height: 33px !important;
+}
+.page-class-3 {
+    padding-right: 0px;
+    padding-left: 0px !important;
+}
+.page-class-4 {
+    font-size: 15px;
+}
+.page-class-5 {
+    pointer-events: none;
+    opacity: 0.5;
+}
+.disable-checkbox{
+    pointer-events: none;
+    opacity: 0.5;
+}
+.x_title h2{
+    overflow: initial;
+}
+.purchase-btn{
+    padding: 6px 10px !important;
+    position: absolute;
+    left: 40%;
+    z-index: 999;
+}
+.nav_menu{
+    position: relative;
+}
+.eye_icon_parent{
+    position: relative;
+}
+.eye_icon{
+    position: absolute;
+    right: 26px;
+    z-index: 99;
+    top: 15px;
+    cursor: pointer;
+    color: #4a4a4a;
+}
+.custom-radio{
+    -ms-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+}
+.logo-2{
+    height: 100px;
+    width: : 100px;
+}
+
+/********************** Latest Css Code ***********************/
+
+/**** Left Side Bar Css ****/
+body {
+    background:#fff !important;
+}
+.profile_info span {
+    color: #8dc8f8!important;
+}
+.profile_info h2 {
+    color: #0a81e0!important;
+}
+.left_col {
+    background: #ffffff !important;
+}
+.nav.child_menu>li>a, .nav.side-menu>li>a {
+    color: #666 !important;
+    font-weight: 500;
+}
+.nav.side-menu>li.active, .nav.side-menu>li.current-page {
+    border-left: 5px solid #c576f6 !important;
+    border-right:none !important;
+}
+.nav.side-menu>li.active>a {
+    text-shadow: none !important;
+    background: #f2f2f2 !important;
+    box-shadow: none !important;
+    color: #c576f6 !important;
+}
+.main_menu span.fa {
+    color: #c576f6 !important;
+}
+.nav.side-menu>li>a:hover {
+    color: #c576f6!important;
+    background: #f2f2f2 !important;
+}
+.nav li.current-page {
+    background: #f2f2f2 !important;
+}
+.nav_title {
+    background: #fff !important;
+}
+a.site_title {
+    background-image: linear-gradient(to right, #ffb996, #1185e1 99%) !important;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    font-weight: 600;
+}
+
+/***** Right Column Css *****/
+
+.firstTile .tile-stats {
+    background: linear-gradient(to right, #ffbf96, #fe7096) !important;
+}
+.secondTile .tile-stats {
+    background: linear-gradient(to right, #90caf9, #047edf 99%) !important;
+}
+.thirdTile .tile-stats {
+    background: linear-gradient(to right, #84d9d2, #07cdae) !important;
+}
+
+.tile-stats {
+    padding: 10px 8px !important;
+}
+.tile-stats .count, .tile-stats h3 a{
+    color:#fff !important;
+}
+.tile-stats h3 {
+    font-size: 18px !important;
+}
+.tile-stats .icon {
+    top: auto;
+    color: #fff;
+    opacity: 0.2;
+    bottom: 60px;
+    right: 90px;
+}
+.tile-stats:hover .icon i {
+    color: #fff;
+    opacity: 0.7;
+}
+.tile-stats .icon i {
+    font-size: 120px;
+}
+td.emptyRoom {
+    background: #fff;
+}
+td.occupiedRoom {
+    background: green;
+    color: #fff;
+}
+td.checkinToday {
+    background: #0b82e0;
+    color: #fff;
+}
+td.checkoutDate {
+    background: red;
+    color: #fff;
+}
+.bookingInfo {
+    margin: 0;
+}
+.bookingInfo tr td{
+    text-align:center;
+    word-break: break-word;
+}
+.bookingInfo {
+    margin: 0;
+    background: linear-gradient(to right, #ffbc9657, #a3c7e82e 99%) !important;
+    width: 100%;
+    table-layout: fixed;
+}
+.bookingInfo th {
+    width: 7%;
+}
+.bookingInfo tr td, .bookingInfo tr th {
+    padding: 2px 1px!important;
+}
+.firstList, .secondList {
+    border-bottom: 2px solid #000000 !important;
+}
+img.sidebar-icon {
+    width: 25px;
+    margin-right: 10px;
+}
