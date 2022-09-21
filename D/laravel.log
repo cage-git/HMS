@@ -1,3 +1,4 @@
+[2022-05-10 01:52:41] local.ERROR: file_put_contents(D:\workspace_projects\codecanyon\Hotel_Mgmt\hms_with_web\storage\framework/sessions/oyevbVCrguzxUTNlIZoATRO6Un1jGyPvShtVc9S5): failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): file_put_contents(D:\\workspace_projects\\codecanyon\\Hotel_Mgmt\\hms_with_web\\storage\\framework/sessions/oyevbVCrguzxUTNlIZoATRO6Un1jGyPvShtVc9S5): failed to open stream: No such file or directory at /Users/hashim/Documents/democp/web/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:135)
 [stacktrace]
 #0 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'file_put_conten...', '/Users/hashim/D...', 135, Array)
 #1 /Users/hashim/Documents/democp/web/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(135): file_put_contents('D:\\\\workspace_pr...', 'a:3:{s:6:\"_toke...', 2)

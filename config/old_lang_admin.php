@@ -2613,9 +2613,9 @@ $array = [
         'es'=>'',
     ],
     'txt_develop_by'=>[
-        'en'=>date('Y').' Designd & Develop By Divllo. All Rights Reserved',
+        'en'=>date('Y').' Designd & Develop By CodexEco. All Rights Reserved',
         'fr'=>'',
-        'hi'=>date('Y').' Designd & Develop By Divllo. All Rights Reserved',
+        'hi'=>date('Y').' Designd & Develop By CodexEco. All Rights Reserved',
         'rm'=>'',
         'es'=>'',
     ],
