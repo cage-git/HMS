@@ -107,7 +107,7 @@ class HomeController extends Controller
         if($this->data['data_row']){
             return view('backend/rooms/advance_slip',$this->data);
         } else {
-            echo config('constants.FLASH_NOT_ALLOW_URL'); 
+            echo config('constants.FLASH_NOT_ALLOW_URL');
         }
     }
     public function aboutUs(){

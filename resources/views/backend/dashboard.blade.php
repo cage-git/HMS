@@ -2,8 +2,8 @@
 @section('content')
   <link rel="stylesheet" href="{{URL::asset('public/assets/fullcalendar/main.css')}}">
   <link rel="stylesheet" href="{{URL::asset('public/assets/fullcalendar/style_backend.css')}}">
-  <script type="text/javascript" src="{{URL::asset('public/assets/fullcalendar/main.js')}}"></script>
-  <script type="text/javascript" src="{{URL::asset('public/assets/fullcalendar/locales-all.min.js')}}"></script>
+  <script type="text/javascript" src="{{URL::asset('public/assets/fullcalendar/main.js?v='.rand(1111,9999).'')}}"></script>
+  <script type="text/javascript" src="{{URL::asset('public/assets/fullcalendar/locales-all.min.js?v='.rand(1111,9999).'')}}"></script>
   <div class="">
      @section('rightColContent')
          <div class="row top_tiles">
@@ -272,5 +272,5 @@
   <script>
   globalVar.page = 'dashboard_page';
 </script>
-<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script>
+<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 @endsection

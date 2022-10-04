@@ -433,5 +433,5 @@
   globalVar.isError = false;
   globalVar.startDate = moment("{{$data_row->check_in}}", "YYYY.MM.DD");
 </script>
- <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script>
+ <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 @endsection

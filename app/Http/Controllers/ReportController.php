@@ -71,11 +71,14 @@ class ReportController extends Controller
         if($request->date_to){
             $query->whereDate('check_out', '<=', dateConvert($request->date_to,'Y-m-d'));
         }
-        if($request->room_type_id){
-            $query->where('room_type_id', $request->room_type_id);
+        if($request->room_type_id != null && $request->room_type_id){
+            $query->with(['booked_rooms' => function ($q) use($request){
+                $q->where('room_type_id', $request->room_type_id);
+            }]);
         }
-        if($request->payment_status == 0 || $request->payment_status == 1){
-            //$query->where('payment_status', $request->payment_status);
+
+        if($request->payment_status != null && ($request->payment_status == 0 || $request->payment_status == 1)){
+            $query->where('payment_status', $request->payment_status);
         }
         $this->data['datalist']=$query->get();
         $this->data['roomtypes_list']=getRoomTypesList();
@@ -163,7 +166,7 @@ class ReportController extends Controller
         }
     }
     public function searchCustomer(Request $request) {
-        $query = Customer::where('is_deleted',0)->orderBy('name','ASC');
+        $query = Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC');
         if($request->customer_id){
             $query->where('id', $request->customer_id);
         }
@@ -192,6 +195,39 @@ class ReportController extends Controller
             return view('backend/customers/list',$this->data);
         }
     }
+    public function searchCompany(Request $request) {
+        $query = Customer::where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC');
+        if($request->customer_id){
+            $query->where('id', $request->customer_id);
+        }
+        if($request->mobile_num){
+            $query->where('mobile', $request->mobile_num);
+        }
+        if($request->city){
+            $query->where('city', $request->city);
+        }
+        if($request->state){
+            $query->where('state', $request->state);
+        }
+        if($request->country){
+            $query->where('country', $request->country);
+        }
+
+        $this->data['datalist']=$query->get();
+        $this->data['customer_list']=getCustomerList('get','company');
+        $this->data['search_data'] = $request->all();
+
+        if($request->submit_btn=='export'){
+            $params=['data'=>$this->data['datalist'],'view'=>'excel_view.company_excel'];
+            $filename='companies.xlsx';
+            return Excel::download(new CheckoutExport($params), $filename);
+        } else {
+            return view('backend/companys/list',$this->data);
+        }
+    }
+
+
+
     public function searchPaymentHistory(Request $request) {
         $query = PaymentHistory::orderBy('created_at','DESC');
         $query = PaymentHistory::with('reservation')->orderBy('created_at','DESC');

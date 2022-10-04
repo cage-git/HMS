@@ -11,7 +11,7 @@
 
     $countFeatures = ($data_row->intro_section_features!=null) ? 1 : 0;
     $featuresDecodeJson = json_decode($data_row->intro_section_features);
-    
+
   @endphp
       <div class="row">
         {{Form::model($data_row,['route'=>'update-home-page','id'=>'home-page-form','files'=>true])}}
@@ -39,7 +39,7 @@
                       <input type="file" name="banner_images[]"/>
                     </div>
                     <div class="col-sm-2">
-                      
+
                     </div>
                   </div>
 
@@ -73,7 +73,7 @@
               </div>
           </div>
           <!-- ==========* End Banner Section *========== -->
-         
+
           <!-- ==========* Start Introduction Section *========== -->
           <div class="x_panel">
             <div class="x_title">
@@ -107,7 +107,7 @@
                     @endforeach
                   @endif
                 </div>
-                
+
                 <br/>
                 <div class="row">
                   <div class="col-lg-12 text-right">
@@ -180,7 +180,7 @@
                       @endforeach
                     @endif
                   </div>
-                
+
                 <br/>
                 <div class="row">
                   <div class="col-lg-12 text-right">
@@ -195,7 +195,7 @@
           <!-- ==========* End Testimonial Section *========== -->
 
         </div>
-        
+
         <div class="col-md-6">
 
           <!-- ==========* Start Counter Section *========== -->
@@ -443,6 +443,6 @@
     globalVar.testimonialCount = {{$countTestimonials}};
     globalVar.counterCount = {{$countCounter}};
     globalVar.featuresCount = {{$countFeatures}};
-  </script> 
-  <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script>  
+  </script>
+  <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 @endsection

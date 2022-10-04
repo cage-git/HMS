@@ -1,7 +1,7 @@
 @extends('layouts.master_backend')
 @section('content')
-@php 
-  $i=1; 
+@php
+  $i=1;
   $reservationId = Request::route('reservation_id');
   $settings = getSettings();
   $gstPercFood = $settings['food_gst'];
@@ -18,7 +18,7 @@
       } else {
         $itemsQty[$itemId] = $val->item_qty;
       }
-      
+
     }
   }
 
@@ -30,7 +30,7 @@
   {{Form::hidden('page','ff_order')}}
   {{Form::hidden('order_id',$order_row->id)}}
   {{Form::hidden('table_num',$order_row->table_num)}}
- 
+
     @if($reservationId==null)
     <div class="row {{($reservationId>0) ? 'hide_elem' : ''}}" id="new_guest_section">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -39,9 +39,9 @@
                     <h2>{{lang_trans('heading_customer_info')}}</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content"> 
-                  <div class="row"> 
-                   
+                <div class="x_content">
+                  <div class="row">
+
                     <div class="col-md-4 col-sm-4 col-xs-12">
                       <label class="control-label"> {{lang_trans('txt_fullname')}} </label>
                       {{Form::text('name',$order_row->name,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_fullname')])}}
@@ -162,27 +162,27 @@
                             <div class="input-group">
                                 {{Form::number('item_qty['.$value->id.']',$iQty,['data-price'=>$value->price,'class'=>"form-control input-number text-center", "placeholder"=>lang_trans('ph_qty'),"min"=>0, 'max'=>100, 'readonly'=>true,'style'=>'height: 33px;'])}}
                             </div>
-                            
+
                             {{Form::hidden('items['.$value->id.']',$val->id.'~'.$val->name.'~'.$value->name.'~'.$value->price,['data-price'=>$value->price,'class'=>"form-control col-md-6 col-xs-12 item_qty", "placeholder"=>lang_trans('ph_qty'),"min"=>0])}}
                           </td>
                         </tr>
                       @endforeach
                     @endforeach
-                    
+
                   </table>
-                
+
               </div>
           </div>
       </div>
   </div>
 
 {{ Form::close() }}
-</div>  
+</div>
 {{-- require set var in js var --}}
 <script>
   globalVar.page = 'food_order_final';
   globalVar.gstPercentFood = {{$gstPercFood}};
   globalVar.cgstPercentFood = {{$cgstPercFood}};
-</script>   
-<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script>      
+</script>
+<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 @endsection

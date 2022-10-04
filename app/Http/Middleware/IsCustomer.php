@@ -15,7 +15,7 @@ class IsCustomer
      */
     public function handle($request, Closure $next)
     {
-         if (Auth::user() &&  Auth::user()->role == 6) {
+         if (Auth::user() &&  Auth::user()->role_id == 6) {
                 return $next($request);
          } else {
             return redirect()->route('dashboard');

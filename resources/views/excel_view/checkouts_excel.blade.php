@@ -46,6 +46,24 @@
               {{$val->room_type->title}}<br/>
               ( Room No. : {{$val->room_num}} )
             @endif
+
+            @if($val->booked_rooms)
+                @foreach($val->booked_rooms as $key=>$roomInfo)
+                    @php
+                        $checkIn = dateConvert($roomInfo->check_in, 'Y-m-d');
+                        $checkOut = dateConvert($roomInfo->check_out, 'Y-m-d');
+                        $durOfStayPerRoom = dateDiff($checkIn, $checkOut, 'days');
+                        $amountPerRoom = ($durOfStayPerRoom * $roomInfo->room_price);
+                    @endphp
+                        {{ ($roomInfo->room_type) ? $roomInfo->room_type->title : ""}}: ({{lang_trans('txt_room_num')}} : {{$roomInfo->room->room_no}})<br/>
+
+                @endforeach
+             @endif
+
+
+
+
+
             </td>
           <td>{{dateConvert($val->check_in,'d-m-Y H:i')}}</td>
           <td>{{dateConvert($val->check_out,'d-m-Y H:i')}}</td>

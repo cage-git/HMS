@@ -97,7 +97,7 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listUser() {
-         $this->data['datalist']=User::orderBy('name','ASC')->get();
+         $this->data['datalist']=User::orderBy('name','ASC')->where('role_id', '!=', '6')->get();
         return view('backend/users/user_list',$this->data);
     }
     public function deleteUser(Request $request) {
@@ -269,6 +269,7 @@ class AdminController extends Controller
     public function roomReservation() {
         $this->data['roomtypes_list']=getRoomTypesList('custom');
         $this->data['customer_list']=getCustomerList('get');
+        $this->data['companies_list']=getCustomerList('get', 'company');
         return view('backend/rooms/room_reservation_add_edit',$this->data);
     }
     public function editReservation(Request $request){
@@ -313,7 +314,9 @@ class AdminController extends Controller
                 }
             }
         }
-        if(!$request->check_in_date || !$request->check_out_date || !$request->duration_of_stay || !$request->room_plan){
+        if(!$request->check_in_date || !$request->check_out_date || !$request->duration_of_stay ||
+            (($request->idcard_type == 4 || $request->idcard_type == 21) && $request->idcard_no == '')
+        ){ //|| !$request->room_plan ){
             if($request->ajax()){
                 return response()->json(['msg' => config('constants.FLASH_FILL_REQUIRED_FIELD')], 403);
             }else {
@@ -326,10 +329,48 @@ class AdminController extends Controller
 
         if($request->guest_type=='existing'){
             $customerId = $request->selected_customer_id;
-
-            $custData = Customer::whereId($customerId)->first();
+            $custData = Customer::whereId($customerId)->where('cat', '=', 'user')->first();
             $custName = $custData->name;
-        }else {
+        }
+        elseif($request->guest_type=='existing_company'){
+            $customerId = $request->selected_company_id;
+            $custData = Customer::whereId($customerId)->where('cat', '=', 'company')->first();
+            $custName = $custData->name;
+        }
+        elseif($request->guest_type=='new_company'){
+            $custName = $request->company_name;
+            if(
+                !$request->company_gst_num ||
+                !$request->company_email ||
+                !$request->company_name ||
+                !$request->company_mobile ||
+                !$request->company_address
+            ){
+                return redirect()->back()->with(['error' => config('constants.FLASH_FILL_REQUIRED_FIELD')]);
+            }
+            $customerData = [
+                "surname" => $request->company_name,
+                "company_gst_num" => $request->company_gst_num,
+                "cat"=>'company',
+                "name" => $request->company_name,
+                "middle_name" => '',
+                "father_name" => '',
+                "email" => ($request->company_email != '') ? $request->company_email :  str_replace(' ', rand(1111,9999), $request->company_name.$request->company_mobile).'@fake_email.com',
+                "mobile" => $request->company_mobile,
+                "address" => $request->company_address,
+                "nationality" => $request->nationality,
+                "country" => $request->company_country,
+                "state" => $request->company_state,
+                "city" => $request->company_city,
+                "gender" => 'Other',
+                "age" => '50',
+                "password" => Hash::make($request->mobile),
+            ];
+            $customerId = Customer::insertGetId($customerData);
+            //sync user and customer
+            $this->core->syncUserAndCustomer();
+        }
+        else {
             $custName = $request->name;
             if(!$request->name || !$request->mobile || !$request->gender){
                 return redirect()->back()->with(['error' => config('constants.FLASH_FILL_REQUIRED_FIELD')]);
@@ -367,17 +408,17 @@ class AdminController extends Controller
 //            "purpose_of_the_visiting" => $request->purpose_of_the_visiting,
             "booked_by" => $request->booked_by,
             "vehicle_number" => $request->vehicle_number,
-            "reason_visit_stay" => $request->reason_visit_stay,
+            "reason_visit_stay" => $request->reason_visit_stay || '',
             "advance_payment" => $request->advance_payment,
             "idcard_type" => $request->idcard_type,
             "idcard_no" => $request->idcard_no,
-            "referred_by" => $request->referred_by,
+            "referred_by" => $request->referred_by || '',
             "referred_by_name" => $request->referred_by_name,
             "remark_amount" => $request->remark_amount,
             "remark" => $request->remark,
-            "company_name" => $request->company_name,
-            "company_gst_num"=>$request->company_gst_num,
-            "room_plan"=>$request->room_plan,
+            "company_name" => $request->company_name || '',
+            "company_gst_num"=>$request->company_gst_num || '',
+            "room_plan"=>$request->room_plan || '',
         ];
         if(!$request->id){
             $reservationData["created_at_checkin"] = date('Y-m-d H:i:s');
@@ -850,8 +891,12 @@ class AdminController extends Controller
          return view('backend/rooms/invoice',$this->data);
     }
     public function listReservation() {
+        $startDate = getNextPrevDate('prev');
         $this->data['list'] = 'check_ins';
         $this->data['datalist'] = Reservation::with('booked_rooms')->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(0)->orderBy('created_at','DESC')->get();
+        $this->data['roomtypes_list']=getRoomTypesList();
+        $this->data['customer_list']=getCustomerList('get', 'all');
+        $this->data['search_data'] = ['customer_id'=>'','room_type_id'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
         return view('backend/rooms/room_reservation_list',$this->data);
     }
     public function listCheckOuts() {
@@ -859,7 +904,7 @@ class AdminController extends Controller
         $this->data['list'] = 'check_outs';
         $this->data['datalist']=Reservation::with('booked_rooms')->whereDate('check_out', '>=', $startDate." 00:00:00")->whereDate('check_out', '<=', DB::raw('CURDATE()'))->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC')->get();
         $this->data['roomtypes_list']=getRoomTypesList();
-        $this->data['customer_list']=getCustomerList('get');
+        $this->data['customer_list']=getCustomerList('get', 'all');
         $this->data['search_data'] = ['customer_id'=>'','room_type_id'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
 
          return view('backend/rooms/room_reservation_list',$this->data);

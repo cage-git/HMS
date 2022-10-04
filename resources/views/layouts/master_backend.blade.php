@@ -31,18 +31,18 @@
           var current_segment = "";
         </script>
 
-        <script type="text/javascript" src="{{URL::asset('public/js/init.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/jquery/jquery.min.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/js/jquery.validate.min.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/jqueryvalidation/jqueryvalidation.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/moment/min/moment.min.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/select2/dist/js/select2.full.min.js')}}"></script>
-        <script src="{{URL::asset('public/assets/selectize/selectize.js')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/js/init.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/jquery/jquery.min.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/js/jquery.validate.min.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/jqueryvalidation/jqueryvalidation.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/moment/min/moment.min.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/bootstrap-datepicker/js/bootstrap-datepicker.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/select2/dist/js/select2.full.min.js?v='.rand(1111,9999).'')}}"></script>
+        <script src="{{URL::asset('public/assets/selectize/selectize.js?v='.rand(1111,9999).'')}}"></script>
 
         <link href="{{URL::asset('public/assets/ekko-lightbox/ekko-lightbox.css')}}" rel="stylesheet">
-        <script src="{{URL::asset('public/assets/ekko-lightbox/ekko-lightbox.js')}}"></script>
+        <script src="{{URL::asset('public/assets/ekko-lightbox/ekko-lightbox.js?v='.rand(1111,9999).'')}}"></script>
         <div id="custom-loader" style="    position: fixed;
     width: 100%;
     height: 100%;
@@ -154,20 +154,20 @@
                 </footer>
             </div>
         </div>
-         <script src="{{URL::asset('public/assets/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets/fastclick/lib/fastclick.js')}}"></script>
-          <script src="{{URL::asset('public/assets/nprogress/nprogress.js')}}"></script>
-          <script src="{{URL::asset('public/assets/DateJS/build/date.js')}}"></script>
-          <script src="{{URL::asset('public/assets/iCheck/icheck.min.js')}}"></script>
+         <script src="{{URL::asset('public/assets/bootstrap/dist/js/bootstrap.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/fastclick/lib/fastclick.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/nprogress/nprogress.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/DateJS/build/date.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/iCheck/icheck.min.js?v='.rand(1111,9999).'')}}"></script>
 
-          <script src="{{URL::asset('public/assets/datatables.net/js/jquery.dataTables.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets/sweetalert2-7.0.0/sweetalert2.all.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets/summernote-0.8.8/dist/summernote-bs4.min.js')}}"></script>
+          <script src="{{URL::asset('public/assets/datatables.net/js/jquery.dataTables.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/datatables.net-bs/js/dataTables.bootstrap.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/sweetalert2-7.0.0/sweetalert2.all.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/summernote-0.8.8/dist/summernote-bs4.min.js?v='.rand(1111,9999).'')}}"></script>
           @yield('jquery')
 
-          <script src="{{URL::asset('public/assets/js/custom.min.js')}}"></script>
-          <script src="{{URL::asset('public/js/custom.js')}}"></script>
-          <script src="{{URL::asset('public/js/ajax_call.js')}}"></script>
+          <script src="{{URL::asset('public/assets/js/custom.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/js/custom.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/js/ajax_call.js?v='.rand(1111,9999).'')}}"></script>
     </body>
 </html>

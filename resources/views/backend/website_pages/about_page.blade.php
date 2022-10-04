@@ -7,7 +7,7 @@
       <div class="row">
         {{Form::model($data_row,['route'=>'update-about-page','id'=>'home-page-form','files'=>true])}}
         <div class="col-md-6">
-          
+
           <div class="x_panel">
             <div class="x_title">
               <h2>Banner Image</h2>
@@ -23,9 +23,9 @@
                 @endif
               </div>
           </div>
-          
+
         </div>
-        
+
         <div class="col-md-6">
            <!-- ==========* Start AboutUs Section *========== -->
           <div class="x_panel">
@@ -79,7 +79,7 @@
                     @endforeach
                   @endif
                 </div>
-                
+
                 <br/>
                 <div class="row">
                   <div class="col-lg-12 text-right">
@@ -103,7 +103,7 @@
       </div>
 
 <!-- ==========* Start Clone Elements Section *========== -->
- 
+
   <div class="clone_features_elem hide_elem">
     <div class="row features-row border-btm pad-top-10">
        <div class="col-lg-6">
@@ -163,6 +163,6 @@
   <script>
     globalVar.page = 'website_about_page';
     globalVar.featuresCount = {{$countFeatures}};
-  </script> 
-  <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script> 
+  </script>
+  <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 @endsection

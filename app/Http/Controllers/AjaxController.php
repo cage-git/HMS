@@ -33,7 +33,7 @@ class AjaxController extends Controller
             'adults'=>$request->adults,
             'location'=>$request->location,
             'children'=>$request->children,
-            'date_from'=>dateConvert($request->date_from, 'Y-m-d H:i:s'), 
+            'date_from'=>dateConvert($request->date_from, 'Y-m-d H:i:s'),
             'date_to'=>dateConvert($request->date_to, 'Y-m-d H:i:s'),
             "duration_of_stay" => ($dur == 0) ? 1 : $dur,
         ];

@@ -161,7 +161,7 @@
                   </div>
                   <div class="form-group col-sm-3">
                     <br/>
-                    <a class="btn btn-success search-btn" href="{{route('list-check-outs')}}">{{lang_trans('btn_search')}}</a>
+                    <button class="btn btn-success search-btn" name="submit_btn" value="search" type="submit">{{lang_trans('btn_search')}}</button>
                     <button class="btn btn-primary export-btn" name="submit_btn" value="export" type="submit">{{lang_trans('btn_export')}}</button>
                   </div>
                 {{ Form::close() }}

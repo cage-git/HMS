@@ -23,16 +23,16 @@
           var current_segment = "{{$segment}}";
         </script>
 
-        <script type="text/javascript" src="{{URL::asset('public/js/init.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/jquery/jquery.min.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/js/jquery.validate.min.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/jqueryvalidation/jqueryvalidation.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/moment/min/moment.min.js')}}"></script>
-         <script type="text/javascript" src="{{URL::asset('public/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
-       
+        <script type="text/javascript" src="{{URL::asset('public/js/init.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/jquery/jquery.min.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/js/jquery.validate.min.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/jqueryvalidation/jqueryvalidation.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/moment/min/moment.min.js?v='.rand(1111,9999).'')}}"></script>
+         <script type="text/javascript" src="{{URL::asset('public/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/bootstrap-datepicker/js/bootstrap-datepicker.js?v='.rand(1111,9999).'')}}"></script>
+
     </head>
-    
+
     <body class="nav-md">
         <div class="container">
             <div class="main_container">
@@ -55,17 +55,17 @@
                             <li class="{{ ($segment=='done') ? 'active' : '' }}"><a href="#">Done!</a></li>
                         </ul>
                         </div>
-                        @include('layouts.flash_msg')          
+                        @include('layouts.flash_msg')
                         @yield('content')
                       </div>
                     </div>
                 </div>
             </div>
         </div>
-         <script src="{{URL::asset('public/assets/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets/nprogress/nprogress.js')}}"></script>
-          <script src="{{URL::asset('public/assets/js/custom.min.js')}}"></script>
-          <script src="{{URL::asset('public/js/ajax_call.js')}}"></script>
-          <script src="{{URL::asset('public/js/custom.js')}}"></script>
+         <script src="{{URL::asset('public/assets/bootstrap/dist/js/bootstrap.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/nprogress/nprogress.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/js/custom.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/js/ajax_call.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/js/custom.js?v='.rand(1111,9999).'')}}"></script>
     </body>
 </html>

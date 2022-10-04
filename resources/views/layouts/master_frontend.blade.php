@@ -7,13 +7,13 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
       <title>{{getSettings('site_page_title')}}</title>
       <link rel="icon" href="{{url('public/images/hotel.png')}}" sizes="16x16" type="image/png">
-      
+
       <link rel="stylesheet" href="{{URL::asset('public/assets_front/css/plugins.css')}}">
       <link rel="stylesheet" href="{{URL::asset('public/assets_front/css/styles.css')}}">
       <link rel="stylesheet" href="{{URL::asset('public/assets_front/css/colors.css')}}">
       <link rel="stylesheet" href="{{URL::asset('public/assets_front/snackbar/snackbar.css')}}">
       <link rel="stylesheet" href="{{URL::asset('public/css/style_front.css')}}">
-        
+
         {{-- this inline script is required: set global access var --}}
         <script>
           var base_url="{{url('/').'/'}}";
@@ -22,20 +22,20 @@
           var current_segment = "";
         </script>
 
-        <script type="text/javascript" src="{{URL::asset('public/js/init.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/jquery/jquery.min.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/js/jquery.validate.min.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('public/assets/jqueryvalidation/jqueryvalidation.js')}}"></script>
-        <script src="{{URL::asset('public/assets_front/snackbar/snackbar.js')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/js/init.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/jquery/jquery.min.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/js/jquery.validate.min.js?v='.rand(1111,9999).'')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('public/assets/jqueryvalidation/jqueryvalidation.js?v='.rand(1111,9999).'')}}"></script>
+        <script src="{{URL::asset('public/assets_front/snackbar/snackbar.js?v='.rand(1111,9999).'')}}"></script>
 
     </head>
     <body class="orange-skin">
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
         <div id="preloader"><div class="preloader"><span></span><span></span></div></div>
-         
+
         <div id="main-wrapper">
-    
+
             <!-- ============================================================== -->
             <!-- Top header  -->
             <!-- ============================================================== -->
@@ -56,16 +56,16 @@
                       <div class="nav-menus-wrapper">
                         <ul class="nav-menu">
                           <li class="{{($currentRoute == 'home') ? 'active' : ''}}">
-                            <a href="{{route('home')}}">Home</a>                                 
+                            <a href="{{route('home')}}">Home</a>
                           </li>
                           <li class="{{($currentRoute == 'about-us') ? 'active' : ''}}">
-                            <a href="{{route('about-us')}}">About</a>                                 
+                            <a href="{{route('about-us')}}">About</a>
                           </li>
                           <li class="{{($currentRoute == 'contact-us') ? 'active' : ''}}">
-                            <a href="{{route('contact-us')}}">Contact</a>                                 
-                          </li>                          
+                            <a href="{{route('contact-us')}}">Contact</a>
+                          </li>
                         </ul>
-                        
+
                         <ul class="nav-menu nav-menu-social align-to-right">
                           @if($authData)
                             <li class="login-attri">
@@ -76,12 +76,12 @@
                                 <div class="dropdown-menu pull-right animated flipInX">
                                   <a href="{{route('user-dashboard')}}"><i class="ti-dashboard"></i>Dashboard</a>
                                   <a href="#"><i class="ti-plus"></i>My Booking</a>
-                                  <a href="#"><i class="ti-user"></i>My Profile</a>                                                   
+                                  <a href="#"><i class="ti-user"></i>My Profile</a>
                                   <a href="{{route('user-logout')}}"><i class="ti-power-off"></i>Logout</a>
                                 </div>
                               </div>
                             </li>
-                
+
                           @else
                             <li><a href="{{route('sign-in')}}"><i class="fas fa-user-circle text-info mr-1"></i>Log In</a></li>
                             <li><a href="{{route('sign-up')}}"><i class="fas fa-arrow-alt-circle-right text-warning mr-1"></i>Sign Up</a></li>
@@ -96,10 +96,10 @@
             <!-- ============================================================== -->
             <!-- Top header  -->
             <!-- ============================================================== -->
-          
-              @include('layouts.flash_msg_frontend')          
+
+              @include('layouts.flash_msg_frontend')
               @yield('content')
-        
+
             <!-- ============================ Newsletter Start ================================== -->
             <section class="alert-wrap pt-5 pb-5 subscribe-section">
               <div class="container">
@@ -110,11 +110,11 @@
                       <p class="text-light">Subscribe & get all related notification.</p>
                     </div>
                   </div>
-                  
+
                   <div class="col-lg-6 col-md-6">
                     {{ Form::open(array('url'=>route('subscribe-notifivations'),'id'=>"subs-form", 'class'=>"")) }}
                     <div class="input-group">
-                      <input name="email" type="email" class="form-control" placeholder="Enter Your Email" required> 
+                      <input name="email" type="email" class="form-control" placeholder="Enter Your Email" required>
                       <div class="input-group-append">
                       <button type="submit" class="btn btn-black black">Subscribe</button>
                       </div>
@@ -124,55 +124,55 @@
                 </div>
               </div>
             </section>
-            <!-- ============================ Newsletter Start ================================== -->   
+            <!-- ============================ Newsletter Start ================================== -->
             <!-- ============================ Footer Start ================================== -->
             <footer class="dark-footer skin-dark-footer">
-              
+
               <div class="footer-bottom">
                 <div class="container">
                   <div class="row align-items-center">
-                    
+
                     <div class="col-lg-6 col-md-6">
                       <p class="mb-0">© {{lang_trans('txt_develop_by')}}</p>
                     </div>
-                    
+
                     <div class="col-lg-6 col-md-6 text-right">
                       <img src="assets/img/payment.svg" class="img-fluid" alt="" />
                     </div>
-                    
+
                   </div>
                 </div>
               </div>
             </footer>
             <!-- ============================ Footer End ================================== -->
-      
+
             <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
         </div>
-       
-          <script src="{{URL::asset('public/assets_front/js/circleMagic.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/popper.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/bootstrap.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/rangeslider.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/select2.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/aos.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/owl.carousel.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/jquery.magnific-popup.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/slick.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/slider-bg.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/lightbox.js')}}"></script> 
-          <script src="{{URL::asset('public/assets_front/js/imagesloaded.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/isotope.min.js')}}"></script>
-          
-          <script src="{{URL::asset('public/assets_front/js/custom.js')}}"></script>
-         
-          <script src="{{URL::asset('public/assets_front/js/moment.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets_front/js/daterangepicker.js')}}"></script>
 
-          <script src="{{URL::asset('public/assets/datatables.net/js/jquery.dataTables.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
-          <script src="{{URL::asset('public/assets/sweetalert2-7.0.0/sweetalert2.all.min.js')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/circleMagic.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/popper.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/bootstrap.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/rangeslider.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/select2.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/aos.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/owl.carousel.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/jquery.magnific-popup.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/slick.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/slider-bg.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/lightbox.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/imagesloaded.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/isotope.min.js?v='.rand(1111,9999).'')}}"></script>
 
-          <script src="{{URL::asset('public/js/custom.js')}}"></script>
-          <script src="{{URL::asset('public/js/ajax_call.js')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/custom.js?v='.rand(1111,9999).'')}}"></script>
+
+          <script src="{{URL::asset('public/assets_front/js/moment.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets_front/js/daterangepicker.js?v='.rand(1111,9999).'')}}"></script>
+
+          <script src="{{URL::asset('public/assets/datatables.net/js/jquery.dataTables.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/datatables.net-bs/js/dataTables.bootstrap.min.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/assets/sweetalert2-7.0.0/sweetalert2.all.min.js?v='.rand(1111,9999).'')}}"></script>
+
+          <script src="{{URL::asset('public/js/custom.js?v='.rand(1111,9999).'')}}"></script>
+          <script src="{{URL::asset('public/js/ajax_call.js?v='.rand(1111,9999).'')}}"></script>
     </body>
 </html>

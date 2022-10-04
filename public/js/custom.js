@@ -51,6 +51,17 @@ if($('#customers')[0] != undefined){
           options: globalVar.customerList,
     });
 }
+if($('#companies')[0] != undefined){
+    var selectize = $('#companies').selectize({
+          plugins: ['remove_button'],
+          maxItems: 1,
+          valueField: 'id',
+          labelField: 'display_text',
+          searchField: 'display_text',
+          create: false,
+          options: globalVar.companiesList,
+    });
+}
 
 /* ***** start form validations ***** */
     if($("#database-form")[0] != undefined){

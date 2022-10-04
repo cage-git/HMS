@@ -124,6 +124,12 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::get('list-customer', ['uses' => 'CustomerController@listCustomer'])->name('list-customer');
 		Route::get('delete-customer/{id}', ['uses' => 'CustomerController@deleteCustomer'])->name('delete-customer');
 
+		Route::get('add-company', ['uses' => 'CompanyController@addCompany'])->name('add-company');
+		Route::get('edit-company/{id}', ['uses' => 'CompanyController@editCompany'])->name('edit-company');
+		Route::post('save-company', ['uses' => 'CompanyController@saveCompany'])->name('save-company');
+		Route::get('list-company', ['uses' => 'CompanyController@listCompany'])->name('list-company');
+		Route::get('delete-company/{id}', ['uses' => 'CompanyController@deleteCompany'])->name('delete-company');
+
 		Route::get('add-room', ['uses' => 'AdminController@addRoom'])->name('add-room');
 		Route::get('edit-room/{id}', ['uses' => 'AdminController@editRoom'])->name('edit-room');
 		Route::post('save-room', ['uses' => 'AdminController@saveRoom'])->name('save-room');
@@ -230,7 +236,7 @@ Route::group(['prefix' => 'admin'], function() {
     	Route::post('/search-checkins', 'ReportController@searchCheckins')->name('search-checkins');
     	Route::post('/export-checkins', 'ReportController@searchCheckins')->name('export-checkins');
 
-    	Route::post('/search-checkouts', 'ReportController@searchCheckouts')->name('search-checkouts');
+    	Route::any('/search-checkouts', 'ReportController@searchCheckouts')->name('search-checkouts');
     	Route::post('/export-checkouts', 'ReportController@searchCheckouts')->name('export-checkouts');
 
     	Route::post('/search-expenses', 'ReportController@searchExpense')->name('search-expenses');
@@ -238,6 +244,9 @@ Route::group(['prefix' => 'admin'], function() {
 
     	Route::post('/search-customer', 'ReportController@searchCustomer')->name('search-customer');
     	Route::post('/export-customer', 'ReportController@searchCustomer')->name('export-customer');
+
+    	Route::post('/search-company', 'ReportController@searchCompany')->name('search-company');
+    	Route::post('/export-company', 'ReportController@searchCompany')->name('export-company');
 
     	Route::post('/search-payment-history', 'ReportController@searchPaymentHistory')->name('search-payment-history');
     	Route::post('/export-payment-history', 'ReportController@searchPaymentHistory')->name('export-payment-history');

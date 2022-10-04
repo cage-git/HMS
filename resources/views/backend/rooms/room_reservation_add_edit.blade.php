@@ -34,6 +34,13 @@
                          <div class="col-md-3 col-sm-4 col-xs-12">
                             {{Form::radio('guest_type','existing',false,['class'=>"flat guest_type", 'id'=>'existing_guest'])}} <label for="existing_guest">{{lang_trans('txt_existing_guest')}}</label>
                         </div>
+                        <div class="col-md-3 col-sm-4 col-xs-12">
+                            {{Form::radio('guest_type','new_company',false,['class'=>"flat guest_type", 'id'=>'new_company'])}} <label for="new_company">{{lang_trans('txt_new_company')}}</label>
+                        </div>
+                        <div class="col-md-3 col-sm-4 col-xs-12">
+                            {{Form::radio('guest_type','existing_company',false,['class'=>"flat guest_type", 'id'=>'existing_company'])}} <label for="existing_company">{{lang_trans('txt_existing_company')}}</label>
+                        </div>
+
                     </div>
                     <div class="col-md-2 col-sm-12 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_reservation_type')}} <span class="required">*</span></label>
@@ -45,87 +52,164 @@
       </div>
   </div>
 
-  <div class="row hide_elem" id="existing_guest_section">
-      <div class="col-md-12 col-sm-12 col-xs-12">
-          <div class="x_panel">
-              <div class="x_title">
-                  <h2>{{lang_trans('heading_existing_guest_list')}}</h2>
-                  <div class="clearfix"></div>
-              </div>
-              <div class="x_content">
-                <div class="row">
-                 <div class="col-md-4 col-sm-4 col-xs-12">
-                      <label class="control-label">{{lang_trans('txt_guest')}}</label>
-                      {{Form::text('selected_customer_id',null,['class'=>"form-", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
+      <div class="row" id="new_guest_section">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                  <div class="x_title">
+                      <h2>{{lang_trans('heading_guest_info')}}</h2>
+                      <div class="clearfix"></div>
                   </div>
-                </div>
-              </div>
-          </div>
-      </div>
-  </div>
+                  <div class="x_content">
+                    <div class="row">
 
-  <div class="row" id="new_guest_section">
-      <div class="col-md-12 col-sm-12 col-xs-12">
-          <div class="x_panel">
-              <div class="x_title">
-                  <h2>{{lang_trans('heading_guest_info')}}</h2>
-                  <div class="clearfix"></div>
-              </div>
-              <div class="x_content">
-                <div class="row">
-
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <label class="control-label"> {{lang_trans('txt_surname')}} </label>
-                    {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}}
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <label class="control-label"> {{lang_trans('txt_firstname')}} <span class="required">*</span></label>
-                    {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}}
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <label class="control-label"> {{lang_trans('txt_middlename')}} </label>
-                    {{Form::text('middle_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_middlename')])}}
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <label class="control-label"> {{lang_trans('txt_email')}} </label>
-                    {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <label class="control-label"> {{lang_trans('txt_mobile_num')}} <span class="required">*</span></label>
-                    {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <label class="control-label"> {{lang_trans('txt_address')}} <span class="required">*</span></label>
-                    {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <label class="control-label"> {{lang_trans('txt_country')}} </label>
-                    {{ Form::select('country',getCountryList(),getSettings('default_country'),['class'=>'form-control col-md-6 col-xs-12', "id"=>"country", 'placeholder'=>lang_trans('ph_select')]) }}
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <label class="control-label"> {{lang_trans('txt_state')}} </label>
-                    {{Form::text('state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"state", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_state')])}}
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <label class="control-label"> {{lang_trans('txt_city')}} </label>
-                    {{Form::text('city',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"city", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_city')])}}
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                      <label class="control-label"> {{lang_trans('txt_gender')}} <span class="required">*</span></label>
-                      {{ Form::select('gender',config('constants.GENDER'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
-                  </div>
-                  @if(!$quickCheckIn)
-                    <div class="col-md-4 col-sm-4 col-xs-12">
-                      <label class="control-label"> {{lang_trans('txt_age')}} </label>
-                      {{Form::number('age',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"age", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_age'),"min"=>10])}}
+                      <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_surname')}} </label>
+                        {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}}
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_firstname')}} <span class="required">*</span></label>
+                        {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}}
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_middlename')}} </label>
+                        {{Form::text('middle_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_middlename')])}}
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_email')}} </label>
+                        {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_mobile_num')}} <span class="required">*</span></label>
+                        {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_address')}} <span class="required">*</span></label>
+                        {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_country')}} </label>
+                        {{ Form::select('country',getCountryList(),getSettings('default_country'),['class'=>'form-control col-md-6 col-xs-12', "id"=>"country", 'placeholder'=>lang_trans('ph_select')]) }}
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_state')}} </label>
+                        {{Form::text('state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"state", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_state')])}}
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_city')}} </label>
+                        {{Form::text('city',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"city", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_city')])}}
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-12">
+                          <label class="control-label"> {{lang_trans('txt_gender')}} <span class="required">*</span></label>
+                          {{ Form::select('gender',config('constants.GENDER'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
+                      </div>
+                      @if(!$quickCheckIn)
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                          <label class="control-label"> {{lang_trans('txt_age')}} </label>
+                          {{Form::number('age',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"age", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_age'),"min"=>10])}}
+                        </div>
+                      @endif
                     </div>
-                  @endif
-                </div>
+                  </div>
               </div>
           </div>
       </div>
-  </div>
-  <div class="row">
+
+      <div class="row hide_elem" id="existing_guest_section">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                  <div class="x_title">
+                      <h2>{{lang_trans('heading_existing_guest_list')}}</h2>
+                      <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <div class="row">
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label">{{lang_trans('txt_guest')}}</label>
+                              {{Form::text('selected_customer_id',null,['class'=>"form-", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="row hide_elem" id="new_company_section">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                  <div class="x_title">
+                      <h2>{{lang_trans('heading_company_info')}}</h2>
+                      <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <div class="row">
+
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_company_name')}}</label>
+                              {{Form::text('company_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_name')])}}
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_company_gst_num')}}</label>
+                              {{Form::text('company_gst_num',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_gst_num", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_gst_num')])}}
+                          </div>
+
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_company_email')}} </label>
+                              {{Form::email('company_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_email')])}}
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_company_mobile_num')}} <span class="required">*</span></label>
+                              {{Form::text('company_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_mobile_num')])}}
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_company_address')}} <span class="required">*</span></label>
+                              {{Form::textarea('company_address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_address'),"rows"=>1])}}
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_company_country')}} </label>
+                              {{ Form::select('company_country',getCountryList(),getSettings('default_country'),['class'=>'form-control col-md-6 col-xs-12', "id"=>"country", 'placeholder'=>lang_trans('ph_select')]) }}
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_company_state')}} </label>
+                              {{Form::text('company_state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"state", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_state')])}}
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_company_city')}} </label>
+                              {{Form::text('company_city',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"city", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_city')])}}
+                          </div>
+
+
+
+
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_remark')}}</label>
+                              {{Form::textarea('remark',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"remark", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_remark'),"rows"=>1])}}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="row hide_elem" id="existing_company_section">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                  <div class="x_title">
+                      <h2>{{lang_trans('heading_existing_company_list')}}</h2>
+                      <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <div class="row">
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label">{{lang_trans('txt_company')}}</label>
+                              {{Form::text('selected_company_id',null,['class'=>"form-", "id"=>"companies", "placeholder"=>lang_trans('ph_select')])}}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
               <div class="x_title">
@@ -207,60 +291,7 @@
       </div>
   </div>
 
-  <div class="row">
-      <div class="col-md-12 col-sm-12 col-xs-12">
-          <div class="x_panel">
-              <div class="x_content">
-                  <div class="row">
-                      <div class="col-md-4 col-sm-4 col-xs-12">
-                        <label class="control-label"> {{lang_trans('txt_company_name')}}</label>
-                        {{Form::text('company_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_name')])}}
-                      </div>
-                      <div class="col-md-4 col-sm-4 col-xs-12">
-                        <label class="control-label"> {{lang_trans('txt_company_gst_num')}}</label>
-                        {{Form::text('company_gst_num',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_gst_num", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_gst_num')])}}
-                      </div>
-                      <div class="col-md-4 col-sm-4 col-xs-12">
-                        <label class="control-label"> {{lang_trans('txt_room_plan')}} <span class="required">*</span></label>
-                        {{ Form::select('room_plan',config('constants.ROOM_PLANS'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
-                      </div>
-                      @if(!$quickCheckIn)
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                          <label class="control-label"> {{lang_trans('txt_booked_by')}}</label>
-                          {{Form::text('booked_by',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"booked_by", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_booked_by')])}}
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                          <label class="control-label"> {{lang_trans('txt_vehicle_number')}}</label>
-                          {{Form::text('vehicle_number',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"vehicle_number", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_vehicle_number')])}}
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                            <label class="control-label"> {{lang_trans('txt_referred_by')}}<span class="required">*</span></label>
-                            {{ Form::select('referred_by',config('constants.REFERRED_BY'),null,['class'=>'form-control',"id"=>"referred_by"]) }}
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                          <label class="control-label"> {{lang_trans('txt_referred_by_name')}}</label>
-                          {{Form::text('referred_by_name','WALK-IN',['class'=>"form-control col-md-6 col-xs-12", "id"=>"referred_by_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_referred_by_name')])}}
-                        </div>
 
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                            <label class="control-label"> {{lang_trans('txt_remark_amount')}} </label>
-                            {{Form::number('remark_amount',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"Remark Amount","placeholder"=>lang_trans('ph_enter').lang_trans('txt_remark_amount'),"min"=>0])}}
-                        </div>
-                          <div class="col-md-4 col-sm-4 col-xs-12">
-                              <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} <span class="required">*</span></label>
-                              {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_reason_of_visit'),"rows"=>1])}}
-                          </div>
-                      @endif
-
-                      <div class="col-md-4 col-sm-4 col-xs-12">
-                        <label class="control-label"> {{lang_trans('txt_remark')}}</label>
-                        {{Form::textarea('remark',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"remark", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_remark'),"rows"=>1])}}
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
 
   @if(!$quickCheckIn)
           <div class="row">
@@ -274,17 +305,23 @@
                           <div class="row">
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
-                                  {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
+                                  {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
                               </div>
                               <div class="col-md-4 col-sm-4 col-xs-12">
-                                  <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span></label>
+                                  <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="color-ff4" id="shower_start" style="display: none;">*</span> </label>
                                   {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
                               </div>
-                              <div class="col-md-4 col-sm-4 col-xs-12">
+                              <div class="col-md-4 col-sm-4 col-xs-12" style="display: none;">
                                   <label class="control-label"> {{lang_trans('txt_upload_idcard')}} <sup class="color-ff4">{{lang_trans('txt_multiple')}}</sup> </label>
                                   {{Form::file('id_image[]',['class'=>"form-control",'id'=>'idcard_image','multiple'=>true])}}
                               </div>
+
+                              <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} </label>{{--<span class="required">*</span>--}}
+                                  {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_reason_of_visit'),"rows"=>1])}}
+                              </div>
                           </div>
+
 
                       </div>
                   </div>
@@ -471,10 +508,18 @@
 <script>
   globalVar.page = 'room_reservation_add';
   globalVar.customerList = {!! json_encode($customer_list) !!};
+  globalVar.companiesList = {!! json_encode($companies_list) !!};
 </script>
-<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script>
+<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        $(document).on('change', '#type_of_ids_selector', function(e){
+            if($(this).val() == 4 || $(this).val() == 21){
+                $('#shower_start').show();
+            }else{
+                $('#shower_start').hide();
+            }
+        })
         $(document).on('submit', '#add-reservation-form', function(e){
             e.preventDefault();
             $('#custom-loader').css('display', 'flex');

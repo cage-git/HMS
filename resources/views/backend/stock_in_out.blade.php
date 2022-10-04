@@ -14,14 +14,14 @@
                       <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">{{lang_trans('txt_product')}} <span class="required">*</span></label>
                           <div class="col-md-6 col-sm-6 col-xs-12">
-                              {{ Form::select('product_id',$product_list,null,['class'=>'form-control','placeholder'=>lang_trans('ph_select')]) }}    
+                              {{ Form::select('product_id',$product_list,null,['class'=>'form-control','placeholder'=>lang_trans('ph_select')]) }}
                           </div>
                       </div>
-                      
+
                       <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">{{lang_trans('txt_stock')}} <span class="required">*</span></label>
                           <div class="col-md-6 col-sm-6 col-xs-12">
-                              {{ Form::select('stock_is',['add'=>'Add','subtract'=>'Subtract'],1,['class'=>'form-control','id'=>'stock_is','placeholder'=>lang_trans('ph_select')]) }}    
+                              {{ Form::select('stock_is',['add'=>'Add','subtract'=>'Subtract'],1,['class'=>'form-control','id'=>'stock_is','placeholder'=>lang_trans('ph_select')]) }}
                           </div>
                       </div>
                       <div class="form-group">
@@ -36,7 +36,7 @@
                             {{Form::text('price',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"price"])}}
                           </div>
                       </div>
-                     
+
                       <div class="form-group">
                           <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                               <button class="btn btn-primary" type="reset">{{lang_trans('btn_reset')}}</button>
@@ -49,5 +49,5 @@
       </div>
   </div>
 </div>
-<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script> 
+<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 @endsection

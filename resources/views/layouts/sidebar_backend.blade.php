@@ -48,6 +48,15 @@ $permissionsArr = getMenuPermission();
         </li>
       @endif
 
+          @if($permissionsArr['companys']==1 && ($permissionsArr['add-companys'] || $permissionsArr['list-companys']) )
+              <li><a><i class="fa fa-user"></i>{{lang_trans('sidemenu_companys')}}<span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                      @if($permissionsArr['add-companys']==1) <li><a href="{{route('add-company')}}">{{lang_trans('sidemenu_company_add')}} </a></li> @endif
+                      @if($permissionsArr['list-companys']==1) <li><a href="{{route('list-company')}}">{{lang_trans('sidemenu_company_all')}} </a></li> @endif
+                  </ul>
+              </li>
+          @endif
+
       @if($permissionsArr['food-category']==1 || $permissionsArr['food-item']==1)
         <li><a><i class="fa fa-cutlery"></i>{{lang_trans('sidemenu_fooditems')}}<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">

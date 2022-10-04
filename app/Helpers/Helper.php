@@ -123,7 +123,7 @@ function getNTDataCancellation($res, $request, $resData){
 }
 
 
-function getNTData($res, $request, $dataPH = false, $delete = false, $customerId){
+function getNTData($res, $request, $dataPH = false, $delete = false, $customerId = 0){
     $room_nam = '';
     $droom_rt = 0;
     $custData = Customer::whereId($customerId)->first();
@@ -244,9 +244,17 @@ function getAmenitiesById($id){
 function getCustomerByUserId($userId){
     return Customer::whereUserId($userId)->first();
 }
-function getCustomerList($type='pluck'){
-    if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->get();
-    else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
+function getCustomerList($type='pluck', $category='user'){
+    if($category == 'user'){
+        if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->get();
+        else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
+    }elseif($category == 'company'){
+        if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->get();
+        else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
+    }elseif($category == 'all'){
+        if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->get();
+        else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
+    }
 }
 function getExpenseCategoryList(){
     return ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->pluck('name','id');

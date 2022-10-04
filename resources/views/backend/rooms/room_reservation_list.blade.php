@@ -15,9 +15,9 @@ $totalAmount = 0;
           </div>
           <div class="x_content">
               {{ Form::model($search_data,array('url'=>route('search-checkouts'),'id'=>"search-checkouts", 'class'=>"form-horizontal form-label-left")) }}
-                <div class="form-group col-sm-3">
+                <div class="form-group col-sm-2">
                   <label class="control-label">{{lang_trans('txt_guest')}}</label>
-                  {{Form::text('customer_id',null,['class'=>"form-", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
+                  {{Form::select('customer_id',$customer_list,null,['class'=>"form-control", "placeholder"=>lang_trans('ph_select')])}}
                 </div>
                 <div class="form-group col-sm-2">
                   <label class="control-label">{{lang_trans('txt_room_type')}}</label>
@@ -27,15 +27,15 @@ $totalAmount = 0;
                   <label class="control-label">{{lang_trans('txt_payment_status')}}</label>
                   {{Form::select('payment_status',config('constants.PAYMENT_STATUS'),null,['class'=>"form-control",'placeholder'=>lang_trans('ph_select')])}}
                 </div>
-                <div class="form-group col-sm-1">
+                <div class="form-group col-sm-2">
                   <label class="control-label">{{lang_trans('txt_date_from')}}</label>
                   {{Form::text('date_from',null,['class'=>"form-control datepicker", 'placeholder'=>lang_trans('ph_date_from')])}}
                 </div>
-                <div class="form-group col-sm-1">
+                <div class="form-group col-sm-2">
                   <label class="control-label">{{lang_trans('txt_date_to')}}</label>
                   {{Form::text('date_to',null,['class'=>"form-control datepicker", 'placeholder'=>lang_trans('ph_date_to')])}}
                 </div>
-                <div class="form-group col-sm-3">
+                <div class="form-group col-sm-2">
                   <br/>
                    <button class="btn btn-success search-btn" name="submit_btn" value="search" type="submit">{{lang_trans('btn_search')}}</button>
                    <button class="btn btn-primary export-btn" name="submit_btn" value="export" type="submit">{{lang_trans('btn_export')}}</button>
@@ -169,7 +169,7 @@ $totalAmount = 0;
   </div>
 </div>
 </div>
-</div>
+    </div>
 
 @elseif($list=='check_outs')
 <div class="row">
@@ -243,9 +243,11 @@ $totalAmount = 0;
             </div>
         </div>
     </div>
-    <script>
-      globalVar.customerList = {!! json_encode($customer_list) !!};
-    </script>
+
+
   @endif
 </div>
+<script>
+    globalVar.customerList = {!! json_encode($customer_list) !!};
+</script>
 @endsection

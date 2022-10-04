@@ -2303,6 +2303,74 @@ $array = [
         "hi"=>"Advance Slip",
     ],
 
+
+
+    "txt_new_company"=>[
+        "en"=>"New Company",
+        "ar"=>"شركة جديدة",
+    ],
+    "txt_existing_company"=>[
+        "en"=>"Existing Company",
+        "ar"=>"الشركة القائمة",
+    ],
+    "txt_company"=>[
+        "en"=>"Company",
+        "ar"=>"شركة",
+    ],
+    "txt_company_email"=>[
+        "en"=>"Company Email",
+        "ar"=>"البريد الإلكتروني للشركة",
+    ],
+     "txt_company_mobile_num"=>[
+        "en"=>"Company Phone",
+        "ar"=>"هاتف الشركة",
+    ],
+    "txt_company_address"=>[
+        "en"=>"Company Address",
+        "ar"=>"عنوان الشركة",
+    ],
+    "txt_company_country"=>[
+        "en"=>"Company Country",
+        "ar"=>"بلد الشركة",
+    ],
+    "txt_company_state"=>[
+        "en"=>"Company State",
+        "ar"=>"دولة الشركة",
+    ],
+    "txt_company_city"=>[
+        "en"=>"Company City",
+        "ar"=>"مدينة الشركة",
+    ],
+
+    "txt_list_companys"=>[
+        "en"=>"Company List",
+        "ar"=>"قائمة الشركة",
+    ],
+    "heading_filter_company"=>[
+        "en"=>"Company Filter",
+        "ar"=>"مرشح الشركة",
+    ],
+    "sidemenu_companys"=>[
+        "en"=>"Companies",
+        "ar"=>"شركات",
+    ],
+    "sidemenu_company_add"=>[
+        "en"=>"Add Company",
+        "ar"=>"أضف شركة",
+    ],
+    "sidemenu_company_all"=>[
+        "en"=>"All Company",
+        "ar"=>"كل شركة",
+    ],
+    "heading_company_info"=>[
+        "en"=>"Company Information",
+        "ar"=>"معلومات الشركة",
+    ],
+    "heading_existing_company_list"=>[
+        "en"=>"Existing Company List",
+        "ar"=>"قائمة الشركات الحالية",
+    ],
+
 ];
 
 /*

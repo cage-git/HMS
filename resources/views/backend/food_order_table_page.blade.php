@@ -181,5 +181,5 @@
   globalVar.gstPercentFood = {{$gstPercFood}};
   globalVar.cgstPercentFood = {{$cgstPercFood}};
 </script>
-<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script>
+<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 @endsection

@@ -224,12 +224,17 @@ if(globalVar.page=='room_reservation_add'){
   });
 
   $('.guest_type').on('ifChanged',function(){
-    $('#new_guest_section,#existing_guest_section').hide();
+    $('#new_guest_section,#existing_guest_section,#existing_company_section,#new_company_section').hide();
     var type = $(this).val();
+    console.log(type);
     if(type=='new'){
       $('#new_guest_section').show();
-    } else {
+    } else if(type=='existing') {
       $('#existing_guest_section').show();
+    } else if(type=='new_company') {
+        $('#new_company_section').show();
+    } else if(type=='existing_company') {
+        $('#existing_company_section').show();
     }
   });
   $(document).on('change', '#referred_by',function(){
@@ -285,15 +290,22 @@ if(globalVar.page=='room_reservation_add'){
 
 
   $(document).on('click','.room_type_by_rooms',function(e){
-    globalVar.roomTypeSelector = $(this).parents('.panel-heading').siblings('.panel-collapse').find('.rooms_list');
-    globalVar.roomTypeSelector.html('');
-    $('#room_num').html('');
-    const post_data={room_type_id:$(this).data('roomtypeid'), checkin_date: globalVar.checkInDate, checkout_date: globalVar.checkOutDate};
-    globalFunc.ajaxCall('api/get-room-num-list', post_data, 'POST', globalFunc.before, globalFunc.listOfRooms, globalFunc.error, globalFunc.complete);
+
+    if(($(this).parents('.panel-heading').siblings('.panel-collapse').find('.rooms_list').html().replace(/ /g,'').trim() == '')){
+
+        globalVar.roomTypeSelector = $(this).parents('.panel-heading').siblings('.panel-collapse').find('.rooms_list');
+        globalVar.roomTypeSelector.html('');
+        $('#room_num').html('');
+        const post_data = {room_type_id:$(this).data('roomtypeid'), checkin_date: globalVar.checkInDate, checkout_date: globalVar.checkOutDate};
+
+        globalFunc.ajaxCall('api/get-room-num-list', post_data, 'POST', globalFunc.before, globalFunc.listOfRooms, globalFunc.error, globalFunc.complete);
+    }
   });
   globalFunc.listOfRooms=function(data){
     var bookedRooms = data.booked_rooms;
+
     if(Object.keys(data.rooms).length>0){
+
         var k=1;
         $.each(data.rooms,function(index,val){
           var statusBtn = '<span class="btn btn-xs btn-success">Available</span>';
@@ -302,12 +314,14 @@ if(globalVar.page=='room_reservation_add'){
             statusBtn = '<span class="btn btn-xs btn-cust">Booked</span>';
             checkbox = '<input name="room_num_booked[]" type="checkbox" value="'+val.room_type_id+'~'+val.id+'" disabled>';
           }
-          globalVar.roomTypeSelector.append('<tr>\
-            <td width="5%">'+(k++)+'</td>\
-            <td width="5%">'+checkbox+'</td>\
-            <td>'+val.room_no+'</td>\
-            <td>'+statusBtn+'</td>\
-          </tr>');
+
+              globalVar.roomTypeSelector.append('<tr>\
+                <td width="5%">'+(k++)+'</td>\
+                <td width="5%">'+checkbox+'</td>\
+                <td>'+val.room_no+'</td>\
+                <td>'+statusBtn+'</td>\
+              </tr>');
+
         });
     } else {
       addNoRoomTr();

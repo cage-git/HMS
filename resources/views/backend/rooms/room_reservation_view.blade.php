@@ -20,6 +20,37 @@
   $additionalAmount = $calculatedAmount['additionalAmount'];
   $additionalAmountReason = $data_row->additional_amount_reason;
 @endphp
+
+@php
+    $settings = getSettings();
+     $calculatedAmount = calcFinalAmount($data_row, 1, false);
+     $additionalAmount = $calculatedAmount['additionalAmount'];
+     $additionalAmountReason = $data_row->additional_amount_reason;
+     $roomAmountDiscount = $calculatedAmount['totalRoomAmountDiscount'];
+     $gstPerc = $calculatedAmount['totalRoomGstPerc'];
+     $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
+     $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
+     $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
+     $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
+     $subTotalRoomAmount = (($totalRoomAmount+$roomAmountGst+$roomAmountCGst) - $roomAmountDiscount)+$additionalAmount;
+     $advancePayment = $calculatedAmount['advancePayment'];
+
+     $dueAmount = $subTotalRoomAmount-$advancePayment;
+
+
+     $gstPercFood = $calculatedAmount['totalOrderGstPerc'];
+     $cgstPercFood = $calculatedAmount['totalOrderCGstPerc'];
+     $foodAmountGst = $calculatedAmount['totalOrderAmountGst'];
+     $foodAmountCGst = $calculatedAmount['totalOrderAmountCGst'];
+     $foodOrderAmountDiscount = $calculatedAmount['totalOrderAmountDiscount'];
+     $gstFoodApply = $calculatedAmount['gstFoodApply'];
+     $totalOrdersAmount = $calculatedAmount['subtotalOrderAmount'];
+     $finalOrderAmount = $calculatedAmount['finalOrderAmount'];
+
+
+     $data_date = date('Y-m-d h:i:s', strtotime(str_replace('/','-', $data_row->check_out)));
+
+@endphp
 <div class="">
       <div class="row" id="new_guest_section">
       <div class="col-md-12 col-sm-12 col-xs-12">
@@ -298,24 +329,44 @@
                                 <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalRoomAmount) }}</td>
                               </tr>
                               <tr>
-                                <th class="text-right">{{lang_trans('txt_sgst')}} ({{$data_row->gst_perc}}%)</th>
+                                <th class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%)</th>
                                 <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountGst) }}</td>
                               </tr>
-                              <tr class="{{$data_row->cgst_perc > 0 ? '' : 'hide_elem'}}">
-                                <th class="text-right">{{lang_trans('txt_cgst')}} ({{$data_row->cgst_perc}}%)</th>
+
+
+                              <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
+                                <th class="text-right">{{lang_trans('txt_cgst')}} ({{$cgstPerc}}%)</th>
                                 <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountCGst) }}</td>
                               </tr>
-                               <tr>
-                                <th class="text-right">{{lang_trans('txt_advance_amount')}}</th>
-                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($advancePayment) }}</td>
-                              </tr>
+
+
+{{--                            @if($additionalAmount>0)--}}
+
+{{--                                <tr class="{{$additionalAmount > 0 ? '' : 'hide_elem'}}">--}}
+{{--                                    <th class="text-right">{{$additionalAmountReason}}</th>--}}
+{{--                                    <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($additionalAmount) }}</td>--}}
+{{--                                </tr>--}}
+
+{{--                            @endif--}}
+
                               <tr>
                                 <th class="text-right">{{lang_trans('txt_discount')}}</th>
                                 <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountDiscount) }}</td>
                               </tr>
+                            <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
+                                <th class="text-right">{{lang_trans('txt_subtotal')}}</th>
+                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($subTotalRoomAmount) }}</td>
+                            </tr>
+
+
+
+                            <tr>
+                                <th class="text-right">{{lang_trans('txt_advance_amount')}}</th>
+                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($advancePayment) }}</td>
+                            </tr>
                               <tr class="bg-success">
                                 <th class="text-right">{{lang_trans('txt_final_amount')}}</th>
-                                <td width="15%" id="td_final_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($finalRoomAmount) }}</td>
+                                <td width="15%" id="td_final_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($subTotalRoomAmount - $advancePayment) }}</td>
                               </tr>
                         </table>
                         <div class="x_title">
@@ -357,12 +408,13 @@
                                       <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalOrdersAmount) }}</td>
                                     </tr>
                                     <tr>
-                                      <th class="text-right">{{lang_trans('txt_sgst')}} ({{$orderGst}}%)</th>
-                                      <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalOrderAmountGst) }}</td>
+                                      <th class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%)</th>
+                                      <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($foodAmountGst) }}</td>
                                     </tr>
-                                    <tr class="{{$orderCGst > 0 ? '' : 'hide_elem'}}">
-                                      <th class="text-right">{{lang_trans('txt_cgst')}} ({{$orderCGst}}%)</th>
-                                      <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalOrderAmountCGst) }}</td>
+
+                                    <tr class="{{$cgstPercFood > 0 ? '' : 'hide_elem'}}">
+                                      <th class="text-right">{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%)</th>
+                                      <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($foodAmountCGst) }}</td>
                                     </tr>
                                     <tr>
                                       <th class="text-right">{{lang_trans('txt_discount')}}</th>

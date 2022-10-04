@@ -1,8 +1,8 @@
 @extends('layouts.master_backend')
 @section('content')
-@php 
+@php
   $reservationId = Request::route('reservation_id');
-  $i=1; 
+  $i=1;
   $settings = getSettings();
   $gstPercFood = $settings['food_gst'];
   $cgstPercFood = $settings['food_cgst'];
@@ -11,7 +11,7 @@
 {{ Form::open(array('url'=>route('save-food-order'),'id'=>"food-order-form", 'class'=>"form-horizontal form-label-left",'files'=>true)) }}
   {{Form::hidden('gst_perc',$gstPercFood)}}
   {{Form::hidden('cgst_perc',$cgstPercFood)}}
-  
+
     @if($reservationId==null)
     <div class="row {{($reservationId>0) ? 'hide_elem' : ''}}" id="new_guest_section">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -20,9 +20,9 @@
                     <h2>{{lang_trans('heading_customer_info')}}</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content"> 
-                  <div class="row"> 
-                   
+                <div class="x_content">
+                  <div class="row">
+
                     <div class="col-md-4 col-sm-4 col-xs-12">
                       <label class="control-label"> {{lang_trans('txt_fullname')}} </label>
                       {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_fullname')])}}
@@ -57,7 +57,7 @@
         </div>
     </div>
     @endif
-    
+
   <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
@@ -100,21 +100,21 @@
                                     </button>
                                 </span>
                             </div>
-                            
+
                             {{Form::hidden('items['.$value->id.']',$val->id.'~'.$val->name.'~'.$value->name.'~'.$value->price,['data-price'=>$value->price,'class'=>"form-control col-md-6 col-xs-12 item_qty","min"=>0])}}
                           </td>
                         </tr>
                       @endforeach
                     @endforeach
-                    
+
                   </table>
-                
+
               </div>
           </div>
       </div>
   </div>
 
- 
+
     <div class="row {{(1==1) ? 'hide_elem' : ''}}">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
@@ -155,7 +155,7 @@
         </div>
       </div>
     </div>
- 
+
   <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
@@ -169,12 +169,12 @@
   </div>
 
 {{ Form::close() }}
-</div>    
+</div>
   {{-- require set var in js var --}}
 <script>
   globalVar.page = 'food_order_page';
   globalVar.gstPercentFood = {{$gstPercFood}};
   globalVar.cgstPercentFood = {{$cgstPercFood}};
-</script> 
-<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script>       
-@endsection     
+</script>
+<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
+@endsection

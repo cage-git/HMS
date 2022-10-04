@@ -1,4 +1,4 @@
-@php 
+@php
   $settings = getSettings();
   $totalOrdersAmount = 0;
 @endphp
@@ -90,7 +90,7 @@
             </table>
             <hr/>
             <h5>{{lang_trans('txt_orderd_items')}}</h5>
-            
+
             <table border="1" border-style="ridge" style="width: 70%">
                 <tr>
                     <th class="txt-center" width="70%">
@@ -139,6 +139,6 @@
             </a>
         </div>
     </div>
-    <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script> 
+    <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 </body>
 </html>
