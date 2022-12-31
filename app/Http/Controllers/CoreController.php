@@ -59,6 +59,7 @@ class CoreController extends Controller {
                 unlink($image_path);
         }
     }
+
     function sendCurl($url, $type = 'GET', $header = [], $data = []) {
         $curl = curl_init();
         $curlOptions = [
@@ -185,11 +186,11 @@ class CoreController extends Controller {
                     'password'=> $cust->password,
                     'mobile'=> $cust->mobile,
                     'address'=> $cust->address,
-               ];
-               $userId = User::insertGetId($userData);
-               if($userId){
-                Customer::where('id', $cust->id)->update(['user_id'=>$userId]);
-               }
+                ];
+                $userId = User::insertGetId($userData);
+                if($userId){
+                    Customer::where('id', $cust->id)->update(['user_id'=>$userId]);
+                }
             }
         }
     }

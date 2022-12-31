@@ -1,11 +1,19 @@
 "use strict";
+var datetimePickerOptions = {
+  minView: 2,
+  autoclose: true,
+  format: 'yyyy-mm-dd',
+};
 $(document).on('click', '[data-toggle="lightbox"]', function(event) {
     event.preventDefault();
 });
 $('#stock_is').on('change',function(){
     $('#price_section').hide();
+    $('#room_section').hide();
     if($(this).val()=='add'){
       $('#price_section').show();
+    } else if($(this).val()=='subtract'){
+      $('#room_section').show();
     }
 });
 function printSlip(){
@@ -15,17 +23,23 @@ function printSlip(){
 /* ***** ***** ***** ***** ***** start checkout page ***** ***** ***** ***** ***** */
 if(globalVar.page=='checkout'){
  paymentInfo();
-  $('#check_in_date').datetimepicker();
+    // $('#check_in_date').datetimepicker();
+    // if(globalVar.userRole==3){
+    //     $('#check_out_date').datetimepicker({
+    //         //startDate: new Date(),
+    //         autoclose: true,
+    //     });
+    // } else {
+    //     $('#check_out_date').datetimepicker({
+    //         //startDate: new Date(),
+    //         autoclose: true,
+    //     });
+    // }
+  $('#check_in_date').datetimepicker(datetimePickerOptions);
   if(globalVar.userRole==3){
-    $('#check_out_date').datetimepicker({
-      //startDate: new Date(),
-      autoclose: true,
-    });
+    $('#check_out_date').datetimepicker(datetimePickerOptions);
   } else {
-    $('#check_out_date').datetimepicker({
-      //startDate: new Date(),
-      autoclose: true,
-    });
+    $('#check_out_date').datetimepicker(datetimePickerOptions);
   }
 
   $("#check_in_date").on("change",function(){
@@ -144,7 +158,6 @@ if(globalVar.page=='checkout'){
 
         $(selector).find('.td_total_per_room_amount').html(currency_symbol+' '+parseFloat(perRoomTotalAmount).toFixed(2));
       });
-      console.log()
       gstCalculation((parseFloat(totalRoomAmount) - parseFloat(globalVar.discount)),'room_gst');
 
       $('.td_total_room_amount').html(currency_symbol+' '+parseFloat(totalRoomAmount).toFixed(2));
@@ -226,7 +239,6 @@ if(globalVar.page=='room_reservation_add'){
   $('.guest_type').on('ifChanged',function(){
     $('#new_guest_section,#existing_guest_section,#existing_company_section,#new_company_section').hide();
     var type = $(this).val();
-    console.log(type);
     if(type=='new'){
       $('#new_guest_section').show();
     } else if(type=='existing') {
@@ -245,20 +257,14 @@ if(globalVar.page=='room_reservation_add'){
       $('#referred_by_name').val(val);
   });
 
-  $('#check_in_date').datetimepicker({
-    //startDate: new Date(),
-    autoclose: true,
-  });
+  $('#check_in_date').datetimepicker(datetimePickerOptions);
   $("#check_in_date").on("change",function(){
       globalVar.checkInDate = $(this).val();
       globalVar.checkOutDate = "";
       $("#check_out_date,#duration_of_stay").val('');
       $('#room_list_section').addClass('hide_elem');
   });
-  $('#check_out_date').datetimepicker({
-    //startDate: new Date(),
-    autoclose: true,
-  });
+  $('#check_out_date').datetimepicker(datetimePickerOptions);
   $("#check_out_date").on("change",function(){
       if(!globalVar.checkInDate){
         $("#check_out_date").val('');
@@ -290,22 +296,17 @@ if(globalVar.page=='room_reservation_add'){
 
 
   $(document).on('click','.room_type_by_rooms',function(e){
-
-    if(($(this).parents('.panel-heading').siblings('.panel-collapse').find('.rooms_list').html().replace(/ /g,'').trim() == '')){
-
+    // if(($(this).parents('.panel-heading').siblings('.panel-collapse').find('.rooms_list').html().replace(/ /g,'').trim() == '')){
         globalVar.roomTypeSelector = $(this).parents('.panel-heading').siblings('.panel-collapse').find('.rooms_list');
         globalVar.roomTypeSelector.html('');
         $('#room_num').html('');
         const post_data = {room_type_id:$(this).data('roomtypeid'), checkin_date: globalVar.checkInDate, checkout_date: globalVar.checkOutDate};
-
         globalFunc.ajaxCall('api/get-room-num-list', post_data, 'POST', globalFunc.before, globalFunc.listOfRooms, globalFunc.error, globalFunc.complete);
-    }
+    // }
   });
   globalFunc.listOfRooms=function(data){
     var bookedRooms = data.booked_rooms;
-
     if(Object.keys(data.rooms).length>0){
-
         var k=1;
         $.each(data.rooms,function(index,val){
           var statusBtn = '<span class="btn btn-xs btn-success">Available</span>';
@@ -314,14 +315,12 @@ if(globalVar.page=='room_reservation_add'){
             statusBtn = '<span class="btn btn-xs btn-cust">Booked</span>';
             checkbox = '<input name="room_num_booked[]" type="checkbox" value="'+val.room_type_id+'~'+val.id+'" disabled>';
           }
-
               globalVar.roomTypeSelector.append('<tr>\
                 <td width="5%">'+(k++)+'</td>\
                 <td width="5%">'+checkbox+'</td>\
                 <td>'+val.room_no+'</td>\
                 <td>'+statusBtn+'</td>\
               </tr>');
-
         });
     } else {
       addNoRoomTr();
@@ -654,10 +653,8 @@ if(globalVar.page=='dashboard_page'){
         globalFunc.ajaxCall('api/get-calendar-events', post_data, 'POST', globalFunc.before, globalFunc.successEvents, globalFunc.error, globalFunc.complete);
     }
     globalFunc.successEvents=function(data){
-        console.log(data);
       if(globalVar.calendarEl){
           globalVar.calendar = new FullCalendar.Calendar(globalVar.calendarEl, {
-
             timeZone: globalVar.timezone,
             locale: globalVar.locale,
             initialDate: globalVar.cdate,
@@ -680,7 +677,6 @@ if(globalVar.page=='dashboard_page'){
               center: 'title',
               right: 'prev next',
             },
-
             events: data.events,
             eventClick: function(info) {
               console.log('Event: ', info.event, 'Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY, 'View: ' + info.view.type);
@@ -797,3 +793,152 @@ function cloneElements(section){
   }
 }
 /* ***** ***** ***** ***** ***** end websitePages page ***** ***** ***** ***** ***** */
+
+/* ***** ***** ***** ***** ***** start housekeeping add/edit page ***** ***** ***** ***** ***** */
+if(globalVar.page=='housekeeping_order_add_edit'){
+  console.log('---',globalVar.selectedHousekeepingItems.split(','));
+  if($("#housekeeping_items")[0] != undefined){
+    const items = globalVar.selectedHousekeepingItems.split(',');
+    $('#housekeeping_items').val(items);
+  }
+}
+/* ***** ***** ***** ***** ***** start housekeeping add/edit page ***** ***** ***** ***** ***** */
+
+/* ***** ***** ***** ***** ***** start laundary page ***** ***** ***** ***** ***** */
+if(globalVar.page=='laundry_order_add_edit'){
+  laundryPaymentInfo();
+
+  $(document).on('click','.add-row',function(){
+    var html = $(".colne_laundry_item_elem").html();
+    $(".laundry_item_parent").append(html);
+  });
+  $(document).on('click','.delete-row',function(){
+    $(this).parents('.laundry_item_elem').remove();
+  });
+  $('.guest_type').on('ifChanged',function(){
+    $('#new_guest_section,#existing_guest_section').hide();
+    var type = $(this).val();
+    if(type=='new'){
+      $('#new_guest_section').show();
+    } else {
+      $('#existing_guest_section').show();
+    }
+  });
+
+  $("#apply_gst").on("click",function(){
+      if($(this).prop("checked") == true){
+          globalVar.applyGst = 1;
+      } else if($(this).prop("checked") == false){
+          globalVar.applyGst = 0;
+      }
+      $(this).val(globalVar.applyGst);
+      laundryPaymentInfo();
+  });
+
+  $(document).on("keyup click", ".per_item_price", function(){
+      laundryPaymentInfo();
+  });
+  $(document).on("keyup click", ".per_item_rcv_qty", function(){
+      laundryPaymentInfo();
+  });
+  $("#laundry_discount_in").on("change",function(){
+    $("#discount").trigger('click');
+  });
+  $("#discount").on("keyup click",function(){
+      $('.discount_err_msg').html('');
+      if(globalVar.laundrySubtotalAmount>0){
+        if($(this).val()>0) {
+          globalVar.discount = $(this).val();
+          if($('#laundry_discount_in').val() == 'perc'){
+            globalVar.discount = getPercentOfAmount(globalVar.discount, globalVar.laundrySubtotalAmount);
+          }
+        } else {
+          globalVar.discount = 0;
+        }
+
+        var maxDisc = getMaxDiscount(globalVar.laundrySubtotalAmount);
+        if(globalVar.discount>maxDisc){
+          globalVar.isError = true;
+          $('.discount_err_msg').html('Allow only 100% of total amount');
+        } else {
+          globalVar.isError = false;
+          laundryPaymentInfo();
+        }
+      } else {
+        $(this).val(0);
+      }
+  });
+
+  function laundryPaymentInfo(){
+      let subtotalAmount = 0;
+      $('.per_item_elem').each(function(i, selector){
+        let perItemRcvQty = parseInt($(selector).find('.per_item_rcv_qty').val());
+        perItemRcvQty = (perItemRcvQty > 0) ? perItemRcvQty : 0;
+
+        let perItemPrice = parseFloat($(selector).find('.per_item_price').val());
+        perItemPrice = (perItemPrice > 0) ? perItemPrice : 0;
+
+        subtotalAmount += parseFloat(perItemRcvQty*perItemPrice);
+      });
+      globalVar.laundrySubtotalAmount = subtotalAmount;
+      gstCalculation(subtotalAmount,'laundry_gst');
+
+      $('#td_subtotal').html(getAmountWithCurrency(subtotalAmount));
+      $('#subtotal').val(parseFloat(subtotalAmount).toFixed(2));
+
+      const totalAmount = ( parseFloat(subtotalAmount)+parseFloat(globalVar.gstAmount)+parseFloat(globalVar.cgstAmount)-parseFloat(globalVar.discount) );
+      $('#td_total_amount').html(getAmountWithCurrency(totalAmount));
+      $('#total_amount').val(parseFloat(totalAmount).toFixed(2));
+  }
+}
+/* ***** ***** ***** ***** ***** end laundary page ***** ***** ***** ***** ***** */
+
+function gstCalculation(amount,type){
+    if(type=='room_gst'){
+      globalVar.gstRoomAmount = getPercentOfAmount(globalVar.gstPercent, amount);
+      globalVar.cgstRoomAmount = getPercentOfAmount(globalVar.cgstPercent, amount);
+
+      $('#total_room_amount_gst').val(globalVar.gstRoomAmount);
+      $('#total_room_amount_cgst').val(globalVar.cgstRoomAmount);
+
+      $('#td_total_room_amount_gst').html(getAmountWithCurrency(globalVar.gstRoomAmount));
+      $('#td_total_room_amount_cgst').html(getAmountWithCurrency(globalVar.cgstRoomAmount));
+    }
+    else if(type=='laundry_gst'){
+      if(globalVar.applyGst==1){
+        globalVar.gstAmount = getPercentOfAmount(globalVar.gstPercent, amount);
+        globalVar.cgstAmount = getPercentOfAmount(globalVar.cgstPercent, amount);
+      } else {
+        globalVar.gstAmount = '0.00';
+        globalVar.cgstAmount = '0.00';
+      }
+
+      $('#total_gst_amount').val(globalVar.gstAmount);
+      $('#total_cgst_amount').val(globalVar.cgstAmount);
+
+      $('#td_total_gst_amount').html(getAmountWithCurrency(globalVar.gstAmount));
+      $('#td_total_cgst_amount').html(getAmountWithCurrency(globalVar.cgstAmount));
+    }
+    else{
+      if(globalVar.applyFoodGst==1){
+        globalVar.gstOrderAmount = getPercentOfAmount(globalVar.gstPercentFood, amount);
+        globalVar.cgstOrderAmount = getPercentOfAmount(globalVar.cgstPercentFood, amount);
+      } else {
+        globalVar.gstOrderAmount = '0.00';
+        globalVar.cgstOrderAmount = '0.00';
+      }
+      $('#total_order_amount_gst').val(parseFloat(globalVar.gstOrderAmount).toFixed(2));
+      $('#total_order_amount_cgst').val(parseFloat(globalVar.cgstOrderAmount).toFixed(2));
+
+      $('#td_order_amount_gst').html(getAmountWithCurrency(globalVar.gstOrderAmount));
+      $('#td_order_amount_cgst').html(getAmountWithCurrency(globalVar.cgstOrderAmount));
+    }
+    return;
+  }
+
+  function getPercentOfAmount(perc, amount){
+    return (perc/100)*parseFloat(amount).toFixed(2);
+  }
+  function getAmountWithCurrency(amount){
+    return currency_symbol+' '+parseFloat(amount).toFixed(2);
+  }

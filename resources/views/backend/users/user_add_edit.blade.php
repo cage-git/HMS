@@ -9,7 +9,6 @@
           $heading=lang_trans('btn_update');
           $hide = true;
       }
-
   @endphp
 <div class="">
   <div class="row">
@@ -22,7 +21,6 @@
               <div class="x_content">
                   <br/>
                   @if($flag==1)
-
                       {{ Form::model($data_row,array('url'=>route('save-user'),'id'=>"edit-user-form", 'class'=>"form-horizontal form-label-left")) }}
                       {{Form::hidden('id',null)}}
                   @else

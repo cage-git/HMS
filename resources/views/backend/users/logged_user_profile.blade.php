@@ -19,7 +19,8 @@
                       </div>
                       <div class="col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_email')}} <span class="required">*</span></label>
-                        {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "readonly"=>false])}}
+{{--                        {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "readonly"=>false])}}--}}
+                        {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "readonly"=>true])}}
                       </div>
                       <div class="col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_mobile_num')}} <span class="required">*</span></label>

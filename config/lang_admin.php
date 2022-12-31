@@ -1571,6 +1571,16 @@ $array = [
         "ar"=>"شروط أحكام الفاتورة",
         "hi"=>"रसीद नियम और शर्तें",
     ],
+    "txt_invoice_tnc_arabic"=>[
+        "en"=>"Invoice Term & Conditions for Arabic language",
+        "ar"=>"شروط وأحكام الفاتورة باللغة العربية",
+        "hi"=>"रसीद नियम और शर्तें",
+    ],
+    "txt_invoice_tnc_english"=>[
+        "en"=>"Invoice Term & Conditions for English language",
+        "ar"=>"شروط وأحكام الفاتورة باللغة الانجليزية",
+        "hi"=>"रसीद नियम और शर्तें",
+    ],
     "txt_attachment"=>[
         "en"=>"Attachment",
         "ar"=>"المرفقات",
@@ -2369,6 +2379,14 @@ $array = [
     "heading_existing_company_list"=>[
         "en"=>"Existing Company List",
         "ar"=>"قائمة الشركات الحالية",
+    ],
+    "txt_reservations"=>[
+        "en"=>"Reservations",
+        "ar"=>"التحفظات",
+    ],
+    "txt_reservation"=>[
+        "en"=>"Reservation",
+        "ar"=>"تحفظ",
     ],
 
 ];

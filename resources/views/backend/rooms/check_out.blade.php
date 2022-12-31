@@ -274,6 +274,9 @@
                               <th width="5%">{{lang_trans('txt_item_qty')}}</th>
                               <th width="5%">{{lang_trans('txt_item_price')}}</th>
                               <th width="10%">{{lang_trans('txt_total_amount')}}</th>
+                              @if(env('APP_NT_ENABLE'))
+                                    <th width="15%">{{lang_trans('ministory_of_tourism_section')}}</th>
+                              @endif
                             </tr>
                             </thead>
                             <tbody>
@@ -285,6 +288,12 @@
                                 <td>{{$val->item_qty}}</td>
                                 <td>{{getCurrencySymbol()}} {{$val->item_price}}</td>
                                 <td>{{getCurrencySymbol()}} {{$val->item_qty*$val->item_price}}</td>
+                                  @if(env('APP_NT_ENABLE'))
+                                      <td>
+                                          {{ Form::select('mt_expence_type_id_'.$val->id.'',getDynamicDropdownList('expence_type_id', true),null,['class'=>'form-control col-md-6 col-xs-12', 'required'=>'required']) }}
+                                      </td>
+                                  @endif
+
                               </tr>
                               @if(count($data_row->orders_items) == ($k+1) )
                                 <tr>
@@ -337,9 +346,21 @@
                         <table class="table table-bordered">
                             <tr class="bg-default">
                               <th class="text-right">
+                                  @if(env('APP_NT_ENABLE'))
+                                      <label class="control-label"> &nbsp;</label>
+                                  @endif
                                 {{Form::text('additional_amount_reason',$additionalAmountReason,['class'=>"form-control col-md-7 col-xs-12", "id"=>"additional_amount_reason", "placeholder"=>lang_trans('txt_additional_amount_reason')])}}
                               </th>
+                                @if(env('APP_NT_ENABLE'))
+                              <th width="30%">
+                                  <label class="control-label"> {{lang_trans('ministory_of_tourism_section')}} <span class="required">*</span></label>
+                                  {{ Form::select('mt_expence_type_id_additional',getDynamicDropdownList('expence_type_id', true),null,['class'=>'form-control col-md-6 col-xs-12', 'required'=>'required']) }}
+                              </th>
+                                @endif
                               <td width="15%" id="td_additional_amount" class="text-right">
+                                  @if(env('APP_NT_ENABLE'))
+                                      <label class="control-label"> &nbsp;</label>
+                                  @endif
                                 {{Form::number('additional_amount',$additionalAmount,['class'=>"form-control col-md-7 col-xs-12", "id"=>"additional_amount", "placeholder"=>lang_trans('txt_additional_amount'),"min"=>0])}}
                               </td>
                             </tr>

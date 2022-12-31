@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\CurlRequest;
+use App\CurlHistory;
 use Illuminate\Http\Request;
 use Auth,DB,Hash;
 use App\User,App\Customer,App\Role;
@@ -30,9 +31,18 @@ class AdminController extends Controller
     }
 
     public function index() {
+
         $this->data['counts']=DB::select(DB::raw("SELECT
+            (((SELECT COUNT(*) FROM (
+                SELECT 0  FROM `booked_rooms`
+                    WHERE
+                        is_checkout = 0  AND
+                        (CURDATE() BETWEEN DATE(`check_in`) and DATE(`check_out`))
+                    GROUP BY room_id
+              ) sq ) / (SELECT COUNT(*) FROM rooms WHERE status = 1)) * 100)  as user_count_two,
+
             (SELECT COUNT(*) FROM users WHERE status = 1) as user_count,
-            (SELECT COUNT(*) FROM orders WHERE DATE(`created_at`) = CURDATE()) as today_orders,
+            (SELECT COUNT(*) FROM orders WHERE DATE(`created_at`) = DATE_ADD(CURDATE(), INTERVAL -1 DAY)) as today_orders,
             (SELECT COUNT(*) FROM reservations WHERE DATE(`check_in`) = CURDATE()) as today_check_ins,
             (SELECT COUNT(*) FROM reservations WHERE DATE(`check_out`) = CURDATE()) as today_check_outs"
             ));
@@ -281,8 +291,6 @@ class AdminController extends Controller
         }
     }
     public function saveReservation(Request $request) {
-
-
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 if($request->ajax()){
@@ -510,8 +518,18 @@ class AdminController extends Controller
                             'request_type' => 'POST',
                             'header' => json_encode($header),
                             'post_data' => json_encode($datas),
-                            'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([])
+                            'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([]),
+                            'what_happen'=> 'Created ' . (($request->reservation_type == 0) ? 'Check-in' : 'Booking')
                         ]);
+                        CurlHistory::insert(['url' => $url,
+                            'reservation_id'=> $res->id,
+                            'request_type' => 'POST',
+                            'header' => json_encode($header),
+                            'post_data' => json_encode($datas),
+                            'response_data' => $resp['response'],
+                            'what_happen'=> 'Created ' . (($request->reservation_type == 0) ? 'Check-in' : 'Booking')
+                        ]);
+
                     }
                 }
 
@@ -523,22 +541,21 @@ class AdminController extends Controller
                 return redirect()->back()->with(['success' => $success, 'reservation_id' => $res->id]);
             }
         }
-
         if($request->ajax()){
             return response()->json(['msg' => $error], 403);
         }else {
             return redirect()->back()->with(['error' => $error]);
         }
     }
-    public function cancelReservation(Request $request){
-
+    public function cancelReservationSubmit(Request $request){
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
             }
             $success = config('constants.FLASH_REC_UPDATE_1');
             $error = config('constants.FLASH_REC_UPDATE_0');
-        } else {
+        }
+        else {
             $success = config('constants.FLASH_REC_ADD_1');
             $error = config('constants.FLASH_REC_ADD_0');
         }
@@ -562,57 +579,120 @@ class AdminController extends Controller
             $paymentHistoryData['payment_of'] = 'dr';
             $paymentHistoryData['transaction_id'] = getNextInvoiceNo('ph');
             $this->core->updateOrCreatePH($where, $paymentHistoryData);
-
             if(env('APP_NT_ENABLE') == true){
                 $settings = getSettings();
                 if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
                     if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
                     {
-                        $resData = Reservation::with(['curl_request' => function ($child) use ($request){
-                            $child->where(['status' => 1])->orderBy('id', 'desc')->first();
-                        }])->findOrFail($request->id);
+                        $curl_record = CurlRequest::where('reservation_id', $request->id)->first();
+                        if($curl_record){
+                            $post_data = json_decode($curl_record->post_data, true);
+                            $post_data['transactionId'] = getNTTransactionId($request->id);
+                            $post_data['transactionTypeId'] = '2';
+                            $url = getNtmpUrl($settings['ntmp_type'], 'CancelBooking');
+                            $header = [
+                                'Content-Type: application/json',
+                                'x-Gateway-APIKey: '.$settings['ntmp_api_key'].'',
+                                'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
+                            ];
+                            $cancel_post_data = [
+                                "transactionId"=> $post_data['transactionId'],
+                                "cancelReason"=> (string) $request->mt_cancel_reason,
+                                "cancelWithCharges"=> (string) $request->mt_cancel_with_charges,
+                                "chargeableDays"=> (string) $request->mt_chargeable_days,
+                                "roomRentType"=> $post_data['roomRentType'],
+                                "dailyRoomRate"=> $post_data['dailyRoomRate'],
+                                "totalRoomRate"=> $post_data['totalRoomRate'],
+                                "vat"=> $post_data['vat'],
+                                "municipalityTax"=> $post_data['municipalityTax'],
+                                "discount"=> $post_data['discount'],
+                                "grandTotal"=> $post_data['grandTotal'],
+                                "userId"=> $post_data['userId'],
+                                "paymentType"=> $post_data['paymentType'],
+                                "channel"=>  $post_data['channel'],
+                                "cuFlag"=> $post_data['cuFlag'],
+                            ];
+                            $resp = $this->core->sendCurl(
+                                $url,
+                                'POST',
+                                $header,
+                                $cancel_post_data
+                            );
+                            CurlHistory::insert(['url' => $url,
+                                'reservation_id'=> $request->id,
+                                'request_type' => 'POST',
+                                'header' => json_encode($header),
+                                'post_data' => json_encode($cancel_post_data),
+                                'response_data' => $resp['response'],
+                                'what_happen'=> 'Change booking to Cancellation'
+                            ]);
+                            if($resp['status']){
+//                                $post_data['cancel_post_data'] = $cancel_post_data;
+                                CurlRequest::updateOrCreate(['reservation_id'=>$request->id], ['url' => $url,
+                                    'reservation_id'=> $request->id,
+                                    'request_type' => 'POST',
+                                    'header' => json_encode($header),
+                                    'post_data' => json_encode($cancel_post_data),
+                                    'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([]),
+                                    'what_happen'=> 'Change booking to Cancellation'
+                                ]);
 
-
-                        $datas = getNTDataCancellation($res, $request, $resData);
-                        $url = getNtmpUrl($settings['ntmp_type'], 'CancelBooking');
-
-                        $header = [
-                            'Content-Type: application/json',
-                            'x-Gateway-APIKey: '.$settings['ntmp_api_key'].'',
-                            'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
-                        ];
-
-                        $resp = $this->core->sendCurl(
-                            $url,
-                            'POST',
-                            $header,
-                            $datas
-                        );
-                        dd($resp);
-                        CurlRequest::insertGetId(['url' => $url,
-                            'reservation_id'=> $res->id,
-                            'request_type' => 'POST',
-                            'header' => json_encode($header),
-                            'post_data' => json_encode($datas),
-                            'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([])
-                        ]);
+                            }
+                        }
                     }
                 }
-
             }
-            return redirect()->back()->with(['success' => $success]);
+            return redirect()->to(route('list-reservation'))->with(['success' => $success]);
         }
-
-
-
-
-
 
         return redirect()->back()->with(['error' => $error]);
     }
+    public function cancelReservation(Request $request){
+        if($request->id>0){
+            if($this->core->checkWebPortal()==0){
+                return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
+            }
+            $success = config('constants.FLASH_REC_UPDATE_1');
+            $error = config('constants.FLASH_REC_UPDATE_0');
+        }
+        else {
+            $success = config('constants.FLASH_REC_ADD_1');
+            $error = config('constants.FLASH_REC_ADD_0');
+        }
+        if(env('APP_NT_ENABLE') == true) {
+            $res = Reservation::findOrFail($request->id);
+            if($res){
+                $this->data['data_row']=Reservation::with('orders_items','orders_info', 'booked_rooms')->whereId($request->id)->whereIsCheckout(0)->first();
+                return view('backend/rooms/cancellation_booking_form',$this->data);
+            }
+        }else{
+            $res = Reservation::where(['id'=>$request->id])->update(['cancelled'=>1]);
+            if($res){
+                $data_row = Reservation::with('booked_rooms')->where(['id'=>$request->id])->first();
+                // Transactions
+                $where = [
+                    'purpose'=>'REFUND',
+                    'tbl_id'=>$data_row->id,
+                    'tbl_name'=>'reservations',
+                ];
+                $paymentHistoryData = $where;
+                $paymentHistoryData['payment_date'] = date('Y-m-d H:i:s');
+                $paymentHistoryData['customer_id'] = $data_row->customer_id;
+                $paymentHistoryData['user_id'] = getCustomerInfo($data_row->customer_id)->user_id;
+                $paymentHistoryData['added_by'] = Auth::user()->id;
+                $paymentHistoryData['payment_amount'] = $data_row->advance_payment;
+                $paymentHistoryData['payment_type'] = 'Cash';
+                $paymentHistoryData['credit_debit'] = 'Credit';
+                $paymentHistoryData['payment_of'] = 'dr';
+                $paymentHistoryData['transaction_id'] = getNextInvoiceNo('ph');
+                $this->core->updateOrCreatePH($where, $paymentHistoryData);
 
+                return redirect()->back()->with(['success' => $success]);
+            }
+        }
+        return redirect()->back()->with(['error' => $error]);
+    }
     public function changetoCheckinReservation(Request $request){
-
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
@@ -625,19 +705,72 @@ class AdminController extends Controller
         }
         $res = Reservation::where(['id'=>$request->id])->update(['reservation_type'=>0]);
         if($res){
+            if(env('APP_NT_ENABLE') == true){
+                $settings = getSettings();
+                if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
+                    if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
+                    {
+                        $curl_record = CurlRequest::where('reservation_id', $request->id)->first();
+                        if($curl_record){
+                            $post_data = json_decode($curl_record->post_data, true);
+                            $post_data['transactionId'] = getNTTransactionId($request->id);
+                            $post_data['transactionTypeId'] = '2';
+                            $url = getNtmpUrl($settings['ntmp_type'], 'CreateOrUpdateBooking');
+                            $header = [
+                                'Content-Type: application/json',
+                                'x-Gateway-APIKey: '.$settings['ntmp_api_key'].'',
+                                'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
+                            ];
+                            $resp = $this->core->sendCurl(
+                                $url,
+                                'POST',
+                                $header,
+                                $post_data
+                            );
+                            CurlHistory::insert(['url' => $url,
+                                'reservation_id'=> $request->id,
+                                'request_type' => 'POST',
+                                'header' => json_encode($header),
+                                'post_data' => json_encode($post_data),
+                                'response_data' => $resp['response'],
+                                'what_happen'=> 'Change booking to Check-in'
+                            ]);
+                            if($resp['status']){
+                                CurlRequest::updateOrCreate(['reservation_id'=>$request->id], ['url' => $url,
+                                    'reservation_id'=> $request->id,
+                                    'request_type' => 'POST',
+                                    'header' => json_encode($header),
+                                    'post_data' => json_encode($post_data),
+                                    'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([]),
+                                    'what_happen'=> 'Change booking to Check-in'
+                                ]);
+
+                            }
+                        }
+                    }
+                }
+            }
             return redirect()->back()->with(['success' => $success]);
         }
         return redirect()->back()->with(['error' => $error]);
     }
-
-
-
-
     public function viewReservation(Request $request) {
         $this->data['data_row']=Reservation::with('orders_items','persons', 'booked_rooms')->whereId($request->id)->first();
         return view('backend/rooms/room_reservation_view',$this->data);
     }
     public function checkOut(Request $request) {
+
+
+
+
+
+
+
+
+
+
+
+
         $this->data['data_row']=Reservation::with('orders_items','orders_info', 'booked_rooms')->whereId($request->id)->whereIsCheckout(0)->first();
         if($this->data['data_row']){
             return view('backend/rooms/check_out',$this->data);
@@ -646,6 +779,8 @@ class AdminController extends Controller
         }
     }
     public function saveCheckOutData(Request $request) {
+
+        //NT EXPENSES TESTING
         $settings = getSettings();
         $reservationData = [];
         $orderInfo = [];
@@ -668,7 +803,6 @@ class AdminController extends Controller
             "payment_mode"=>$request->payment_mode,
             "payment_status"=>$request->payment_status,
             "is_checkout"=>1,
-
             "discount"=>$amountArr['room_amount_discount'],
             "sub_total"=>$amountArr['total_room_amount'],
             "gst_perc"=>$settings['gst'],
@@ -676,11 +810,9 @@ class AdminController extends Controller
             "gst_amount"=>$amountArr['total_room_amount_gst'],
             "cgst_amount"=>$amountArr['total_room_amount_cgst'],
             "grand_total"=>$amountArr['total_room_final_amount'],
-
             "addtional_amount"=>$amountArr['additional_amount'],
             "additional_amount_reason"=>$request->additional_amount_reason,
         ];
-
         $mobile = '';
         $name = '';
         $resData = Reservation::with('booked_rooms')->whereId($request->id)->first();
@@ -696,7 +828,6 @@ class AdminController extends Controller
                 }
             }
         }
-
         $mediaData = [
             'tbl_id'=>$request->id,
             'media_ids'=>$request->media_ids,
@@ -782,84 +913,168 @@ class AdminController extends Controller
 
 
 
-            if(env('APP_NT_ENABLE')){
-                if(env('APP_NT_ENABLE')){
-                    $resData = Reservation::with(['curl_request' => function ($child) use ($request){
-                        $child->where(['status' => 1])->orderBy('id', 'desc')->first();
-                    }])->findOrFail($request->id);
-                }else{
-                    $resData = Reservation::findOrFail($request->id);
-                }
 
-                $calculatedAmount = calcFinalAmount($resData, 1, true);
-                $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
-                $gstPerc = $calculatedAmount['totalRoomGstPerc'];
-                $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
-                $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
-                $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
-                $new_days = [];
-                $new_price = 0;
-                $new_daily_room = 0;
-                foreach($resData->booked_rooms as $key=>$roomInfo){
-                    $romprice = $roomInfo->room_price + (($roomInfo->room_price /100) * $gstPerc) + (($roomInfo->room_price /100) * $cgstPerc);
-                    $checkIn = dateConvert($roomInfo->check_in, 'Y-m-d');
-                    $checkOut = dateConvert($roomInfo->check_out, 'Y-m-d');
-                    $durOfStayPerRoom = dateDiff($checkIn, $checkOut, 'days');
-                    $new_days[] = $durOfStayPerRoom;
-                    $amountPerRoom = ($durOfStayPerRoom * $romprice);
-                    $new_daily_room = $new_daily_room + $roomInfo->room_price;
-                    $new_price = $new_price+$amountPerRoom;
-                }
+//            if(env('APP_NT_ENABLE') == true){
+//                $settings = getSettings();
+//                if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
+//                    if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
+//                    {
+//                        $curl_record = CurlRequest::where('reservation_id', $request->id)->first();
+//                        if($curl_record){
+//                            $post_data = json_decode($curl_record->post_data, true);
+//                            $post_data['transactionId'] = getNTTransactionId($request->id);
+//                            $post_data['transactionTypeId'] = '3';
+//                            $post_data['cuFlag'] = '1';
+//                            $url = getNtmpUrl($settings['ntmp_type'], 'CreateOrUpdateBooking');
+//                            $header = [
+//                                'Content-Type: application/json',
+//                                'x-Gateway-APIKey: '.$settings['ntmp_api_key'].'',
+//                                'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
+//                            ];
+//                            if(env('APP_NT_ENABLE_EXPENSE') == true){
+//                                $url2 = getNtmpUrl($settings['ntmp_type'], 'BookingExpenseDetails');
+//                                $post_data_for_expense = [
+//                                    'transactionId'=>$post_data['transactionId'],
+//                                    'userId'=>$post_data['userId'],
+//                                    'channel'=>$post_data['channel'],
+//                                    'expenseItems'=>getNTExpenseItems($request->id),
+//                                ];
+//
+//
+//
+//                            }
+//                            $resp = $this->core->sendCurl(
+//                                $url,
+//                                'POST',
+//                                $header,
+//                                $post_data
+//                            );
+//                            CurlHistory::insert(['url' => $url,
+//                                'reservation_id'=> $request->id,
+//                                'request_type' => 'POST',
+//                                'header' => json_encode($header),
+//                                'post_data' => json_encode($post_data),
+//                                'response_data' => $resp['response'],
+//                                'what_happen'=> 'Checkout'
+//                            ]);
+//                            if($resp['status']){
+//                                CurlRequest::updateOrCreate(['reservation_id'=>$request->id], ['url' => $url,
+//                                    'reservation_id'=> $request->id,
+//                                    'request_type' => 'POST',
+//                                    'header' => json_encode($header),
+//                                    'post_data' => json_encode($post_data),
+//                                    'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([]),
+//                                    'what_happen'=> 'Checkout'
+//                                ]);
+//                            }
+//                        }
+//
+//
+//
+//                    }
+//                }
+//            }
+
+            if(env('APP_NT_ENABLE') == true){
+                $settings = getSettings();
+                if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
+                    if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
+                    {
+                        $curl_record = CurlRequest::where('reservation_id', $request->id)->first();
+                        if($curl_record){
+                            $post_data = json_decode($curl_record->post_data, true);
+                            $post_data['transactionId'] = getNTTransactionId($request->id);
+                            $post_data['transactionTypeId'] = '3';
+                            $post_data['cuFlag'] = '1';
+                            $url = getNtmpUrl($settings['ntmp_type'], 'CreateOrUpdateBooking');
+                            $header = [
+                                'Content-Type: application/json',
+                                'x-Gateway-APIKey: '.$settings['ntmp_api_key'].'',
+                                'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
+                            ];
+                            if(env('APP_NT_ENABLE_EXPENSE') == true){
+                                $url2 = getNtmpUrl($settings['ntmp_type'], 'BookingExpenseDetails');
+                                $get_percentage_tax = ($request['amount']['order_amount_gst']/$request['amount']['order_amount']) * 100;
+                                $get_percentage_discount = ($request['discount_order_amount']/$request['amount']['order_amount']) * 100;
+                                $get_percentage_ctax = ($request['amount']['order_amount_cgst']/$request['amount']['order_amount']) * 100;
+                                $post_data_for_expense = [
+                                    'transactionId'=>$post_data['transactionId'],
+                                    'userId'=>$post_data['userId'],
+                                    'channel'=>$post_data['channel'],
+                                    'expenseItems'=>getNTExpenseItems($request->id, $request, $get_percentage_tax, $get_percentage_discount, $get_percentage_ctax),
+                                ];
+                                if($request['additional_amount'] > 0){
+                                    $post_data_for_expense['expenseItems'][] = [
+                                        "expenseDate"=> (string) dateConvert($request['check_out_date'], 'Ymd'),
+                                        "itemNumber"=> (string) $request['additional_amount_reason'],
+                                        "expenseTypeId"=> (string) $request['mt_expence_type_id_additional'],
+                                        "unitPrice"=> (string) $request['additional_amount'],
+                                        "discount"=> (string) 0,
+                                        "vat"=> (string) 0,
+                                        "municipalityTax"=> (string) 0,
+                                        "grandTotal"=> (string) $request['additional_amount'],
+                                        "paymentType"=> "1",
+                                        "cuFlag"=> "1"
+                                    ];
+                                }
+                                $resp_2 = $this->core->sendCurl(
+                                    $url,
+                                    'POST',
+                                    $header,
+                                    $post_data_for_expense
+                                );
+                                CurlHistory::insert(['url' => $url,
+                                    'reservation_id'=> $request->id,
+                                    'request_type' => 'POST',
+                                    'header' => json_encode($header),
+                                    'post_data' => json_encode($post_data_for_expense),
+                                    'response_data' => $resp_2['response'],
+                                    'what_happen'=> 'Checkout'
+                                ]);
+                                if($resp_2['status']){
+                                    CurlRequest::updateOrCreate(['reservation_id'=>$request->id], ['url' => $url,
+                                        'reservation_id'=> $request->id,
+                                        'request_type' => 'POST',
+                                        'header' => json_encode($header),
+                                        'post_data' => json_encode($post_data_for_expense),
+                                        'response_data' => ($resp_2['status'] == true) ? $resp_2['response'] : json_encode([]),
+                                        'what_happen'=> 'Checkout'
+                                    ]);
+                                }
+
+                            }
+                            $resp = $this->core->sendCurl(
+                                $url,
+                                'POST',
+                                $header,
+                                $post_data
+                            );
+                            CurlHistory::insert(['url' => $url,
+                                'reservation_id'=> $request->id,
+                                'request_type' => 'POST',
+                                'header' => json_encode($header),
+                                'post_data' => json_encode($post_data),
+                                'response_data' => $resp['response'],
+                                'what_happen'=> 'Checkout'
+                            ]);
+                            if($resp['status']){
+                                CurlRequest::updateOrCreate(['reservation_id'=>$request->id], ['url' => $url,
+                                    'reservation_id'=> $request->id,
+                                    'request_type' => 'POST',
+                                    'header' => json_encode($header),
+                                    'post_data' => json_encode($post_data),
+                                    'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([]),
+                                    'what_happen'=> 'Checkout'
+                                ]);
+                            }
+
+                        }
 
 
-                $durOfStayPerRoom = dateDiff($resData->check_in, $resData->check_out, 'days');
-                if($resData->curl_request[0]->post_data){
-                    $prev_reservation_id = $resData->curl_request[0]->reservation_id;
-                    $prev_url = $resData->curl_request[0]->url;
-                    $prev_request_type = $resData->curl_request[0]->request_type;
-                    $prev_header = (array) json_decode($resData->curl_request[0]->header);
-                    $prev_post_data = (array) json_decode($resData->curl_request[0]->post_data);
-                    $prev_response_data = (array) json_decode($resData->curl_request[0]->response_data);
 
-                    $prev_post_data['cuFlag'] = (string) 1;
-                    $prev_post_data['discount'] = (string) $amountArr['room_amount_discount'];
-                    $prev_post_data['transactionTypeId'] = (string) 3;
-                    $prev_post_data['transactionId'] = (string) $prev_response_data['transactionId'];
-                    $prev_post_data['totalDurationDays'] = (string) $durOfStayPerRoom;
-                    $prev_post_data['vat'] = (string) $roomAmountGst;
-                    $prev_post_data['municipalityTax'] = (string) $roomAmountCGst;
-                    $prev_post_data['grandTotal'] = (string) (($prev_post_data['totalRoomRate'] + $roomAmountGst + $roomAmountCGst) - $amountArr['room_amount_discount']);
-
-
-                    $resp = $this->core->sendCurl(
-                        $prev_url,
-                        $prev_request_type,
-                        $prev_header,
-                        $prev_post_data
-                    );
-                    if($resp['status'] == true){
-                        CurlRequest::insertGetId(['url' => $prev_url,
-                            'reservation_id'=> $prev_reservation_id,
-                            'request_type' => $prev_request_type,
-                            'header' => json_encode($prev_header),
-                            'post_data' => json_encode($prev_post_data),
-                            'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([])
-                        ]);
-                    }else{
-                        CurlRequest::insertGetId(['url' => $prev_url,
-                            'reservation_id'=> $prev_reservation_id,
-                            'request_type' => $prev_request_type,
-                            'status'=>0,
-                            'header' => json_encode($prev_header),
-                            'post_data' => json_encode($prev_post_data),
-                            'response_data' => json_encode([$resp['response'], $resp['error_msg']])
-                        ]);
                     }
-
                 }
             }
-
-
 
             //send sms
             if($mobile!=''){
@@ -952,17 +1167,7 @@ class AdminController extends Controller
 
 
     public function extendDays(Request $request) {
-        if(env('APP_NT_ENABLE')){
-            $resData = Reservation::with(['curl_request' => function ($child) use ($request){
-                $child->where(['status' => 1])->orderBy('id', 'desc')->first();
-            }])->findOrFail($request->id);
-        }else{
-            $resData = Reservation::findOrFail($request->id);
-        }
-
-
-
-
+        $resData = Reservation::findOrFail($request->id);
         if($resData){
             if($request->days_type == 0){
                 $date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $resData->check_out);
@@ -976,108 +1181,60 @@ class AdminController extends Controller
             $postData = [
                 'check_out'=>$date->toDateTimeString()
             ];
+            $reservation_update = $postData;
+            $reservation_update['duration_of_stay'] = $resData->duration_of_stay+$daysToAdd;
 
-
-
-            $res = Reservation::updateOrCreate(['id'=>$request->id],$postData);
+            $res = Reservation::updateOrCreate(['id'=>$request->id],$reservation_update);
+            $res = true;
             if($res){
                 BookedRoom::where(['reservation_id'=>$request->id, 'is_checkout'=>0])->update($postData);
+                if(env('APP_NT_ENABLE') == true){
+                    $settings = getSettings();
+                    if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
+                        if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
+                        {
+                            $curl_record = CurlRequest::where('reservation_id', $request->id)->first();
+                            if($curl_record){
+                                $post_data = json_decode($curl_record->post_data, true);
+                                $post_data['transactionId'] = getNTTransactionId($request->id);
+                                $post_data['cuFlag'] = '2';
+                                $change_post_data = getNTDataExtend($request->id, $post_data);
+                                $url = getNtmpUrl($settings['ntmp_type'], 'CreateOrUpdateBooking');
+                                $header = [
+                                    'Content-Type: application/json',
+                                    'x-Gateway-APIKey: '.$settings['ntmp_api_key'].'',
+                                    'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
+                                ];
 
-
-
-
-                if(env('APP_NT_ENABLE')){
-
-                    $calculatedAmount = calcFinalAmount($res, 1, false);
-                    $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
-                    $gstPerc = $calculatedAmount['totalRoomGstPerc'];
-                    $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
-                    $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
-                    $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
-                    $new_days = [];
-                    $new_price = 0;
-                    $new_daily_room = 0;
-                    foreach($res->booked_rooms as $key=>$roomInfo){
-                        $romprice = $roomInfo->room_price+ (($roomInfo->room_price /100) * $gstPerc) + (($roomInfo->room_price /100) * $cgstPerc);
-                        $checkIn = dateConvert($roomInfo->check_in, 'Y-m-d');
-                        $checkOut = dateConvert($roomInfo->check_out, 'Y-m-d');
-                        $durOfStayPerRoom = dateDiff($checkIn, $checkOut, 'days');
-                        $new_days[] = $durOfStayPerRoom;
-                        $amountPerRoom = ($durOfStayPerRoom * $romprice);
-                        $new_daily_room = $new_daily_room + $roomInfo->room_price;
-                        $new_price = $new_price+$amountPerRoom;
-                    }
-
-
-
-                    $durOfStayPerRoom = dateDiff($res->check_in, $res->check_out, 'days');
-                    if($resData->curl_request[0]->post_data){
-                        $prev_reservation_id = $resData->curl_request[0]->reservation_id;
-                        $prev_url = $resData->curl_request[0]->url;
-                        $prev_request_type = $resData->curl_request[0]->request_type;
-                        $prev_header = (array) json_decode($resData->curl_request[0]->header);
-                        $prev_post_data = (array) json_decode($resData->curl_request[0]->post_data);
-                        $prev_response_data = (array) json_decode($resData->curl_request[0]->response_data);
-
-                        $prev_post_data['cuFlag'] = (string) 2;
-                        $prev_post_data['transactionId'] = (string) $prev_response_data['transactionId'];
-                        $prev_post_data['totalDurationDays'] = (string) $durOfStayPerRoom;
-                        $prev_post_data['checkOutDate'] = (string) dateConvert($date->toDateTimeString(), 'Ymd');
-                        $prev_post_data['checkOutTime'] = (string) dateConvert($date->toDateTimeString(), 'His');
-                        $prev_post_data['dailyRoomRate'] = (string) $new_daily_room;
-                        $prev_post_data['grandTotal'] = (string) $new_price;
-                        $prev_post_data['vat'] = (string) $roomAmountGst;
-                        $prev_post_data['municipalityTax'] = (string) $roomAmountCGst;
-                        $prev_post_data['totalRoomRate'] = (string) $totalRoomAmount;
-
-
-                        $resp = $this->core->sendCurl(
-                            $prev_url,
-                            $prev_request_type,
-                            $prev_header,
-                            $prev_post_data
-                        );
-
-
-                        if($resp['status'] == true){
-                            CurlRequest::insertGetId(['url' => $prev_url,
-                                'reservation_id'=> $prev_reservation_id,
-                                'request_type' => $prev_request_type,
-                                'header' => json_encode($prev_header),
-                                'post_data' => json_encode($prev_post_data),
-                                'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([])
-                            ]);
-                        }else{
-                            CurlRequest::insertGetId(['url' => $prev_url,
-                                'reservation_id'=> $prev_reservation_id,
-                                'request_type' => $prev_request_type,
-                                'status'=>0,
-                                'header' => json_encode($prev_header),
-                                'post_data' => json_encode($prev_post_data),
-                                'response_data' => json_encode([$resp['response'], $resp['error_msg']])
-                            ]);
+                                $resp = $this->core->sendCurl(
+                                    $url,
+                                    'POST',
+                                    $header,
+                                    $change_post_data
+                                );
+                                CurlHistory::insert(['url' => $url,
+                                    'reservation_id'=> $request->id,
+                                    'request_type' => 'POST',
+                                    'header' => json_encode($header),
+                                    'post_data' => json_encode($change_post_data),
+                                    'response_data' => $resp['response'],
+                                    'what_happen'=> 'Extend booking dates'
+                                ]);
+                                if($resp['status']){
+                                    CurlRequest::updateOrCreate(['reservation_id'=>$request->id], ['url' => $url,
+                                        'reservation_id'=> $request->id,
+                                        'request_type' => 'POST',
+                                        'header' => json_encode($header),
+                                        'post_data' => json_encode($change_post_data),
+                                        'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([]),
+                                        'what_happen'=> 'Extend booking dates'
+                                    ]);
+                                }
+                            }
                         }
-
-//
-//                        dd([
-//                            $new_days,
-//                            $prev_reservation_id,
-//                            $prev_url,
-//                            $prev_request_type,
-//                            $prev_header,
-//                            $prev_post_data,
-//                            $prev_response_data,
-//                            $resp
-//                        ]);
                     }
                 }
-
-
-
-
-
-
-                return redirect()->back()->with(['success' => config('constants.FLASH_REC_UPDATE_1')]);
+             return redirect()->back()->with(['success' => config('constants.FLASH_REC_UPDATE_1')]);
             }else{
                 return redirect()->back()->with(['error' => config('constants.FLASH_REC_ADD_0')]);
             }
@@ -1087,7 +1244,7 @@ class AdminController extends Controller
     }
 
 
-        public function swapRoom(Request $request) {
+    public function swapRoom(Request $request) {
         $reservationData = getReservationById($request->id);
         if(!$reservationData){
             return redirect()->back()->with(['error' => config('constants.FLASH_INVALID_PARAMS')]);
@@ -1112,6 +1269,7 @@ class AdminController extends Controller
         $bookedRoomData = $queryBookedRoom->first();
         //get roomType by id
         $roomTypeDetails = getRoomTypeById($expNewRoom[0]);
+
         //set old room data array
         $oldRoomData = [
             'check_in' => $bookedRoomData->check_in,
@@ -1138,89 +1296,58 @@ class AdminController extends Controller
             'check_out' =>$bookedRoomData->check_out,
         ];
         $res = BookedRoom::insert($newRoomData);
+        $res = true;
+
+        if(env('APP_NT_ENABLE') == true){
+            $settings = getSettings();
+            if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
+                if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
+                {
+                    $curl_record = CurlRequest::where('reservation_id', $request->id)->first();
+                    if($curl_record){
+                        $post_data = json_decode($curl_record->post_data, true);
+                        $post_data['transactionId'] = getNTTransactionId($request->id);
+                        $post_data['cuFlag'] = '2';
 
 
 
-        if(env('APP_NT_ENABLE')){
-            if(env('APP_NT_ENABLE')){
-                $resData = Reservation::with(['curl_request' => function ($child) use ($request){
-                    $child->where(['status' => 1])->orderBy('id', 'desc')->first();
-                }])->findOrFail($request->id);
-            }else{
-                $resData = Reservation::findOrFail($request->id);
-            }
+                        $change_post_data = getNTRoomSwap($request->id, $post_data, getRoomById($expOldRoom[1])->room_no,getRoomById($expNewRoom[1])->room_no);
 
-            $calculatedAmount = calcFinalAmount($resData, 1, true);
-            $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
-            $gstPerc = $calculatedAmount['totalRoomGstPerc'];
-            $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
-            $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
-            $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
-            $new_days = [];
-            $new_price = 0;
-            $new_daily_room = 0;
-            foreach($resData->booked_rooms as $key=>$roomInfo){
-                $romprice = $roomInfo->room_price+ (($roomInfo->room_price /100) * $gstPerc) + (($roomInfo->room_price /100) * $cgstPerc);
-                $checkIn = dateConvert($roomInfo->check_in, 'Y-m-d');
-                $checkOut = dateConvert($roomInfo->check_out, 'Y-m-d');
-                $durOfStayPerRoom = dateDiff($checkIn, $checkOut, 'days');
-                $new_days[] = $durOfStayPerRoom;
-                $amountPerRoom = ($durOfStayPerRoom * $romprice);
-                $new_daily_room = $new_daily_room + $roomInfo->room_price;
-                $new_price = $new_price+$amountPerRoom;
-            }
+                        $url = getNtmpUrl($settings['ntmp_type'], 'CreateOrUpdateBooking');
+                        $header = [
+                            'Content-Type: application/json',
+                            'x-Gateway-APIKey: '.$settings['ntmp_api_key'].'',
+                            'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
+                        ];
 
-
-            $durOfStayPerRoom = dateDiff($resData->check_in, $resData->check_out, 'days');
-            if($resData->curl_request[0]->post_data){
-                $prev_reservation_id = $resData->curl_request[0]->reservation_id;
-                $prev_url = $resData->curl_request[0]->url;
-                $prev_request_type = $resData->curl_request[0]->request_type;
-                $prev_header = (array) json_decode($resData->curl_request[0]->header);
-                $prev_post_data = (array) json_decode($resData->curl_request[0]->post_data);
-                $prev_response_data = (array) json_decode($resData->curl_request[0]->response_data);
-
-                $prev_post_data['cuFlag'] = (string) 2;
-                $prev_post_data['transactionId'] = (string) $prev_response_data['transactionId'];
-                $prev_post_data['totalDurationDays'] = (string) $durOfStayPerRoom;
-
-//                $prev_post_data['checkOutDate'] = (string) dateConvert($date->toDateTimeString(), 'Ymd');
-//                $prev_post_data['checkOutTime'] = (string) dateConvert($date->toDateTimeString(), 'His');
-                $prev_post_data['dailyRoomRate'] = (string) $new_daily_room;
-                $prev_post_data['grandTotal'] = (string) $new_price;
-                $prev_post_data['vat'] = (string) $roomAmountGst;
-                $prev_post_data['municipalityTax'] = (string) $roomAmountCGst;
-                $prev_post_data['totalRoomRate'] = (string) $totalRoomAmount;
-
-
-                $resp = $this->core->sendCurl(
-                    $prev_url,
-                    $prev_request_type,
-                    $prev_header,
-                    $prev_post_data
-                );
-                if($resp['status'] == true){
-                    CurlRequest::insertGetId(['url' => $prev_url,
-                        'reservation_id'=> $prev_reservation_id,
-                        'request_type' => $prev_request_type,
-                        'header' => json_encode($prev_header),
-                        'post_data' => json_encode($prev_post_data),
-                        'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([])
-                    ]);
-                }else{
-                    CurlRequest::insertGetId(['url' => $prev_url,
-                        'reservation_id'=> $prev_reservation_id,
-                        'request_type' => $prev_request_type,
-                        'status'=>0,
-                        'header' => json_encode($prev_header),
-                        'post_data' => json_encode($prev_post_data),
-                        'response_data' => json_encode([$resp['response'], $resp['error_msg']])
-                    ]);
+                        $resp = $this->core->sendCurl(
+                            $url,
+                            'POST',
+                            $header,
+                            $change_post_data
+                        );
+                        CurlHistory::insert(['url' => $url,
+                            'reservation_id'=> $request->id,
+                            'request_type' => 'POST',
+                            'header' => json_encode($header),
+                            'post_data' => json_encode($change_post_data),
+                            'response_data' => $resp['response'],
+                            'what_happen'=> 'Swap booking room'
+                        ]);
+                        if($resp['status']){
+                            CurlRequest::updateOrCreate(['reservation_id'=>$request->id], ['url' => $url,
+                                'reservation_id'=> $request->id,
+                                'request_type' => 'POST',
+                                'header' => json_encode($header),
+                                'post_data' => json_encode($change_post_data),
+                                'response_data' => ($resp['status'] == true) ? $resp['response'] : json_encode([]),
+                                'what_happen'=> 'Swap booking room'
+                            ]);
+                        }
+                    }
                 }
-
             }
         }
-
 
 
         if($res){

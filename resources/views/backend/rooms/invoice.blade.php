@@ -361,14 +361,13 @@
                     @endif
                     @if($roomAmountGst>0)
                     <tr>
-                        <th class="text-right" colspan="5">{{$label_tax}} {{$gstPerc}}% </th>
-                        <td class="text-right">{{ numberFormat($roomAmountGst) }}</td>
-                    </tr>
-                    <tr>
                         <th class="text-right" colspan="5">{{$label_c_tax}} {{$cgstPerc}}%</th>
                         <td class="text-right">{{ numberFormat($roomAmountCGst) }}</td>
                     </tr>
-
+                    <tr>
+                        <th class="text-right" colspan="5">{{$label_tax}} {{$gstPerc}}% </th>
+                        <td class="text-right">{{ numberFormat($roomAmountGst) }}</td>
+                    </tr>
                     @if($additionalAmount>0)
                         <tr>
                             <th class="text-right" colspan="5">{{$additionalAmountReason}}</th>
@@ -468,7 +467,7 @@
                     </tr>
                     <tr>
                         <th colspan="2">{{$label_terms_condition_heading}}</th>
-                        <td colspan="4">{{$label_terms_condition_descriptions}}</td>
+                        <td colspan="4">{!!$label_terms_condition_descriptions!!}</td>
                     </tr>
                     <tr>
                         <th class="text-center" colspan="6">
@@ -585,7 +584,7 @@
                     </tr>
                      <tr>
                         <th colspan="2">{{$label_terms_condition_heading}}</th>
-                        <td class="" colspan="5">{{$label_terms_condition_descriptions}}</td>
+                        <td class="" colspan="5">{!!$label_terms_condition_descriptions!!}</td>
                     </tr>
                     <tr>
                         <td class="text-center" colspan="7">
@@ -598,10 +597,13 @@
             </table>
         </div>
     </div>
-    <div>
+    {{-- <div>
         {!!$settings['invoice_term_condition']!!}
-    </div>
+    </div> --}}
 @endif
+
+
+
 <div class="col-sm-12 text-center no-print">
     <br/>
     <button class="btn btn-sm btn-success no-print" onclick="window.print()">

@@ -36,8 +36,13 @@
                         <td>{{$val->address}}</td>
                         <td>{!! getStatusBtn($val->status) !!}</td>
                         <td>
-                          <a class="btn btn-sm btn-info" href="{{route('edit-user',[$val->id])}}"><i class="fa fa-pencil"></i></a>
-                          <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-user',[$val->id])}}" title="{{lang_trans('btn_delete')}}"><i class="fa fa-trash"></i></button>
+                          @isPermission('edit-user')
+                            <a class="btn btn-sm btn-info" href="{{route('edit-user',[$val->id])}}"><i class="fa fa-pencil"></i></a>
+                          @endisPermission
+
+                          @isPermission('delete-user')
+                            <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-user',[$val->id])}}" title="{{lang_trans('btn_delete')}}"><i class="fa fa-trash"></i></button>
+                          @endisPermission
                         </td>
                       </tr>
                     @endforeach
@@ -47,5 +52,5 @@
           </div>
       </div>
   </div>
-</div>          
+</div>
 @endsection

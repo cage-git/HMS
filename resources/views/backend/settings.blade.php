@@ -1,7 +1,6 @@
 @extends('layouts.master_backend')
 @section('content')
 
-
 <div class="">
   {{ Form::open(array('url'=>route('save-settings'),'id'=>"update-setting-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
 
@@ -22,31 +21,6 @@
       </div>
   </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
@@ -63,7 +37,7 @@
 
                     <div class="col-md-4 col-sm-4 col-xs-12">
                       <label class="control-label">{{lang_trans('txt_site_lang')}}</label>
-                      {{Form::select('site_language',config('constants.LANG_LIST'),@$data_row['site_language'],['class'=>"form-control col-md-7 col-xs-12", "required"=>true])}}
+                      {{Form::select('site_language',getLangages(),@$data_row['site_language'],['class'=>"form-control col-md-7 col-xs-12", "required"=>true])}}
                     </div>
 
                     <div class="col-md-4 col-sm-4 col-xs-12">
@@ -150,9 +124,9 @@
                           </div>
                       </div>
                       <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">{{lang_trans('txt_room_rent_gst')}} (%)</label>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <label class="">{{lang_trans('txt_sgst')}} (%)</label>
+                            <label class="">{{lang_trans('txt_room_rent_gst')}} (%)</label>
                             {{Form::number('gst',@$data_row['gst'],['class'=>"form-control col-md-7 col-xs-12", "required"=>"required","min"=>0, "step"=>"0.01"])}}
                           </div>
 {{--                          hide_elem--}}
@@ -162,16 +136,27 @@
                           </div>
                       </div>
                       <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12"> {{lang_trans('txt_food_gst')}} (%)</label>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
                             <label class="">{{lang_trans('txt_sgst')}} (%)</label>
                             {{Form::number('food_gst',@$data_row['food_gst'],['class'=>"form-control col-md-7 col-xs-12", "required"=>"required","min"=>0, "step"=>"0.01"])}}
                           </div>
                            <div class="col-md-3 col-sm-3 col-xs-12">
-                            <label class="">{{lang_trans('txt_cgst')}} (%)</label>
+                            <label class="">{{lang_trans('txt_sgst_')}} (%)</label>
                             {{Form::number('food_cgst',@$data_row['food_cgst'],['class'=>"form-control col-md-7 col-xs-12", "required"=>"required","min"=>0, "step"=>"0.01"])}}
                           </div>
                       </div>
+                      {{-- <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12"> {{lang_trans('txt_laundry_gst')}} (%)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <label class="">{{lang_trans('txt_sgst')}} (%)</label>
+                            {{Form::number('laundry_gst',@$data_row['laundry_gst'],['class'=>"form-control col-md-7 col-xs-12", "required"=>"required","min"=>0, "step"=>"0.01"])}}
+                          </div>
+                           <div class="col-md-3 col-sm-3 col-xs-12">
+                            <label class="">{{lang_trans('txt_cgst')}} (%)</label>
+                            {{Form::number('laundry_cgst',@$data_row['laundry_cgst'],['class'=>"form-control col-md-7 col-xs-12", "required"=>"required","min"=>0, "step"=>"0.01"])}}
+                          </div>
+                      </div> --}}
               </div>
           </div>
       </div>
@@ -231,6 +216,12 @@
                       </div>
                   </div>
                   <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">{{lang_trans('txt_site_favicon')}}</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        {{Form::file('site_favicon',['class'=>"form-control"])}}
+                      </div>
+                  </div>
+                  <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12">{{lang_trans('txt_site_logo')}}</label>
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         {{Form::file('site_logo',['class'=>"form-control"])}}
@@ -249,7 +240,13 @@
                       </div>
                   </div>
                   <div class="form-group">
-                      <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">{{lang_trans('txt_site_favicon')}}</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <img src="{{checkFile(@$data_row['site_favicon'],'uploads/favicon/','default_favicon.png')}}" class="logo-2" />
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">{{lang_trans('txt_site_logo')}}</label>
                       <div class="col-md-6 col-sm-6 col-xs-12">
                         <img src="{{checkFile(@$data_row['site_logo'],'uploads/logo/','default_logo.jpg')}}" class="logo-2" />
                       </div>
@@ -304,23 +301,7 @@
       </div>
   </div>
 
-  <div class="row">
-      <div class="col-md-12 col-sm-12 col-xs-12">
-          <div class="x_panel">
-              <div class="x_title">
-                  <h2>{{lang_trans('heading_term_and_conditions')}}</h2>
-                  <div class="clearfix"></div>
-              </div>
-              <div class="x_content">
-                  <br/>
-                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <label class="control-label">{{lang_trans('txt_invoice_tnc')}}</label>
-                    {{Form::textarea('invoice_term_condition',@$data_row['invoice_term_condition'],['class'=>"form-control col-md-7 col-xs-12 summernote",'rows'=>10])}}
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+  
 
 
 
@@ -329,7 +310,7 @@
             <div class="x_panel">
                 <div class="x_content">
                     <label class="control-label">{{lang_trans('txt_invoice_and_slip_lang')}}</label>
-                    {{Form::select('invoice_language',config('constants.LANG_LIST'),@$data_row['invoice_language'],['class'=>"form-control col-md-7 col-xs-12", "required"=>true])}}
+                    {{Form::select('invoice_language',getLangages(),@$data_row['invoice_language'],['class'=>"form-control col-md-7 col-xs-12", "required"=>true])}}
                 </div>
             </div>
         </div>
@@ -376,10 +357,8 @@
                     @foreach(config('constants.INVOICE_INPUTS') as $k => $v)
                         <div class="col-md-6 col-sm-12 col-xs-12">
                             <label class="control-label">{{ucwords(lang_trans('inv_'.$v))}}</label>
-                            {{Form::text("ar_".$v, $setVar($v, 'ar', $data_row), [
-        'class'=>"form-control col-md-7 col-xs-12",
-        "required"=>true
-    ])}}
+                            {{Form::text("ar_".$v, $setVar($v, 'ar', $data_row), ['class'=>"form-control col-md-7 col-xs-12",
+                            "required"=>true])}}
                         </div>
                     @endforeach
 
@@ -387,6 +366,30 @@
             </div>
         </div>
     </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+              <div class="x_title">
+                  <h2>{{lang_trans('heading_term_and_conditions')}}</h2>
+                  <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                  <br/>
+                 <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label">{{lang_trans('txt_invoice_tnc_arabic')}}</label>
+                    {{Form::textarea('ar_terms_condition_descriptions',@$data_row['ar_terms_condition_descriptions'],['class'=>"form-control col-md-7 col-xs-12 summernote",'rows'=>10])}}
+                  </div>
+              </div>
+            <div class="x_content">
+                <br/>
+               <div class="col-md-12 col-sm-12 col-xs-12">
+                  <label class="control-label">{{lang_trans('txt_invoice_tnc_english')}}</label>
+                  {{Form::textarea('en_terms_condition_descriptions',@$data_row['en_terms_condition_descriptions'],['class'=>"form-control col-md-7 col-xs-12 summernote",'rows'=>10])}}
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
 
 
 
@@ -407,13 +410,6 @@
           </div>
       </div>
   </div>
-
-
-
-
-
-
-
     {{Form::close()}}
 </div>
 @endsection

@@ -27,12 +27,22 @@
                         <p>&nbsp;</p>
                     </div>
                 </div>
-                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12 thirdTile">
+{{--                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12 thirdTile">--}}
+{{--                    <div class="tile-stats">--}}
+{{--                        <div class="icon">--}}
+{{--                            <i class="fa fa-sort-amount-desc"></i>--}}
+{{--                        </div>--}}
+{{--                        <div class="count">{{$counts[0]->today_orders}}</div>--}}
+{{--                        <h3><a href="{{route('orders-list')}}">{{lang_trans('txt_today_orders')}}</a></h3>--}}
+{{--                        <p>&nbsp;</p>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+             <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12 thirdTile">
                     <div class="tile-stats">
                         <div class="icon">
                             <i class="fa fa-sort-amount-desc"></i>
                         </div>
-                        <div class="count">{{$counts[0]->today_orders}}</div>
+                        <div class="count">{{ number_format((float)$counts[0]->user_count_two, 2, '.', '')}}</div>
                         <h3><a href="{{route('orders-list')}}">{{lang_trans('txt_today_orders')}}</a></h3>
                         <p>&nbsp;</p>
                     </div>

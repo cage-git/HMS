@@ -2,32 +2,60 @@
 use App\Permission;
 use App\Setting;
 use App\Reservation;
-use App\Order;
-use App\OrderHistory;
-use App\Room;
-use App\Unit,App\RoomType,App\Customer;
+use App\Order,App\OrderHistory;
+use App\Room,App\RoomType,App\BookedRoom,App\Amenities;
+use App\Unit,App\Customer,App\Country;
 use App\PaymentHistory;
-use App\BookedRoom;
 use App\DynamicDropdown;
-use App\Role;
-use App\Amenities;
+use App\User,App\Role;
 use App\ExpenseCategory;
+use App\Notification;
+use App\Language,App\LanguageTranslation;
+use App\Vendor;
+use App\LaundryOrder;
 use Salla\ZATCA\GenerateQrCode;
 use Salla\ZATCA\Tags\InvoiceDate;
 use Salla\ZATCA\Tags\InvoiceTaxAmount;
 use Salla\ZATCA\Tags\InvoiceTotalAmount;
 use Salla\ZATCA\Tags\Seller;
 use Salla\ZATCA\Tags\TaxNumber;
-
+function getPaginationNum($num = 10){
+    return $num;
+}
+function getLangages(){
+    return Language::where('status', 1)->pluck('lang_name','lang_code');
+}
 function lang_trans($key){
     $defaultLang = 'en';
+    $cacheKey = getCacheKey('langTranslationsCache');
     if(isset(Session::get('settings')['site_language'])){
         $defaultLang = Session::get('settings')['site_language'];
     }
-    if(isset(config('lang_admin')[$key][$defaultLang])){
-        return config('lang_admin')[$key][$defaultLang];
+//    if(isset(config('lang_admin')[$key][$defaultLang])){
+//        return config('lang_admin')[$key][$defaultLang];
+//    }
+    if (Cache::has($cacheKey)){
+        $lang = Cache::get($cacheKey);
+    } else {
+        $lang = LanguageTranslation::where('pannel', 'backend')->pluck($defaultLang, 'lang_key')->toArray();
+        Cache::put($cacheKey, $lang, config('constants.CACHING_TIME'));
+    }
+    if(isset($lang[$key])){
+        return $lang[$key];
     }
     return $key;
+}
+function getCacheKey($key){
+    $num = Auth::user() ? Auth::user()->id : date('ymd');
+    return $key.'_'.$num;
+}
+function removeCacheKeys($key = null){
+    if($key){
+        Cache::forget($key);
+    } else {
+        Cache::flush();
+    }
+    return true;
 }
 function getAuthUserInfo($info = 'all'){
     $user = Auth::user() ? Auth::user() : null;
@@ -95,33 +123,301 @@ function getDynamicDropdownList($dropdownName, $hasKey = false){
     }
     return $list;
 }
-
-
-function getNTDataCancellation($res, $request, $resData){
-    $prev_response_data = (array) json_decode($resData->curl_request[0]->response_data);
-    $datas = [
-        "transactionId" => (string) $prev_response_data['transactionId'],
-        "cancelReason" => "1",
-        "cancelWithCharges" => "0",
-        "chargeableDays" => "0",
-        "roomRentType" => "0",
-        "dailyRoomRate" => "0",
-        "totalRoomRate" => "0",
-        "vat" => "0",
-        "municipalityTax" => "0",
-        "discount" => "0",
-        "grandTotal" => "0",
-        "userId" => "Divllo",
-        "paymentType" => "1",
-        "cuFlag" => "2",
-        "esbRefNo" => "",
-        "channel" => "divllo"
+function getCountries(){
+    return Country::orderBy('name', 'ASC')->pluck('name','id');
+}
+function sendCurl($url, $type = 'GET', $header = [], $data = []) {
+    $curl = curl_init();
+    $curlOptions = [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => $type,
+        CURLOPT_HTTPHEADER => $header,
     ];
+    if($type == 'POST'){
+        $curlOptions[CURLOPT_POSTFIELDS] = json_encode($data);
+    }
+    curl_setopt_array($curl, $curlOptions);
+    $response = curl_exec($curl);
+    $error_msg = null;
+    if (curl_errno($curl)) {
+        $error_msg = curl_error($curl);
+    }
+    curl_close($curl);
+    if (isset($error_msg)) {
+        return ['status'=>false, 'response'=>$response, 'error_msg' =>$error_msg];
+    }else{
+        return ['status'=>true, 'response'=>$response];
+    }
+    //return $response;
+}
+function getNTTransactionId($id = 0, $get_staus=false){
+    $settings = getSettings();
+    $url = getNtmpUrl($settings['ntmp_type'], 'GetTransactionIDByBookingNo');
+    $header = [
+        'Content-Type: application/json',
+        'x-Gateway-APIKey: '.$settings['ntmp_api_key'].'',
+        'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
+    ];
+    $prev_response_data = null;
+    $getTranID = ["bookingNo"=>[$id.'_']];
+    $resp = sendCurl(
+        $url,
+        'POST',
+        $header,
+        $getTranID
+    );
+    if($resp['status']){
+        if($get_staus == false){
+            $prev_response_data = (string) json_decode($resp['response'])->transactionDetails[0]->transactionId;
+        }
+        elseif($get_staus == true){
+            $prev_response_data = (string) json_decode($resp['response'])->transactionDetails[0]->currentState;
+        }
 
+    }
+    return $prev_response_data;
+}
+
+function getNTDataCancellation($request){
+    $settings = getSettings();
+        $url = getNtmpUrl($settings['ntmp_type'], 'GetTransactionIDByBookingNo');
+    $header = [
+        'Content-Type: application/json',
+        'x-Gateway-APIKey: '.$settings['ntmp_api_key'].'',
+        'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
+    ];
+    $datas = null;
+    $getTranID = ["bookingNo"=>[$request->id.'_']];
+    $resp = sendCurl(
+        $url,
+        'POST',
+        $header,
+        $getTranID
+    );
+    if($resp['status']){
+        $prev_response_data = (array) json_decode($resp['response'])->transactionDetails[0];
+        $datas = [
+            "transactionId" => (string) $prev_response_data['transactionId'],
+            "cancelReason" => "1",
+            "cancelWithCharges" => "0",
+            "chargeableDays" => "0",
+            "roomRentType" => "0",
+            "dailyRoomRate" => "0",
+            "totalRoomRate" => "0",
+            "vat" => "0",
+            "municipalityTax" => "0",
+            "discount" => "0",
+            "grandTotal" => "0",
+            "userId" => "Divllo",
+            "paymentType" => "1",
+            "cuFlag" => "2",
+            "esbRefNo" => "",
+            "channel" => "divllo"
+        ];
+    }
 
     return $datas;
 }
 
+function getNTExpenseItems($id, $request, $get_percentage_tax, $get_percentage_discount, $get_percentage_ctax){
+    $data_row = Reservation::with('orders_items','orders_info', 'booked_rooms')->whereId($id)->first();
+
+    $invoiceNum = ($data_row->orders_info != null) ? $data_row->orders_info->invoice_num : '';
+    $calculatedAmount = calcFinalAmount($data_row, 1, false);
+    $additionalAmount = $calculatedAmount['additionalAmount'];
+    $additionalAmountReason = $data_row->additional_amount_reason;
+    $roomAmountDiscount = $calculatedAmount['totalRoomAmountDiscount'];
+    $gstPerc = $calculatedAmount['totalRoomGstPerc'];
+    $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
+    $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
+    $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
+    $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
+    $subTotalRoomAmount = (($totalRoomAmount+$roomAmountGst+$roomAmountCGst) - $roomAmountDiscount)+$additionalAmount;
+    $advancePayment = $calculatedAmount['advancePayment'];
+
+    $dueAmount = $subTotalRoomAmount-$advancePayment;
+
+
+    $gstPercFood = $calculatedAmount['totalOrderGstPerc'];
+    $cgstPercFood = $calculatedAmount['totalOrderCGstPerc'];
+    $foodAmountGst = $calculatedAmount['totalOrderAmountGst'];
+    $foodAmountCGst = $calculatedAmount['totalOrderAmountCGst'];
+    $foodOrderAmountDiscount = $calculatedAmount['totalOrderAmountDiscount'];
+    $gstFoodApply = $calculatedAmount['gstFoodApply'];
+    $totalOrdersAmount = $calculatedAmount['subtotalOrderAmount'];
+    $finalOrderAmount = $calculatedAmount['finalOrderAmount'];
+    $data_date = date('Y-m-d h:i:s', strtotime(str_replace('/','-', $data_row->check_out)));
+
+    $make_expense_item = [];
+//    $get_percentage_tax, $get_percentage_discount
+    foreach($data_row->orders_items as $k=>$val){
+        $_gt = numberFormat($val->item_qty*$val->item_price);
+        $_dis = (($_gt/ 100) * $get_percentage_discount);
+        $_vat = (($_gt/ 100) * $get_percentage_tax);
+        $_cvat = (($_gt/ 100) * $get_percentage_ctax);
+        $_sgt = ($_gt+$_vat+$_cvat) - $_dis;
+        $make_expense_item[] = [
+            "expenseDate"=> (string) dateConvert($val->check_out, 'Ymd'),
+            "itemNumber"=> (string) $val->id,
+            "expenseTypeId"=> (string) $request['mt_expence_type_id_'.$val->id.''],
+            "unitPrice"=> (string) $_gt,
+            "discount"=> (string) $_dis,
+            "vat"=> (string) $_vat,
+            "municipalityTax"=> (string) $_cvat,
+            "grandTotal"=> (string) $_sgt,
+            "paymentType"=> "1",
+            "cuFlag"=> "1"
+        ];
+//        $totalOrdersAmount = $totalOrdersAmount + ($val->item_qty*$val->item_price);
+//        echo ($k+1).'</br>';
+//        echo $val->item_name.'</br>';
+//        echo dateConvert($val->check_out,'d-m-Y').'</br>';
+//        echo $val->item_qty.'</br>';
+//        echo numberFormat($val->item_price).'</br>';
+//        echo numberFormat($val->item_qty*$val->item_price).'</br>';
+    }
+//    echo numberFormat($totalOrdersAmount).'</br>';
+//    if($foodAmountGst>0){
+//        echo $gstPercFood.'</br>';
+//        echo numberFormat($foodAmountGst).'</br>';
+//    }
+//    if($foodAmountCGst>0){
+//        echo $cgstPercFood.'</br>';
+//        echo numberFormat($foodAmountCGst).'</br>';
+//    }
+//    if($foodOrderAmountDiscount>0){
+//        echo numberFormat($foodOrderAmountDiscount).'</br>';
+//    }
+//    echo numberFormat($finalOrderAmount).'</br>';
+//    echo getIndianCurrency(numberFormat($finalOrderAmount)).'</br>';
+
+    return $make_expense_item;
+}
+function getNTDataExtend($id, $post_data){
+    $data_type = 'org';
+    $data_data_row = Reservation::with('orders_items','orders_info', 'booked_rooms')->whereId($id)->first();
+    //GETING CALCULATION
+    $calculatedAmount = calcFinalAmount($data_data_row, 1, false);
+    $additionalAmount = $calculatedAmount['additionalAmount'];
+    $additionalAmountReason = $data_data_row->additional_amount_reason;
+    $roomAmountDiscount = $calculatedAmount['totalRoomAmountDiscount'];
+    $gstPerc = $calculatedAmount['totalRoomGstPerc'];
+    $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
+    $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
+    $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
+    $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
+    $subTotalRoomAmount = (($totalRoomAmount+$roomAmountGst+$roomAmountCGst) - $roomAmountDiscount)+$additionalAmount;
+    $advancePayment = $calculatedAmount['advancePayment'];
+    $dueAmount = $subTotalRoomAmount-$advancePayment;
+    $gstPercFood = $calculatedAmount['totalOrderGstPerc'];
+    $cgstPercFood = $calculatedAmount['totalOrderCGstPerc'];
+    $foodAmountGst = $calculatedAmount['totalOrderAmountGst'];
+    $foodAmountCGst = $calculatedAmount['totalOrderAmountCGst'];
+    $foodOrderAmountDiscount = $calculatedAmount['totalOrderAmountDiscount'];
+    $gstFoodApply = $calculatedAmount['gstFoodApply'];
+    $totalOrdersAmount = $calculatedAmount['subtotalOrderAmount'];
+    $finalOrderAmount = $calculatedAmount['finalOrderAmount'];
+    $data_date = date('Y-m-d h:i:s', strtotime(str_replace('/','-', $data_data_row->check_out)));
+
+    $post_data['checkOutDate'] = (string) dateConvert($data_data_row->check_out, 'Ymd');
+    $post_data['checkOutTime'] = (string) dateConvert($data_data_row->check_out, 'His');
+    $post_data['totalDurationDays'] = (string) $data_data_row->duration_of_stay;
+    $post_data['totalRoomRate'] = (string) $totalRoomAmount;
+    $post_data['dailyRoomRate'] = (string) floor($totalRoomAmount / $data_data_row->duration_of_stay);
+    $post_data['discount'] = (string) $roomAmountDiscount;
+    $post_data['vat'] = (string) numberFormat($roomAmountGst);
+    $post_data['municipalityTax'] = (string) numberFormat($roomAmountCGst);
+    $post_data['grandTotal'] = (string) numberFormat($subTotalRoomAmount);
+    return $post_data;
+
+
+
+
+
+
+    //END CALCULATION
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+function getNTRoomSwap($id, $post_data, $old_room, $new_room){
+    $data_type = 'org';
+    $data_data_row = Reservation::with('orders_items','orders_info', 'booked_rooms')->whereId($id)->first();
+    //GETING CALCULATION
+    $calculatedAmount = calcFinalAmount($data_data_row, 1, false);
+    $additionalAmount = $calculatedAmount['additionalAmount'];
+    $additionalAmountReason = $data_data_row->additional_amount_reason;
+    $roomAmountDiscount = $calculatedAmount['totalRoomAmountDiscount'];
+    $gstPerc = $calculatedAmount['totalRoomGstPerc'];
+    $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
+    $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
+    $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
+    $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
+    $subTotalRoomAmount = (($totalRoomAmount+$roomAmountGst+$roomAmountCGst) - $roomAmountDiscount)+$additionalAmount;
+    $advancePayment = $calculatedAmount['advancePayment'];
+    $dueAmount = $subTotalRoomAmount-$advancePayment;
+    $gstPercFood = $calculatedAmount['totalOrderGstPerc'];
+    $cgstPercFood = $calculatedAmount['totalOrderCGstPerc'];
+    $foodAmountGst = $calculatedAmount['totalOrderAmountGst'];
+    $foodAmountCGst = $calculatedAmount['totalOrderAmountCGst'];
+    $foodOrderAmountDiscount = $calculatedAmount['totalOrderAmountDiscount'];
+    $gstFoodApply = $calculatedAmount['gstFoodApply'];
+    $totalOrdersAmount = $calculatedAmount['subtotalOrderAmount'];
+    $finalOrderAmount = $calculatedAmount['finalOrderAmount'];
+    $data_date = date('Y-m-d h:i:s', strtotime(str_replace('/','-', $data_data_row->check_out)));
+
+    $exp_rooms = explode(',',$post_data['allotedRoomNo']);
+    $exp_rooms[array_search ($old_room, $exp_rooms)] = $new_room;
+
+    $post_data['allotedRoomNo'] = implode(',' , $exp_rooms);
+    $post_data['checkOutDate'] = (string) dateConvert($data_data_row->check_out, 'Ymd');
+    $post_data['checkOutTime'] = (string) dateConvert($data_data_row->check_out, 'His');
+    $post_data['totalDurationDays'] = (string) $data_data_row->duration_of_stay;
+    $post_data['totalRoomRate'] = (string) $totalRoomAmount;
+    $post_data['dailyRoomRate'] = (string) floor($totalRoomAmount / $data_data_row->duration_of_stay);
+    $post_data['discount'] = (string) $roomAmountDiscount;
+    $post_data['vat'] = (string) numberFormat($roomAmountGst);
+    $post_data['municipalityTax'] = (string) numberFormat($roomAmountCGst);
+    $post_data['grandTotal'] = (string) numberFormat($subTotalRoomAmount);
+    return $post_data;
+
+
+
+
+
+
+    //END CALCULATION
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 
 function getNTData($res, $request, $dataPH = false, $delete = false, $customerId = 0){
     $room_nam = '';
@@ -159,7 +455,7 @@ function getNTData($res, $request, $dataPH = false, $delete = false, $customerId
 $randnum = '';
     $datas = [
         'bookingNo' => (string) $res->id.'_'.$randnum,
-        "Userid" => (string) $res->id.'_'.$randnum,
+        "userId" => (string) $res->id.'_'.$randnum,
         'nationalityCode' => (string) $request->mt_nationality,
         'checkInDate' => (string) dateConvert($request->check_in_date, 'Ymd'),
         'checkOutDate' => (string) dateConvert($request->check_out_date, 'Ymd'),
@@ -184,17 +480,17 @@ $randnum = '';
         'dateOfBirth' => (string) dateConvert($request->mt_date_of_birth, 'Ymd'),
     ];
     if($request->mt_iscreate == 1){
-        $datas['transactionTypeId'] = (string) '2';
+        $datas['transactionTypeId'] = (string) $request->reservation_type == 0 ?  '2' : '1';
         if($request->advance_payment && $dataPH != false){
-            $datas['transactionId'] = (string) $dataPH->id;
+//            $datas['transactionId'] = (string) $dataPH->id;
         }
         $datas['channel'] = (string) 'divllo';
         $datas['cuFlag'] = (string) '1';
     }
     else{
-        $datas['transactionTypeId'] = (string) '2';
+        $datas['transactionTypeId'] = (string) $request->reservation_type == 0 ?  '2' : '1';
         if($request->advance_payment && $dataPH != false){
-            $datas['transactionId'] = (string) $dataPH->id;
+//            $datas['transactionId'] = (string) $dataPH->id;
         }
         $datas['channel'] = (string) 'divllo';
         $datas['cuFlag'] = (string) '1';
@@ -203,8 +499,30 @@ $randnum = '';
     return $datas;
 }
 
+
+
+
+
+
+
+
+
+
 function getUnits(){
     return getDynamicDropdownList('measurement');
+}
+function getRoomList($listType = 1){
+    if($listType==2){
+        $roomList = [];
+        $rooms = Room::whereStatus(1)->where('is_deleted', 0)->orderBy('room_name','ASC')->get();
+        if($rooms->count()){
+            foreach ($rooms as $key => $value) {
+                $roomList[$value->id] = $value->room_name.' (RoomNo.: '.$value->room_no.' | Type: '.ucfirst($value->room_type->is_type).')';
+            }
+        }
+        return $roomList;
+    }
+    return Room::select('id',DB::raw('CONCAT(room_no, " (", room_name,")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('room_no','ASC')->pluck('title','id');
 }
 function getRoomByNum($roomNum){
     return Room::where('room_no', $roomNum)->first();
@@ -215,7 +533,18 @@ function getRoomById($roomId){
 function getRoomTypeById($id){
     return RoomType::where('id', $id)->first();
 }
-
+function getRoomTypesList($listType = 'original'){
+    $settings = getSettings();
+    $gstPerc = $settings['gst'];
+    $cgstPerc = $settings['cgst'];
+//    dd([$gstPerc, $cgstPerc]);
+    if($listType == 'custom'){
+        return RoomType::select('id','base_price',DB::raw('CONCAT(title, " (Price||", TRUNCATE((base_price + ( ((base_price/100) * '.$gstPerc.') + ((base_price/100) * '.$cgstPerc.') ) ) ,2),")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
+    }
+    if($listType == 'original'){
+        return RoomType::whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
+    }
+}
 function getRoomTypesListWithRooms($listType = ''){
 
     if($listType == 'custom'){
@@ -234,7 +563,6 @@ function getRoomTypesListWithRooms($listType = ''){
 
     return RoomType::with('rooms')->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
 }
-
 function getReservationById($id){
     return Reservation::whereId($id)->first();
 }
@@ -256,8 +584,90 @@ function getCustomerList($type='pluck', $category='user'){
         else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
     }
 }
+function getHousekeeperList($type='pluck'){
+    if($type == 'get') return User::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereNotNull('name')->whereIsDeleted(0)->where('role_id', 7)->orderBy('name','ASC')->get();
+    else return User::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->where('role_id', 7)->pluck('display_text','id');
+}
+function getVendorList($type='pluck'){
+    if($type == 'get') Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->get();
+    else return Vendor::where('is_deleted', 0)->orderBy('vendor_name','ASC')->pluck('vendor_name','id');
+}
 function getExpenseCategoryList(){
     return ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->pluck('name','id');
+}
+function getRoomsWithPrice($params = []){
+    $totalNight = 0;
+    if(isset($params['checkin_date']) && isset($params['checkout_date'])){
+        $checkinDate = dateConvert($params['checkin_date']);
+        $checkoutDate = dateConvert($params['checkout_date']);
+        $bookingDateRange = dateRange($checkinDate, $checkoutDate,'+1 day','Y-m-d');
+        $totalNight = dateDiff($checkinDate, $checkoutDate);
+    }
+
+    $roomTypesQuery=RoomType::with('rooms','room_price')->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC');
+    if(isset($params['room_type_ids'])){
+        $roomTypesQuery->whereIn('id', $params['room_type_ids']);
+    }
+    $roomTypes = $roomTypesQuery->get();
+    $datalist = [];
+    $seasonsDatesArr = [];
+    foreach ($roomTypes as $key => $roomTypeVal) {
+        $roomBasePrice = $roomTypeVal->base_price;
+        $params = [
+            'bookingDateRange'=>$bookingDateRange,
+            'roomBasePrice'=>$roomBasePrice,
+            'totalNight'=>$totalNight,
+            'dateRange'=>[],
+            'roomSeasonPrice'=>0,
+        ];
+        $priceList = getDatesWithPrice($params);
+        $dataArr = [
+            'title'=> $roomTypeVal->title,
+            'is_type'=> $roomTypeVal->is_type,
+            'adult_capacity'=> $roomTypeVal->adult_capacity,
+            'kids_capacity'=> $roomTypeVal->kids_capacity,
+            'base_price'=> $roomBasePrice,
+            'rooms'=>$roomTypeVal->rooms,
+            'dates_with_price'=> $priceList[0],
+            'total_price'=> $priceList[1],
+        ];
+
+
+        if($roomTypeVal->room_price->count()){
+            foreach ($roomTypeVal->room_price as $roomPriceVal) {
+                if($roomPriceVal->season_info){
+                    $dateRange = dateRange($roomPriceVal->season_info->start_date, $roomPriceVal->season_info->end_date,'+1 day','Y-m-d');
+
+                    foreach ($dateRange as $sDate) {
+                        $dayName = strtolower(date('D', strtotime($sDate)));
+                        $daysArr = splitText($roomPriceVal->season_info->days);
+                        if(in_array($dayName, $daysArr)){
+                            $seasonsDatesArr[$sDate] = $roomPriceVal->price;
+                        }
+                    }
+                }
+            }
+            $params['dateRange'] = $seasonsDatesArr;
+            $priceList = getDatesWithPrice($params);
+            $dataArr['dates_with_price'] = $priceList[0];
+            $dataArr['total_price'] = $priceList[1];
+        }
+        $datalist[$roomTypeVal->id] = $dataArr;
+    }
+    return $datalist;
+}
+function getDatesWithPrice($params){
+    $dateWisePrice = [];
+    $totalPrice = 0;
+    foreach ($params['bookingDateRange'] as $bdKey=>$bookingDateVal) {
+        $roomPrice = ($bdKey < $params['totalNight']) ? $params['roomBasePrice'] : 0;
+        if(isset($params['dateRange'][$bookingDateVal]) && $bdKey < $params['totalNight']){
+            $roomPrice = ($bdKey < $params['totalNight']) ? $params['dateRange'][$bookingDateVal] : 0;
+        }
+        $totalPrice += $roomPrice;
+        $dateWisePrice[$bookingDateVal]=['price'=>$roomPrice];
+    }
+    return [$dateWisePrice, numberFormat($totalPrice)];
 }
 function getBookedRooms($params = []){
     $bookedRooms = [];
@@ -276,7 +686,6 @@ function getBookedRooms($params = []){
     if(isset($params['checkin_date']) && isset($params['checkout_date'])){
         $dateRange = dateRange(($params['checkin_date']), ($params['checkout_date']),'+1 day','Y-m-d H:i:s');
     }
-
     if($reservationData->count()>0){
         foreach($reservationData as $val){
             if($val->booked_rooms){
@@ -415,6 +824,16 @@ function getCalendarEventsByDate($params){
     //dd($params,$datalist, $allRooms);
     return $datalist;
 }
+function getWeekDaysList($params){
+    $list = config('constants.WEEK_DAYS');
+    $data = [];
+    foreach($list as $key => $val){
+        $weekName = ($params['is_name'] == 'full') ? lang_trans('txt_day_full_'.$key) : lang_trans('txt_day_short_'.$key);
+        if($params['type'] == 1)
+            $data[$key] = $weekName;
+    }
+    return $data;
+}
 function getNtmpUrl($type, $url){
     $urls = [
         'Sandbox'=>[
@@ -484,14 +903,21 @@ function getPurposeOfVisit(){
     }
     return $countries;
 }
-
-
-
+//function getRoles(){
+//    return Role::pluck('slug','id')->toArray();
+//}
 function getRoles(){
-    return Role::pluck('slug','id')->toArray();
+    $roles = [];
+    $cacheKey = getCacheKey('rolesListCache');
+    if (Cache::has($cacheKey)){
+        $roles = Cache::get($cacheKey);
+    } else {
+        $roles = Role::pluck('slug','id')->toArray();
+        Cache::put($cacheKey, $roles, config('constants.CACHING_TIME'));
+    }
+    return $roles;
 }
-function getMenuPermission(){
-    $permissions = Permission::where('permission_type','menu')->get();
+function getFormatedPermissionsList($permissions){
     $roles = getRoles();
     $permissionArr = [];
     if($permissions){
@@ -501,17 +927,66 @@ function getMenuPermission(){
     }
     return $permissionArr;
 }
-function getRoutePermission(){
-    $permissions = Permission::where('permission_type','route')->get();
-    $roles = getRoles();
+function getPermissions($type){
     $permissionArr = [];
-    if($permissions){
-        foreach($permissions as $k=>$val){
-           $permissionArr[$val->slug] = $val->{$roles[Auth::user()->role_id]};
+    if($type=='menu'){
+        $cacheKey = getCacheKey('menuPermissionListCache');
+        if (Cache::has($cacheKey)){
+            $permissionArr = Cache::get($cacheKey);
+        } else {
+            $permissions = Permission::where('permission_type','menu')->get();
+            $permissionArr = getFormatedPermissionsList($permissions);
+            Cache::put($cacheKey, $permissionArr, config('constants.CACHING_TIME'));
+        }
+    } else if($type=='route'){
+        $cacheKey = getCacheKey('routePermissionListCache');
+        if (Cache::has($cacheKey)){
+            $permissionArr = Cache::get($cacheKey);
+        } else {
+            $permissions = Permission::where('permission_type','route')->get();
+            $permissionArr = getFormatedPermissionsList($permissions);
+            Cache::put($cacheKey, $permissionArr, config('constants.CACHING_TIME'));
         }
     }
     return $permissionArr;
 }
+function getMenuPermission(){
+    return getPermissions('menu');
+}
+function getRoutePermission(){
+    return getPermissions('route');
+}
+function isPermission($route){
+    $permissionArr = getRoutePermission();
+    if(isset($permissionArr[$route])){
+        if($permissionArr[$route]==1){
+            return true;
+        }
+    }
+    return false;
+}
+//function getMenuPermission(){
+//    $permissions = Permission::where('permission_type','menu')->get();
+//    $roles = getRoles();
+//    $permissionArr = [];
+//    if($permissions){
+//        foreach($permissions as $k=>$val){
+//            $permissionArr[$val->slug] = $val->{$roles[Auth::user()->role_id]};
+//        }
+//    }
+//    return $permissionArr;
+//}
+//function getRoutePermission(){
+//    $permissions = Permission::where('permission_type','route')->get();
+//    $roles = getRoles();
+//    $permissionArr = [];
+//    if($permissions){
+//        foreach($permissions as $k=>$val){
+//           $permissionArr[$val->slug] = $val->{$roles[Auth::user()->role_id]};
+//        }
+//    }
+//    return $permissionArr;
+//}
 
 function genRandomValue($length=5,$type='digit',$prefix=null){
     if($type=='digit'){
@@ -552,6 +1027,26 @@ function addSubDate($isDate, $val, $date, $format='d-m-Y', $adsSub='days'){
     return date($format, strtotime($date. $isDate.$val.' '.$adsSub));
 }
 
+function timeAgo($date) {
+    $timestamp = strtotime($date);
+
+    $strTime = ["second", "minute", "hour", "day", "month", "year"];
+    $length = ["60","60","24","30","12","10"];
+
+    $currentTime = time();
+    if($currentTime >= $timestamp) {
+        $diff     = time()- $timestamp;
+        for($i = 0; $diff >= $length[$i] && $i < count($length)-1; $i++) {
+            $diff = $diff / $length[$i];
+        }
+
+        $diff = round($diff);
+        if($diff < 10){
+            return dateConvert($date, 'Y-m-d h:i');
+        }
+        return $diff . " " . $strTime[$i] . "(s) ago ";
+    }
+}
 function dateConvert($date=null,$format=null){
     if($date==null)
         return date($format);
@@ -618,7 +1113,12 @@ function timeFormatAmPm($time=null){
     $temp['minute'] = str_pad($temp['minute'], 2, '0', STR_PAD_LEFT);
     return date('h:i a', strtotime($temp['hour'] . ':' . $temp['minute']));
 }
-
+function splitText($string=null, $splitBy = ','){
+    if($string==null || $string==''){
+        return [];
+    }
+    return explode($splitBy, $string);
+}
 function limit_text($text, $limit) {
   if (strlen($text) > $limit) {
         $text = substr($text, 0, $limit) . '...';
@@ -655,37 +1155,84 @@ function unlinkImg($img,$path) {
             unlink($image_path);
     }
 }
-
 function getNextInvoiceNo($type=null){
+    $initNum = 1;
     if($type=='ph'){
         //$data = PaymentHistory::whereNotNull('transaction_id')->orderBy('transaction_id','DESC')->first();
+        //return ($data) ? $data->transaction_id + 1 : $initNum;
         $data = genRandomValue(8, 'mix');
         return $data;
-    } else if($type=='orders'){
+    }
+    if($type=='orders'){
         $data = Order::whereNotNull('invoice_num')->orderBy('invoice_num','DESC')->first();
-    } else {
-        $data = Reservation::whereNotNull('invoice_num')->orderBy('invoice_num','DESC')->first();
+        return ($data) ? $data->invoice_num + 1 : $initNum;
     }
-
-    if($data){
-        $nextNum = ($type=='ph') ? $data->transaction_id+1 : $data->invoice_num+1;
-    } else {
-        $nextNum ='1';
+    if($type=='laundry_order'){
+        $data = LaundryOrder::whereNotNull('order_num')->orderBy('order_num','DESC')->first();
+        return ($data) ? $data->order_num + 1 : $initNum;
     }
-    return $nextNum;
+    $data = Reservation::whereNotNull('invoice_num')->orderBy('invoice_num','DESC')->first();
+    return ($data) ? $data->invoice_num + 1 : $initNum;
 }
+function getStatusBtn($status, $listType = 1){
+    $statusList = config('constants.LIST_STATUS');
+    $btnClass = ['btn-default', 'btn-success', 'btn-danger'];
+    if($listType == 2){
+        $statusList = config('constants.LIST2_STATUS');
+    }
+    else if($listType == 3){
+        $btnClass = ['btn-default', 'btn-primary', 'btn-success'];
+        $statusList = config('constants.LIST_HOUSEKEEPING_ORDER_STATUS');
+    }
+    else if($listType == 4){
+        $btnClass = ['btn-default', 'btn-primary', 'btn-info', 'btn-success'];
+        $statusList = config('constants.LIST_LAUNDRY_ORDER_STATUS');
+    }
 
-function getStatusBtn($status){
     $txt = '';
-    if(isset(config('constants.LIST_STATUS')[$status])){
-        $txt = config('constants.LIST_STATUS')[$status];
+    if(isset($statusList[$status])){
+        $txt = $statusList[$status];
     }
     if($status==1){
-        return '<button type="button" class="btn btn-success btn-xs">'.$txt.'</button>';
+        return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
+    } if($status==2){
+        return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
+    } if($status==3){
+        return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
     } else {
-        return '<button type="button" class="btn btn-default btn-xs">'.$txt.'</button>';
+        return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
     }
 }
+//function getNextInvoiceNo($type=null){
+//    if($type=='ph'){
+//        //$data = PaymentHistory::whereNotNull('transaction_id')->orderBy('transaction_id','DESC')->first();
+//        $data = genRandomValue(8, 'mix');
+//        return $data;
+//    } else if($type=='orders'){
+//        $data = Order::whereNotNull('invoice_num')->orderBy('invoice_num','DESC')->first();
+//    } else {
+//        $data = Reservation::whereNotNull('invoice_num')->orderBy('invoice_num','DESC')->first();
+//    }
+//
+//    if($data){
+//        $nextNum = ($type=='ph') ? $data->transaction_id+1 : $data->invoice_num+1;
+//    } else {
+//        $nextNum ='1';
+//    }
+//    return $nextNum;
+//}
+
+//function getStatusBtn($status){
+//    $txt = '';
+//    if(isset(config('constants.LIST_STATUS')[$status])){
+//        $txt = config('constants.LIST_STATUS')[$status];
+//    }
+//    if($status==1){
+//        return '<button type="button" class="btn btn-success btn-xs">'.$txt.'</button>';
+//    } else {
+//        return '<button type="button" class="btn btn-default btn-xs">'.$txt.'</button>';
+//    }
+//}
 function getTableNums($excOrderId=0){
     $bookedTablesQuery =  OrderHistory::where('is_book',1);
     if($excOrderId>0){
@@ -709,26 +1256,26 @@ function getOrderInfo($id){
 function gstCalc($amount,$type,$gstPerc=null,$cgstPerc=null){
     $gstAmount = $cgstAmount = 0;
     if($type=='room_amount'){
-        $gstAmount = ($gstPerc/100)*$amount;
         $cgstAmount = ($cgstPerc/100)*$amount;
+        $gstAmount = ($gstPerc/100)*($amount+$cgstAmount);
+        
     } else {
-        $gstAmount = ($gstPerc/100)*$amount;
         $cgstAmount = ($cgstPerc/100)*$amount;
+        $gstAmount = ($gstPerc/100)*($amount+$cgstAmount);
+       
     }
 
     return ['gst'=>$gstAmount, 'cgst'=>$cgstAmount];
 }
-function getRoomTypesList($listType = 'original'){
-    $settings = getSettings();
-    $gstPerc = $settings['gst'];
-    $cgstPerc = $settings['cgst'];
-//    dd([$gstPerc, $cgstPerc]);
-    if($listType == 'custom'){
-        return RoomType::select('id','base_price',DB::raw('CONCAT(title, " (Price||", TRUNCATE((base_price + ( ((base_price/100) * '.$gstPerc.') + ((base_price/100) * '.$cgstPerc.') ) ) ,2),")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
+function getDateWisePriceList($data){
+    $decodedData = json_decode($data, true);
+    $total = 0;
+    if(count($decodedData)){
+        foreach ($decodedData as $key => $value) {
+            $total +=  $value['price'];
+        }
     }
-    if($listType == 'original'){
-        return RoomType::whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
-    }
+    return [$decodedData, $total];
 }
 function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
     $settings = getSettings();
@@ -744,9 +1291,9 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
             $totalAmount = $totalAmount+$perRoomPrice;
         }
     }
+
     $gstPerc = $val->gst_perc;
     $cgstPerc = $val->cgst_perc;
-
     if($val->is_checkout == 0 && $isTotalWithGst == 1){
         $gstPerc = $settings['gst'];
         $cgstPerc = $settings['cgst'];
@@ -835,6 +1382,47 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
 
         'wo_ca_advancePayment'=> $advancePayment,
         'wo_ca_additionalAmount'=> $additionalAmount,
+    ];
+}
+
+function calcLaundryAmount($val, $isTotalWithGst = 0){
+    $gstApply = 0;
+    $gstPerc = $cgstPerc = $gstAmount = $cgstAmount = $totalDiscount = $subtotalAmount = $totalAmount = 0;
+    if($val){
+        $settings = getSettings();
+        $subtotalAmount = 0;
+        if($val->order_items){
+            foreach($val->order_items as $key=>$itemInfo){
+                $price = ($itemInfo->rcv_item_qty * $itemInfo->item_price);
+                $subtotalAmount += $price;
+            }
+        }
+
+        $gstApply = ($val->gst_apply==1) ? 1 : 0;
+        $gstPerc = $val->gst_perc;
+        $cgstPerc = $val->cgst_perc;
+        if($isTotalWithGst == 1){
+            $gstPerc = $settings['laundry_gst'];
+            $cgstPerc = $settings['laundry_cgst'];
+        }
+
+        $gstCal = gstCalc($subtotalAmount,'laundry_amount', $gstPerc, $cgstPerc);
+
+        $gstAmount = $gstCal['gst'];
+        $cgstAmount = $gstCal['cgst'];
+        $totalDiscount = ($val->discount > 0 ) ? $val->discount : 0;
+        $totalAmount = $subtotalAmount+$gstAmount+$cgstAmount-$totalDiscount;
+    }
+
+    return [
+        'gstApply' => $gstApply,
+        'gstPerc' => checkAmount($gstPerc),
+        'cgstPerc' => checkAmount($cgstPerc),
+        'gstAmount' => checkAmount($gstAmount),
+        'cgstAmount' => checkAmount($cgstAmount),
+        'totalDiscount'=> checkAmount($totalDiscount),
+        'subtotalAmount'=> checkAmount($subtotalAmount),
+        'totalAmount'=> checkAmount($totalAmount),
     ];
 }
 
@@ -933,6 +1521,24 @@ function getPaymentOptions($isList = 'admin'){
         return $datalist;
     }
 }
+function getConstants($list, $exclude = []){
+    if($list == 'LIST_LAUNDRY_ORDER_STATUS'){
+        $datalist = config('constants.LIST_LAUNDRY_ORDER_STATUS');
+        if(count($exclude)){
+            foreach ($exclude as $value) {
+                unset($datalist[$value]);
+            }
+        }
+        return $datalist;
+    }
+    if($list == 'LIST_ROOM_CATEGORY'){
+        return config('constants.LIST_ROOM_CATEGORY');
+    }
+    if($list == 'PAYMENT_PURPOSE'){
+        return config('constants.PAYMENT_PURPOSE');
+    }
+    return null;
+}
 function getBookingStatus($data){
     $status = ['Pending', 'Confirmed', 'Completed', 'Expired'];
     $statusText = 'Pending';
@@ -956,4 +1562,27 @@ function getBookingStatus($data){
 
     }
     return ['status'=>$statusText, 'statusClass'=>$statusClass];
+}
+function getNotifications(){
+    $where = ['notifi_to'=> Auth::user()->id];
+    $totalUnread = Notification::where($where)->whereStatus(0)->count();
+    $list = Notification::where($where)->whereStatus(0)->orderBy('notifi_datetime')->orderBy('status', 'ASC')->get();
+    return ['totalUnread'=>$totalUnread, 'datalist'=>$list];
+}
+function getSplashMsg($params){
+    $data = ['success'=>'', 'error'=>''];
+    if(isset($params['type']) && $params['type'] == 'add_update'){
+        if(isset($params['id']) && $params['id'] > 0){
+            $data['success'] = config('constants.FLASH_REC_UPDATE_1');
+            $data['error'] = config('constants.FLASH_REC_UPDATE_0');
+        } else {
+            $data['success'] = config('constants.FLASH_REC_ADD_1');
+            $data['error'] = config('constants.FLASH_REC_ADD_0');
+        }
+    }
+    return $data;
+}
+function getLangForUpdateDisable(){
+//    return ['en', 'ar', 'hi'];
+    return ['en'];
 }

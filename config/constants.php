@@ -43,9 +43,11 @@ return [
     'FLASH_EMAIL_SUBS_1'=>'Notification subscribed successfully.',
     'FLASH_EMAIL_SUBS_LIMIT'=>'Notification subscription per day allow only 20 users.',
     'FLASH_ROOM_BOOK_SUCCESS'=>'Thank you ! Your rooms booked successfully.',
+    'FLASH_ORDER_ALREADY_COMPLETE'=>'This order is already completed.',
 
+    'SUPER_ADMIN_ID'=>1, //from user table for notification
     'OTP_LIMIT'=>'30',
-    'CACHING_TIME'=>'1',
+    'CACHING_TIME'=>'0',
     'DEFAULT_LANG'=>'en', //for front site
     'LANG_LIST'=>[
         'en' => 'English',
@@ -102,10 +104,45 @@ return [
       1=>'مفعل',
       0=>'غير مفعل'
     ],
+    'LIST_HOUSEKEEPING_ORDER_STATUS'=>[
+        0=>'Open',
+        1=>'In Progress',
+        2=>'Completed'
+    ],
+    'LIST_LAUNDRY_ORDER_STATUS'=>[
+        0=>'Created',
+        1=>'Send to Vendor',
+        2=>'Received from Vendor',
+        3=>'Completed'
+    ],
     'LIST_ORDER_TYPES'=>[
       'all'=>'All',
       'roomOrders'=>'Room Orders',
       'tableOrders'=>'Table Orders'
+    ],
+    'LIST_PERMISSIONS_CATEGORY'=>[
+      'dashboard',
+      'room_reservation',
+      'room',
+      'user',
+      'customer',
+      'expense',
+      'food',
+      'inventory',
+      'website_page',
+      'report',
+      'vendor',
+      'language',
+      'housekeeping',
+      'laundry',
+      'season',
+      'profile',
+      'settings',
+      'other',
+    ],
+    'LIST_ROOM_CATEGORY'=>[
+        'room'=>'Room',
+        'hall'=>'Hall',
     ],
     'ROOM_PLANS'=>[
       'EP'=>'European plan (EP)',
@@ -119,12 +156,22 @@ return [
       'ROOM_AMOUNT'=>'Room Amount',
       'FOOD_ADVANCE'=>'Food Advance Amount',
       'FOOD_AMOUNT'=>'Food Amount',
+      'LAUNDRY_AMOUNT'=>'Laundry Amount',
       'EXPENSE'=>'Expense',
       'OTHER'=>'Other'
     ],
     'DISCOUNT_TYPES'=>[
       'amt'=>'القيمة',
       'perc'=>'%',
+    ],
+    'WEEK_DAYS'=>[
+      'mon'=>['num'=>1, 'fullname'=>'Monday'],
+      'tue'=>['num'=>2, 'fullname'=>'Tuesday'],
+      'wed'=>['num'=>3, 'fullname'=>'Wednesday'],
+      'thu'=>['num'=>4, 'fullname'=>'Thursday'],
+      'fri'=>['num'=>5, 'fullname'=>'Friday'],
+      'sat'=>['num'=>6, 'fullname'=>'Saturday'],
+      'sun'=>['num'=>7, 'fullname'=>'Sunday'],
     ],
     'NATIONALITY_LIST'=>[
       1 => "Afghan",
@@ -617,7 +664,6 @@ return [
             'ti-back-right' => 'back-right',
             'ti-back-left' => 'back-left',
             'ti-exchange-vertical' => 'exchange-vertical',
-
         ],
         'Web App Icons'=>[
             'ti-wand' => 'wand',
