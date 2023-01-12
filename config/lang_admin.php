@@ -859,6 +859,11 @@ $array = [
         "ar"=>"الضريبة",
         "hi"=>"सी.जी.एस.टी",
     ],
+    "txt_total_cgst"=>[
+        "en"=>"Total with CTax",
+        "ar"=>"المجموع مع ضريبة الإيواء",
+        "hi"=>"सी.जी.एस.टी",
+    ],
     "txt_gst_apply"=>[
         "en"=>"Tax Apply",
         "ar"=>"خاضع للضريبة",
@@ -1019,6 +1024,12 @@ $array = [
         "en"=>"Subtotal",
         "ar"=>"المبلغ النهائي",
         "hi"=>"उपयोग",
+    ],
+
+    "txt_total_cgst"=>[
+        "en"=>"Total with CTax",
+        "ar"=>"  المجموع مع الضريبة",
+        "hi"=>"सी.जी.एस.टी",
     ],
 
     "txt_total"=>[
@@ -2140,6 +2151,11 @@ $array = [
     "inv_c_tax"=>[
         "en"=>"ctax label",
         "ar"=>"نص ضريبة الإيواء",
+        "hi"=>"ctax label",
+    ],
+    "inv_total_c_tax"=>[
+        "en"=>"Total with CTax label",
+        "ar"=>"المجموع مع ضريبة الإيواء",
         "hi"=>"ctax label",
     ],
     "inv_discount"=>[

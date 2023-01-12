@@ -182,14 +182,25 @@ if(globalVar.page=='checkout'){
 
   function gstCalculation(amount,type){
     if(type=='room_gst'){
-      globalVar.gstRoomAmount = (globalVar.gstPercent/100)*parseFloat(amount);
+      // globalVar.gstRoomAmount = (globalVar.gstPercent/100)*parseFloat(amount);
+      // globalVar.cgstRoomAmount = (globalVar.cgstPercent/100)*parseFloat(amount);
+
+      // $('#total_room_amount_gst').val(globalVar.gstRoomAmount);
+      // $('#total_room_amount_cgst').val(globalVar.cgstRoomAmount);
+
+      // $('#td_total_room_amount_gst').html(currency_symbol+' '+parseFloat(globalVar.gstRoomAmount).toFixed(2));
+      // $('#td_total_room_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstRoomAmount).toFixed(2));
       globalVar.cgstRoomAmount = (globalVar.cgstPercent/100)*parseFloat(amount);
+      globalVar.gstRoomAmount = (globalVar.gstPercent/100)*parseFloat(amount + globalVar.cgstRoomAmount);
+     
 
       $('#total_room_amount_gst').val(globalVar.gstRoomAmount);
       $('#total_room_amount_cgst').val(globalVar.cgstRoomAmount);
+      $('#total_room_amount_with_cgst').val(amount + globalVar.cgstRoomAmount);
 
-      $('#td_total_room_amount_gst').html(currency_symbol+' '+parseFloat(globalVar.gstRoomAmount).toFixed(2));
-      $('#td_total_room_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstRoomAmount).toFixed(2));
+      $('#td_total_room_amount_gst').html(currency_symbol+' '+parseFloat(globalVar.gstRoomAmount).toFixed(3));
+      $('#td_total_room_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstRoomAmount).toFixed(3));
+      $('#td_total_room_amount_with_cgst').html(currency_symbol+' '+parseFloat(amount + globalVar.cgstRoomAmount).toFixed(3));
     } else{
       if(globalVar.applyFoodGst==1){
         globalVar.gstOrderAmount = (globalVar.gstPercentFood/100)*parseFloat(amount).toFixed(2);
@@ -895,16 +906,31 @@ if(globalVar.page=='laundry_order_add_edit'){
 
 function gstCalculation(amount,type){
     if(type=='room_gst'){
-      globalVar.gstRoomAmount = getPercentOfAmount(globalVar.gstPercent, amount);
-      globalVar.cgstRoomAmount = getPercentOfAmount(globalVar.cgstPercent, amount);
+
+      // globalVar.cgstRoomAmount = (globalVar.cgstPercent/100)*parseFloat(amount);
+      // globalVar.gstRoomAmount = (globalVar.gstPercent/100)*parseFloat(amount + globalVar.cgstRoomAmount);
+
+      // $('#total_room_amount_gst').val(globalVar.gstRoomAmount);
+      // $('#total_room_amount_cgst').val(globalVar.cgstRoomAmount);
+      // $('#total_room_amount_with_cgst').val(amount + globalVar.cgstRoomAmount);
+
+      // $('#td_total_room_amount_gst').html(getAmountWithCurrency(globalVar.gstRoomAmount));
+      // $('#td_total_room_amount_cgst').html(getAmountWithCurrency(globalVar.cgstRoomAmount));
+      // $('#td_total_room_amount_with_cgst').html(currency_symbol+' '+parseFloat(amount + globalVar.cgstRoomAmount).toFixed(3));
+      console.log(amount);      
+      globalVar.cgstRoomAmount = (globalVar.cgstPercent/100)*parseFloat(amount);
+      globalVar.gstRoomAmount = (globalVar.gstPercent/100)*parseFloat(amount + globalVar.cgstRoomAmount);
+     
 
       $('#total_room_amount_gst').val(globalVar.gstRoomAmount);
       $('#total_room_amount_cgst').val(globalVar.cgstRoomAmount);
+      $('#total_room_amount_with_cgst').val(amount + globalVar.cgstRoomAmount);
 
-      $('#td_total_room_amount_gst').html(getAmountWithCurrency(globalVar.gstRoomAmount));
-      $('#td_total_room_amount_cgst').html(getAmountWithCurrency(globalVar.cgstRoomAmount));
-    }
-    else if(type=='laundry_gst'){
+      $('#td_total_room_amount_gst').html(currency_symbol+' '+parseFloat(globalVar.gstRoomAmount).toFixed(3));
+      $('#td_total_room_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstRoomAmount).toFixed(3));
+      $('#td_total_room_amount_with_cgst').html(currency_symbol+' '+parseFloat(amount + globalVar.cgstRoomAmount).toFixed(3));
+
+    } else if(type=='laundry_gst'){
       if(globalVar.applyGst==1){
         globalVar.gstAmount = getPercentOfAmount(globalVar.gstPercent, amount);
         globalVar.cgstAmount = getPercentOfAmount(globalVar.cgstPercent, amount);

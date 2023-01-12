@@ -53,8 +53,11 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'nt_enable' => env('APP_NT_ENABLE', false),
+    'nt_enable_expense' => env('APP_NT_ENABLE_EXPENSE', false),
 
     'asset_url' => env('ASSET_URL', null),
+    'login_active' => env('LOGIN_ACTIVE', false),
 
     /*
     |--------------------------------------------------------------------------

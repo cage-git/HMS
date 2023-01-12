@@ -11,6 +11,16 @@
         $heading=lang_trans('btn_update');
     }
   @endphp
+  
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<style>
+    .select2 .select2-container .select2-container--default .select2-container--focus{
+        width:100% !important;
+    }
+</style>    
+
 <div class="">
   @if($flag==1)
       {{ Form::model($data_row,array('url'=>route('save-reservation'),'id'=>"update-reservation-form", 'class'=>"form-horizontal form-label-left",'files'=>true)) }}
@@ -31,15 +41,15 @@
                         <div class="col-md-3 col-sm-4 col-xs-12">
                             {{Form::radio('guest_type','new',true,['class'=>"flat guest_type", 'id'=>'new_guest'])}} <label for="new_guest">{{lang_trans('txt_new_guest')}}</label>
                           </div>
-                         <div class="col-md-3 col-sm-4 col-xs-12">
+                         <!-- <div class="col-md-3 col-sm-4 col-xs-12">
                             {{Form::radio('guest_type','existing',false,['class'=>"flat guest_type", 'id'=>'existing_guest'])}} <label for="existing_guest">{{lang_trans('txt_existing_guest')}}</label>
-                        </div>
+                        </div> -->
                         <div class="col-md-3 col-sm-4 col-xs-12">
                             {{Form::radio('guest_type','new_company',false,['class'=>"flat guest_type", 'id'=>'new_company'])}} <label for="new_company">{{lang_trans('txt_new_company')}}</label>
                         </div>
-                        <div class="col-md-3 col-sm-4 col-xs-12">
+                        <!-- <div class="col-md-3 col-sm-4 col-xs-12">
                             {{Form::radio('guest_type','existing_company',false,['class'=>"flat guest_type", 'id'=>'existing_company'])}} <label for="existing_company">{{lang_trans('txt_existing_company')}}</label>
-                        </div>
+                        </div> -->
 
                     </div>
                     <div class="col-md-2 col-sm-12 col-xs-12">
@@ -52,7 +62,210 @@
       </div>
   </div>
 
+    <div class="row" >
+
+            
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>{{lang_trans('heading_search_from_customer')}}</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-md-10 col-sm-12 col-xs-12">
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <label class="control-label"> {{lang_trans('txt_search_from_phone_idcard')}} </label>
+                                <!-- {{Form::text('search_from_phone_idcard',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"search_from_phone_idcard", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_search_from_phone_idcard')])}} -->
+                                <br><select class="js-example-data-ajax" id="search_from_phone_idcard">
+                                    <option value="" disable>Please enter a phone number and ID card number</option>
+                                </select>
+                                <button type="button" class="btn btn-primary" onclick="location.reload()">Reset</button>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if(!$quickCheckIn)
+            
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>{{lang_trans('heading_idcard_info')}}</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                        {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                        
+
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                        <select class="js-example-data-ajax" id="search_from_phone_idcard">
+                                            <option value="" disable>Please enter a phone number and ID card number</option>
+                                        </select>
+                                </div> -->
+
+                            
+
+                <!-- Ehsan code  Tax id -->
+                <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_select_div">
+                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                            <select class="js-example-data-ajax" id="search_idcard">
+                                <option value="" disable>Please enter a phone number and ID card number</option>
+                            </select>
+                    </div>
+                
+
+                    <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_input_div" style="display:none;">
+                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                        {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                        
+                    </div>
+
+                    <!-- End Ehsan code -->
+                    
+
+                                <!-- <div class="row"> -->
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
+                                        {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                                    </div>
+
+
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label class="control-label"> {{lang_trans('txt_gender')}} <span class="required">*</span></label>
+                                        {{ Form::select('gender',config('constants.GENDER'),null,['class'=>'form-control col-md-6 col-xs-12', "id"=>"gender",'placeholder'=>lang_trans('ph_select')]) }}
+                                    </div>
+                                    @if(!$quickCheckIn)
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label class="control-label"> {{lang_trans('txt_dob')}} </label>
+                                        {{Form::date('dob',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"dob", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_dob')])}}
+                                        </div>
+                                    @endif
+                                    
+                                    <!-- <div class="col-md-4 col-sm-4 col-xs-12" style="display: none;">
+                                        <label class="control-label"> {{lang_trans('txt_upload_idcard')}} <sup class="color-ff4">{{lang_trans('txt_multiple')}}</sup> </label>
+                                        {{Form::file('id_image[]',['class'=>"form-control",'id'=>'idcard_image','multiple'=>true])}}
+                                    </div> -->
+
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} </label>{{--<span class="required">*</span>--}}
+                                        {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_reason_of_visit'),"rows"=>1])}}
+                                    </div>
+                                <!-- </div> -->
+
+
+                            </div>
+                        </div>
+                    </div>
+                
+        @endif
+
+    </div>
+
+  
+
+  <!-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> -->
       <div class="row" id="new_guest_section">
+
+     
+            <!-- <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>{{lang_trans('heading_search_from_customer')}}</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-10 col-sm-12 col-xs-12">
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <label class="control-label"> {{lang_trans('txt_search_from_phone_idcard')}} </label>
+                                    < !-- {{Form::text('search_from_phone_idcard',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"search_from_phone_idcard", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_search_from_phone_idcard')])}} -- >
+                                    <br><select class="js-example-data-ajax" id="search_from_phone_idcard">
+                                        <option value="" disable>Please enter a phone number and ID card number</option>
+                                    </select>
+                                    <button type="button" class="btn btn-primary" onclick="location.reload()">Reset</button>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if(!$quickCheckIn)
+                 
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>{{lang_trans('heading_idcard_info')}}</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <! -- <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                            
+
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                            <select class="js-example-data-ajax" id="search_from_phone_idcard">
+                                                <option value="" disable>Please enter a phone number and ID card number</option>
+                                            </select>
+                                    </div> -- >
+
+                                   
+
+                      < !-- Ehsan code  Tax id -- >
+                      <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_select_div">
+                             <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                <select class="js-example-data-ajax" id="search_idcard">
+                                    <option value="" disable>Please enter a phone number and ID card number</option>
+                                </select>
+                        </div>
+                      
+
+                        <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_input_div" style="display:none;">
+                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                            
+                        </div>
+
+                        < !-- End Ehsan code -- >
+                        
+
+                                    < !-- <div class="row"> - ->
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
+                                            {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                                        </div>
+                                        
+                                        <! -- <div class="col-md-4 col-sm-4 col-xs-12" style="display: none;">
+                                            <label class="control-label"> {{lang_trans('txt_upload_idcard')}} <sup class="color-ff4">{{lang_trans('txt_multiple')}}</sup> </label>
+                                            {{Form::file('id_image[]',['class'=>"form-control",'id'=>'idcard_image','multiple'=>true])}}
+                                        </div> -- >
+
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} </label>{{--<span class="required">*</span>--}}
+                                            {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_reason_of_visit'),"rows"=>1])}}
+                                        </div>
+                                    <! -- </div> -- >
+
+
+                                </div>
+                            </div>
+                        </div>
+                    
+            @endif
+-->
+
           <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
                   <div class="x_title">
@@ -61,27 +274,58 @@
                   </div>
                   <div class="x_content">
                     <div class="row">
+                        <input name="guest_type_category" id="guest_type_category" value="new" type="hidden" />
+                        <input name="selected_customer_id" id="selected_customer_id" value="" type="hidden" />
+                    
+                         <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label class="control-label">{{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                            {{Form::text('persons_info[idcard_no][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                        </div> -->
 
-                      <div class="col-md-4 col-sm-4 col-xs-12">
-                        <label class="control-label"> {{lang_trans('txt_surname')}} </label>
-                        {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}}
-                      </div>
+                      <!--  <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
+                            {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                        </div> -->
+
+                      
                       <div class="col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_firstname')}} <span class="required">*</span></label>
                         {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}}
                       </div>
+                      
                       <div class="col-md-4 col-sm-4 col-xs-12">
-                        <label class="control-label"> {{lang_trans('txt_middlename')}} </label>
-                        {{Form::text('middle_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_middlename')])}}
+                        <label class="control-label"> {{lang_trans('txt_surname')}} </label>
+                        {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}}
                       </div>
+                      <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_middlename')}} </label>
+                        {{Form::text('middle_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"middle_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_middlename')])}}
+                      </div> -->
                       <div class="col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_email')}} </label>
                         {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
                       </div>
-                      <div class="col-md-4 col-sm-4 col-xs-12">
+                      <!-- <div class="col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_mobile_num')}} <span class="required">*</span></label>
                         {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
-                      </div>
+                      </div> -->
+                 
+                      <!-- Ehsan code -->
+                      <div class="col-md-4 col-sm-4 col-xs-12" id="mobile_select_div">
+                                <label class="control-label"> {{lang_trans('txt_mobile_num')}}<span class="required">*</span></label>
+                                <select class="js-example-data-ajax" id="search_phone">
+                                    <option value="" disable>Please enter a phone number and ID card number</option>
+                                </select>
+                        </div>
+                      
+
+                        <div class="col-md-4 col-sm-4 col-xs-12" id="mobile_input_div" style="display:none;">
+                                <label class="control-label"> {{lang_trans('txt_mobile_num')}}<span class="required">*</span></label>
+                                {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                        </div>
+
+                        <!-- End Ehsan code -->
+
                       <div class="col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_address')}} <span class="required">*</span></label>
                         {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
@@ -98,16 +342,7 @@
                         <label class="control-label"> {{lang_trans('txt_city')}} </label>
                         {{Form::text('city',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"city", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_city')])}}
                       </div>
-                      <div class="col-md-4 col-sm-4 col-xs-12">
-                          <label class="control-label"> {{lang_trans('txt_gender')}} <span class="required">*</span></label>
-                          {{ Form::select('gender',config('constants.GENDER'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
-                      </div>
-                      @if(!$quickCheckIn)
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                          <label class="control-label"> {{lang_trans('txt_age')}} </label>
-                          {{Form::number('age',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"age", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_age'),"min"=>10])}}
-                        </div>
-                      @endif
+                     
                     </div>
                   </div>
               </div>
@@ -125,7 +360,7 @@
                       <div class="row">
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label">{{lang_trans('txt_guest')}}</label>
-                              {{Form::text('selected_customer_id',null,['class'=>"form-", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
+                              <!-- {{Form::text('selected_customer_id',null,['class'=>"form-", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}} -->
                           </div>
                       </div>
                   </div>
@@ -134,6 +369,71 @@
       </div>
 
       <div class="row hide_elem" id="new_company_section">
+
+           <!-- <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>{{lang_trans('heading_search_from_company')}}</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-10 col-sm-12 col-xs-12">
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <label class="control-label"> {{lang_trans('txt_search_from_name_phone_idcard')}} </label>
+                                    < !-- {{Form::text('search',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"search_from_name_phone_idcard", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_search_from_name_phone_idcard')])}} - ->
+                                    <br>
+                                    <select class="js-example-data-ajax-company" id="search_from_name_phone_idcard">
+                                        <option value="" disable>Please enter a name, phone number and ID card number</option>
+                                    </select>
+                                    <button type="button" class="btn btn-primary" onclick="location.reload()">Reset</button>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @if(!$quickCheckIn)
+                 
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>{{lang_trans('heading_idcard_info')}}</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                    </div>
+                                    <! -- <div class="row"> -  ->
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
+                                            {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                                        </div>
+                                        
+                                        <! -- <div class="col-md-4 col-sm-4 col-xs-12" style="display: none;">
+                                            <label class="control-label"> {{lang_trans('txt_upload_idcard')}} <sup class="color-ff4">{{lang_trans('txt_multiple')}}</sup> </label>
+                                            {{Form::file('id_image[]',['class'=>"form-control",'id'=>'idcard_image','multiple'=>true])}}
+                                        </div> - ->
+
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} </label>{{--<span class="required">*</span>--}}
+                                            {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_reason_of_visit'),"rows"=>1])}}
+                                        </div>
+                                    < !-- </div> - ->
+
+
+                                </div>
+                            </div>
+                        </div>
+                    
+            @endif
+        -->
+
           <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
                   <div class="x_title">
@@ -142,11 +442,33 @@
                   </div>
                   <div class="x_content">
                       <div class="row">
+                      
+                        <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label class="control-label">{{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                            {{Form::text('persons_info[idcard_no][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"com_idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                        </div> -->
 
-                          <div class="col-md-4 col-sm-4 col-xs-12">
+                          <!-- <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_company_name')}}</label>
                               {{Form::text('company_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_name')])}}
-                          </div>
+                          </div> -->
+                        
+                      <!-- Ehsan code  COmpany name -->
+                      <div class="col-md-4 col-sm-4 col-xs-12" id="companyname_select_div">
+                            <label class="control-label"> {{lang_trans('txt_company_name')}}</label>
+                            <select class="form-control  js-example-data-ajax" id="search_companyname">
+                                <option value="" disable>Please enter a phone number and ID card number</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12" id="companyname_input_div" style="display:none;">
+                            <label class="control-label"> {{lang_trans('txt_company_name')}}</label>
+                              {{Form::text('company_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_name')])}}
+                        </div>
+
+                        <!-- End Ehsan code -->
+
+
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_company_gst_num')}}</label>
                               {{Form::text('company_gst_num',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_gst_num", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_gst_num')])}}
@@ -154,27 +476,47 @@
 
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_company_email')}} </label>
-                              {{Form::email('company_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_email')])}}
+                              {{Form::email('company_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_email')])}}
                           </div>
-                          <div class="col-md-4 col-sm-4 col-xs-12">
+                          <!-- <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_company_mobile_num')}} <span class="required">*</span></label>
-                              {{Form::text('company_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_mobile_num')])}}
-                          </div>
+                              {{Form::text('company_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_mobile_num')])}}
+                          </div> -->
+
+                        <!-- Ehsan code  COmpany phone -->
+                        <div class="col-md-4 col-sm-4 col-xs-12" id="companyphone_select_div">
+                        <label class="control-label"> {{lang_trans('txt_company_mobile_num')}} <span class="required">*</span></label>
+                                <select class="js-example-data-ajax" id="search_companyphone">
+                                    <option value="" disable>Please enter a phone number and ID card number</option>
+                                </select>
+                        </div>
+
+
+                        <div class="col-md-4 col-sm-4 col-xs-12" id="companyphone_input_div" style="display:none;">
+                                <label class="control-label"> {{lang_trans('txt_company_mobile_num')}} <span class="required">*</span></label>
+                              {{Form::text('company_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_mobile_num')])}}
+                                   
+                        </div>
+
+                        <!-- End Ehsan code -->
+
+                  
+
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_company_address')}} <span class="required">*</span></label>
-                              {{Form::textarea('company_address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_address'),"rows"=>1])}}
+                              {{Form::textarea('company_address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_address'),"rows"=>1])}}
                           </div>
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_company_country')}} </label>
-                              {{ Form::select('company_country',getCountryList(),getSettings('default_country'),['class'=>'form-control col-md-6 col-xs-12', "id"=>"country", 'placeholder'=>lang_trans('ph_select')]) }}
+                              {{ Form::select('company_country',getCountryList(),getSettings('default_country'),['class'=>'form-control col-md-6 col-xs-12', "id"=>"company_country", 'placeholder'=>lang_trans('ph_select')]) }}
                           </div>
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_company_state')}} </label>
-                              {{Form::text('company_state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"state", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_state')])}}
+                              {{Form::text('company_state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_state", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_state')])}}
                           </div>
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_company_city')}} </label>
-                              {{Form::text('company_city',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"city", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_city')])}}
+                              {{Form::text('company_city',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_city", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_city')])}}
                           </div>
 
 
@@ -201,8 +543,8 @@
                       <div class="row">
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label">{{lang_trans('txt_company')}}</label>
-                              {{Form::text('selected_company_id',null,['class'=>"form-", "id"=>"companies", "placeholder"=>lang_trans('ph_select')])}}
-                          </div>
+                              <!-- {{Form::text('selected_company_id',null,['class'=>"form-", "id"=>"companies", "placeholder"=>lang_trans('ph_select')])}} -->     
+                            </div>
                       </div>
                   </div>
               </div>
@@ -294,7 +636,7 @@
 
 
   @if(!$quickCheckIn)
-          <div class="row">
+    <!-- <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="x_panel">
                       <div class="x_title">
@@ -307,10 +649,10 @@
                                   <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
                                   {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
                               </div>
-                              <div class="col-md-4 col-sm-4 col-xs-12">
-                                  <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="color-ff4" id="shower_start" style="display: none;">*</span> </label>
+                              < !-- <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
                                   {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
-                              </div>
+                              </div> -- >
                               <div class="col-md-4 col-sm-4 col-xs-12" style="display: none;">
                                   <label class="control-label"> {{lang_trans('txt_upload_idcard')}} <sup class="color-ff4">{{lang_trans('txt_multiple')}}</sup> </label>
                                   {{Form::file('id_image[]',['class'=>"form-control",'id'=>'idcard_image','multiple'=>true])}}
@@ -326,7 +668,7 @@
                       </div>
                   </div>
               </div>
-          </div>
+          </div> -->
   @endif
 
   @if(!$quickCheckIn)
@@ -409,8 +751,9 @@
 
 
 
-      @if(env('APP_NT_ENABLE'))
-
+     {{--  @if(env('APP_NT_ENABLE')) --}} 
+      @if(config('app.nt_enable'))
+            <input id="app_nt_enable" value="1" type="hidden"> 
           <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="x_panel">
@@ -431,31 +774,31 @@
 {{--                              </div>--}}
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_nationality')}} <span class="required">*</span></label>
-                                  {{ Form::select('mt_nationality',getDynamicDropdownList('nationalities', true),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
+                                  {{ Form::select('mt_nationality',getDynamicDropdownList('nationalities', true),null,['class'=>'form-control col-md-6 col-xs-12', "id"=>"mt_nationality", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_room_rent_type')}} <span class="required">*</span></label>
-                                  {{ Form::select('mt_room_rent_type',getDynamicDropdownList('room_rent_type', true),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
+                                  {{ Form::select('mt_room_rent_type',getDynamicDropdownList('room_rent_type', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_room_rent_type", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
 {{--                              <div class="col-md-4 col-sm-4 col-xs-12">--}}
 {{--                                  <label class="control-label"> {{lang_trans('txt_gender')}} <span class="required">*</span></label>--}}
-{{--                                  {{ Form::select('mt_gender',getDynamicDropdownList('gender', true),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}--}}
+{{--                                  {{ Form::select('mt_gender',getDynamicDropdownList('gender', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_gender", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}--}}
 {{--                              </div>--}}
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_customer_types')}} <span class="required">*</span></label>
-                                  {{ Form::select('mt_customer_types',getDynamicDropdownList('customer_types', true),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
+                                  {{ Form::select('mt_customer_types',getDynamicDropdownList('customer_types', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_customer_types", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_room_type')}} <span class="required">*</span></label>
-                                  {{ Form::select('mt_room_type',getDynamicDropdownList('room_types', true),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
+                                  {{ Form::select('mt_room_type',getDynamicDropdownList('room_types', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_room_type", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} <span class="required">*</span></label>
-                                  {{ Form::select('mt_reason_of_visit',getDynamicDropdownList('reason_of_visit', true),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
+                                  {{ Form::select('mt_reason_of_visit',getDynamicDropdownList('reason_of_visit', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_reason_of_visit", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_payment_type')}} <span class="required">*</span></label>
-                                  {{ Form::select('mt_payment_type',getDynamicDropdownList('payment_type', true),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
+                                  {{ Form::select('mt_payment_type',getDynamicDropdownList('payment_type', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_payment_type", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
 
                           </div>
@@ -513,6 +856,15 @@
 <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+
+
+
+
+        // $(document).ready(function() {
+        //     // $('.js-example-basic-single').select2();
+        //     // $('.js-example-basic-single').select2();
+        // });
+
         $(document).on('change', '#type_of_ids_selector', function(e){
             if($(this).val() == 4 || $(this).val() == 21){
                 $('#shower_start').show();
@@ -520,8 +872,152 @@
                 $('#shower_start').hide();
             }
         })
+
+        $(document).on('change', '#search_from_phone_idcard', function(e){
+            console.log("testing", csrf_token);
+            e.preventDefault();
+            // var formData = new FormData(this);
+            var search_from_phone_idcard = $("#search_from_phone_idcard").val();
+            $.ajax({
+                type:'GET',
+                url: '{{route("search-from-customer")}}',
+                data: {
+                    search_from_phone_idcard  : search_from_phone_idcard,
+                    category: "user",
+                },
+                dataType: "json",
+                success:function(data){
+                    // alert( "success");
+                    // console.log(data.customers[0], "success");
+                    var data_customer = data.customers[0]; 
+                    if(data_customer.cat=="user"){
+                        $('#guest_type_category').val('existing');
+                        $("#surname").val(data_customer.surname);
+                        $("#name").val(data_customer.name);
+                        $("#middle_name").val(data_customer.namiddle_nameme);
+                        $("#email").val(data_customer.email);
+                        $("#mobile").val(data_customer.mobile);
+                        $("#address").val(data_customer.address);
+                        $("#country").val(data_customer.country);
+                        $("#state").val(data_customer.state);
+                        $("#city").val(data_customer.city);
+                        $("#gender").val(data_customer.gender);
+                        $("#dob").val(data_customer.dob);
+                        $("#idcard_no").val(data_customer.id_card_no);
+                        $("#selected_customer_id").val(data_customer.id);
+                        $('#idcard_input_div').show();
+                        $('#idcard_select_div').hide();
+                        $('#mobile_input_div').show();
+                        $('#mobile_select_div').hide();
+                    }else{
+                        $('#guest_type_category').val('existing_company');
+                        $("#company_name").val(data_customer.name);
+                        $("#company_gst_num").val(data_customer.company_gst_num);
+                        $("#company_email").val(data_customer.email);
+                        $("#company_mobile").val(data_customer.mobile);                
+                        $("#company_address").val(data_customer.address);
+                        $("#company_country").val(data_customer.country);
+                        $("#company_state").val(data_customer.state);
+                        $("#company_city").val(data_customer.city);
+                        $("#selected_customer_id").val(data_customer.id);
+                        $("#idcard_no").val(data_customer.id_card_no);
+                        $('#idcard_input_div').show();
+                        $('#idcard_select_div').hide();
+                        $('#companyphone_input_div').show();
+                        $('#companyphone_select_div').hide();
+                        $('#companyname_select_div').hide();
+                        $('#companyname_input_div').show();
+             
+                    }
+                },
+                error: function(error){
+                    console.log("error", error);
+                }
+            });
+        });
+
+
+
+    
+
         $(document).on('submit', '#add-reservation-form', function(e){
             e.preventDefault();
+            // checkError();
+            var app_nt_enable = $("#app_nt_enable").val();
+            if(app_nt_enable == "1"){
+                console.log("app_nt_enable", app_nt_enable);
+                var error = "";
+                var error_flag = false;
+                var dob = $("#dob").val();
+                var gender = $("#gender").val();
+                var advance_payment = $("#advance_payment").val();
+                var mt_nationality = $("#mt_nationality").val();
+                var mt_room_rent_type = $("#mt_room_rent_type").val();
+                var mt_customer_types = $("#mt_customer_types").val();
+                var mt_room_type = $("#mt_room_type").val();
+                var mt_reason_of_visit = $("#mt_reason_of_visit").val();
+                var mt_payment_type = $("#mt_payment_type").val();
+                // var mt_reason_of_visit = $("input[name=mt_reason_of_visit]").val();
+                var div_id = "";
+                
+                if(!gender){
+                    error = "{{lang_trans('txt_gender')}}";
+                    error_flag = true;
+                    div_id = "gender";
+                }else if(!dob){
+                    error = "{{lang_trans('txt_dob')}}";
+                    error_flag = true;
+                    div_id = "dob";
+                }else if(!advance_payment){
+                    error = "{{lang_trans('txt_advance_payment')}}";
+                    error_flag = true;
+                    div_id = "advance_payment";
+                }else if(!mt_nationality){
+                    error = "{{lang_trans('txt_nationality')}}";
+                    error_flag = true;
+                    div_id = "mt_nationality";
+                }else if(!mt_room_rent_type){
+                    error = "{{lang_trans('txt_room_rent_type')}}";
+                    error_flag = true;
+                    div_id = "mt_room_rent_type";
+                }else if(!mt_customer_types){
+                    error = "{{lang_trans('txt_customer_types')}}";
+                    error_flag = true;
+                    div_id = "mt_customer_types";
+                }else if(!mt_room_type){
+                    error = "{{lang_trans('txt_room_type')}}";
+                    error_flag = true;
+                    div_id = "mt_room_type";
+                }else if(!mt_reason_of_visit){
+                    error = "{{lang_trans('txt_reason_of_visit')}} ";
+                    error_flag = true;
+                    div_id = "mt_reason_of_visit";
+                }else if(!mt_payment_type){
+                    error = "{{lang_trans('txt_payment_type')}}";
+                    error_flag = true;
+                    div_id = "mt_payment_type";
+                }
+
+                if(error_flag == true){
+                    Swal.fire({
+                        title: error + " is required",
+                        // showCancelButton: true,
+                        confirmButtonText: 'OK',
+                    }).then((result) => {
+                        $("#"+div_id).focus();
+                        // setTimeout(function() { $('#dob').focus() }, 3000);
+                        // return; 
+                    })
+                    // $("#"+div_id).focus();
+                    // setTimeout(function() { $('#dob').focus() }, 3000);
+                     return; 
+                }
+               
+                // console.log("done");
+                // return;
+            }
+
+
             $('#custom-loader').css('display', 'flex');
             var formData = new FormData(this);
             $.ajax({
@@ -538,6 +1034,7 @@
                         showCancelButton: true,
                         confirmButtonText: 'View Invoice',
                     }).then((result) => {
+                        // console.log(result);
                         if (result.isConfirmed) {
                             window.location = data.invoice
                         } else {
@@ -551,5 +1048,427 @@
                 }
             });
         })
+
+        // var initSelection = function(elem, cb) {
+        //         console.log(elem);
+        //         return elem;
+        //     }
+
+        $(".js-example-data-ajax").select2({
+            tags: true,
+            ajax: {
+                url: '{{route("search-from-customer")}}',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                return {
+                    search_from_phone_idcard: params.term, 
+                    category: "user",
+                };
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data.customers, function(obj) {
+                            return { id: obj.mobile , text: obj.name+' '+obj.mobile };
+                        })
+                    };
+                },
+                // processResults: function (data, params) {
+                // // parse the results into the format expected by Select2
+                // // since we are using custom formatting functions we do not need to
+                // // alter the remote JSON data, except to indicate that infinite
+                // // scrolling can be used
+                //     console.log("asdads");
+                // return {
+                //     results: data.customers,
+                // };
+                // },
+                cache: true,
+                // templateResult: formatRepo,
+                // templateSelection: formatRepoSelection
+                
+            },
+            placeholder: 'Search a Customer' ,
+            minimumInputLength: 3,
+            templateSelection: function(data){
+                   return data.text;
+                },
+            // initSelection: initSelection,
+            });
+
+           
+
+        $(".js-example-data-ajax-company").select2({
+            ajax: {
+                url: '{{route("search-from-customer")}}',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                return {
+                    search_from_phone_idcard: params.term, 
+                    category: "company",
+                };
+                },
+                processResults: function (data) {
+                    //  if(data){
+                        return {
+                                results: $.map(data.customers, function(obj) {
+                                return { id: obj.mobile , text: obj.name+' '+obj.mobile };
+                            })
+                        };
+                    
+                        
+                   
+                },  
+                cache: true,
+            },
+            placeholder: 'Please enter name, phone number and id card number',
+            minimumInputLength: 3,
+            formatSelection: function(data){
+                    console.log(data)
+                },
+            });
+
+            $(document).on('change', '#search_from_name_phone_idcard', function(e){
+            console.log("testing", csrf_token);
+            $("#select2-search_from_phone_idcard-container").attr("title",csrf_token);
+            
+            // $(this).attr("title",$(this).val());
+            e.preventDefault();
+            // var formData = new FormData(this);
+            var search_from_name_phone_idcard = $("#search_from_name_phone_idcard").val();
+            $.ajax({
+                type:'GET',
+                url: '{{route("search-from-customer")}}',
+                data: {
+                    search_from_phone_idcard  : search_from_name_phone_idcard,
+                    category: "company",
+                },
+                dataType: "json",
+                success:function(data){
+                    // alert( "success");
+                    console.log(data.customers[0], "success");
+                
+                    var data_customer = data.customers[0]; 
+                    if(data_customer){
+                        
+
+                        $('#guest_type_category').val('existing_company');
+                        $("#company_name").val(data_customer.name);
+                        $("#company_gst_num").val(data_customer.company_gst_num);
+                        $("#company_email").val(data_customer.email);
+                        $("#company_mobile").val(data_customer.mobile);                
+                        $("#company_address").val(data_customer.address);
+                        $("#company_country").val(data_customer.country);
+                        $("#company_state").val(data_customer.state);
+                        $("#company_city").val(data_customer.city);
+                        $("#selected_customer_id").val(data_customer.id);
+                        $("#com_idcard_no").val(data_customer.id_card_no);
+                    }else{
+                        $('#guest_type_category').val('');
+                        $("#company_name").val('');
+                        $("#company_gst_num").val('');
+                        $("#company_email").val('');
+                        $("#company_mobile").val('');                
+                        $("#company_address").val('');
+                        $("#company_country").val('');
+                        $("#company_state").val('');
+                        $("#company_city").val('');
+                        $("#selected_customer_id").val('');
+                        $("#com_idcard_no").val('');
+                    }
+                },
+                error: function(error){
+                    console.log("error", error);
+                }
+            });
+        });
+
+
+        // function checkError(){
+        //     var ar = ['name', 'email'];
+        //     var error = false;
+        //     var ele='';
+        //     for(let i = 0; i < ar.length; i++){
+        //         var vl = $("input[name=" + ar[i] + "]").val();
+        //         if(empty(vl)){
+        //             error = true;
+        //             ele = ar[i];
+        //             break;
+        //         }
+        //     }
+
+
+        //     if(error){
+        //         Swal.fire({
+        //                 title: ele + " can't be empty",
+        //                 showCancelButton: true,
+        //                 confirmButtonText: 'OK',
+        //             }).then((result) => {
+        //                 console.log(result);
+        //             });
+        //             return false;
+        //     }else{
+        //         return true;
+        //     }
+
+        // }
+
+
+        function getData(id, val, category, guest_type){
+            var div_id = $('#'+id).val();
+            var htmlText='';
+            // var guest_type = $('#guest_type').val();
+            var data; 
+            $.ajax({
+                type:'GET',
+                url: '{{route("search-from-customer")}}',
+                data: {
+                    search_from_phone_idcard  : div_id,
+                    category: category,
+                },
+                dataType: "json",
+                success:function(data){
+                    // alert( "success");
+                    console.log(data, "success");
+
+                    data.customers.map(function(val){
+                        console.log("ad", val);
+                        htmlText +="<option value='"+ val.name +"'>";
+                        $("#idcard_list").append("<option value='" + val.name + "'></option>");
+                    })
+                    // $("#idcard_list").html(htmlText);
+                    // data = data.customers[0]; 
+                    // console.log(guest_type);
+                    // if(guest_type == "new"){
+                    //     console.log( "success1");
+                    //     setCustomerData(data, id);
+                    // }else if(guest_type == "company"){
+                    //     console.log( "success2");
+                    //     setCompanydata(data, id);
+                    // }
+                    // else{
+                    //     setCompanyNull();
+                    //     setCustomerNull();
+                    // }
+                },
+                error: function(error){
+                    console.log("error", error);
+                }
+            });
+        }
+
+        //  select fields  5 2 3
+        // search_idcard
+        // idcard_select_div
+        // idcard_input_div
+
+
+        // search_phone
+        // mobile_select_div
+        // mobile_input_div
+
+        $(document).on('change', '#search_idcard', function(){
+            var val = $('#search_idcard').val();
+            var guest_type = $('input:radio[name="guest_type"]:checked').val();
+            console.log("val",val);
+            getAjaxResponse('idcard_select_div', val, 'user', guest_type, 'search_idcard');
+        });
+
+        $(document).on('change', '#search_phone', function(){
+            var val = $('#search_phone').val();
+            var guest_type = $('input:radio[name="guest_type"]:checked').val();
+            getAjaxResponse('mobile_select_div', val, 'user', guest_type, 'search_phone');
+        });
+
+        $(document).on('change', '#search_companyname', function(){
+            var val = $('#search_companyname').val();
+            var guest_type = $('input:radio[name="guest_type"]:checked').val();
+            console.log("val",val,guest_type);
+            getAjaxResponse('companyname_select_div', val, 'company', 'new_company', 'search_companyname');
+        });
+
+        $(document).on('change', '#search_companyphone', function(){
+            var val = $('#search_companyphone').val();
+            var guest_type = $('input:radio[name="guest_type"]:checked').val();
+            getAjaxResponse('companyphone_select_div', val, 'company', 'new_company', 'search_companyphone');
+        });
+
+
+
+        function getAjaxResponse(div_id, val, category, guest_type, field_id){
+             // var formData = new FormData(this);
+            // var search_from_phone_idcard = $("#search_from_phone_idcard").val();
+            $.ajax({
+                type:'GET',
+                url: '{{route("search-from-customer")}}',
+                data: {
+                    search_from_phone_idcard  : val,
+                    category: category,
+                },
+                dataType: "json",
+                success:function(data){
+                    // alert( "success");
+                    // if(typeof(data) !== 'undefined' ){
+                        console.log(data.customers[0], "success");
+                        var data = data.customers[0]; 
+                        if(data){
+                        if(data.cat && data.cat == "user"){
+                            // console.log( "success1");
+                            setCustomerData(data, div_id);
+                        }else if(data.cat && data.cat == "company"){
+                            // console.log( "succesxs2");
+                            setCompanydata(data, div_id);
+                        }
+                        }else{
+                            console.log("data not found");
+                            if(field_id == "search_idcard"){
+                                $("#idcard_no").val(val);
+                            }else if(field_id == "search_phone"){
+
+                                $("#mobile").val(val);
+                            }else if(field_id == "search_companyname"){
+                                $("#company_name").val(val);
+                                $("#guest_type_category").val("new_company");
+                            }else if(field_id == "search_companyphone"){
+                                $("#company_mobile").val(val); 
+                                $("#guest_type_category").val("new_company");
+                            }
+
+                        }
+                },
+                error: function(error){
+                    console.log("error", error);
+                }
+            });
+        }
+
+
+
+   //  end select fields
+
+        $(document).on('keyup', '#idcard_no', function(){
+            var val = $('#idcard_no').val();
+            var guest_type = $('input[name=guest_type]').val();
+            getData('idcard_no', val, 'user', guest_type);
+        });
+
+        $(document).on('keyup', '#mobile', function(){
+            var val = $('#mobile').val();
+            var guest_type = $('input[name=guest_type]').val();
+            getData('mobile', val, 'user', guest_type);
+        });
+
+        $(document).on('keyup', '#company_idcard_no', function(){
+            var val = $('#company_idcard_no').val();
+            var guest_type = $('input[name=guest_type]').val();
+            getData('company_idcard_no', val, 'company', guest_type);
+        });
+
+        $(document).on('keyup', '#company_mobile', function(){
+            var val = $('#company_mobile').val();
+            var guest_type = $('input[name=guest_type]').val();
+            getData('company_mobile', val, 'company', guest_type);
+        });
+
+        function setCompanydata(data_customer, id){
+
+            console.log("company data");
+            if(id == "companyname_select_div"){
+                $('#idcard_input_div').show();
+                $('#idcard_select_div').hide();
+                $('#companyphone_input_div').show();
+                $('#companyphone_select_div').hide();
+            }else if(id == "idcard_select_div"){
+                $('#companyname_select_div').hide();
+                $('#companyname_input_div').show();
+                $('#companyphone_input_div').show();
+                $('#companyphone_select_div').hide();
+            }else if(id == "companyphone_select_div"){
+                $('#companyname_select_div').hide();
+                $('#companyname_input_div').show();
+                $('#idcard_input_div').show();
+                $('#idcard_select_div').hide();
+            }
+
+            $("#company_name").val(data_customer.name);
+            $('#guest_type_category').val('existing_company');
+            $("#company_gst_num").val(data_customer.company_gst_num);
+            $("#company_email").val(data_customer.email);
+            $("#company_mobile").val(data_customer.mobile);                
+            $("#company_address").val(data_customer.address);
+            $("#company_country").val(data_customer.country);
+            $("#company_state").val(data_customer.state);
+            $("#company_city").val(data_customer.city);
+            $("#selected_customer_id").val(data_customer.id);
+            if(data_customer.dob !=""){
+                $("#dob").val(data_customer.dob);
+            }else{
+                $("#dob").val("");
+            }
+           
+        }
+
+        function setCustomerData(data_customer, id){
+            console.log(id);
+            // setCustomerNull();
+            if(id == "mobile_select_div"){
+                $('#idcard_input_div').show();
+                $('#idcard_select_div').hide();
+            }else if(id == "idcard_select_div"){
+                $('#mobile_input_div').show();
+                $('#mobile_select_div').hide();
+            }
+            console.log("testing", data_customer)
+            $('#guest_type_category').val('existing');
+            $("#idcard_no").val(data_customer.id_card_no);
+            $("#mobile").val(data_customer.mobile);
+            $("#surname").val(data_customer.surname);
+            $("#name").val(data_customer.name);
+            $("#middle_name").val(data_customer.namiddle_nameme);
+            $("#email").val(data_customer.email);
+            $("#address").val(data_customer.address);
+            $("#country").val(data_customer.country);
+            $("#state").val(data_customer.state);
+            $("#city").val(data_customer.city);
+            $("#gender").val(data_customer.gender);
+            $("#dob").val(data_customer.dob);
+            $("#selected_customer_id").val(data_customer.id);
+            if(data_customer.dob !=""){
+                $("#dob").val(data_customer.dob);
+            }else{
+                $("#dob").val("");
+            }
+        }
+
+        function setCompanyNull(){
+            $('#guest_type_category').val('new');
+            $("#company_name").val('');
+            $("#company_gst_num").val('');
+            $("#company_email").val('');
+            $("#company_mobile").val('');                
+            $("#company_address").val('');
+            $("#company_country").val('');
+            $("#company_state").val('');
+            $("#company_city").val('');
+            $("#selected_customer_id").val('');
+        }
+
+        function setCustomerNull(){
+            $('#guest_type_category').val('new');
+            $("#surname").val('');
+            $("#name").val('');
+            $("#middle_name").val('');
+            $("#email").val('');
+            $("#mobile").val('');
+            $("#address").val('');
+            $("#country").val('');
+            $("#state").val('');
+            $("#city").val('');
+            $("#gender").val('');
+            $("#dob").val('');
+            $("#selected_customer_id").val('');
+        }
+       
     </script>
 @endsection

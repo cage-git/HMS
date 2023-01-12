@@ -7,6 +7,7 @@
   $roomAmountDiscount = $calculatedAmount['totalRoomAmountDiscount'];
   $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
   $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
+  $roomAmountWithCGstAmount = $calculatedAmount['totalRoomAmountWithCGstAmount'];
   $finalRoomAmount = $calculatedAmount['finalRoomAmount'];
 
   $totalOrderAmountGst = $calculatedAmount['totalOrderAmountGst'];
@@ -328,15 +329,20 @@
                                 <th class="text-right">{{lang_trans('txt_subtotal')}}</th>
                                 <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalRoomAmount) }}</td>
                               </tr>
+                             
+                              <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
+                                <th class="text-right">{{lang_trans('txt_cgst')}}</th>
+                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountCGst) }}</td>
+                              </tr>
+
+                              <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
+                                <th class="text-right">{{lang_trans('txt_total_cgst')}}</th>
+                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountWithCGstAmount) }}</td>
+                              </tr>
+                              
                               <tr>
                                 <th class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%)</th>
                                 <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountGst) }}</td>
-                              </tr>
-
-
-                              <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
-                                <th class="text-right">{{lang_trans('txt_cgst')}} ({{$cgstPerc}}%)</th>
-                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountCGst) }}</td>
                               </tr>
 
 

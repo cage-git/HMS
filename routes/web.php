@@ -2494,6 +2494,9 @@ Route::group(['prefix' => 'admin'], function() {
             dump($nd);
         }
     });
+	
+	Route::get('translate_language', ['uses' => 'LanguageController@translate_language'])->name('translate_language');
+
 	Route::group(['middleware'=>['auth','permission','userlogs']], function() {
 		Route::get('dashboard', ['uses' => 'AdminController@index'])->name('dashboard');
 
@@ -2536,6 +2539,8 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::get('delete-amenities/{id}', ['uses' => 'AdminController@deleteAmenities'])->name('delete-amenities');
 
 //		Route::get('quick-check-in', ['uses' => 'AdminController@roomReservation'])->name('quick-check-in');
+		Route::get('search-from-customer', ['uses' => 'CustomerController@searchFromCustomer'])->name('search-from-customer');
+		Route::get('search-from-company', ['uses' => 'CustomerController@searchFromCompany'])->name('search-from-company');
 		Route::get('check-in', ['uses' => 'AdminController@roomReservation'])->name('room-reservation');
 		Route::post('save-reservation', ['uses' => 'AdminController@saveReservation'])->name('save-reservation');
 		Route::get('check-out/{id}', ['uses' => 'AdminController@checkOut'])->name('check-out-room');

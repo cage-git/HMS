@@ -66,7 +66,7 @@
     $label_food_item_qty = $setVar('food_item_qty');
     $label_food_item_price = $setVar('food_item_price');
     $label_food_no_of_orders = $setVar('food_no_of_orders');
-
+    $label_total_c_tax = $setVar('total_c_tax');
 
 
 
@@ -112,6 +112,7 @@
             $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
             $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
             $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
+            $roomAmountWithCGstAmount = $calculatedAmount['totalRoomAmountWithCGstAmount'];
             $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
             $subTotalRoomAmount = (($totalRoomAmount+$roomAmountGst+$roomAmountCGst) - $roomAmountDiscount)+$additionalAmount;
             $advancePayment = $calculatedAmount['advancePayment'];
@@ -360,13 +361,20 @@
                         </tr>
                     @endif
                     @if($roomAmountGst>0)
+                    
                     <tr>
-                        <th class="text-right" colspan="5">{{$label_c_tax}} {{$cgstPerc}}%</th>
+                        <th class="text-right" colspan="5"> {{$label_c_tax}} {{$cgstPerc}}%</th>
                         <td class="text-right">{{ numberFormat($roomAmountCGst) }}</td>
                     </tr>
+
+                    <tr>
+                        <th class="text-right" colspan="5">{{$label_total_c_tax}}</th>
+                        <td class="text-right">{{ numberFormat($roomAmountWithCGstAmount) }}</td>
+                    </tr>
+
                     <tr>
                         <th class="text-right" colspan="5">{{$label_tax}} {{$gstPerc}}% </th>
-                        <td class="text-right">{{ numberFormat($roomAmountGst) }}</td>
+                        <td class="text-right">{{ numberFormat($roomAmountGst ) }}</td>
                     </tr>
                     @if($additionalAmount>0)
                         <tr>

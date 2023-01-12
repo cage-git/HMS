@@ -9,6 +9,7 @@
   $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
   $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
   $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
+  $roomAmountWithCGstAmount = $calculatedAmount['totalRoomAmountWithCGstAmount'];
   $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
   $advancePayment = $calculatedAmount['advancePayment'];
   $roomAmountDiscount = $calculatedAmount['totalRoomAmountDiscount'];
@@ -241,14 +242,20 @@
                                     <span class="error discount_room_err_msg"></span>
                                 </td>
                             </tr>
-                          <tr>
-                            <th class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%) {{Form::hidden('amount[total_room_amount_gst]',null,['id'=>'total_room_amount_gst'])}}</th>
-                            <td width="15%" id="td_total_room_amount_gst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountGst }}</td>
-                          </tr>
+                         
                           <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
-                            <th class="text-right">{{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_room_amount_cgst]',null,['id'=>'total_room_amount_cgst'])}}</th>
-                            <td width="15%" id="td_total_room_amount_cgst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountCGst }}</td>
-                          </tr>
+                              <th class="text-right"> {{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_room_amount_cgst]',null,['id'=>'total_room_amount_cgst'])}}</th>
+                              <td width="15%" id="td_total_room_amount_cgst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountCGst }}</td>
+                            </tr>
+                            <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
+                              <th class="text-right">{{lang_trans('txt_total_cgst')}}  {{Form::hidden('amount[total_room_amount_with_cgst]',null,['id'=>'total_room_amount_with_cgst'])}}</th>
+                              <td width="15%" id="td_total_room_amount_with_cgst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountWithCGstAmount }}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%) {{Form::hidden('amount[total_room_amount_gst]',null,['id'=>'total_room_amount_gst'])}}</th>
+                              <td width="15%" id="td_total_room_amount_gst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountGst }}</td>
+                            </tr>
+
                           <tr>
                             <th class="text-right">{{lang_trans('txt_advance_amount')}} {{Form::hidden('amount[total_room_advance_amount]',$advancePayment)}}</th>
                             <td width="15%" id="td_room_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ $advancePayment }}</td>

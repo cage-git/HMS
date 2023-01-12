@@ -75,7 +75,7 @@
                       <label class="control-label">{{lang_trans('txt_hotel_address')}}</label>
                       {{Form::textarea('hotel_address',@$data_row['hotel_address'],['class'=>"form-control col-md-7 col-xs-12",'rows'=>1])}}
                     </div>
-                    @if(env('APP_NT_ENABLE') == true)
+                    @if(config('app.nt_enable')==true)
                     <div class="col-md-4 col-sm-4 col-xs-12">
                       <label class="control-label">{{lang_trans('ntmp_api_key')}}</label>
                       {{Form::text('ntmp_api_key',@$data_row['ntmp_api_key'],['class'=>"form-control col-md-7 col-xs-12",'rows'=>1])}}

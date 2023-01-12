@@ -477,7 +477,8 @@ $randnum = '';
         'purposeOfVisit' => (string) $request->mt_reason_of_visit,
         'paymentType' => (string) $request->mt_payment_type,
         'noOfRooms' => (string) count($request->room_num) | (string) 1,
-        'dateOfBirth' => (string) dateConvert($request->mt_date_of_birth, 'Ymd'),
+        'dateOfBirth' => (string) dateConvert($request->dob, 'Ymd'),
+        // 'dateOfBirth' => (string) dateConvert($request->mt_date_of_birth, 'Ymd'),
     ];
     if($request->mt_iscreate == 1){
         $datas['transactionTypeId'] = (string) $request->reservation_type == 0 ?  '2' : '1';
@@ -539,7 +540,8 @@ function getRoomTypesList($listType = 'original'){
     $cgstPerc = $settings['cgst'];
 //    dd([$gstPerc, $cgstPerc]);
     if($listType == 'custom'){
-        return RoomType::select('id','base_price',DB::raw('CONCAT(title, " (Price||", TRUNCATE((base_price + ( ((base_price/100) * '.$gstPerc.') + ((base_price/100) * '.$cgstPerc.') ) ) ,2),")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
+        // return RoomType::select('id','base_price',DB::raw('CONCAT(title, " (Price||", TRUNCATE((base_price + ( ((base_price/100) * '.$gstPerc.') + ((base_price/100) * '.$cgstPerc.') ) ) ,2),")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
+        return RoomType::select('id','base_price',DB::raw('CONCAT(title, " (Price||", TRUNCATE(  (  (base_price + ((base_price/100) * '.$cgstPerc.'))  + (  (base_price + ((base_price/100) * '.$cgstPerc.'))   * '.$gstPerc.'/100)  ) ,5),")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
     }
     if($listType == 'original'){
         return RoomType::whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
@@ -1257,7 +1259,7 @@ function gstCalc($amount,$type,$gstPerc=null,$cgstPerc=null){
     $gstAmount = $cgstAmount = 0;
     if($type=='room_amount'){
         $cgstAmount = ($cgstPerc/100)*$amount;
-        $gstAmount = ($gstPerc/100)*($amount+$cgstAmount);
+        $gstAmount = ($gstPerc/100)*($amount + $cgstAmount);
         
     } else {
         $cgstAmount = ($cgstPerc/100)*$amount;
@@ -1303,6 +1305,11 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
 
     $totalRoomAmountGst = $gstCal['gst'];
     $totalRoomAmountCGst = $gstCal['cgst'];
+    $totalRoomAmountWithCGstAmount = 0;
+    if($val->room_amount_with_cgst > 0)
+        $totalRoomAmountWithCGstAmount = $val->room_amount_with_cgst;
+    else
+        $totalRoomAmountWithCGstAmount =  $totalAmount + $gstCal['cgst'];
 
     $advancePayment = ($val->advance_payment > 0 ) ? $val->advance_payment : 0;
     $additionalAmount = ($val->addtional_amount > 0 ) ? $val->addtional_amount : 0;
@@ -1346,6 +1353,7 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
         'totalRoomCGstPerc' => checkAmount($cgstPerc),
         'totalRoomAmountGst' => checkAmount($totalRoomAmountGst),
         'totalRoomAmountCGst' => checkAmount($totalRoomAmountCGst),
+        'totalRoomAmountWithCGstAmount' => checkAmount($totalRoomAmountWithCGstAmount),
         'totalRoomAmountDiscount'=> checkAmount($totalRoomAmountDiscount),
         'subtotalRoomAmount'=> checkAmount($totalAmount),
         'finalRoomAmount'=> checkAmount($finalRoomAmount),

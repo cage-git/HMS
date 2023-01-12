@@ -1198,6 +1198,11 @@ $array = [
         'rm'=>'',
         'es'=>'',
     ],
+    "txt_total_cgst"=>[
+        "en"=>"Total with CTax",
+        "ar"=>"المجموع مع ضريبة الإيواء",
+        "hi"=>"सी.जी.एस.टी",
+    ],
     'txt_gst_apply'=>[
         'en'=>'Tax Apply',
         'fr'=>'',
@@ -2613,9 +2618,9 @@ $array = [
         'es'=>'',
     ],
     'txt_develop_by'=>[
-        'en'=>date('Y').' Designd & Develop By Divllo. All Rights Reserved',
+        'en'=>date('Y').' Designd & Develop By divllo. All Rights Reserved',
         'fr'=>'',
-        'hi'=>date('Y').' Designd & Develop By Divllo. All Rights Reserved',
+        'hi'=>date('Y').' Designd & Develop By divllo. All Rights Reserved',
         'rm'=>'',
         'es'=>'',
     ],

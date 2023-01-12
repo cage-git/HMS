@@ -28,9 +28,15 @@
                             <input class="form-control" name="password" placeholder="Password" required="required" type="password" value=""/>
                         </div>
                         <div>
-                            <button class="btn btn-default submit" type="submit">
-                                {{lang_trans('btn_login')}}
-                            </button>
+                            @if(!config('app.login_active'))
+                                <button class="btn btn-default submit" >
+                                    {{lang_trans('btn_login')}}
+                                </button>
+                            @else
+                                <button class="btn btn-default" type="button" onclick="login_alert()" >
+                                    {{lang_trans('btn_login')}}
+                                </button>
+                            @endif
                         </div>
                         <div class="clearfix">
                         </div>
@@ -54,5 +60,18 @@
                 </div>
             </div>
         </div>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            function login_alert(){
+                Swal.fire(
+                    
+                    'عذراً! تم تعطيل النظام تلقائيًا لتخلفك عن سداد المستحقات , يرجى التواصل مع الشركة الموفرة للخدمة لإعادة التفعيل',
+                    '',
+                    'error'
+                );
+            }
+             
+        </script>
     </body>
+    
 </html>

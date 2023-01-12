@@ -31,7 +31,8 @@ class AdminController extends Controller
     }
 
     public function index() {
-
+        // echo phpinfo();
+        // exit;
         $this->data['counts']=DB::select(DB::raw("SELECT
             (((SELECT COUNT(*) FROM (
                 SELECT 0  FROM `booked_rooms`
@@ -290,6 +291,7 @@ class AdminController extends Controller
             return redirect()->route('list-reservation')->with(['error' => config('constants.FLASH_NOT_ALLOW_URL')]);
         }
     }
+
     public function saveReservation(Request $request) {
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
@@ -306,7 +308,9 @@ class AdminController extends Controller
             $success = config('constants.FLASH_REC_ADD_1');
             $error = config('constants.FLASH_REC_ADD_0');
         }
-        if(env('APP_NT_ENABLE') == true){
+        // if(env('APP_NT_ENABLE') == true){
+        if(config('app.nt_enable') == true){
+            
             if(
                 !$request->mt_nationality
                 || !$request->mt_room_rent_type
@@ -318,7 +322,7 @@ class AdminController extends Controller
                 if($request->ajax()){
                     return response()->json(['msg' => config('constants.FLASH_FILL_REQUIRED_FIELD')], 403);
                 }else {
-                    return redirect()->back()->with(['error' => config('constants.FLASH_FILL_REQUIRED_FIELD')]);
+                    return redirect()->back()->with(['error' => config('constants.FLASH_FILL_REQUIRED_FIELD'),'params' => $request->mt_nationality.$request->mt_room_rent_type.$request->mt_customer_types.$request->mt_room_type.$request->mt_reason_of_visit.$request->mt_payment_type ]);
                 }
             }
         }
@@ -335,17 +339,17 @@ class AdminController extends Controller
         $reservationData = [];
         $customerData = [];
 
-        if($request->guest_type=='existing'){
+        if($request->guest_type_category=='existing'){
             $customerId = $request->selected_customer_id;
             $custData = Customer::whereId($customerId)->where('cat', '=', 'user')->first();
             $custName = $custData->name;
         }
-        elseif($request->guest_type=='existing_company'){
+        elseif($request->guest_type_category=='existing_company'){
             $customerId = $request->selected_company_id;
             $custData = Customer::whereId($customerId)->where('cat', '=', 'company')->first();
             $custName = $custData->name;
         }
-        elseif($request->guest_type=='new_company'){
+        elseif($request->guest_type_category=='new_company'){
             $custName = $request->company_name;
             if(
                 !$request->company_gst_num ||
@@ -356,6 +360,12 @@ class AdminController extends Controller
             ){
                 return redirect()->back()->with(['error' => config('constants.FLASH_FILL_REQUIRED_FIELD')]);
             }
+
+            $dob = null;
+            if($request->dob){
+               $dob=  date("Y-m-d", strtotime($request->dob));
+            }
+
             $customerData = [
                 "surname" => $request->company_name,
                 "company_gst_num" => $request->company_gst_num,
@@ -370,8 +380,9 @@ class AdminController extends Controller
                 "country" => $request->company_country,
                 "state" => $request->company_state,
                 "city" => $request->company_city,
-                "gender" => 'Other',
-                "age" => '50',
+                "gender" => $request->gender,
+                "dob" => $dob,
+                "id_card_no" => $request->idcard_no,
                 "password" => Hash::make($request->mobile),
             ];
             $customerId = Customer::insertGetId($customerData);
@@ -382,6 +393,10 @@ class AdminController extends Controller
             $custName = $request->name;
             if(!$request->name || !$request->mobile || !$request->gender){
                 return redirect()->back()->with(['error' => config('constants.FLASH_FILL_REQUIRED_FIELD')]);
+            }
+            $dob = null;
+            if($request->dob){
+               $dob=  date("Y-m-d", strtotime($request->dob));
             }
             $customerData = [
                 "surname" => $request->surname,
@@ -396,7 +411,8 @@ class AdminController extends Controller
                 "state" => $request->state,
                 "city" => $request->city,
                 "gender" => $request->gender,
-                "age" => $request->age,
+                "dob" => $dob,
+                "id_card_no" => $request->idcard_no,
                 "password" => Hash::make($request->mobile),
             ];
             $customerId = Customer::insertGetId($customerData);
@@ -406,14 +422,14 @@ class AdminController extends Controller
         }
         $reservationData = [
             "customer_id" => $customerId,
-            "guest_type" => $request->guest_type,
+            "guest_type" => $request->guest_type_category,
             "check_in" => dateConvert($request->check_in_date, 'Y-m-d H:i'),
             "check_out" => dateConvert($request->check_out_date, 'Y-m-d H:i'),
             "duration_of_stay" => $request->duration_of_stay,
             "adult" => $request->adult,
             "kids" => $request->kids,
             "reservation_type" => $request->reservation_type,
-//            "purpose_of_the_visiting" => $request->purpose_of_the_visiting,
+            //   "purpose_of_the_visiting" => $request->purpose_of_the_visiting,
             "booked_by" => $request->booked_by,
             "vehicle_number" => $request->vehicle_number,
             "reason_visit_stay" => $request->reason_visit_stay || '',
@@ -494,7 +510,7 @@ class AdminController extends Controller
             }
 
 
-            if(env('APP_NT_ENABLE') == true){
+            if(config('app.nt_enable') == true){
                 $settings = getSettings();
                 if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
                     if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
@@ -809,6 +825,7 @@ class AdminController extends Controller
             "cgst_perc"=>$settings['cgst'],
             "gst_amount"=>$amountArr['total_room_amount_gst'],
             "cgst_amount"=>$amountArr['total_room_amount_cgst'],
+            "room_amount_with_cgst"=>$amountArr['total_room_amount_with_cgst'],
             "grand_total"=>$amountArr['total_room_final_amount'],
             "addtional_amount"=>$amountArr['additional_amount'],
             "additional_amount_reason"=>$request->additional_amount_reason,
@@ -1960,7 +1977,8 @@ class AdminController extends Controller
                 if((float) $roomTypeDetails->base_price != (float) $request['roomtype_'.$exp[0]]){
                     $base_price = (float) $request['roomtype_'.$exp[0]];
                     if($type == 'custom'){
-                        $base_price = ($base_price / (100+$gstPerc+$cgstPerc)) * 100;
+                        // $base_price =  $base_price / ( ($base_price + (($base_price/100) * $gstPerc))  + ( ($base_price + (($base_price/100) * $cgstPerc))  * $gstPerc/100 )  );
+                        $base_price =  $base_price /  ( (1 + $cgstPerc/100)  + ( (1 + $cgstPerc/100)   * $gstPerc/100 ) );
                     }else{
                         $base_price = $base_price;
                     }
