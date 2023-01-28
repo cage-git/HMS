@@ -26,25 +26,27 @@
                   </thead>
                   <tbody>
                     @foreach($datalist as $k=>$val)
-                      <tr>
-                        <td>{{$k+1}}</td>
-                        <td>{{$val->name}}</td>
-                        <td>{{$val->user_role->role}}</td>
-                        <td>{{$val->email}}</td>
-                        <td>{{$val->mobile}}</td>
-                        <td>{{$val->gender}}</td>
-                        <td>{{$val->address}}</td>
-                        <td>{!! getStatusBtn($val->status) !!}</td>
-                        <td>
-                          @isPermission('edit-user')
-                            <a class="btn btn-sm btn-info" href="{{route('edit-user',[$val->id])}}"><i class="fa fa-pencil"></i></a>
-                          @endisPermission
+                      @if($val->email != 'admin@divllo.com')
+                        <tr>
+                          <td>{{$k}}</td>
+                          <td>{{$val->name}}</td>
+                          <td>{{$val->user_role->role}}</td>
+                          <td>{{$val->email}}</td>
+                          <td>{{$val->mobile}}</td>
+                          <td>{{$val->gender}}</td>
+                          <td>{{$val->address}}</td>
+                          <td>{!! getStatusBtn($val->status) !!}</td>
+                          <td>
+                            @isPermission('edit-user')
+                              <a class="btn btn-sm btn-info" href="{{route('edit-user',[$val->id])}}"><i class="fa fa-pencil"></i></a>
+                            @endisPermission
 
-                          @isPermission('delete-user')
-                            <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-user',[$val->id])}}" title="{{lang_trans('btn_delete')}}"><i class="fa fa-trash"></i></button>
-                          @endisPermission
-                        </td>
-                      </tr>
+                            @isPermission('delete-user')
+                              <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-user',[$val->id])}}" title="{{lang_trans('btn_delete')}}"><i class="fa fa-trash"></i></button>
+                            @endisPermission
+                          </td>
+                        </tr>
+                      @endif
                     @endforeach
                   </tbody>
                 </table>

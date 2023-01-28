@@ -2686,6 +2686,8 @@ Route::group(['prefix' => 'admin'], function() {
     	Route::any('/search-checkouts', 'ReportController@searchCheckouts')->name('search-checkouts');
     	Route::post('/export-checkouts', 'ReportController@searchCheckouts')->name('export-checkouts');
 
+		Route::any('/search-bladi', 'ReportController@searchBladi')->name('search-bladi');
+    	Route::post('/export-bladi', 'ReportController@searchBladi')->name('export-bladi');
     	Route::post('/search-expenses', 'ReportController@searchExpense')->name('search-expenses');
     	Route::post('/export-expenses', 'ReportController@searchExpense')->name('export-expenses');
 

@@ -115,7 +115,7 @@
 
                 <!-- Ehsan code  Tax id -->
                 <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_select_div">
-                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> <span id="number_validation" style="display:none;color:red;">Test</span></label>
                             <select class="js-example-data-ajax" id="search_idcard">
                                 <option value="" disable>Please enter a phone number and ID card number</option>
                             </select>
@@ -327,7 +327,7 @@
                         <!-- End Ehsan code -->
 
                       <div class="col-md-4 col-sm-4 col-xs-12">
-                        <label class="control-label"> {{lang_trans('txt_address')}} <span class="required">*</span></label>
+                        <label class="control-label"> {{lang_trans('txt_address')}} </label>
                         {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
                       </div>
                       <div class="col-md-4 col-sm-4 col-xs-12">
@@ -700,7 +700,7 @@
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-12">
                             <label class="control-label">{{lang_trans('txt_type_id')}} </label>
-                            {{ Form::select('persons_info[idcard_type][]',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
+                            {{ Form::select('persons_info[idcard_type][]',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"type_of_ids", 'placeholder'=>lang_trans('ph_select')]) }}
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-12">
                           <label class="control-label">{{lang_trans('txt_id_number')}} </label>
@@ -1061,10 +1061,10 @@
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
-                return {
-                    search_from_phone_idcard: params.term, 
-                    category: "user",
-                };
+                    return {
+                            search_from_phone_idcard: params.term, 
+                            category: "user",
+                        };
                 },
                 processResults: function (data) {
                     return {
@@ -1093,7 +1093,9 @@
             templateSelection: function(data){
                    return data.text;
                 },
-            // initSelection: initSelection,
+            // initSelection: function(data){
+            //     console.log(data);
+            // },
             });
 
            
@@ -1269,7 +1271,7 @@
         // mobile_input_div
 
         $(document).on('change', '#search_idcard', function(){
-            var val = $('#search_idcard').val();
+            var val = $('#search_idcard').val();      
             var guest_type = $('input:radio[name="guest_type"]:checked').val();
             console.log("val",val);
             getAjaxResponse('idcard_select_div', val, 'user', guest_type, 'search_idcard');
@@ -1347,8 +1349,11 @@
 
    //  end select fields
 
+
         $(document).on('keyup', '#idcard_no', function(){
+            
             var val = $('#idcard_no').val();
+            
             var guest_type = $('input[name=guest_type]').val();
             getData('idcard_no', val, 'user', guest_type);
         });
@@ -1394,6 +1399,7 @@
             $("#company_name").val(data_customer.name);
             $('#guest_type_category').val('existing_company');
             $("#company_gst_num").val(data_customer.company_gst_num);
+            $("#type_of_ids_selector").val(data_customer.idcard_type);
             $("#company_email").val(data_customer.email);
             $("#company_mobile").val(data_customer.mobile);                
             $("#company_address").val(data_customer.address);
@@ -1419,9 +1425,11 @@
                 $('#mobile_input_div').show();
                 $('#mobile_select_div').hide();
             }
-            console.log("testing", data_customer)
+            console.log("testing", data_customer);
+            
             $('#guest_type_category').val('existing');
             $("#idcard_no").val(data_customer.id_card_no);
+            $("#type_of_ids_selector").val(data_customer.idcard_type);
             $("#mobile").val(data_customer.mobile);
             $("#surname").val(data_customer.surname);
             $("#name").val(data_customer.name);
@@ -1445,6 +1453,7 @@
             $('#guest_type_category').val('new');
             $("#company_name").val('');
             $("#company_gst_num").val('');
+            $("#type_of_ids_selector").val('');
             $("#company_email").val('');
             $("#company_mobile").val('');                
             $("#company_address").val('');
@@ -1456,6 +1465,7 @@
 
         function setCustomerNull(){
             $('#guest_type_category').val('new');
+            $("#type_of_ids_selector").val('');
             $("#surname").val('');
             $("#name").val('');
             $("#middle_name").val('');

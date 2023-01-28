@@ -69,6 +69,9 @@
                   <div class="col-md-4 col-sm-4 col-xs-12">
                     <input type='text' id='txt_searchall' placeholder='Search Items...' class="form-control">
                   </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12 offset-col-md-1 offset-col-sm-1 offset-col-xs-1">
+                  <input type="checkbox" id="food_tax" name="food_tax" class=""> <b> {{lang_trans('txt_gst_apply')}} </b>
+                  </div>
                   <div class="col-md-8 col-sm-8 col-xs-12 text-right pull-right">
                       <button class="btn btn-success" type="submit">{{lang_trans('btn_submit')}}</button>
                   </div>

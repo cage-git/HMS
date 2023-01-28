@@ -33,9 +33,11 @@
      $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
      $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
      $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
-     $subTotalRoomAmount = (($totalRoomAmount+$roomAmountGst+$roomAmountCGst) - $roomAmountDiscount)+$additionalAmount;
+     // $subTotalRoomAmount = (($totalRoomAmount+$roomAmountGst+$roomAmountCGst) - $roomAmountDiscount)+$additionalAmount;
+     $subTotalRoomAmount = (($roomAmountWithCGstAmount + $roomAmountGst ) )+$additionalAmount;
      $advancePayment = $calculatedAmount['advancePayment'];
 
+     $finalAmount = $subTotalRoomAmount + $finalOrderAmount ;
      $dueAmount = $subTotalRoomAmount-$advancePayment;
 
 
@@ -329,7 +331,6 @@
                                 <th class="text-right">{{lang_trans('txt_subtotal')}}</th>
                                 <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalRoomAmount) }}</td>
                               </tr>
-                             
                               <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
                                 <th class="text-right">{{lang_trans('txt_cgst')}}</th>
                                 <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountCGst) }}</td>
@@ -446,7 +447,9 @@
                         <table class="table table-bordered">
                               <tr class="bg-warning">
                                 <th class="text-right">{{lang_trans('txt_grand_total')}}</th>
-                                <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($finalRoomAmount+$finalOrderAmount+$additionalAmount) }}</td>
+                                <!-- <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($finalRoomAmount+$finalOrderAmount+$additionalAmount) }}</td> -->
+                                <!-- change the logic of filnal price -->
+                                <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($finalAmount) }}</td>
                               </tr>
                         </table>
                       </div>

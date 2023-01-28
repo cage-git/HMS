@@ -1461,6 +1461,81 @@ $array = [
         "en"=>"Years",
         "ar"=>"السنوات",
         "hi"=>"वर्ष",
+    ], 
+    "sidemenu_bladi_report"=>[
+        "en"=>"Bladi Report",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_year"=>[
+        "en"=>"Year",
+        "ar"=>"السنوات",
+        "hi"=>"वर्ष",
+    ],
+    "txt_Month"=>[
+        "en"=>"Month",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_Jan"=>[
+        "en"=>"Januray",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_Feb"=>[
+        "en"=>"Februry",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_Mar"=>[
+        "en"=>"March",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_Apr"=>[
+        "en"=>"April",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_May"=>[
+        "en"=>"May",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_Jun"=>[
+        "en"=>"June",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_July"=>[
+        "en"=>"July",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_Aug"=>[
+        "en"=>"August",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_Sep"=>[
+        "en"=>"September",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_Oct"=>[
+        "en"=>"October",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_Nov"=>[
+        "en"=>"November",
+        "ar"=>"",
+        "hi"=>"",
+    ],
+    "txt_Dec"=>[
+        "en"=>"December",
+        "ar"=>"",
+        "hi"=>"",
     ],
     "txt_yes"=>[
         "en"=>"Yes",

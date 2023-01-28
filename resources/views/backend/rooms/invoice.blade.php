@@ -114,7 +114,9 @@
             $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
             $roomAmountWithCGstAmount = $calculatedAmount['totalRoomAmountWithCGstAmount'];
             $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
-            $subTotalRoomAmount = (($totalRoomAmount+$roomAmountGst+$roomAmountCGst) - $roomAmountDiscount)+$additionalAmount;
+            // change the subtotal 
+            //$subTotalRoomAmount = (($totalRoomAmount+$roomAmountGst+$roomAmountCGst) - $roomAmountDiscount)+$additionalAmount;
+            $subTotalRoomAmount = (($roomAmountWithCGstAmount + $roomAmountGst ) )+$additionalAmount;
             $advancePayment = $calculatedAmount['advancePayment'];
 
             $dueAmount = $subTotalRoomAmount-$advancePayment;
@@ -128,9 +130,12 @@
             $gstFoodApply = $calculatedAmount['gstFoodApply'];
             $totalOrdersAmount = $calculatedAmount['subtotalOrderAmount'];
             $finalOrderAmount = $calculatedAmount['finalOrderAmount'];
+            // Get the order additional value and reason
+            $additionalOrderAmount = $calculatedAmount['additionalOrderAmount'];
+            $additionalOrderAmountReason = $data_row->orders_info !=null ? $data_row->orders_info->additional_order_amount_reason:'';
 
 
-            $data_date = date('Y-m-d h:i:s', strtotime(str_replace('/','-', $data_row->check_out)));
+            $data_date = date('Y-m-d h:i:s', strtotime(str_replace('/','-', $data_row->created_at)));
             $zatca = [];
             $zatca[] = new Seller($settings['site_page_title']);
             $zatca[] = new TaxNumber($settings['gst_num']);
@@ -217,7 +222,7 @@
                                     {{$label_invoice_date}} :
                                 </strong>
                                 <spa class-inv-16n="">
-                                    {{dateConvert($data_row->check_out,'d-m-Y H:i')}}
+                                    {{dateConvert($data_row->created_at,'d-m-Y H:i')}}
                                 </spa>
                             </div>
                         </div>
@@ -422,9 +427,10 @@
 
                         <tr>
                             <td class="class-inv-17" colspan="6">
+                                <!-- add Gst tax value correctly -->
                                 @php
                                     $zatca[] = new InvoiceTotalAmount(numberFormat($subTotalRoomAmount));
-                                    $zatca[] = new InvoiceTaxAmount(($roomAmountGst+$roomAmountCGst));
+                                    $zatca[] = new InvoiceTaxAmount(($roomAmountGst));
                                     $generatedString = GenerateQrCode::fromArray($zatca);
                                 @endphp
                                 <img class="center-block mt-5" src="{!! @$generatedString->render() !!}" style="width: 150px;">
@@ -506,7 +512,7 @@
                 <tbody>
                     @forelse($data_row->orders_items as $k=>$val)
                       @php
-                        $totalOrdersAmount = $totalOrdersAmount + ($val->item_qty*$val->item_price);
+                        $totalOrdersAmount = $totalOrdersAmount;
                       @endphp
                         <tr>
                             <td class="text-center" colspan="2">{{$k+1}}</td>
@@ -532,6 +538,14 @@
                         <td class="text-right">{{ numberFormat($foodAmountGst) }}</td>
                     </tr>
                     @endif
+                    <!-- add additional value and reason into orders -->
+                    @if($additionalOrderAmount>0)
+                        <tr>
+                            <th class="text-right" colspan="6">{{$additionalOrderAmountReason}}</th>
+                            <td class="text-right">{{ numberFormat($additionalOrderAmount) }}</td>
+                        </tr>
+                    @endif
+
                         @if($foodAmountCGst>0)
                     <tr>
                         <th class="text-right" colspan="6">{{$label_c_tax}} ({{$cgstPercFood}} %)</th>
@@ -552,6 +566,21 @@
                     <tr>
                         <th class="text-right" colspan="2">{{$label_amount_in_words}}:-</th>
                         <td class="class-inv-17" colspan="5">{{ getIndianCurrency(numberFormat($finalOrderAmount)) }}</td>
+                    </tr>
+                    <tr>
+                        <!-- add QR code into food invoice  -->
+                    @php
+                        $data_date = date('Y-m-d h:i:s', strtotime(str_replace('/','-', $data_row->created_at)));
+                        $zatca = [];
+                        $zatca[] = new Seller($settings['site_page_title']);
+                        $zatca[] = new TaxNumber($settings['gst_num']);
+                        $zatca[] = new InvoiceDate($data_date);
+                        $zatca[] = new InvoiceTotalAmount(numberFormat($finalOrderAmount));
+                        $zatca[] = new InvoiceTaxAmount(($foodAmountGst));
+                        $generatedString = GenerateQrCode::fromArray($zatca);
+                        
+                    @endphp
+                    <td class="class-inv-17" colspan="7"><img class="center-block mt-5" src="{!! @$generatedString->render() !!}" style="width: 150px;"></td>
                     </tr>
                     <tr>
                         <td colspan="3">

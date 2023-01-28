@@ -7,6 +7,115 @@ var datetimePickerOptions = {
 $(document).on('click', '[data-toggle="lightbox"]', function(event) {
     event.preventDefault();
 });
+
+// add for load page and calculate every thing
+$(document).ready(function() { 
+  
+  var apply_gst_val = $('#apply_gst').val();
+  if(apply_gst_val == true){
+      globalVar.applyFoodGst = 1;
+  } else if(apply_gst_val == false){
+      globalVar.applyFoodGst = 0;
+  }
+  console.log("test", apply_gst_val);
+  // $(this).val(globalVar.applyFoodGst);
+  paymentInfo();
+
+
+
+  function paymentInfo(){
+    if(globalVar.durationOfStayDays>=0) $('#td_dur_stay').html(globalVar.durationOfStayDays);
+      console.log("tester 1");
+    //start room Amount Calculation
+      var totalRoomAmount = 0;
+      $('.per_room_tr').each(function(i, selector){
+        const perRoomDur = $(selector).find('.duration_of_per_room').text();
+        const perRoomPrice = $(selector).find('.per_room_price').val();
+        const perRoomTotalAmount = ( parseFloat(perRoomPrice)*parseFloat(perRoomDur) );
+        totalRoomAmount = totalRoomAmount + perRoomTotalAmount;
+
+        $(selector).find('.td_total_per_room_amount').html(currency_symbol+' '+parseFloat(perRoomTotalAmount).toFixed(2));
+      });
+      gstCalculation((parseFloat(totalRoomAmount) - parseFloat(globalVar.discount)),'room_gst');
+
+      $('.td_total_room_amount').html(currency_symbol+' '+parseFloat(totalRoomAmount).toFixed(2));
+      $('#total_room_amount').val(parseFloat(totalRoomAmount).toFixed(2));
+
+      var finalRoomAmount = ( parseFloat(totalRoomAmount) + parseFloat(globalVar.gstRoomAmount)+parseFloat(globalVar.cgstRoomAmount)-parseFloat(globalVar.advanceAmount)-parseFloat(globalVar.discount) );
+      $('#td_room_final_amount').html(currency_symbol+' '+parseFloat(finalRoomAmount).toFixed(2));
+      $('#total_room_final_amount').val(parseFloat(finalRoomAmount).toFixed(2));
+
+    //start foodOrders Amount Calculation
+      gstCalculation((parseFloat(globalVar.totalOrdersAmount) - parseFloat(globalVar.foodOrderDiscount)),'food_gst');
+
+      var finalOrderAmount = ( parseFloat(globalVar.totalOrdersAmount)+parseFloat(globalVar.gstOrderAmount)+parseFloat(globalVar.cgstOrderAmount)-parseFloat(globalVar.foodOrderDiscount) );
+      $('#td_order_final_amount').html(currency_symbol+' '+parseFloat(finalOrderAmount).toFixed(2));
+      $('#total_order_final_amount').val(parseFloat(finalOrderAmount).toFixed(2));
+
+    //start Final Amount Calculation
+
+
+      var finalAmount = ( parseFloat(finalRoomAmount)+parseFloat(finalOrderAmount)+parseFloat(globalVar.additionalAmount)+ parseFloat(globalVar.additionalOrderAmount) );
+      var grandRoomAmount = ( parseFloat(finalRoomAmount)+parseFloat(globalVar.additionalAmount) );
+      var finalFoodAmount = ( parseFloat(finalOrderAmount)+parseFloat(globalVar.additionalOrderAmount) );
+      
+      // $('#td_total_food_final_amount').html(currency_symbol+' '+parseFloat(finalAmount).toFixed(2) );
+      // $('#total_food_final_amount').val(parseFloat(currency_symbol+' '+finalOrderAmount).toFixed(2));
+
+      // Additional room  amount cal
+      $('#td_total_grand_room_amount').html(currency_symbol+' '+parseFloat(grandRoomAmount).toFixed(2) );
+      $('#total_grand_room_amount').val(parseFloat(grandRoomAmount).toFixed(2));
+      
+      // Additional food order amount cal
+      $('#td_total_food_final_amount').html(currency_symbol+' '+parseFloat(finalFoodAmount).toFixed(2) );
+      $('#total_food_final_amount').val(parseFloat(finalFoodAmount).toFixed(2));
+
+      // final amount cal
+      $('#td_final_amount').html(currency_symbol+' '+parseFloat(finalAmount).toFixed(2) );
+      $('#total_final_amount').val(parseFloat(finalAmount).toFixed(2));
+  }
+
+  function gstCalculation(amount,type){
+    if(type=='room_gst'){
+      // globalVar.gstRoomAmount = (globalVar.gstPercent/100)*parseFloat(amount);
+      // globalVar.cgstRoomAmount = (globalVar.cgstPercent/100)*parseFloat(amount);
+
+      // $('#total_room_amount_gst').val(globalVar.gstRoomAmount);
+      // $('#total_room_amount_cgst').val(globalVar.cgstRoomAmount);
+
+      // $('#td_total_room_amount_gst').html(currency_symbol+' '+parseFloat(globalVar.gstRoomAmount).toFixed(2));
+      // $('#td_total_room_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstRoomAmount).toFixed(2));
+      globalVar.cgstRoomAmount = (globalVar.cgstPercent/100)*parseFloat(amount);
+      globalVar.gstRoomAmount = (globalVar.gstPercent/100)*parseFloat(amount + globalVar.cgstRoomAmount);
+     
+
+      $('#total_room_amount_gst').val(globalVar.gstRoomAmount);
+      $('#total_room_amount_cgst').val(globalVar.cgstRoomAmount);
+      $('#total_room_amount_with_cgst').val(amount + globalVar.cgstRoomAmount);
+
+      $('#td_total_room_amount_gst').html(currency_symbol+' '+parseFloat(globalVar.gstRoomAmount).toFixed(3));
+      $('#td_total_room_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstRoomAmount).toFixed(3));
+      $('#td_total_room_amount_with_cgst').html(currency_symbol+' '+parseFloat(amount + globalVar.cgstRoomAmount).toFixed(3));
+    } else{
+      if(globalVar.applyFoodGst==1){
+        globalVar.gstOrderAmount = globalVar.grandTotalFoodGst;
+        // globalVar.gstOrderAmount = (globalVar.gstPercentFood/100)*parseFloat(amount).toFixed(2);
+        globalVar.cgstOrderAmount = (globalVar.cgstPercentFood/100)*parseFloat(amount).toFixed(2);
+      } else {
+        globalVar.gstOrderAmount = '0.00';
+        globalVar.cgstOrderAmount = '0.00';
+      }
+      $('#total_order_amount_gst').val(parseFloat(globalVar.gstOrderAmount).toFixed(2));
+     $('#total_order_amount_cgst').val(parseFloat(globalVar.cgstOrderAmount).toFixed(2));
+
+      $('#td_order_amount_gst').html(currency_symbol+' '+parseFloat(globalVar.gstOrderAmount).toFixed(2));
+     $('#td_order_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstOrderAmount).toFixed(2));
+    }
+    return;
+
+  }
+});
+
 $('#stock_is').on('change',function(){
     $('#price_section').hide();
     $('#room_section').hide();
@@ -134,6 +243,7 @@ if(globalVar.page=='checkout'){
       } else if($(this).prop("checked") == false){
           globalVar.applyFoodGst = 0;
       }
+      console.log("tax 20%");
       $(this).val(globalVar.applyFoodGst);
       paymentInfo();
   });
@@ -145,6 +255,15 @@ if(globalVar.page=='checkout'){
       }
       paymentInfo();
   });
+// If click on additional amount and calculate every value
+  $("#additional_order_amount").on("keyup click",function(){
+    if($(this).val()>0) {
+      globalVar.additionalOrderAmount = $(this).val();
+    } else {
+      globalVar.additionalOrderAmount = 0;
+    }
+    paymentInfo();
+});
   function paymentInfo(){
     if(globalVar.durationOfStayDays>=0) $('#td_dur_stay').html(globalVar.durationOfStayDays);
 
@@ -174,10 +293,24 @@ if(globalVar.page=='checkout'){
       $('#td_order_final_amount').html(currency_symbol+' '+parseFloat(finalOrderAmount).toFixed(2));
       $('#total_order_final_amount').val(parseFloat(finalOrderAmount).toFixed(2));
 
-    //start Final Amount Calculation
-      var finalAmount = ( parseFloat(finalRoomAmount)+parseFloat(finalOrderAmount)+parseFloat(globalVar.additionalAmount) );
+    //start Final Amount Calculation 
+      var finalAmount = ( parseFloat(finalRoomAmount)+parseFloat(finalOrderAmount)+parseFloat(globalVar.additionalAmount)+  parseFloat(globalVar.additionalOrderAmount) );
       $('#td_final_amount').html(currency_symbol+' '+parseFloat(finalAmount).toFixed(2) );
       $('#total_final_amount').val(parseFloat(finalAmount).toFixed(2));
+      
+   
+
+      // grand total room amount
+      var grandRoomAmount = ( parseFloat(finalRoomAmount)+parseFloat(globalVar.additionalAmount));
+      $('#td_total_grand_room_amount').html(currency_symbol+' '+parseFloat(grandRoomAmount).toFixed(2));
+      $('#total_grand_room_amount').val(parseFloat(grandRoomAmount).toFixed(2));
+      console.log(grandRoomAmount);
+
+      // food value cal
+      var finalFoodAmount = ( parseFloat(finalOrderAmount)+parseFloat(globalVar.additionalOrderAmount) );
+      $('#td_total_food_final_amount').html(currency_symbol+' '+parseFloat(finalFoodAmount).toFixed(2) );
+      $('#total_food_final_amount').val(parseFloat(finalFoodAmount).toFixed(2));
+      // $('#total_food_final_amount').val(parseFloat(currency_symbol+' '+finalFoodAmount).toFixed(2));
   }
 
   function gstCalculation(amount,type){
@@ -202,18 +335,23 @@ if(globalVar.page=='checkout'){
       $('#td_total_room_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstRoomAmount).toFixed(3));
       $('#td_total_room_amount_with_cgst').html(currency_symbol+' '+parseFloat(amount + globalVar.cgstRoomAmount).toFixed(3));
     } else{
+      
       if(globalVar.applyFoodGst==1){
-        globalVar.gstOrderAmount = (globalVar.gstPercentFood/100)*parseFloat(amount).toFixed(2);
+        // globalVar.gstOrderAmount = globalVar.grandTotalFoodGst;
         globalVar.cgstOrderAmount = (globalVar.cgstPercentFood/100)*parseFloat(amount).toFixed(2);
+        globalVar.gstOrderAmount = (globalVar.OrderTaxPercentage/100)*parseFloat(amount).toFixed(2); 
+        // globalVar.gstOrderAmount = (globalVar.OrderTaxPercentage/100)*parseFloat(amount).toFixed(2); //globalVar.grandTotalFoodGst;
+        // globalVar.gstOrderAmount = (globalVar.gstPercentFood/100)*parseFloat(amount).toFixed(2);
+        // globalVar.cgstOrderAmount = (globalVar.cgstPercentFood/100)*parseFloat(amount).toFixed(2);
       } else {
         globalVar.gstOrderAmount = '0.00';
         globalVar.cgstOrderAmount = '0.00';
       }
       $('#total_order_amount_gst').val(parseFloat(globalVar.gstOrderAmount).toFixed(2));
-      $('#total_order_amount_cgst').val(parseFloat(globalVar.cgstOrderAmount).toFixed(2));
+     $('#total_order_amount_cgst').val(parseFloat(globalVar.cgstOrderAmount).toFixed(2));
 
       $('#td_order_amount_gst').html(currency_symbol+' '+parseFloat(globalVar.gstOrderAmount).toFixed(2));
-      $('#td_order_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstOrderAmount).toFixed(2));
+     $('#td_order_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstOrderAmount).toFixed(2));
     }
     return;
 

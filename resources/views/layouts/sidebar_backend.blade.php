@@ -47,6 +47,7 @@ $permissionsArr = getRoutePermission();
                   <ul class="nav child_menu">
                       @if($permissionsArr['reports']) <li><a href="{{route('reports', ['type'=>'transactions'])}}">{{lang_trans('sidemenu_transactions_report')}} </a></li> @endif
                       @if($permissionsArr['reports']) <li><a href="{{route('reports', ['type'=>'checkouts'])}}">{{lang_trans('sidemenu_checkout_report')}} </a></li> @endif
+                      @if($permissionsArr['reports']) <li><a href="{{route('reports', ['type'=>'bladi_report'])}}">{{lang_trans('sidemenu_bladi_report')}} </a></li> @endif
                       @if($permissionsArr['reports']) <li><a href="{{route('reports', ['type'=>'expense'])}}">{{lang_trans('sidemenu_expense_report')}} </a></li> @endif
                       @if($permissionsArr['stock-history']) <li><a href="{{route('stock-history')}}">{{lang_trans('sidemenu_stock_report')}} </a></li> @endif
                   </ul>

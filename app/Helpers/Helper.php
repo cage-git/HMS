@@ -557,7 +557,8 @@ function getRoomTypesListWithRooms($listType = ''){
             select(
                 'id',
                 'base_price',
-                DB::raw('CONCAT(title, " (Price||", TRUNCATE((base_price + ( ((base_price/100) * '.$gstPerc.') + ((base_price/100) * '.$cgstPerc.') ) ) ,2),")") AS title')
+                DB::raw('CONCAT(title, " (Price||", TRUNCATE(  (  (base_price + ((base_price/100) * '.$cgstPerc.'))  + (  (base_price + ((base_price/100) * '.$cgstPerc.'))   * '.$gstPerc.'/100)  ) ,5),")") AS title')
+                // DB::raw('CONCAT(title, " (Price||", TRUNCATE((base_price + ( ((base_price/100) * '.$gstPerc.') + ((base_price/100) * '.$cgstPerc.') ) ) ,2),")") AS title')
         )->
             with('rooms')
             ->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
@@ -704,14 +705,20 @@ function getBookedRooms($params = []){
 
                             $new_dr = null;
                             if(isset($v->check_in) && isset($v->check_out)){
-                                $new_dr = dateRange(($v->check_in), ($v->check_out),'+1 day','Y-m-d H:i:s');
+                                /* the checkin time will be 00:00:00 because when the time change it is not calculated conflict and make room available. */ 
+                                $checkIn = dateConvert($v->check_in,'Y-m-d 00:00:00');
+                                $checkOut = dateConvert($v->check_out,'Y-m-d H:i:s');
+                                $new_dr = dateRange($checkIn, $checkOut,'+1 day','Y-m-d H:i:s');
                             }
 
-                            if(in_array(dateConvert($params['checkin_date'],'Y-m-d H:i:s'), $new_dr)){
+                            if(in_array(dateConvert($params['checkin_date'],'Y-m-d H:i:s'), $new_dr) || in_array(dateConvert($params['checkout_date'],'Y-m-d H:i:s'), $new_dr) ){
                                 $isBooked = true;
-                            }else {
-                                $isBooked = false;
                             }
+                            /* This logic didn't find correct conflict therefore i commented this else statement  */
+                            // else {
+                            //     $isBooked = false;
+                            //     // print_r("_|*_".$v->room_id."_n_".$v->is_checkout."_*|_");
+                            // }
 
 //                            dd([
 //                                new DateTime($v->check_out),
@@ -725,7 +732,7 @@ function getBookedRooms($params = []){
                         }
                     }
 
-                    if($v->is_checkout == 0 && $isBooked){
+                    if($v->is_checkout == 0 && $isBooked){        
                         $bookedRooms[$v->room_id] = $v->room_id;
                         $bookedRoomst[$v->room_id] = [
                             'room_id'=>$v->room_id,
@@ -1286,7 +1293,9 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
         foreach($val->booked_rooms as $key=>$roomInfo){
             $durOfStay = dateDiff(dateConvert($roomInfo->check_in), dateConvert($roomInfo->check_out), 'days');
             if($default_stay){
-                $durOfStay = ($durOfStay == 0) ? 1 : $durOfStay;
+                /* If i swaped a room and the date is current date it showed that we already stayed this room for one day and make a wrong calculation  */
+                // $durOfStay = ($durOfStay == 0) ? 1 : $durOfStay;
+                $durOfStay = ($durOfStay == 0) ? 0 : $durOfStay;
             }
             $perRoomPrice = ($durOfStay * $roomInfo->room_price);
 
@@ -1294,47 +1303,67 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
         }
     }
 
-    $gstPerc = $val->gst_perc;
-    $cgstPerc = $val->cgst_perc;
+    $gstPerc = $val->gst_perc!= null ?   $val->gst_perc: $settings['gst'];
+    $cgstPerc = $val->cgst_perc!= null ?   $val->cgst_perc: $settings['cgst'];
     if($val->is_checkout == 0 && $isTotalWithGst == 1){
         $gstPerc = $settings['gst'];
         $cgstPerc = $settings['cgst'];
     }
     $totalRoomAmountDiscount = ($val->discount > 0 ) ? $val->discount : 0;
     $gstCal = gstCalc(($totalAmount - $totalRoomAmountDiscount),'room_amount', $gstPerc, $cgstPerc);
+    // If database has cgst and gst amount then fetch there otherwise calculate here
+    // $totalRoomAmountGst = $gstCal['gst'];
+    // $totalRoomAmountCGst = $gstCal['cgst'];
+    $totalRoomAmountGst = $val->gst_amount != null ? $val->gst_amount:$gstCal['gst'];
+    $totalRoomAmountCGst = $val->cgst_amount != null ? $val->cgst_amount:$gstCal['cgst'];
+    
 
-    $totalRoomAmountGst = $gstCal['gst'];
-    $totalRoomAmountCGst = $gstCal['cgst'];
     $totalRoomAmountWithCGstAmount = 0;
-    if($val->room_amount_with_cgst > 0)
+    if($val->room_amount_with_cgst > 0){
+        // $totalRoomAmountWithCGstAmount = $val->room_amount_with_cgst;
         $totalRoomAmountWithCGstAmount = $val->room_amount_with_cgst;
-    else
-        $totalRoomAmountWithCGstAmount =  $totalAmount + $gstCal['cgst'];
-
+    }else{
+        // $totalRoomAmountWithCGstAmount =  $totalAmount + $gstCal['cgst'];
+        $totalRoomAmountWithCGstAmount =  $totalAmount + $totalRoomAmountCGst;
+    }
     $advancePayment = ($val->advance_payment > 0 ) ? $val->advance_payment : 0;
     $additionalAmount = ($val->addtional_amount > 0 ) ? $val->addtional_amount : 0;
+    $grandRoomTotal = $val->grand_room_total;
 
-    $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountCGst-$advancePayment-$totalRoomAmountDiscount;
-
+    // $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountCGst-$advancePayment-$totalRoomAmountDiscount;
+    $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountWithCGstAmount-$advancePayment-$totalRoomAmountDiscount;
+    // $totalRoomAmountDiscount += $totalRoomAmountGst;
 
     //start calculation of order amount
     $totalOrderAmountGst = $totalOrderAmountCGst = $totalOrderAmountDiscount = $orderGstPerc = $orderCGstPerc = 0;
     $gstFoodApply = 1;
+    $additionalOrderAmount = 0;
+    $additionalOrderAmountReason = '';
 
     $orderInfo = getOrderInfo($val->id);
     if($orderInfo){
+        if($orderInfo->gst_amount){
+            $gst_value = $orderInfo->gst_amount;
+        }
         $orderGstPerc = $orderInfo->gst_perc;
         $orderCGstPerc = $orderInfo->cgst_perc;
 
         $totalOrderAmountDiscount = $orderInfo->discount;
         $gstFoodApply = ($orderInfo->gst_apply==1) ? 1 : 0;
+        $additionalOrderAmount = $orderInfo->additional_order_amount;
+        $additionalOrderAmountReason = $orderInfo->additional_order_amount_reason;
     }
 
 
     $totalOrdersAmount = 0;
+    $order_gst = 0;
+    $gst=0;
     if($val->orders_items->count()>0){
         foreach($val->orders_items as $k=>$orderVal){
+            // correct the order amount and tax logic
             $totalOrdersAmount = $totalOrdersAmount + ($orderVal->item_qty*$orderVal->item_price);
+            // $order_gst = ($orderVal->item_qty * $orderVal->item_tax);
+            // $gst = $gst + $order_gst;  
         }
     }
 
@@ -1342,12 +1371,20 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
         $orderGstPerc = $settings['food_gst'];
         $orderCGstPerc = $settings['food_cgst'];
     }
-    $gst = gstCalc($totalOrdersAmount,'food_amount',$orderGstPerc,$orderCGstPerc);
-    $totalOrderAmountGst = $gst['gst'];
-    $totalOrderAmountCGst = $gst['cgst'];
+    // find the gst tax on order items from database otherwise from calculation
+    if($orderInfo && $orderInfo->gst_amount){
+        $gst = $orderInfo->gst_amount;
+    }else{
+        $gst_values = gstCalc($totalOrdersAmount,'food_amount',$orderGstPerc,$orderCGstPerc);
+        $gst = $gst_values['gst'];
+    }
+    $totalOrderAmountGst = $gst; //$gst['gst']; //  $gst;
+    // $totalOrderAmountCGst = $gst; //$gst['cgst'];
 
-    $finalOrderAmount = ($totalOrdersAmount+$totalOrderAmountGst+$totalOrderAmountCGst-$totalOrderAmountDiscount);
 
+    // $finalOrderAmount = ($totalOrdersAmount+$totalOrderAmountGst+$totalOrderAmountCGst-$totalOrderAmountDiscount);
+    // $finalOrderAmount = ($totalOrdersAmount+$totalOrderAmountCGst-$totalOrderAmountDiscount);
+    $finalOrderAmount = ($totalOrdersAmount+$totalOrderAmountGst+$additionalOrderAmount -$totalOrderAmountDiscount);
     return [
         'totalRoomGstPerc' => checkAmount($gstPerc),
         'totalRoomCGstPerc' => checkAmount($cgstPerc),
@@ -1357,6 +1394,7 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
         'totalRoomAmountDiscount'=> checkAmount($totalRoomAmountDiscount),
         'subtotalRoomAmount'=> checkAmount($totalAmount),
         'finalRoomAmount'=> checkAmount($finalRoomAmount),
+        'grandRoomTotal' => checkAmount($grandRoomTotal),
 
         'totalOrderGstPerc' => checkAmount($orderGstPerc),
         'totalOrderCGstPerc' => checkAmount($orderCGstPerc),
@@ -1366,6 +1404,7 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
         'subtotalOrderAmount'=> checkAmount($totalOrdersAmount),
         'finalOrderAmount'=> checkAmount($finalOrderAmount),
         'gstFoodApply'=> checkAmount($gstFoodApply),
+        'additionalOrderAmount' => checkAmount($additionalOrderAmount),
 
         'advancePayment'=> checkAmount($advancePayment),
         'additionalAmount'=> checkAmount($additionalAmount),

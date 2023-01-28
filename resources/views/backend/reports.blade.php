@@ -171,6 +171,73 @@
     </div>
   @endif
 
+
+  @if($report_of == 'bladi_report')
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>{{lang_trans('txt_bladi_report')}}</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br/>
+                     {{ Form::model($search_data,array('url'=>route('search-bladi'),'id'=>"search-bladi", 'class'=>"form-horizontal form-label-left")) }}
+                <!-- These are the filter of customer, payment and room types  -->
+                  <!-- <div class="form-group col-sm-2">
+                    <label class="control-label">{{lang_trans('txt_guest')}}</label>
+                    {{Form::text('customer_id',null,['class'=>"form-", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
+                  </div>
+                   <div class="form-group col-sm-2">
+                    <label class="control-label">{{lang_trans('txt_room_type')}}</label>
+                    {{Form::select('room_type_id',$roomtypes_list,null,['class'=>"form-control",'placeholder'=>lang_trans('ph_select')])}}
+                  </div> 
+                  <div class="form-group col-sm-2">
+                    <label class="control-label">{{lang_trans('txt_payment_status')}}</label>
+                    {{Form::select('payment_status',config('constants.PAYMENT_STATUS'),null,['class'=>"form-control",'placeholder'=>lang_trans('ph_select')])}}
+                  </div> -->
+                  <div class="form-group col-sm-2">
+                    <label class="control-label">{{lang_trans('txt_year')}}</label>
+                    <select name="report_year"  class="form-control" placeholder="{{lang_trans('ph_select')}}">
+                      
+                    <?php 
+                      foreach($search_data['checkout_years'] as $val)
+                      {
+                          echo '<option value='.$val->year.'>'.$val->year.'</option>';
+                      } ?>
+                    </select>
+                    <!-- {{Form::text('date_from',null,['class'=>"form-control datepicker", 'placeholder'=>lang_trans('ph_date_from')])}} -->
+                  </div>
+                  <div class="form-group col-sm-2">
+                    <label class="control-label">{{lang_trans('txt_Month')}}</label>
+                    <!-- {{Form::text('date_to',null,['class'=>"form-control datepicker", 'data-date-format' => "yyyy", 'placeholder'=>lang_trans('ph_date_to')])}} -->
+                    <select name="report_month"  class="form-control" placeholder="{{lang_trans('ph_select')}}">
+                      <option value="01">{{lang_trans('txt_Jan')}}</option>
+                      <option value="02">{{lang_trans('txt_Feb')}}</option>
+                      <option value="03">{{lang_trans('txt_Mar')}}</option>
+                      <option value="04">{{lang_trans('txt_Apr')}}</option>
+                      <option value="05">{{lang_trans('txt_May')}}</option>
+                      <option value="06">{{lang_trans('txt_Jun')}}</option>
+                      <option value="07">{{lang_trans('txt_Jul')}}</option>
+                      <option value="08">{{lang_trans('txt_Aug')}}</option>
+                      <option value="09">{{lang_trans('txt_Sep')}}</option>
+                      <option value="10">{{lang_trans('txt_Oct')}}</option>
+                      <option value="11">{{lang_trans('txt_Nov')}}</option>
+                      <option value="12">{{lang_trans('txt_Dec')}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <br/>
+                    <button class="btn btn-success search-btn" name="submit_btn" value="search" type="submit">{{lang_trans('btn_search')}}</button>
+                    <button class="btn btn-primary export-btn" name="submit_btn" value="export" type="submit">{{lang_trans('btn_export')}}</button>
+                  </div>
+                {{ Form::close() }}
+                </div>
+            </div>
+        </div>
+    </div>
+  @endif
+
   @if($report_of == 'expense')
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
@@ -208,5 +275,7 @@
 </div>
 <script>
       globalVar.customerList = {!! json_encode($customer_list) !!};
+
+      
     </script>
 @endsection

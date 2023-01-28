@@ -54,6 +54,72 @@ $totalAmount = 0;
     </div>
   @endif
 
+  @if($list=='bladi')
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+              <h2>{{lang_trans('heading_filter_bladi')}}</h2>
+              <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+              {{ Form::model($search_data,array('url'=>route('search-bladi'),'id'=>"search-bladi", 'class'=>"form-horizontal form-label-left")) }}
+              <!-- These are the filter of customer, payment and room types  -->
+              <!-- <div class="form-group col-sm-2">
+                  <label class="control-label">{{lang_trans('txt_guest')}}</label>
+                  {{Form::select('customer_id',$customer_list,null,['class'=>"form-control", "placeholder"=>lang_trans('ph_select')])}}
+                </div>
+                <div class="form-group col-sm-2">
+                  <label class="control-label">{{lang_trans('txt_room_type')}}</label>
+                  {{Form::select('room_type_id',$roomtypes_list,null,['class'=>"form-control",'placeholder'=>lang_trans('ph_select')])}}
+                </div>
+                <div class="form-group col-sm-2">
+                  <label class="control-label">{{lang_trans('txt_payment_status')}}</label>
+                  {{Form::select('payment_status',config('constants.PAYMENT_STATUS'),null,['class'=>"form-control",'placeholder'=>lang_trans('ph_select')])}}
+                </div> -->
+            
+                <div class="form-group col-sm-2">
+                    <label class="control-label">{{lang_trans('txt_year')}}</label>
+                    <select name="report_year"  class="form-control" placeholder="{{lang_trans('ph_select')}}">
+                      
+                    <?php 
+                      foreach($search_data['checkout_years'] as $val)
+                      {
+                          echo '<option value='.$val->year.'>'.$val->year.'</option>';
+                      } ?>
+                    </select>
+                  </div>
+                  <div class="form-group col-sm-2">
+                    <label class="control-label">{{lang_trans('txt_Month')}}</label>
+                    <select name="report_month"  class="form-control" placeholder="{{lang_trans('ph_select')}}">
+                      <option value="01" @if($search_data['report_month'] == '01') selected @endif >{{lang_trans('txt_Jan')}}</option>
+                      <option value="02" @if($search_data['report_month'] == '02') selected @endif>{{lang_trans('txt_Feb')}}</option>
+                      <option value="03" @if($search_data['report_month'] == '03') selected @endif >{{lang_trans('txt_Mar')}}</option>
+                      <option value="04" @if($search_data['report_month'] == '04') selected @endif>{{lang_trans('txt_Apr')}}</option>
+                      <option value="05" @if($search_data['report_month'] == '05') selected @endif>{{lang_trans('txt_May')}}</option>
+                      <option value="06" @if($search_data['report_month'] == '06') selected @endif>{{lang_trans('txt_Jun')}}</option>
+                      <option value="07" @if($search_data['report_month'] == '07') selected @endif>{{lang_trans('txt_Jul')}}</option>
+                      <option value="08" @if($search_data['report_month'] == '08') selected @endif>{{lang_trans('txt_Aug')}}</option>
+                      <option value="09" @if($search_data['report_month'] == '09') selected @endif>{{lang_trans('txt_Sep')}}</option>
+                      <option value="10" @if($search_data['report_month'] == '10') selected @endif>{{lang_trans('txt_Oct')}}</option>
+                      <option value="11" @if($search_data['report_month'] == '11') selected @endif>{{lang_trans('txt_Nov')}}</option>
+                      <option value="12" @if($search_data['report_month'] == '12') selected @endif>{{lang_trans('txt_Dec')}}</option>
+                    </select>
+                  </div>
+                <div class="form-group col-sm-4">
+                  <br/>
+                   <button class="btn btn-success search-btn" name="submit_btn" value="search" type="submit">{{lang_trans('btn_search')}}</button>
+                   <button class="btn btn-primary export-btn" name="submit_btn" value="export" type="submit">{{lang_trans('btn_export')}}</button>
+                </div>
+              {{ Form::close() }}
+            </div>
+          </div>
+        </div>
+    </div>
+  @endif
+
+
+
   @if($list=='check_ins')
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -68,8 +134,9 @@ $totalAmount = 0;
                     <thead>
                       <tr>
                         <th>{{lang_trans('txt_sno')}}</th>
-                          <th>{{lang_trans('txt_reservation_type')}}</th>
-                          <th>{{lang_trans('txt_guest_name')}}</th>
+                        <th>{{lang_trans('txt_action')}}</th>
+                        <th>{{lang_trans('txt_reservation_type')}}</th>
+                        <th>{{lang_trans('txt_guest_name')}}</th>
                         <th>{{lang_trans('txt_mobile_num')}}</th>
                         <th>{{lang_trans('txt_email')}}</th>
                         <th>{{lang_trans('txt_room')}}</th>
@@ -77,7 +144,7 @@ $totalAmount = 0;
                         <th>{{lang_trans('txt_checkout')}}</th>
                         <th>{{lang_trans('txt_total_amount')}}</th>
                         <th>{{lang_trans('txt_due_amount')}}</th>
-                        <th>{{lang_trans('txt_action')}}</th>
+                        
                       </tr>
                     </thead>
                     <tbody>
@@ -106,28 +173,7 @@ $totalAmount = 0;
                           @endphp
                           <tr @if($val->reservation_type == 1) style="background: lightgoldenrodyellow" @endif>
                           <td>{{$i}}</td>
-                              <td>
-                                  @if($val->reservation_type == 1)
-                                      Booking
-                                  @else
-                                      Check-in
-                                  @endif
-                              </td>
-                          <td>{{($val->customer) ? $val->customer->name : 'NA'}}</td>
-                          <td>{{($val->customer) ? $val->customer->mobile : 'NA'}}</td>
-                          <td>{{($val->customer) ? $val->customer->email : 'NA'}}</td>
-                          <td>
-                            <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#booked_room_{{$val->id}}">{{lang_trans('btn_view')}}</button>
-                            @include('backend/model/booked_rooms_modal',['val'=>$val])
-                          </td>
-                          <td>{{dateConvert($val->check_in,'d-m-Y H:i')}}</td>
-                          <td>{{dateConvert($val->check_out,'d-m-Y H:i')}}</td>
-                          <td>{{getCurrencySymbol()}} {{numberFormat($calc['finalRoomAmount']+$calc['finalOrderAmount']+$calc['additionalAmount'])}}</td>
-                          <td>
 
-                              {{getCurrencySymbol()}}
-                              {{($dueAmount) ? number_format((float)$dueAmount, 2, '.', '') : 0}}
-                          </td>
                           <td>
                               <div class="btn-group">
                                   <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -175,6 +221,30 @@ $totalAmount = 0;
                               @endif
 
             </td>
+
+                          <td>
+                              @if($val->reservation_type == 1)
+                                  Booking
+                              @else
+                                  Check-in
+                              @endif
+                          </td>
+                          <td>{{($val->customer) ? $val->customer->name : 'NA'}}</td>
+                          <td>{{($val->customer) ? $val->customer->mobile : 'NA'}}</td>
+                          <td>{{($val->customer) ? $val->customer->email : 'NA'}}</td>
+                          <td>
+                            <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#booked_room_{{$val->id}}">{{lang_trans('btn_view')}}</button>
+                            @include('backend/model/booked_rooms_modal',['val'=>$val])
+                          </td>
+                          <td>{{dateConvert($val->check_in,'d-m-Y H:i')}}</td>
+                          <td>{{dateConvert($val->check_out,'d-m-Y H:i')}}</td>
+                          <td>{{getCurrencySymbol()}} {{numberFormat($calc['finalRoomAmount']+$calc['finalOrderAmount']+$calc['additionalAmount'])}}</td>
+                          <td>
+
+                              {{getCurrencySymbol()}}
+                              {{($dueAmount) ? number_format((float)$dueAmount, 2, '.', '') : 0}}
+                          </td>
+                          
           </tr>
           @endif
         @endforeach
@@ -265,6 +335,104 @@ $totalAmount = 0;
     </div>
 
 
+@elseif($list=='bladi')
+<div class="row">
+<div class="col-md-12 col-sm-12 col-xs-12">
+<div class="x_panel">
+  <div class="x_title">
+      <h2>{{lang_trans('heading_bladi_list')}}</h2>
+      <div class="clearfix"></div>
+  </div>
+  <div class="x_content">
+      <br/>
+      <table id="datatable" class="table table-striped table-bordered data-table">
+      <thead>
+        <tr>
+          <th>{{lang_trans('txt_sno')}}</th>
+          <th>{{lang_trans('txt_room')}}</th>
+          <th>{{lang_trans('txt_guest_name')}}</th>
+          <th>{{lang_trans('txt_booking')}}</th>
+          <th>{{lang_trans('txt_checkin')}}</th>
+          <th>{{lang_trans('txt_checkout')}}</th>
+          <th>{{lang_trans('txt_room_amount')}}</th>
+          <th>{{lang_trans('txt_room_type')}}</th>
+          <th>{{lang_trans('txt_remark')}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($datalist as $k=>$val)
+                      <?php 
+                      $flag = true;
+                      $checkin_datetime;
+                      $checkout_datetime;  
+                        if($val->duration_of_stay > 1 ){
+                            $flag = true;
+                            if(($report_month != date('m', strtotime($val->check_out))) && ($report_month == date('m', strtotime($val->check_in)))){
+                                $sdate = $val->check_in;
+                                $edate = $report_year.'-'.$report_month.'-'.$days;
+                                $checkout_datetime = date('d-m-Y', strtotime($edate));
+                                $checkin_datetime = date('d-m-Y', strtotime($sdate));
+                              }else if(($report_month != date('m', strtotime($val->check_in))) && ($report_month == date('m', strtotime($val->check_out)))){          
+                                $sdate = $report_year.'-'.$report_month.'-01';
+                                $edate = $val->check_out;
+                                $checkin_datetime = date('d-m-Y', strtotime($sdate));
+                                $checkout_datetime = date('d-m-Y', strtotime($edate));
+                              }else if(($report_month != date('m', strtotime($val->check_in))) && ($report_month != date('m', strtotime($val->check_out)))){
+                                $checkin_datetime = date('d-m-Y', strtotime($report_year.'-'.$report_month.'-01'));
+                                $checkout_datetime = date('d-m-Y', strtotime($report_year.'-'.$report_month.'-'.$days));
+                                $total_days = $days;
+                              }else{
+                                $checkin_datetime = date('d-m-Y', strtotime($val->check_in));
+                                $checkout_datetime = date('d-m-Y', strtotime($val->check_out));
+                                $total_days = $val->duration_of_stay; 
+                              }
+                        }else{
+                          if((date('m', strtotime($val->check_in)) != date('m', strtotime($val->check_out)))){
+                            if(date('m', strtotime($val->check_in)) == $report_month){
+                              $flag = false;
+                            }else if(date('m', strtotime($val->check_out)) == $report_month){
+                              $flag = true;
+                              $checkin_datetime = date('d-m-Y', strtotime($val->check_in));
+                              $checkout_datetime = date('d-m-Y', strtotime($val->check_out));
+                            }
+                          }else{
+                            $flag = true;
+                            $checkin_datetime = date('d-m-Y', strtotime($val->check_in));
+                            $checkout_datetime = date('d-m-Y', strtotime($val->check_out));
+                            $total_days = $val->duration_of_stay; 
+                          }
+                        }
+                      ?>
+          @if($val->is_checkout == 1)
+            @if( $flag == true)
+            @foreach($val->booked_rooms as $k=>$value)
+             <?php   $j++;
+                  $roomData = getRoomById($value->room_id);
+                  $roomTypeData = getRoomTypeById($value->room_type_id);
+              ?>
+                        <tr>
+                          <td>{{$j}}</td>
+                          <td>{{($value->room_id) ? $roomData->room_no : 'NA'}}</td>
+                          <td>{{($val->customer) ? $val->customer->name : 'NA'}}</td>
+                          <td>{{($val) ? $val->id : 'NA'}}</td>
+                          <!-- <td>{{dateConvert($val->check_in,'d-m-Y H:i')}}</td> -->
+                          <!-- <td>{{dateConvert($val->check_out,'d-m-Y H:i')}}</td> -->
+                          <td>{{$checkin_datetime}}</td>
+                          <td>{{$checkout_datetime}}</td>
+                          <td>{{($value->room_price) ? numberFormat(($value->room_price + $value->room_cgst + $value->room_gst) ) : 'NA'}}</td>
+                          <td>{{($value->room_type_id)  ? $roomTypeData->title : 'NA'}}</td>
+                          <td>{{($val) ? $val->remark : 'NA'}}</td>
+                        </tr>
+                        @endforeach
+                        @endif
+                        @endif
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+    </div>
   @endif
 </div>
 <script>

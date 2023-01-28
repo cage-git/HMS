@@ -1,4 +1,13 @@
 @php
+    use Salla\ZATCA\GenerateQrCode;
+    use Salla\ZATCA\Tags\InvoiceDate;
+    use Salla\ZATCA\Tags\InvoiceTaxAmount;
+    use Salla\ZATCA\Tags\InvoiceTotalAmount;
+    use Salla\ZATCA\Tags\Seller;
+    use Salla\ZATCA\Tags\TaxNumber;
+@endphp
+
+@php
   $settings = getSettings();
   $totalOrdersAmount = 0;
 @endphp
@@ -104,9 +113,18 @@
                     </th>
                 </tr>
                 @if($data_row->orders_items->count()>0)
+                    @php
+                        $totalTaxAmount = 0; 
+                    @endphp
                     @foreach($data_row->orders_items as $val)
                         @php
                             $totalOrdersAmount = $totalOrdersAmount + ($val->item_qty * $val->item_price);
+                            if($val->tax_flag){
+                                $TaxAmount = $val->item_qty * ($val->item_tax);
+                                $totalTaxAmount = $TaxAmount + $totalTaxAmount;
+                            }
+                            $totalWithTax = $totalOrdersAmount + $totalTaxAmount;
+                            
                         @endphp
                         <tr>
                             <td width="70%">
@@ -122,14 +140,43 @@
                     @endforeach
                     <tr>
                         <th colspan="2" class="txt-right" width="80%">
+                            {{lang_trans('txt_subtotal')}}&nbsp;
+                        </th>
+                        <th class="txt-right" width="20%">
+                        {{getCurrencySymbol()}}  {{numberFormat($totalOrdersAmount)}}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="txt-right" width="80%">
+                            {{lang_trans('txt_gst')}}&nbsp;
+                        </th>
+                        <th class="txt-right" width="20%">
+                            {{getCurrencySymbol()}} {{numberFormat($totalTaxAmount)}}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="txt-right" width="80%">
                             {{lang_trans('txt_total')}}&nbsp;
                         </th>
                         <th class="txt-right" width="20%">
-                            {{getCurrencySymbol()}} {{numberFormat($totalOrdersAmount)}}
+                            {{getCurrencySymbol()}}  {{numberFormat($totalWithTax)}}
                         </th>
                     </tr>
                 @endif
             </table>
+            <div>
+            @php
+                $data_date = date('Y-m-d h:i:s');
+                $zatca = [];
+                $zatca[] = new Seller($settings['site_page_title']);
+                $zatca[] = new TaxNumber($settings['gst_num']);
+                $zatca[] = new InvoiceDate($data_date);
+                $zatca[] = new InvoiceTotalAmount(numberFormat($totalWithTax));
+                $zatca[] = new InvoiceTaxAmount(($totalTaxAmount));
+                $generatedString = GenerateQrCode::fromArray($zatca);
+            @endphp
+            <img class="center-block mt-5" src="{!! @$generatedString->render() !!}" style="width: 150px;">
+            </div>
             <h4> {{lang_trans('txt_token_num')}} : {{$data_row->id}} </h4>
             <button class="btn btn-sm btn-success no-print" onclick="printSlip()">
                 {{lang_trans('btn_print')}}

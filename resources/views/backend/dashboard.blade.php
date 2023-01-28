@@ -7,46 +7,52 @@
   <div class="">
      @section('rightColContent')
          <div class="row top_tiles">
+            <a href="{{route('list-reservation')}}">
                 <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12 firstTile">
                     <div class="tile-stats">
                         <div class="icon">
                             <i class="fa fa-caret-square-o-right"></i>
                         </div>
                         <div class="count">{{$counts[0]->today_check_ins}}</div>
-                        <h3><a href="{{route('list-reservation')}}">{{lang_trans('txt_today_checkin')}}</a></h3>
+                        <h3 class="white-font">{{lang_trans('txt_today_checkin')}}</h3>
                         <p>&nbsp;</p>
                     </div>
                 </div>
+            </a>
+            <a href="{{route('list-check-outs')}}">
                 <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12 secondTile">
                     <div class="tile-stats">
                         <div class="icon">
                             <i class="fa fa-comments-o"></i>
                         </div>
                         <div class="count">{{$counts[0]->today_check_outs}}</div>
-                        <h3><a href="{{route('list-check-outs')}}">{{lang_trans('txt_today_checkout')}}</a></h3>
+                        <h3 class="white-font">{{lang_trans('txt_today_checkout')}}</h3>
                         <p>&nbsp;</p>
                     </div>
                 </div>
+            </a>
 {{--                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12 thirdTile">--}}
 {{--                    <div class="tile-stats">--}}
 {{--                        <div class="icon">--}}
 {{--                            <i class="fa fa-sort-amount-desc"></i>--}}
 {{--                        </div>--}}
 {{--                        <div class="count">{{$counts[0]->today_orders}}</div>--}}
-{{--                        <h3><a href="{{route('orders-list')}}">{{lang_trans('txt_today_orders')}}</a></h3>--}}
+{{--                        <h3 ><a href="{{route('orders-list')}}">{{lang_trans('txt_today_orders')}}</a></h3>--}}
 {{--                        <p>&nbsp;</p>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
-             <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12 thirdTile">
+            <a href="{{route('orders-list')}}">
+                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12 thirdTile">
                     <div class="tile-stats">
                         <div class="icon">
                             <i class="fa fa-sort-amount-desc"></i>
                         </div>
                         <div class="count">{{ number_format((float)$counts[0]->user_count_two, 2, '.', '')}}</div>
-                        <h3><a href="{{route('orders-list')}}">{{lang_trans('txt_today_orders')}}</a></h3>
+                        <h3 class="white-font">{{lang_trans('txt_today_orders')}}</h3>
                         <p>&nbsp;</p>
                     </div>
                 </div>
+            </a>
             </div>
       @endsection
     <div class="row">

@@ -14,6 +14,7 @@
   $advancePayment = $calculatedAmount['advancePayment'];
   $roomAmountDiscount = $calculatedAmount['totalRoomAmountDiscount'];
   $finalRoomAmount = $calculatedAmount['finalRoomAmount'];
+  $grandRoomAmount = $calculatedAmount['grandRoomTotal'];
 
   $gstPercFood = $calculatedAmount['totalOrderGstPerc'];
   $cgstPercFood = $calculatedAmount['totalOrderCGstPerc'];
@@ -23,6 +24,8 @@
   $gstFoodApply = $calculatedAmount['gstFoodApply'];
   $totalOrdersAmount = $calculatedAmount['subtotalOrderAmount'];
   $finalOrderAmount = $calculatedAmount['finalOrderAmount'];
+  $additionalOrderAmount = $calculatedAmount['additionalOrderAmount'];
+  $additionalOrderAmountReason = $data_row->orders_info!= null ? $data_row->orders_info->additional_order_amount_reason:'';
 
   $additionalAmount = $calculatedAmount['additionalAmount'];
   $additionalAmountReason = $data_row->additional_amount_reason;
@@ -127,10 +130,11 @@
                         <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span></label>
                         {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
                       </div>
-                      <div class="col-md-4 col-sm-4 col-xs-12">
+                      <!-- We comment the image here is no need of image file -->
+                      <!-- <div class="col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_upload_idcard')}} <sup class="color-ff4">{{lang_trans('txt_multiple')}}</sup> </label>
                         {{Form::file('id_image[]',['class'=>"form-control",'id'=>'idcard_image','multiple'=>true])}}
-                      </div>
+                      </div> -->
                   </div>
                   @if($data_row->id_cards->count())
                     <div class="row">
@@ -198,7 +202,8 @@
                                   $checkIn = dateConvert($roomInfo->check_in, 'Y-m-d');
                                   $checkOut = dateConvert($roomInfo->check_out, 'Y-m-d');
                                   $durOfStayPerRoom = dateDiff($checkIn, $checkOut, 'days');
-                                  $durOfStayPerRoom = ($durOfStayPerRoom == 0) ? 1: $durOfStayPerRoom;
+                                  //$durOfStayPerRoom = ($durOfStayPerRoom == 0) ? 1: $durOfStayPerRoom;
+                                  $durOfStayPerRoom = ($durOfStayPerRoom == 0) ? 0: $durOfStayPerRoom;
                                   $amountPerRoom = ($durOfStayPerRoom * $roomInfo->room_price);
                                 @endphp
                                 <tr class="per_room_tr">
@@ -244,7 +249,9 @@
                             </tr>
                          
                           <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
-                              <th class="text-right"> {{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_room_amount_cgst]',null,['id'=>'total_room_amount_cgst'])}}</th>
+                              <th class="text-right"> {{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_room_amount_cgst]',null,['id'=>'total_room_amount_cgst'])}}
+                              {{Form::hidden('amount[org_room_amount_cgst]',$roomAmountCGst,['id'=>'org_room_amount_cgst'])}}
+                              </th>
                               <td width="15%" id="td_total_room_amount_cgst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountCGst }}</td>
                             </tr>
                             <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
@@ -252,7 +259,9 @@
                               <td width="15%" id="td_total_room_amount_with_cgst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountWithCGstAmount }}</td>
                             </tr>
                             <tr>
-                              <th class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%) {{Form::hidden('amount[total_room_amount_gst]',null,['id'=>'total_room_amount_gst'])}}</th>
+                              <th class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%) {{Form::hidden('amount[total_room_amount_gst]',null,['id'=>'total_room_amount_gst'])}}
+                              {{Form::hidden('amount[org_room_amount_gst]',$roomAmountGst,['id'=>'org_room_amount_with_cgst'])}}
+                              </th>
                               <td width="15%" id="td_total_room_amount_gst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountGst }}</td>
                             </tr>
 
@@ -267,88 +276,7 @@
                           </tr>
                         </table>
 
-
-                        <div class="x_title">
-                            <h2>{{lang_trans('txt_food_orders')}}</h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <table class="table table-bordered">
-                          <thead>
-                            <tr>
-                              <th width="2%">{{lang_trans('txt_sno')}}.</th>
-                              <th width="20%">{{lang_trans('txt_item_details')}}</th>
-                              <th width="5%">{{lang_trans('txt_date')}}</th>
-                              <th width="5%">{{lang_trans('txt_item_qty')}}</th>
-                              <th width="5%">{{lang_trans('txt_item_price')}}</th>
-                              <th width="10%">{{lang_trans('txt_total_amount')}}</th>
-                              @if(env('APP_NT_ENABLE'))
-                                    <th width="15%">{{lang_trans('ministory_of_tourism_section')}}</th>
-                              @endif
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($data_row->orders_items as $k=>$val)
-                              <tr>
-                                <td>{{$k+1}}</td>
-                                <td>{{$val->item_name}}</td>
-                                <td>{{dateConvert($val->created_at,'d-m-Y')}}</td>
-                                <td>{{$val->item_qty}}</td>
-                                <td>{{getCurrencySymbol()}} {{$val->item_price}}</td>
-                                <td>{{getCurrencySymbol()}} {{$val->item_qty*$val->item_price}}</td>
-                                  @if(env('APP_NT_ENABLE'))
-                                      <td>
-                                          {{ Form::select('mt_expence_type_id_'.$val->id.'',getDynamicDropdownList('expence_type_id', true),null,['class'=>'form-control col-md-6 col-xs-12', 'required'=>'required']) }}
-                                      </td>
-                                  @endif
-
-                              </tr>
-                              @if(count($data_row->orders_items) == ($k+1) )
-                                <tr>
-                                  <th colspan="5" class="text-right">{{lang_trans('txt_gst_apply')}}</th>
-                                  <td>{{ Form::checkbox('food_gst_apply',$gstFoodApply,($gstFoodApply==1) ? true : false,['id'=>'apply_gst']) }}</td>
-                                </tr>
-                              @endif
-                            @empty
-                              <tr>
-                                <td colspan="6">{{lang_trans('txt_no_orders')}}</td>
-                              </tr>
-                            @endforelse
-                          </tbody>
-                        </table>
-
-                        <table class="table table-bordered">
-                            <tr>
-                              <th class="text-right">{{lang_trans('txt_subtotal')}} {{Form::hidden('amount[order_amount]',$totalOrdersAmount,['id'=>'total_order_amount'])}}</th>
-                              <td width="15%" id="td_total_order_amount" class="text-right">{{getCurrencySymbol()}} {{ $totalOrdersAmount }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">{{lang_trans('txt_discount')}}</th>
-                                <td width="15%" id="td_advance_amount" class="text-right">
-                                    <div class="col-md-12 col-sm-12 col-xs-12 p-left-0 p-right-0">
-                                        <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0">
-                                            {{Form::number('discount_order_amount',$foodOrderAmountDiscount,['class'=>"form-control col-md-7 col-xs-12", "id"=>"order_discount", "placeholder"=>lang_trans('ph_any_discount'),"min"=>0])}}
-                                        </div>
-                                        <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0">
-                                            {{ Form::select('order_discount_in',config('constants.DISCOUNT_TYPES'),'amt',['class'=>'form-control', "id"=>"order_discount_in"]) }}
-                                        </div>
-                                    </div>
-                                    <span class="error discount_order_err_msg"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                              <th class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%) {{Form::hidden('amount[order_amount_gst]',$foodAmountGst,['id'=>'total_order_amount_gst'])}}</th>
-                              <td width="15%" id="td_order_amount_gst" class="text-right">{{getCurrencySymbol()}} {{$foodAmountGst}}</td>
-                            </tr>
-                            <tr class="{{$cgstPercFood > 0 ? '' : 'hide_elem'}}">
-                              <th class="text-right">{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%) {{Form::hidden('amount[order_amount_cgst]',$foodAmountCGst,['id'=>'total_order_amount_cgst'])}}</th>
-                              <td width="15%" id="td_order_amount_cgst" class="text-right">{{getCurrencySymbol()}} {{$foodAmountCGst}}</td>
-                            </tr>
-
-                            <tr class="bg-warning">
-                              <th class="text-right">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[order_final_amount]',null,['id'=>'total_order_final_amount'])}}</th>
-                              <td width="15%" id="td_order_final_amount" class="text-right">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td>
-                            </tr>
-                        </table>
+                        <!--  This is green section which is calculate our grand total with additional amount -->
 
                         <table class="table table-bordered">
                             <tr class="bg-default">
@@ -375,12 +303,201 @@
 
                         <table class="table table-bordered">
                             <tr class="bg-success">
+                              <th class="text-right">{{lang_trans('txt_room_grand_room_total')}} {{Form::hidden('total_grand_room_amount',null,['id'=>'total_grand_room_amount'])}}</th>
+                              <td width="15%" id="td_total_grand_room_amount" class="text-right">{{getCurrencySymbol()}} {{ $grandRoomAmount }}</td>
+                            </tr>
+                        </table>
+
+
+                        <div class="x_title">
+                            <h2>{{lang_trans('txt_food_orders')}}</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th width="2%">{{lang_trans('txt_sno')}}.</th>
+                              <th width="20%">{{lang_trans('txt_item_details')}}</th>
+                              <th width="5%">{{lang_trans('txt_date')}}</th>
+                              <th width="5%">{{lang_trans('txt_item_qty')}}</th>
+                              <th width="5%">{{lang_trans('txt_item_price')}}</th>
+                              <th width="5%">{{lang_trans('txt_tax')}}</th>
+                              <th width="10%">{{lang_trans('txt_total_amount')}}</th>
+                              @if(env('APP_NT_ENABLE'))
+                                    <th width="15%">{{lang_trans('ministory_of_tourism_section')}}</th>
+                              @endif
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            // Declare new variables for calculations
+                                  $order_sub_total = 0;
+                                  $total_order_tax = 0;
+                                  $order_total_with_tax = 0;
+                                  $kk = 0;
+                                  $tax_flag=true; 
+                                  $grand_total_order_tax=0;
+                                  $order_tax_percentage = 0;
+                              ?>
+                            @forelse($data_row->orders_items as $k=>$val)
+                              <?php
+                                // dd($k);
+                                // Calculate of order amount and quantity and tax
+                                  $kk++;
+                                  if($val->tax_flag==false){
+                                    $tax_flag=false; 
+                                  }
+                                  $order_sub_total += $val->item_qty * $val->item_price;
+                                  $total_order_tax += ($val->item_qty * $val->item_tax);
+                                  $grand_total_order_tax = $total_order_tax + $grand_total_order_tax;
+                                  $order_total_with_tax += $val->item_qty * ($val->item_price + $val->item_tax);
+                                  $order_tax_percentage = $val->order_gst_perc;
+                              ?>
+                              <tr>
+                                <td>{{$k+1}} </td>
+                                <td>{{$val->item_name}}</td>
+                                <td>{{dateConvert($val->created_at,'d-m-Y')}}</td>
+                                <td>{{$val->item_qty}}</td>
+                                <td>{{getCurrencySymbol()}} {{$val->item_price}}</td>
+                                <td>{{getCurrencySymbol()}} {{$val->item_qty*$val->item_tax}}</td>
+                                <td>{{getCurrencySymbol()}} {{$val->item_qty*$val->item_price}}</td>
+                                  @if(env('APP_NT_ENABLE'))
+                                      <td>
+                                          {{ Form::select('mt_expence_type_id_'.$val->id.'',getDynamicDropdownList('expence_type_id', true),null,['class'=>'form-control col-md-6 col-xs-12', 'required'=>'required']) }}
+                                      </td>
+                                  @endif
+
+                              </tr>
+                              @empty
+                              <tr>
+                                <td colspan="6">{{lang_trans('txt_no_orders')}}</td>
+                              </tr>
+                              @endforelse
+                              @if(count($data_row->orders_items) == ($kk) )
+                                <tr>
+                                  <th colspan="5" class="text-right">{{lang_trans('txt_gst_apply')}}</th>
+                                  <td>{{ Form::checkbox('food_gst_apply',($tax_flag==true) ? 1 : 0,($tax_flag==true) ? true : false,['id'=>'apply_gst']) }}</td>
+                                  <!-- <td>{{ Form::checkbox('food_gst_apply',1,($gstFoodApply==1) ? true : false,['id'=>'apply_gst']) }}</td> -->
+                                </tr>
+                                
+                              @endif
+                             
+                            <!-- @ endforelse -->
+                          </tbody>
+                        </table>
+                         
+                        <table class="table table-bordered">
+                            <tr>
+                              <!-- <th class="text-right">{{lang_trans('txt_subtotal')}} {{Form::hidden('amount[order_amount]',$totalOrdersAmount,['id'=>'total_order_amount'])}}</th>
+                              <td width="15%" id="td_total_order_amount" class="text-right">{{getCurrencySymbol()}} {{ $totalOrdersAmount }}</td> -->
+
+                              <th class="text-right">{{lang_trans('txt_subtotal')}} {{Form::hidden('amount[order_amount]',$order_sub_total,['id'=>'total_order_amount'])}}</th>
+                              <td width="15%" id="td_total_order_amount" class="text-right">{{getCurrencySymbol()}} {{ $order_sub_total }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">{{lang_trans('txt_discount')}}</th>
+                                <td width="15%" id="td_advance_amount" class="text-right">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 p-left-0 p-right-0">
+                                        <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0">
+                                            {{Form::number('discount_order_amount',$foodOrderAmountDiscount,['class'=>"form-control col-md-7 col-xs-12", "id"=>"order_discount", "placeholder"=>lang_trans('ph_any_discount'),"min"=>0])}}
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0">
+                                            {{ Form::select('order_discount_in',config('constants.DISCOUNT_TYPES'),'amt',['class'=>'form-control', "id"=>"order_discount_in"]) }}
+                                        </div>
+                                    </div>
+                                    <span class="error discount_order_err_msg"></span>
+                                </td>
+                            </tr>
+                                   
+                            <tr>
+                            <th class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%) {{Form::hidden('amount[order_amount_gst]',$foodAmountGst,['id'=>'total_order_amount_gst'])}}</th>
+                              <td width="15%" id="td_order_amount_gst" class="text-right">{{getCurrencySymbol()}} {{$foodAmountGst}}</td>
+                              <!-- <th class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%) {{Form::hidden('amount[order_amount_gst]',$total_order_tax,['id'=>'total_order_amount_gst'])}}</th>
+                              <td width="15%" id="td_order_amount_gst" class="text-right">{{getCurrencySymbol()}} {{$total_order_tax}}</td> -->
+                            </tr>
+                     
+                            <tr class="{{$cgstPercFood > 0 ? '' : 'hide_elem'}}">
+                              <th class="text-right">{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%) {{Form::hidden('amount[order_amount_cgst]',$foodAmountCGst,['id'=>'total_order_amount_cgst'])}}</th>
+                              <td width="15%" id="td_order_amount_cgst" class="text-right">{{getCurrencySymbol()}} {{$foodAmountCGst}}</td>
+                            </tr>
+                           
+                            <tr class="bg-warning">
+                              <th class="text-right">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[order_final_amount]',null,['id'=>'total_order_final_amount'])}}</th>
+                              <td width="15%" id="td_order_final_amount" class="text-right">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td>
+                              <!-- <th class="text-right">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[order_final_amount]',null,['id'=>'total_order_final_amount'])}}</th>
+                              <td width="15%" id="td_order_final_amount" class="text-right">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td> -->
+                            </tr>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <tr class="bg-default">
+                              <th class="text-right">
+                                  @if(env('APP_NT_ENABLE'))
+                                      <label class="control-label"> &nbsp;</label>
+                                  @endif
+                                {{Form::text('amount[additional_order_amount_reason]',$additionalOrderAmountReason,['class'=>"form-control col-md-7 col-xs-12", "id"=>"additional_order_amount_reason", "placeholder"=>lang_trans('txt_additional_amount_reason')])}}
+                              </th>
+                                @if(env('APP_NT_ENABLE'))
+                              <th width="30%">
+                                  <label class="control-label"> {{lang_trans('ministory_of_tourism_section')}} <span class="required">*</span></label>
+                                  {{ Form::select('mt_expence_type_id_additional',getDynamicDropdownList('expence_type_id', true),null,['class'=>'form-control col-md-6 col-xs-12', 'required'=>'required']) }}
+                              </th>
+                                @endif
+                              <td width="15%" id="td_additional_amount" class="text-right">
+                                  @if(env('APP_NT_ENABLE'))
+                                      <label class="control-label"> &nbsp;</label>
+                                  @endif
+                                {{Form::number('amount[additional_order_amount]',$additionalOrderAmount,['class'=>"form-control col-md-7 col-xs-12", "id"=>"additional_order_amount", "placeholder"=>lang_trans('txt_additional_amount'),"min"=>0])}}
+                              </td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <tr class="bg-success">
+                              <th class="text-right">{{lang_trans('txt_grand_food_total')}} {{Form::hidden('amount[total_food_final_amount]',null,['id'=>'total_food_final_amount'])}}</th>
+                              <td width="15%" id="td_total_food_final_amount" class="text-right">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td>
+                            </tr>
+                        </table>
+                   
+                        <!-- <hr>
+
+                        <table class="table table-bordered">
+                            <tr class="bg-success">
+                              <th class="text-right">{{lang_trans('txt_grand_total')}} {{Form::hidden('amount[total_final_amount]',null,['id'=>'total_final_amount'])}}</th>
+                              <td width="15%" id="td_final_amount" class="text-right">{{getCurrencySymbol()}} {{ $finalAmount }}</td>
+                            </tr>
+                        </table> -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+              <div class="x_content">
+                  <div class="row">
+                    <div class="x_title">
+                        <h2>{{lang_trans('heading_final_total')}}</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <table class="table table-bordered">
+                            <tr class="bg-success">
                               <th class="text-right">{{lang_trans('txt_grand_total')}} {{Form::hidden('amount[total_final_amount]',null,['id'=>'total_final_amount'])}}</th>
                               <td width="15%" id="td_final_amount" class="text-right">{{getCurrencySymbol()}} {{ $finalAmount }}</td>
                             </tr>
                         </table>
+                        
                       </div>
-                  </div>
+                    </div>
+                  
+                </div>
+              </div>
+                  
               </div>
           </div>
       </div>
@@ -457,7 +574,12 @@
   globalVar.gstOrderAmount = 0;
   globalVar.gstRoomAmount = {{$roomAmountGst}};
   globalVar.applyFoodGst = {{$gstFoodApply}};
+  // add these two values for js code which is used in js to correct the tax logic and percentage
+  globalVar.grandTotalFoodGst = {{$total_order_tax}};
+  globalVar.OrderTaxPercentage = {{$order_tax_percentage}};
   globalVar.additionalAmount = {{$additionalAmount}};
+  // add additional order amount for calculation in javascript
+  globalVar.additionalOrderAmount = {{$additionalOrderAmount}};
   globalVar.isError = false;
   globalVar.startDate = moment("{{$data_row->check_in}}", "YYYY.MM.DD");
 </script>

@@ -124,3 +124,7 @@
     height: 100px;
     width: : 100px;
 }
+
+.white-font{
+    color:white !important;
+}

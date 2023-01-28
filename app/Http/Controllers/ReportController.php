@@ -18,6 +18,8 @@ use App\Exports\ExpenseExport;
 use App\Exports\CustomerExport;
 use App\Exports\OrderExport;
 use App\Exports\PaymentHistoryExport;
+use App\Exports\BladiExport;
+
 class ReportController extends Controller
 {
     private $core;
@@ -40,7 +42,18 @@ class ReportController extends Controller
             $searcData['customer_id'] = '';
             $searcData['room_type_id'] = '';
         }
-        else if($this->data['report_of'] == 'expense'){
+        else if($this->data['report_of'] == 'bladi_report'){
+            $this->data['roomtypes_list']=getRoomTypesList();
+            $searcData['customer_id'] = '';
+            $searcData['room_type_id'] = '';
+            $searcData['checkout_years'] = Reservation::selectRaw('extract(year FROM check_out) AS year')
+                                        ->distinct()
+                                        ->orderBy('year', 'asc')
+                                        ->get();
+           
+
+
+        }else if($this->data['report_of'] == 'expense'){
             $this->data['category_list']=getExpenseCategoryList();
             $searcData['category_id'] = '';
         } else {
@@ -92,6 +105,65 @@ class ReportController extends Controller
             return view('backend/rooms/room_reservation_list',$this->data);
         }
     }
+
+    public function searchBladi(Request $request) {
+    //  Code for bladi report and only search from years and month
+        $this->data['list'] = 'bladi';
+        $query = Reservation::whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC');
+        if($request->customer_id){
+            $query->where('customer_id', $request->customer_id);
+        }
+        if($request->report_year && $request->report_month){
+          
+              $days=cal_days_in_month(CAL_GREGORIAN, $request->report_month,$request->report_year);
+
+              $firstdateValue =$request->report_year.'-'.$request->report_month.'-01';
+              $lastdateValue =$request->report_year.'-'.$request->report_month.'-'.$days;
+              $first_date_value = strtotime($firstdateValue);
+              $last_date_value = strtotime($lastdateValue);
+              $fdate = date('Y-m-d', $first_date_value);
+              $ldate = date('Y-m-d', $last_date_value);
+
+              $query->WhereBetween('check_in', array($fdate ,$ldate));
+              $query->orWhereBetween('check_out', array($fdate ,$ldate));
+             
+        }
+
+            $query->with(['booked_rooms' => function ($q) use($request){
+
+            }]);
+
+
+        if($request->payment_status != null && ($request->payment_status == 0 || $request->payment_status == 1)){
+            $query->where('payment_status', $request->payment_status);
+        }
+        $this->data['datalist']=$query->get();
+        $this->data['days'] = $days;
+        $this->data['report_month'] = $request->report_month;
+        $this->data['report_year'] = $request->report_year;
+
+        $this->data['roomtypes_list']=getRoomTypesList();
+        $this->data['customer_list']=getCustomerList();
+
+        $this->data['search_data'] = $request->all();
+        $this->data['search_data']['checkout_years'] = Reservation::selectRaw('extract(year FROM check_out) AS year')
+        ->distinct()
+        ->orderBy('year', 'asc')
+        ->get();
+
+        if($request->submit_btn=='export'){
+            $params=['data'=>$this->data['datalist'],
+                    'days'=>$this->data['days'],
+                    'report_month'=>$this->data['report_month'],
+                    'report_year'=>$this->data['report_year'],
+                    'view'=>'excel_view.bladi_excel'];
+            $filename=lang_trans('txt_bladi_report').'-'.$request->report_month.'-'.$request->report_year.'.xlsx';
+            return Excel::download(new BladiExport($params), $filename);
+        } else {
+            return view('backend/rooms/room_reservation_list',$this->data);
+        }
+    }
+
     public function searchStockHistory(Request $request) {
         $query = StockHistory::orderBy('id','DESC');
         if($request->product_id){

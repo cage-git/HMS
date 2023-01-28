@@ -353,7 +353,7 @@ class AdminController extends Controller
             $custName = $request->company_name;
             if(
                 !$request->company_gst_num ||
-                !$request->company_email ||
+                // !$request->company_email ||
                 !$request->company_name ||
                 !$request->company_mobile ||
                 !$request->company_address
@@ -373,7 +373,7 @@ class AdminController extends Controller
                 "name" => $request->company_name,
                 "middle_name" => '',
                 "father_name" => '',
-                "email" => ($request->company_email != '') ? $request->company_email :  str_replace(' ', rand(1111,9999), $request->company_name.$request->company_mobile).'@fake_email.com',
+                "email" => $request->company_email ?? '',
                 "mobile" => $request->company_mobile,
                 "address" => $request->company_address,
                 "nationality" => $request->nationality,
@@ -383,6 +383,7 @@ class AdminController extends Controller
                 "gender" => $request->gender,
                 "dob" => $dob,
                 "id_card_no" => $request->idcard_no,
+                "idcard_type" => $request->idcard_type,
                 "password" => Hash::make($request->mobile),
             ];
             $customerId = Customer::insertGetId($customerData);
@@ -403,9 +404,9 @@ class AdminController extends Controller
                 "name" => $request->name,
                 "middle_name" => $request->middle_name,
                 "father_name" => $request->father_name,
-                "email" => ($request->email != '') ? $request->email :  str_replace(' ', '', $request->surname.$request->mobile).'@fake_email.com',
+                "email" => $request->email ??  '',
                 "mobile" => $request->mobile,
-                "address" => $request->address,
+                "address" => ($request->address != '') ? $request->address :  '',
                 "nationality" => $request->nationality,
                 "country" => $request->country,
                 "state" => $request->state,
@@ -413,6 +414,7 @@ class AdminController extends Controller
                 "gender" => $request->gender,
                 "dob" => $dob,
                 "id_card_no" => $request->idcard_no,
+                "idcard_type" => $request->idcard_type,
                 "password" => Hash::make($request->mobile),
             ];
             $customerId = Customer::insertGetId($customerData);
@@ -803,7 +805,9 @@ class AdminController extends Controller
         $amountArr =  $request->amount;
         $roomDiscount = $request->discount_amount;
         if($request->room_discount_in == 'perc'){
-            $totalAmount = $amountArr['total_room_amount']+$amountArr['total_room_amount_gst']+$amountArr['total_room_amount_cgst'];
+            // correct the tax calculation for discount percentage
+            // $totalAmount = $amountArr['total_room_amount']+$amountArr['total_room_amount_gst']+$amountArr['total_room_amount_cgst'];
+            $totalAmount = $amountArr['total_room_amount']+$amountArr['org_room_amount_gst']+$amountArr['org_room_amount_cgst'];
             $roomDiscount = ($roomDiscount/100)*$totalAmount;
         }
         $amountArr['room_amount_discount'] = $roomDiscount;
@@ -829,6 +833,7 @@ class AdminController extends Controller
             "grand_total"=>$amountArr['total_room_final_amount'],
             "addtional_amount"=>$amountArr['additional_amount'],
             "additional_amount_reason"=>$request->additional_amount_reason,
+            "grand_room_total"=>$request->total_grand_room_amount,
         ];
         $mobile = '';
         $name = '';
@@ -845,14 +850,14 @@ class AdminController extends Controller
                 }
             }
         }
-        $mediaData = [
-            'tbl_id'=>$request->id,
-            'media_ids'=>$request->media_ids,
-            'files'=>($request->hasFile('id_image')) ? $request->id_image : null,
-            'folder_path'=>'uploads/id_cards',
-            'type'=>'id_cards',
-        ];
-        $this->core->uploadAndUnlinkMediaFile($mediaData);
+        // $mediaData = [
+        //     'tbl_id'=>$request->id,
+        //     'media_ids'=>$request->media_ids,
+        //     'files'=>($request->hasFile('id_image')) ? $request->id_image : null,
+        //     'folder_path'=>'uploads/id_cards',
+        //     'type'=>'id_cards',
+        // ];
+        // $this->core->uploadAndUnlinkMediaFile($mediaData);
 
         $res = Reservation::updateOrCreate(['id'=>$request->id], $reservationData);
         if($res){
@@ -877,12 +882,25 @@ class AdminController extends Controller
             $orderInfo['cgst_perc'] = $cgstPerc;
             $orderInfo['gst_amount'] = $gstAmount;
             $orderInfo['cgst_amount'] = $cgstAmount;
+            $orderInfo['order_grand_total'] = $amountArr['total_food_final_amount'];
+            $orderInfo['additional_order_amount'] = $amountArr['additional_order_amount'];
+            $orderInfo['additional_order_amount_reason'] = $amountArr['additional_order_amount_reason'];
 
             $orderDiscount = $request->discount_order_amount;
             if($request->order_discount_in == 'perc'){
-                $totalAmount = $amountArr['order_amount']+$amountArr['order_amount_gst']+$amountArr['order_amount_cgst'];
-                $orderDiscount = ($orderDiscount/100)*$totalAmount;
+                // calculate the tax and discount on order items and add grand total for orders
+                $orderAmountperc =  ($orderDiscount/100) * $amountArr['order_amount'];
+                $order_amount_gst = $amountArr['order_amount_gst'];
+
+                $taxorderAmount =  ($gstPerc/100) * $amountArr['order_amount']; // 10
+                $tax_order_amount_gst =  ($orderDiscount/100) * $taxorderAmount; // 5
+                
+
+                $orderDiscount = $amountArr['order_amount'] - ($orderAmountperc);
+                // $totalAmount = $amountArr['order_amount']+$amountArr['order_amount_gst']+$amountArr['order_amount_cgst'];
+                // $orderDiscount = ($orderDiscount/100)*$totalAmount;
             }
+
             $orderInfo['discount'] = $orderDiscount;
 
             $orderData = Order::where('reservation_id',$request->id)->first();
@@ -1302,13 +1320,20 @@ class AdminController extends Controller
         $settings = getSettings();
         $gstPerc = $settings['gst'];
         $cgstPerc = $settings['cgst'];
-        $base_price = ($request['roomtype_'.$expNewRoom[0]] / (100+$gstPerc+$cgstPerc)) * 100;
+        // old logic
+        // $base_price = ($request['roomtype_'.$expNewRoom[0]] / (100+$gstPerc+$cgstPerc)) * 100;
+        // new logic
+        $base_room_price = $request['roomtype_'.$expNewRoom[0]] /  ( (1 + $cgstPerc/100)  + ( (1 + $cgstPerc/100)   * $gstPerc/100 ) );
+        $cgst_tax = $base_room_price * ($cgstPerc / 100);
+        $gst_tax = ($base_room_price + $cgst_tax) *  ($gstPerc/100);
         //set new room data array
         $newRoomData = [
             'reservation_id'=> $request->id,
             'room_type_id'=> $expNewRoom[0],
             'room_id'=> $expNewRoom[1],
-            'room_price'=> $base_price,
+            'room_price'=> $base_room_price,
+            'room_cgst'=>$cgst_tax,
+            'room_gst'=>$gst_tax,
             'check_in' => date('Y-m-d H:i:s'),
             'check_out' =>$bookedRoomData->check_out,
         ];
@@ -1749,7 +1774,14 @@ class AdminController extends Controller
                 foreach($itemsArr as $k=>$val){
                     $exp = explode('~', $request->items[$k]);
                     $jsonData = ['category_id'=>$exp[0], 'category_name'=>$exp[1], 'item_name'=>$exp[2], 'item_id'=>$k];
-                     $orderArr[] = [
+                    // apply the tax flag on order items
+                    $item_tax = $exp[3] * $request->gst_perc/100;
+                    if($request->food_tax == "on"){
+                        $tax_flag = 1;
+                    }else{
+                        $tax_flag = 0;
+                    }
+                    $orderArr[] = [
                         'order_id'=>$lastOrderId,
                         'order_history_id'=>$orderHistoryResId,
                         'reservation_id'=>$request->reservation_id,
@@ -1757,7 +1789,10 @@ class AdminController extends Controller
                         'item_price'=>$exp[3],
                         'item_qty'=>$val,
                         'json_data'=>json_encode($jsonData),
-                        'status'=>3
+                        'status'=>3,
+                        'item_tax'=>$item_tax,
+                        'tax_flag'=>$tax_flag,
+                        'order_gst_perc'=>$request->gst_perc,
                     ];
                 }
                 $res = OrderItem::insert($orderArr);
@@ -1974,11 +2009,19 @@ class AdminController extends Controller
                 $exp = explode('~', $val);
                 $roomTypeDetails = getRoomTypeById($exp[0]);
                 $base_price = $roomTypeDetails->base_price;
+                $cgst_tax = $base_price * ($cgstPerc / 100);
+                $gst_tax = ($base_price + $cgst_tax) *  ($gstPerc/100);
+
                 if((float) $roomTypeDetails->base_price != (float) $request['roomtype_'.$exp[0]]){
                     $base_price = (float) $request['roomtype_'.$exp[0]];
                     if($type == 'custom'){
                         // $base_price =  $base_price / ( ($base_price + (($base_price/100) * $gstPerc))  + ( ($base_price + (($base_price/100) * $cgstPerc))  * $gstPerc/100 )  );
                         $base_price =  $base_price /  ( (1 + $cgstPerc/100)  + ( (1 + $cgstPerc/100)   * $gstPerc/100 ) );
+
+                        $cgst_tax = $base_price * ($cgstPerc / 100);
+
+                        $gst_tax = ($base_price + $cgst_tax) *  ($gstPerc/100);
+
                     }else{
                         $base_price = $base_price;
                     }
@@ -1988,6 +2031,8 @@ class AdminController extends Controller
                     'room_type_id'=>$exp[0],
                     'room_id'=>$exp[1],
                     'room_price'=>$base_price,
+                    'room_cgst'=>$cgst_tax,
+                    'room_gst'=>$gst_tax,
                     'check_in' =>dateConvert($request->check_in_date, 'Y-m-d H:i'),
                     'check_out' =>dateConvert($request->check_out_date, 'Y-m-d H:i'),
                 ];
