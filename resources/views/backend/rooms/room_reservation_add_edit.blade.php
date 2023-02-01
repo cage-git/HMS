@@ -19,6 +19,14 @@
     .select2 .select2-container .select2-container--default .select2-container--focus{
         width:100% !important;
     }
+
+    .select2 .select2-container .select2-container--default .select2-container--below{
+        width:100% !important;
+    }
+
+    .select2-container .select2-choice .select2-arrow {
+        width:100% !important;
+    }
 </style>    
 
 <div class="">
@@ -115,7 +123,7 @@
 
                 <!-- Ehsan code  Tax id -->
                 <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_select_div">
-                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> <span id="number_validation" style="display:none;color:red;">Test</span></label>
+                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span id="id_card_req" class="required">*</span> <span id="number_validation" style="display:none;color:red;">Test</span></label>
                             <select class="js-example-data-ajax" id="search_idcard">
                                 <option value="" disable>Please enter a phone number and ID card number</option>
                             </select>
@@ -123,7 +131,7 @@
                 
 
                     <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_input_div" style="display:none;">
-                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span  class="required">*</span> </label>
                         {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
                                         
                     </div>
@@ -133,13 +141,13 @@
 
                                 <!-- <div class="row"> -->
                                     <div class="col-md-4 col-sm-4 col-xs-12">
-                                        <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
+                                        <label class="control-label">{{lang_trans('txt_type_id')}} <span id="type_id_card_req" class="required">*</span></label>
                                         {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
                                     </div>
 
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
-                                        <label class="control-label"> {{lang_trans('txt_gender')}} <span class="required">*</span></label>
+                                        <label class="control-label"> {{lang_trans('txt_gender')}} <span id="gender_req" class="required">*</span></label>
                                         {{ Form::select('gender',config('constants.GENDER'),null,['class'=>'form-control col-md-6 col-xs-12', "id"=>"gender",'placeholder'=>lang_trans('ph_select')]) }}
                                     </div>
                                     @if(!$quickCheckIn)
@@ -294,7 +302,7 @@
                       </div>
                       
                       <div class="col-md-4 col-sm-4 col-xs-12">
-                        <label class="control-label"> {{lang_trans('txt_surname')}} </label>
+                        <label class="control-label"> {{lang_trans('txt_surname')}} <span class="required">*</span></label>
                         {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}}
                       </div>
                       <!-- <div class="col-md-4 col-sm-4 col-xs-12">
@@ -455,14 +463,15 @@
                         
                       <!-- Ehsan code  COmpany name -->
                       <div class="col-md-4 col-sm-4 col-xs-12" id="companyname_select_div">
-                            <label class="control-label"> {{lang_trans('txt_company_name')}}</label>
-                            <select class="form-control  js-example-data-ajax" id="search_companyname">
+                            <label class="control-label"> {{lang_trans('txt_company_name')}} <span class="required">*</span></label>
+                            <br />
+                            <select class="form-control js-example-data-ajax" id="search_companyname">
                                 <option value="" disable>Please enter a phone number and ID card number</option>
                             </select>
                         </div>
 
                         <div class="col-md-4 col-sm-4 col-xs-12" id="companyname_input_div" style="display:none;">
-                            <label class="control-label"> {{lang_trans('txt_company_name')}}</label>
+                            <label class="control-label"> {{lang_trans('txt_company_name')}} </label>
                               {{Form::text('company_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_name')])}}
                         </div>
 
@@ -486,6 +495,7 @@
                         <!-- Ehsan code  COmpany phone -->
                         <div class="col-md-4 col-sm-4 col-xs-12" id="companyphone_select_div">
                         <label class="control-label"> {{lang_trans('txt_company_mobile_num')}} <span class="required">*</span></label>
+                        <br/>
                                 <select class="js-example-data-ajax" id="search_companyphone">
                                     <option value="" disable>Please enter a phone number and ID card number</option>
                                 </select>
@@ -997,10 +1007,10 @@
                     error_flag = true;
                     div_id = "mt_payment_type";
                 }
-
+           
                 if(error_flag == true){
                     Swal.fire({
-                        title: error + " is required",
+                        title: error + " {{lang_trans('txt_require')}}",
                         // showCancelButton: true,
                         confirmButtonText: 'OK',
                     }).then((result) => {
@@ -1015,6 +1025,108 @@
                
                 // console.log("done");
                 // return;
+            }else{
+
+                var guest_type = $('input:radio[name="guest_type"]:checked').val();
+
+                var error = "";
+                var error_flag = false;
+                
+                var check_in_date = $("#check_in_date").val();
+                var check_out_date = $("#check_out_date").val();
+                var duration_of_stay = $("#duration_of_stay").val();
+                var adult = $("#adult").val();
+                var div_id = "";
+                
+                // if(){
+
+                // }else 
+                if(guest_type=="new_company"){
+                    var company_address = $("#company_address").val();
+                    var company_name = $("#company_name").val();
+                    var company_mobile = $("#company_mobile").val();
+                    if(!company_name){
+                        error = "{{lang_trans('txt_company_name')}}";
+                        error_flag = true;
+                        div_id = "search_companyname";
+                    }else if(!company_mobile){
+                        error = "{{lang_trans('txt_company_mobile_num')}}";
+                        error_flag = true;
+                        div_id = "company_mobile";
+                    }else if(!company_address){
+                        error = "{{lang_trans('txt_company_address')}}";
+                        error_flag = true;
+                        div_id = "company_address";
+                    }
+                    // else if(!check_out_date){
+                    //     error = "{{lang_trans('txt_advance_payment')}}";
+                    //     error_flag = true;
+                    //     div_id = "advance_payment";
+                    // }
+                }else if(guest_type=="new"){
+                    var idcard_no = $("#idcard_no").val();
+                    var type_of_ids_selector = $("#type_of_ids_selector").val();
+                    var gender = $("#gender").val();
+                    var name = $("#name").val();
+                    var surname = $("#surname").val();
+                    var mobile = $("#mobile").val();
+                    if(!idcard_no){
+                        error = "{{lang_trans('txt_id_number')}}";
+                        error_flag = true;
+                        div_id = "idcard_select_div";
+                    }else if(!type_of_ids_selector){
+                        error = "{{lang_trans('txt_type_id')}}";
+                        error_flag = true;
+                        div_id = "type_of_ids_selector";
+                    }else if(!gender){
+                        error = "{{lang_trans('txt_gender')}}";
+                        error_flag = true;
+                        div_id = "gender";
+                    }else if(!name){
+                        error = "{{lang_trans('txt_name')}}";
+                        error_flag = true;
+                        div_id = "name";
+                    }else if(!surname){
+                        error = "{{lang_trans('txt_surname')}}";
+                        error_flag = true;
+                        div_id = "surname";
+                    }else if(!mobile){
+                        error = "{{lang_trans('txt_mobile_num')}}";
+                        error_flag = true;
+                        div_id = "mobile";
+                    }
+                }
+                
+                
+                
+                if(!check_in_date){
+                    error = "{{lang_trans('txt_checkin')}}";
+                    error_flag = true;
+                    div_id = "check_in_date";
+                }else if(!check_out_date){
+                    error = "{{lang_trans('txt_checkout')}}";
+                    error_flag = true;
+                    div_id = "check_out_date";
+                }else if(!duration_of_stay){
+                    error = "{{lang_trans('txt_duration_of_stay')}}";
+                    error_flag = true;
+                    div_id = "duration_of_stay";
+                }else if(!adult){
+                    error = "{{lang_trans('txt_adults')}}";
+                    error_flag = true;
+                    div_id = "adult";
+                }
+
+                if(error_flag == true){
+                    Swal.fire({
+                        title: error + " {{lang_trans('txt_require')}}",
+                        confirmButtonText: 'OK',
+                    }).then((result) => {
+                        $("#"+div_id).focus();
+                    })
+            
+                     return; 
+                }
             }
 
 
@@ -1032,7 +1144,7 @@
                     Swal.fire({
                         title: data.msg,
                         showCancelButton: true,
-                        confirmButtonText: 'View Invoice',
+                        confirmButtonText: "{{lang_trans('txt_view_invoice')}}",
                     }).then((result) => {
                         // console.log(result);
                         if (result.isConfirmed) {
@@ -1269,7 +1381,19 @@
         // search_phone
         // mobile_select_div
         // mobile_input_div
-
+        $('.guest_type').on('ifChanged',function(){
+           
+            var type = $(this).val();
+            if(type=='new'){
+                $('#id_card_req').show();
+                $('#type_id_card_req').show();
+                $('#gender_req').show();
+            } else if(type=='new_company') {
+                $('#id_card_req').hide();
+                $('#type_id_card_req').hide();
+                $('#gender_req').hide();
+            } 
+        });
         $(document).on('change', '#search_idcard', function(){
             var val = $('#search_idcard').val();      
             var guest_type = $('input:radio[name="guest_type"]:checked').val();
@@ -1323,7 +1447,7 @@
                             setCompanydata(data, div_id);
                         }
                         }else{
-                            console.log("data not found");
+                            console.log("data not found", div_id, val, category, guest_type, field_id);
                             if(field_id == "search_idcard"){
                                 $("#idcard_no").val(val);
                             }else if(field_id == "search_phone"){

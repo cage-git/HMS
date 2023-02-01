@@ -238,7 +238,14 @@
                                 <th>{{$label_customer_name}}:</th>
                                 <td colspan="2">
                                     <div class="class-inv-16">
-                                        {{$data_row->customer->surname}} {{$data_row->customer->name}} {{$data_row->customer->middle_name}}
+
+                                        <?php
+                                        if($data_row->customer->cat == "user"){
+                                            echo $data_row->customer->surname.' '.$data_row->customer->name.' '.$data_row->customer->middle_name;
+                                        }else{
+                                            echo 'N/A';
+                                        }
+                                        ?>
                                     </div>
                                 </td>
                                 <th>{{$label_customer_mobile}}:</th>
@@ -253,14 +260,27 @@
                                 <th>{{$label_company_name}}:</th>
                                 <td colspan="{{(!$data_row->company_gst_num) ? 5 : 2}}">
                                     <div class="class-inv-16">
-                                        {{$data_row->company_name}}&nbsp;
+                                    <?php
+                                        if($data_row->customer->cat == "company"){
+                                            echo $data_row->customer->name; 
+                                        }else{
+                                            echo 'N/A';
+                                        }
+                                     ?>&nbsp;
                                     </div>
                                 </td>
                                 @if($data_row->company_gst_num)
                                     <th>{{$label_tax_number}}.</th>
                                     <td>
                                         <div class="class-inv-16">
-                                            {{$data_row->company_gst_num}}
+                                            <!-- {{$data_row->company_gst_num}} -->
+                                            <?php
+                                            if($data_row->customer->cat == "company"){
+                                                echo $data_row->customer->company_gst_num; 
+                                            }else{
+                                                echo 'N/A';
+                                            }
+                                        ?>
                                         </div>
                                     </td>
                                 @endif

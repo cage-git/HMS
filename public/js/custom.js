@@ -268,9 +268,6 @@ if($('#companies')[0] != undefined){
                     },
                     minlength: 7, maxlength:15, digits:true,
                 },
-                "email": {
-                    email: true,
-                },
                 "address": {
                     required: {
                         depends: function(element) {

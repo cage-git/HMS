@@ -352,7 +352,7 @@ class AdminController extends Controller
         elseif($request->guest_type_category=='new_company'){
             $custName = $request->company_name;
             if(
-                !$request->company_gst_num ||
+                // !$request->company_gst_num ||
                 // !$request->company_email ||
                 !$request->company_name ||
                 !$request->company_mobile ||
