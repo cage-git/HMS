@@ -2070,4 +2070,23 @@ class AdminController extends Controller
         }
     }
 /* ***** End Internal Functions ***** */
+
+/* change setting for theme language and visibilty */
+
+    public function changeSetting($val) {
+        if($this->core->checkWebPortal()==0){
+            return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
+        }
+       
+        if($val == "dark" || $val == "light" ){
+            Setting::updateOrCreate(['name'=>"site_theme"], ['value'=>$val, 'updated_at'=>date('Y-m-d h:i:s')]);
+        }
+        
+        if($val == "ar" || $val == "en" ){
+            Setting::updateOrCreate(['name'=>"site_language"], ['value'=>$val, 'updated_at'=>date('Y-m-d h:i:s')]);
+        }
+        
+        return redirect()->back();
+    }
+
 }

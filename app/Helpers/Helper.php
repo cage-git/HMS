@@ -1185,16 +1185,19 @@ function getNextInvoiceNo($type=null){
 }
 function getStatusBtn($status, $listType = 1){
     $statusList = config('constants.LIST_STATUS');
-    $btnClass = ['btn-default', 'btn-success', 'btn-danger'];
+    $btnClass = ['badge bg-secondary', 'badge bg-success', 'badge bg-danger'];
+    // $btnClass = ['btn-default', 'btn-success', 'btn-danger'];
     if($listType == 2){
         $statusList = config('constants.LIST2_STATUS');
     }
     else if($listType == 3){
-        $btnClass = ['btn-default', 'btn-primary', 'btn-success'];
+        $btnClass = ['badge bg-secondary', 'badge bg-success', 'badge bg-danger'];
+        // $btnClass = ['btn-default', 'btn-primary', 'btn-success'];
         $statusList = config('constants.LIST_HOUSEKEEPING_ORDER_STATUS');
     }
     else if($listType == 4){
-        $btnClass = ['btn-default', 'btn-primary', 'btn-info', 'btn-success'];
+        $btnClass = ['badge bg-secondary', 'badge bg-success', 'badge bg-danger'];
+        // $btnClass = ['btn-default', 'btn-primary', 'btn-info', 'btn-success'];
         $statusList = config('constants.LIST_LAUNDRY_ORDER_STATUS');
     }
 
@@ -1203,13 +1206,17 @@ function getStatusBtn($status, $listType = 1){
         $txt = $statusList[$status];
     }
     if($status==1){
-        return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
+        // return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
+        return '<span  class="'.$btnClass[$status].'">'.$txt.'</span>';
     } if($status==2){
-        return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
+        // return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
+        return '<span  class="'.$btnClass[$status].'">'.$txt.'</span>';
     } if($status==3){
-        return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
+        // return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
+        return '<span  class=" '.$btnClass[$status].'">'.$txt.'</span>';
     } else {
-        return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
+        // return '<button type="button" class="btn btn-xs '.$btnClass[$status].'">'.$txt.'</button>';
+        return '<span  class=" '.$btnClass[$status].'">'.$txt.'</span>';
     }
 }
 //function getNextInvoiceNo($type=null){

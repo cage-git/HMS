@@ -15,7 +15,7 @@
     <script src="{{URL::asset('public/app-assets/vendors/js/tables/datatable/buttons.html5.min.js')}}"></script>
     <script src="{{URL::asset('public/app-assets/vendors/js/tables/datatable/buttons.print.min.js')}}"></script>
     <!-- <script src="{{URL::asset('public/app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js')}}"></script> -->
-    <!-- <script src="{{URL::asset('public/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js')}}"></script> -->
+    <script src="{{URL::asset('public/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js')}}"></script>
     <!--  -->
     <!-- BEGIN: Page Vendor JS-->
     <!-- <script src="{{URL::asset('public/app-assets/vendors/js/charts/apexcharts.min.js')}}"></script> -->

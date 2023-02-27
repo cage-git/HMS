@@ -2712,6 +2712,8 @@ Route::group(['prefix' => 'admin'], function() {
 
 		Route::get('about-page', 'WebsitePagesController@aboutPage')->name('about-page');
 		Route::post('update-about-data', 'WebsitePagesController@updateAboutPage')->name('update-about-page');
+
+		Route::get('change-setting/{val}', 'AdminController@changeSetting')->name('change-setting');
 	});
 });
 

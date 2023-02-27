@@ -10,11 +10,31 @@
               
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
-                <li class="nav-item dropdown dropdown-language"><a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language">English</span></a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="#" data-language="en"><i class="flag-icon flag-icon-us"></i> English</a><a class="dropdown-item" href="#" data-language="fr"><i class="flag-icon flag-icon-fr"></i> French</a><a class="dropdown-item" href="#" data-language="de"><i class="flag-icon flag-icon-de"></i> German</a><a class="dropdown-item" href="#" data-language="pt"><i class="flag-icon flag-icon-pt"></i> Portuguese</a></div>
+
+            
+                <li class="nav-item dropdown dropdown-language"><a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @if(getSettings('site_language') == 'en')
+                        <i class="flag-icon flag-icon-us"></i>
+                        <span class="selected-language">English</span>
+                    @elseif(getSettings('site_language') == 'ar')
+                        <i class="flag-icon flag-icon-sa"></i>
+                        <span class="selected-language">Saudi Arab</span>
+                    @endif
+                   </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag">
+                        <a class="dropdown-item" href="{{route('change-setting',['en'])}}" data-language="en"><i class="flag-icon flag-icon-us"></i> English</a>
+                        <a class="dropdown-item" href="{{route('change-setting',['ar'])}}" data-language="sa"><i class="flag-icon flag-icon-sa"></i> Saudi Arab</a>
+                    </div>
                 </li>
-                <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="moon"></i></a></li>
-                
+ 
+                <li class="nav-item d-none d-lg-block">
+                @if(getSettings('site_theme') == 'light')
+                    <a class="nav-link nav-link-style" href="{{route('change-setting',['dark'])}}" ><i class="ficon" data-feather="moon"></i></a>
+                @elseif(getSettings('site_theme') == 'dark')
+                    <a class="nav-link nav-link-style" href="{{route('change-setting',['light'])}}" ><i class="ficon" data-feather="sun"></i></a>
+                @endif
+                </li>
+           
                 <li class="nav-item dropdown dropdown-notification me-25"><a class="nav-link" href="#" data-bs-toggle="dropdown"><i class="ficon" data-feather="bell"></i>
                 @if($notificationsData['totalUnread'])
                     <span class="badge rounded-pill bg-danger badge-up">{{$notificationsData['totalUnread']}}</span>

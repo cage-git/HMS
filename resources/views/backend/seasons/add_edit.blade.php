@@ -1,4 +1,4 @@
-@extends('layouts.master_backend')
+@extends('layouts.master_backend_new')
 @section('content')
 @php 
       $flag=0;
@@ -15,6 +15,76 @@
       }
       $weekDays = getWeekDaysList(['type'=>1, 'is_name'=>'full']);
   @endphp
+
+
+  <div class="col-md-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> {{$heading}} {{lang_trans('heading_season')}}</h4>
+            </div>
+            <div class="card-body">
+                  @if($flag==1)
+                      {{ Form::model($data_row,array('url'=>route('save-season'),'id'=>"season-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
+                      {{Form::hidden('id',null)}}
+                  @else
+                      {{ Form::open(array('url'=>route('save-season'),'id'=>"season-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
+                  @endif
+                        <div class="row">
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="season_name">{{lang_trans('txt_season_name')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{Form::text('name',null,['class'=>"form-control ", "id"=>"season_name", "required"=>"required"])}}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_start_date')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{Form::text('start_date',$startDate,['class'=>"form-control picker", "id"=>"season_start_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off"])}}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_end_date')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{Form::text('end_date',$endDate,['class'=>"form-control col-md-6 col-xs-12 picker", "id"=>"season_end_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off"])}}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xl-1 col-md-1 col-1">
+                                  @foreach($weekDays as $k=>$val)
+                                  <div class="form-check form-check-inline">
+                                      {{ Form::checkbox('week_days[]', $k, (in_array($k, $selectedWeekDays)),['class'=>"form-check-input"] ) }}
+                                      <label class="form-check-label" for="inlineCheckbox2">{{$val}}</label>
+                                  </div>
+                                  @endforeach
+                                </div>
+
+                        </div>
+                        <br />
+                    <button type="submit" class="btn btn-primary" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
+                    <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
 <div class="">
   <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
@@ -81,5 +151,5 @@
           </div>
       </div>
   </div>
-</div>
+</div> -->
 @endsection
