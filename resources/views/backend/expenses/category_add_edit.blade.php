@@ -1,4 +1,4 @@
-@extends('layouts.master_backend')
+@extends('layouts.master_backend_new')
 @section('content')
 @php 
       $flag=0;
@@ -8,7 +8,47 @@
           $heading=lang_trans('btn_update');
       }
   @endphp
-<div class="">
+
+
+  <div class="col-md-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> {{$heading}} {{lang_trans('heading_expense_category')}}</h4>
+            </div>
+            <div class="card-body">
+                @if($flag==1)
+                    {{ Form::model($data_row,array('url'=>route('save-expense-category'),'id'=>"expense-category-form", 'class'=>"form-horizontal form-label-left")) }}
+                    {{Form::hidden('id',null)}}
+                @else
+                    {{ Form::open(array('url'=>route('save-expense-category'),'id'=>"expense-category-form", 'class'=>"form-horizontal form-label-left")) }}
+                @endif
+                        <div class="row">
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_category_name')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{Form::text('name',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"cat_name", "required"=>"required"])}}  
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_status')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{ Form::select('status',config('constants.LIST_STATUS'),1,['class'=>'form-select']) }}
+                                    </div>
+                                </div>
+
+                        </div>
+                    <button type="submit" class="btn btn-primary" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
+                    <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+<!-- <div class="">
   <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
@@ -49,5 +89,11 @@
           </div>
       </div>
   </div>
-</div>
+</div> -->
+@endsection
+@section('scripts')
+
+    <!-- BEGIN: Page JS-->
+        <script src="{{URL::asset('public/app-assets/js/scripts/forms/expense-category-form-validation.js')}}"></script>
+    <!-- END: Page JS-->
 @endsection

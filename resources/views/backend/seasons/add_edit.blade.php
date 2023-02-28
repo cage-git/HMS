@@ -42,7 +42,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_start_date')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        {{Form::text('start_date',$startDate,['class'=>"form-control picker", "id"=>"season_start_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off"])}}
+                                        {{Form::text('start_date',$startDate,['class'=>"form-control flatpickr-basic", "id"=>"season_start_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off"])}}
                                     </div>
                                 </div>
 
@@ -50,7 +50,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_end_date')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        {{Form::text('end_date',$endDate,['class'=>"form-control col-md-6 col-xs-12 picker", "id"=>"season_end_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off"])}}
+                                        {{Form::text('end_date',$endDate,['class'=>"form-control col-md-6 col-xs-12 flatpickr-basic", "id"=>"season_end_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off"])}}
                                     </div>
                                 </div>
                                 
@@ -152,4 +152,10 @@
       </div>
   </div>
 </div> -->
+@endsection
+
+@section('scripts')
+<!-- BEGIN: Page JS-->
+  <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
+<!-- END: Page JS-->
 @endsection

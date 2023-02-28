@@ -47,8 +47,15 @@
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/extensions/ext-component-toastr.css')}}">
         <!-- END: Page CSS-->
 
+
+          <!-- BEGIN: Page CSS-->
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('app-assets/css/plugins/forms/pickers/form-pickadate.css')}}">
+        <!-- END: Page CSS-->
+
         <!-- BEGIN: Custom CSS-->
-        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/assets/css/style.css')}}">
+        <!-- <link rel="stylesheet" type="text/css" href="{{URL::asset('public/assets/css/style.css')}}"> -->
         <!-- END: Custom CSS-->
         <!-- ltr ended -->
     <?php }else if(getSettings('site_language') == 'ar'){   ?> 

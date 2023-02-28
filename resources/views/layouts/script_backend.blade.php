@@ -38,6 +38,14 @@
     <script src="{{URL::asset('public/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js')}}"></script>
     <!-- END: Page Vendor JS-->
 
+     <!-- BEGIN: Page Vendor JS-->
+     <script src="{{URL::asset('public/app-assets/vendors/js/pickers/pickadate/picker.js')}}"></script>
+    <script src="{{URL::asset('public/app-assets/vendors/js/pickers/pickadate/picker.date.js')}}"></script>
+    <script src="{{URL::asset('public/app-assets/vendors/js/pickers/pickadate/picker.time.js')}}"></script>
+    <script src="{{URL::asset('public/app-assets/vendors/js/pickers/pickadate/legacy.js')}}"></script>
+    <script src="{{URL::asset('public/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js')}}"></script>
+    <!-- END: Page Vendor JS-->
+
     <!-- BEGIN: Theme JS-->
     <script src="{{URL::asset('public/app-assets/js/core/app-menu.js')}}"></script>
     <script src="{{URL::asset('public/app-assets/js/core/app.js')}}"></script>
