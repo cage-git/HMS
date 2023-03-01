@@ -42,7 +42,10 @@
             @if($permissionsArr['add-room'] || $permissionsArr['list-room'] || $permissionsArr['add-room-types'] || $permissionsArr['list-room-types'] || $permissionsArr['add-amenities'] || $permissionsArr['list-amenities'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_rooms')}}</span></a>
                     <ul class="menu-content">
-                    
+                        @if($permissionsArr['list-room']) <li><a class="d-flex align-items-center" href="{{route('list-room')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_room_all')}} </span></a></li>       
+                        @endif
+                        @if($permissionsArr['list-room-types']) <li><a class="d-flex align-items-center" href="{{route('list-room-types')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_roomtype_all')}} </span></a></li>       
+                        @endif
                         @if($permissionsArr['list-amenities']) <li><a class="d-flex align-items-center" href="{{route('list-amenities')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_amenities_all')}} </span></a></li>       
                         @endif
                     </ul>
