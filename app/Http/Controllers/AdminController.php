@@ -1621,6 +1621,8 @@ class AdminController extends Controller
         return view('backend/product_add_edit',$this->data);
     }
     public function saveProduct(Request $request) {
+        // dd($request->all());
+        // dd($request->status_id);
         if($request->id>0){
             $success = config('constants.FLASH_REC_UPDATE_1');
             $error = config('constants.FLASH_REC_UPDATE_0');
