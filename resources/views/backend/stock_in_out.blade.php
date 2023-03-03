@@ -1,5 +1,53 @@
-@extends('layouts.master_backend')
+@extends('layouts.master_backend_new')
 @section('content')
+
+<div class="col-md-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{lang_trans('heading_manage_inventory')}}</h4>
+            </div>
+            <div class="card-body">
+                    {{ Form::open(array('url'=>route('save-stock'),'id'=>"stock-form", 'class'=>"form-horizontal form-label-left")) }}
+                        <div class="row">
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="product_name">{{lang_trans('txt_product')}}</label>
+                                     
+                                        {{ Form::select('product_id',$product_list,null,['class'=>'form-select','placeholder'=>lang_trans('ph_select')]) }}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="product_name">{{lang_trans('txt_stock')}}</label>
+                                     
+                                        {{ Form::select('stock_is',['add'=>'Add','subtract'=>'Subtract'],1,['class'=>'form-select','id'=>'stock_is','placeholder'=>lang_trans('ph_select')]) }}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="product_name">{{lang_trans('txt_qty')}}</label>
+                                       
+                                        {{Form::number('qty',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"qty", "required"=>"required"])}}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="product_name">{{lang_trans('txt_price')}}</label>
+                                       
+                                        {{Form::text('price',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"price"])}}
+                                    </div>
+                                </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
+                        <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+            </div>
+        </div>
+</div>
+
+<!-- 
 <div class="">
   <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
@@ -48,6 +96,6 @@
           </div>
       </div>
   </div>
-</div>
+</div> -->
 <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 @endsection

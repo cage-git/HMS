@@ -10,7 +10,7 @@
                             <div class="card">
                                 <div class="card-header border-bottom">
                                     <h4 class="card-title">{{lang_trans('heading_expense_category_list')}}</h4>
-                                    <a href="{{route('add-vendor-category')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_vendorcat_add')}} </button></a>
+                                    <a href="{{route('add-expense-category')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_expensecat_add')}} </button></a>
                                 </div>
                                 <table class="datatables-basic table">
                                     <thead>

@@ -7,7 +7,7 @@
         <div class="row col-12">
             <div class="card">
                 <div class="card-header border-bottom">
-                    <h4 class="card-title">{{lang_trans('heading_season_list')}}</h4>
+                    <h4 class="card-title">{{lang_trans('heading_list_product')}}</h4>
                     <a href="{{route('add-product')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_product_add')}}</button></a>
                 </div>
                 <table class="datatables-basic table">
@@ -31,8 +31,8 @@
                         <td>{{getDynamicDropdownById($val->measurement, 'dropdown_value')}}</td>
                         <td>{!! getStatusBtn($val->status) !!}</td>
                         <td>
-                          <a class="btn btn-sm btn-info" href="{{route('edit-product',[$val->id])}}"><i class="fa fa-pencil"></i></a>
-                          <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-product',[$val->id])}}" title="{{lang_trans('btn_delete')}}"><i class="fa fa-trash"></i></button>
+                          <a class="btn btn-sm btn-info" href="{{route('edit-product',[$val->id])}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='edit'></i></a>
+                          <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-product',[$val->id])}}" title="{{lang_trans('btn_delete')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i data-feather='trash'></i></button>
                         </td>
                       </tr>
                     @endforeach

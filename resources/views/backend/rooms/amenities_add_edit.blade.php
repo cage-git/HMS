@@ -37,7 +37,11 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_status')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        {{ Form::select('status',config('constants.LIST_STATUS'),1,['class'=>'form-select']) }}
+                                        <!-- {{ Form::select('status',config('constants.LIST_STATUS'),1,['class'=>'form-select']) }} -->
+                                        <div class="form-check form-check-success form-switch">
+                                                <input type="checkbox" <?php if(isset($data_row->status)){ if($data_row->status  == 1){ echo 'checked'; }else{ echo '';} }else{ echo 'checked'; } ?> class="form-check-input" id="switch_status" onclick="changeStatus()" />
+                                                <input type="hidden" name="status" id="status_id" value="<?php if(isset($data_row->status)){ if($data_row->status  == 1){ echo '1'; }else{ echo '0';} }else{ echo '1'; } ?>"> 
+                                            </div>
                                     </div>
                                 </div>
 
@@ -111,4 +115,17 @@
       </div>
   </div>
 </div>          -->
+<script>
+
+    function changeStatus(){
+        
+        console.log($('#switch_status').prop('checked'));
+        var swtichData = $('#switch_status').prop('checked');
+        if(swtichData){
+            $("#status_id").val(1);
+        }else{
+            $("#status_id").val(0);
+        }
+    }
+</script>
 @endsection

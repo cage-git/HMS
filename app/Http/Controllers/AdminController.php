@@ -1631,7 +1631,7 @@ class AdminController extends Controller
             $error = config('constants.FLASH_REC_ADD_0');
         }
         $res = Product::updateOrCreate(['id'=>$request->id],$request->except(['_token','curr_stock']));
-
+        dd($res);
         if($res){
             return redirect()->back()->with(['success' => $success]);
         }
