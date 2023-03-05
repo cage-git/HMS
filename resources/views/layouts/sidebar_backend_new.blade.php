@@ -39,6 +39,37 @@
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
             @if($permissionsArr['dashboard'])<li class=" nav-item"><a class="d-flex align-items-center" href="{{route('dashboard')}}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_dashboard')}}</span></a></li>@endif
 
+            @if($permissionsArr['add-user'] || $permissionsArr['list-user'])
+              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_users')}}</span></a>
+                    <ul class="menu-content">
+                        @if($permissionsArr['list-user'])<li><a class="d-flex align-items-center" href="{{route('list-user')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_user_all')}} </span></a></li>       
+                        @endif
+                    </ul>
+                </li>
+            @endif
+
+            @if($permissionsArr['add-food-category'] || $permissionsArr['list-food-category'] || $permissionsArr['add-food-item'] || $permissionsArr['list-food-item'])
+              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='coffee'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_fooditems')}}</span></a>
+                    <ul class="menu-content">
+                        @if($permissionsArr['list-food-category']) <li><a class="d-flex align-items-center" href="{{route('list-food-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_foodcat_all')}}</span></a></li>
+                        @endif
+                        @if($permissionsArr['list-food-item']) <li><a class="d-flex align-items-center" href="{{route('list-food-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_fooditem_all')}} </span></a></li>       
+                        @endif
+                    </ul>
+                </li>
+            @endif
+
+            @if($permissionsArr['add-product'] || $permissionsArr['list-product'] || $permissionsArr['io-stock'] || $permissionsArr['stock-history'])
+              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='shopping-cart'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_stocks')}}</span></a>
+                    <ul class="menu-content">
+                        @if($permissionsArr['list-product']) <li><a class="d-flex align-items-center" href="{{route('list-product')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_product_all')}}</span></a></li>
+                        @endif
+                        @if($permissionsArr['stock-history']) <li><a class="d-flex align-items-center" href="{{route('stock-history')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_history')}} </span></a></li>       
+                        @endif
+                    </ul>
+                </li>
+            @endif
+
             @if($permissionsArr['add-room'] || $permissionsArr['list-room'] || $permissionsArr['add-room-types'] || $permissionsArr['list-room-types'] || $permissionsArr['add-amenities'] || $permissionsArr['list-amenities'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_rooms')}}</span></a>
                     <ul class="menu-content">
@@ -53,7 +84,7 @@
             @endif
 
             @if($permissionsArr['add-expense-category'] || $permissionsArr['list-expense-category'] || $permissionsArr['add-expense'] || $permissionsArr['list-expense'])
-              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='bar-chart-2'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_expense')}}</span></a>
+              <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='bar-chart-2'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_expense')}}</span></a>
                     <ul class="menu-content">
                     @if($permissionsArr['list-expense-category']) <li><a class="d-flex align-items-center" href="{{route('list-expense-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expensecat_all')}}</span></a></li>
                         @endif

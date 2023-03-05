@@ -11,7 +11,7 @@ $(function () {
   'use strict';
 
   var bootstrapForm = $('.needs-validation'),
-    jqForm = $('#expense-form'),
+    jqForm = $('#food-category-form'),
     picker = $('.picker'),
     select = $('.select2');
 
@@ -71,28 +71,9 @@ $(function () {
   if (jqForm.length) {
     jqForm.validate({
       rules: {
-        'category_id': {
+        'name': {
           required: true
-        },
-        'title': {
-          required: true
-        },
-        'amount': {
-          required: true
-        },
-        'datetime': {
-          required: true
-        },
-        // 'title': {
-        //   required: true
-        // },
-        // 'vendor_email': {
-        //   required: true
-        // },
-        // 'vendor_mobile': {
-        //   required: true
-        // },
-        
+        }
       }
     });
   }

@@ -233,5 +233,6 @@
 @section('scripts')
 <!-- BEGIN: Page JS-->
   <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/js/scripts/forms/expense-form-validation.js')}}"></script>
 <!-- END: Page JS-->
 @endsection

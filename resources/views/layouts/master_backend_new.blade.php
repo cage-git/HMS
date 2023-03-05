@@ -58,6 +58,11 @@
         <!-- <link rel="stylesheet" type="text/css" href="{{URL::asset('public/assets/css/style.css')}}"> -->
         <!-- END: Custom CSS-->
         <!-- ltr ended -->
+        <!-- BEGIN: Page CSS-->
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/form-validation.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
+        <!-- END: Page CSS-->
     <?php }else if(getSettings('site_language') == 'ar'){   ?> 
         <!-- rtl -->
 
@@ -90,6 +95,11 @@
         <!-- END: Custom CSS-->
 
         <!-- rtl ended -->
+        <!-- BEGIN: Page CSS-->
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/form-validation.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
+        <!-- END: Page CSS-->
     <?php } ?>
 
     @yield('styles')

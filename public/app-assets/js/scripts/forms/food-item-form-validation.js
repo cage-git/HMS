@@ -11,7 +11,7 @@ $(function () {
   'use strict';
 
   var bootstrapForm = $('.needs-validation'),
-    jqForm = $('#expense-form'),
+    jqForm = $('#food-item-form'),
     picker = $('.picker'),
     select = $('.select2');
 
@@ -74,25 +74,12 @@ $(function () {
         'category_id': {
           required: true
         },
-        'title': {
+        'name': {
           required: true
         },
-        'amount': {
+        'price': {
           required: true
-        },
-        'datetime': {
-          required: true
-        },
-        // 'title': {
-        //   required: true
-        // },
-        // 'vendor_email': {
-        //   required: true
-        // },
-        // 'vendor_mobile': {
-        //   required: true
-        // },
-        
+        }
       }
     });
   }

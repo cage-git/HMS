@@ -174,3 +174,10 @@
   
 </script>
 @endsection
+
+@section('scripts')
+<!-- BEGIN: Page JS-->
+  <script src="{{URL::asset('public/app-assets/js/scripts/forms/product-form-validation.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/js/scripts/forms/add-product-form-validation.js')}}"></script>
+<!-- END: Page JS-->
+@endsection

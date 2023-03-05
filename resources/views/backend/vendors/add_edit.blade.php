@@ -9,15 +9,6 @@
       }
   @endphp
 
-  @section('styles')
-
-      <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/form-validation.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
-    <!-- END: Page CSS-->
-
-  @endsection
 
     <!-- jQuery Validation -->
     <div class="col-md-12 col-12">
