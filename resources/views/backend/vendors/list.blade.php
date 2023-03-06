@@ -4,7 +4,7 @@
 <!-- Basic table -->
 <section id="basic-datatable">
                     <div class="row">
-                        <div class="row col-12">
+                        <div class=" col-12">
                             <div class="card">
                                 <div class="card-header border-bottom">
                                     <h4 class="card-title">{{lang_trans('heading_vendor_list')}}</h4>
@@ -43,7 +43,7 @@
                                             @endisPermission
 
                                             @isPermission('delete-vendor')
-                                              <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-vendor',[$val->id])}}" title="{{lang_trans('btn_delete')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i data-feather='trash-2'></i></button>
+                                              <a class="btn btn-danger btn-sm delete_btn" href="{{route('delete-vendor',[$val->id])}}" title="{{lang_trans('btn_delete')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i data-feather='trash-2'></i></a>
                                             @endisPermission
                                           </td>
                                         </tr>

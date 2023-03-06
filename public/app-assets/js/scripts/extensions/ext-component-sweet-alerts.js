@@ -485,6 +485,7 @@ $(function () {
   // Confirm Text
   if (confirmText.length) {
     confirmText.on('click', function () {
+      var deleteUrl = $(this).data('url');
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -498,15 +499,18 @@ $(function () {
         buttonsStyling: false
       }).then(function (result) {
         if (result.value) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Deleted!',
-            text: 'Your file has been deleted.',
-            customClass: {
-              confirmButton: 'btn btn-success'
-            }
-          });
-        }
+    	    window.location.href=deleteUrl;
+    	  }
+        // if (result.value) {
+        //   Swal.fire({
+        //     icon: 'success',
+        //     title: 'Deleted!',
+        //     text: 'Your file has been deleted.',
+        //     customClass: {
+        //       confirmButton: 'btn btn-success'
+        //     }
+        //   });
+        // }
       });
     });
   }

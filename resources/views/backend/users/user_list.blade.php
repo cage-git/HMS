@@ -6,12 +6,13 @@
 <!-- Basic table -->
 <section id="basic-datatable">
     <div class="row">
-        <div class="row col-12">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('txt_list_users')}}</h4>
                     <a href="{{route('add-user')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_user_add')}}</button></a>
                 </div>
+                <div class="card-datatable">
                 <table class="datatables-basic table">
                     <thead>
                         <tr>
@@ -52,6 +53,7 @@
                       @endforeach
                     </tbody>
                 </table>
+              </div>
             </div>
         </div>
     </div>

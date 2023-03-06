@@ -52,7 +52,7 @@
       </div>
 
     <div class="row">
-        <div class="row col-12">
+        <div class=" col-12">
             <div class="card">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_expense_list')}}</h4>
@@ -87,7 +87,7 @@
                         <td>{{$val->remark}}</td>
                         <td>
                           <a class="btn btn-sm btn-info" href="{{route('edit-expense',[$val->id])}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='edit'></i></a>
-                          <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-expense',[$val->id])}}" title="{{lang_trans('btn_delete')}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='trash'></i></button>
+                          <button id="confirm-text" class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-expense',[$val->id])}}" title="{{lang_trans('btn_delete')}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='trash'></i></button>
                         </td>
                       </tr>
                     @endforeach
@@ -192,5 +192,10 @@
 @section('scripts')
 <!-- BEGIN: Page JS-->
   <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
+  <!-- <script src="{{URL::asset('public/app-assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script> -->
+  <script src="{{URL::asset('public/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js')}}"></script>
 <!-- END: Page JS-->
+
+
+
 @endsection
