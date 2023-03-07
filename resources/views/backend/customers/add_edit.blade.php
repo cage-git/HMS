@@ -1,4 +1,4 @@
-@extends('layouts.master_backend')
+@extends('layouts.master_backend_new')
 @section('content')
 @php 
       $flag=0;
@@ -8,6 +8,109 @@
           $heading=lang_trans('btn_update');
       }
   @endphp
+
+
+
+
+  <div class="col-md-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> {{$heading}} {{lang_trans('txt_customer')}}</h4>
+            </div>
+            <div class="card-body">
+                  @if($flag==1)
+                      {{ Form::model($data_row,array('url'=>route('save-customer'),'id'=>"customer-form", 'class'=>"form-horizontal form-label-left")) }}
+                      {{Form::hidden('id',null)}}
+                  @else
+                      {{ Form::open(array('url'=>route('save-customer'),'id'=>"customer-form", 'class'=>"form-horizontal form-label-left")) }}
+                  @endif
+                        <div class="row">
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_firstname')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_surname')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_email')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
+                                    </div>
+                                </div>
+
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_mobile_num')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                                    </div>
+                                </div>
+
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_address')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_country')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{ Form::select('country',getCountryList(),getSettings('default_country'),['class'=>'form-select col-md-6 col-xs-12', "id"=>"country", 'placeholder'=>lang_trans('ph_select')]) }}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_state')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{Form::text('state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"state", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_state')])}}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_gender')}}</label>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{ Form::select('gender',config('constants.GENDER'),null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_age')}}</label>
+                                        <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" />
+                                        {{Form::number('age',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"age", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_age'),"min"=>10])}}
+                                    </div>
+                                </div> -->
+
+                                
+
+                        </div>
+                    <button type="submit" class="btn btn-primary" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
+                    <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+<!-- 
 <div class="">
   <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
@@ -79,5 +182,5 @@
           </div>
       </div>
   </div>
-</div>
+</div> -->
 @endsection

@@ -18,7 +18,7 @@
                             <div class="mb-1">
                                 <label class="form-label" for="category">{{lang_trans('txt_category')}}</label>
                               
-                                {{Form::text('company_id',null,['class'=>"form-select", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
+                                {{Form::text('company_id',null,['class'=>"form-control", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
@@ -71,8 +71,8 @@
         <div class=" col-12">
             <div class="card">
                 <div class="card-header border-bottom">
-                    <h4 class="card-title">{{lang_trans('heading_expense_list')}}</h4>
-                    <a href="{{route('add-expense')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_expense_add')}} </button></a>
+                    <h4 class="card-title">{{lang_trans('txt_list_companys')}}</h4>
+                    <a href="{{route('add-company')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_company_add')}} </button></a>
                 </div>
                   @php
                     $totalAmount = 0;
@@ -87,8 +87,7 @@
                         <th>{{lang_trans('txt_company_email')}}</th>
                         <th>{{lang_trans('txt_company_address')}}</th>
                         <th>{{lang_trans('txt_company_country')}}</th>
-                        <th>{{lang_trans('txt_company_state')}}</th>
-                        <th>{{lang_trans('txt_company_city')}}</th>
+                     
                         <th>{{lang_trans('txt_action')}}</th>
                         </tr>
                     </thead>
@@ -105,11 +104,10 @@
                         <td>{{$val->email}}</td>
                         <td>{{$val->address}}</td>
                         <td>{{$val->country}}</td>
-                        <td>{{$val->state}}</td>
-                        <td>{{$val->city}}</td>
+                     
                         <td>
                           <a class="btn btn-sm btn-info" href="{{route('edit-company',[$val->id])}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='edit'></i></a>
-                          <!-- <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-expense',[$val->id])}}" title="{{lang_trans('btn_delete')}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='trash'></i></button> -->
+                         
                         </td>
                       </tr>
                     @endforeach
@@ -127,8 +125,8 @@
 
 
 
-<!-- 
-<div class="">
+
+<!-- <div class="">
   <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">

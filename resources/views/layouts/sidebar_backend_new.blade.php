@@ -39,6 +39,24 @@
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
             @if($permissionsArr['dashboard'])<li class=" nav-item"><a class="d-flex align-items-center" href="{{route('dashboard')}}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_dashboard')}}</span></a></li>@endif
 
+            @if($permissionsArr['add-companys'] || $permissionsArr['list-companys'])
+              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_companys')}}</span></a>
+                    <ul class="menu-content">
+                        @if($permissionsArr['list-companys'])<li><a class="d-flex align-items-center" href="{{route('list-company')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_company_all')}} </span></a></li>       
+                        @endif
+                    </ul>
+                </li>
+            @endif
+
+            @if($permissionsArr['add-customer'] || $permissionsArr['list-customer'])
+              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_customers')}}</span></a>
+                    <ul class="menu-content">
+                        @if($permissionsArr['list-customer'])<li><a class="d-flex align-items-center" href="{{route('list-customer')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_customer_all')}} </span></a></li>       
+                        @endif
+                    </ul>
+                </li>
+            @endif
+
             @if($permissionsArr['add-user'] || $permissionsArr['list-user'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_users')}}</span></a>
                     <ul class="menu-content">

@@ -251,3 +251,9 @@
   
 </script>
 @endsection
+@section('scripts')
+
+    <!-- BEGIN: Page JS-->
+        <script src="{{URL::asset('public/app-assets/js/scripts/forms/room-form-validation.js')}}"></script>
+    <!-- END: Page JS-->
+@endsection

@@ -39,7 +39,7 @@
                             <td>{!! getStatusBtn($val->status) !!}</td>
                             <td>
                               <a class="btn btn-sm btn-info" href="{{route('edit-room',[$val->id])}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='edit'></i></a>
-                              <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-room',[$val->id])}}" title="{{lang_trans('btn_delete')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i data-feather='trash'></i></button>
+                              <button id="confirm-text" class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-room',[$val->id])}}" title="{{lang_trans('btn_delete')}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i data-feather='trash'></i></button>
                             </td>
                           </tr>
                         @endforeach
@@ -100,4 +100,14 @@
       </div>
   </div>
 </div>           -->
+@endsection
+@section('scripts')
+<!-- BEGIN: Page JS-->
+  <!-- <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script> -->
+  <script src="{{URL::asset('public/app-assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js')}}"></script>
+<!-- END: Page JS-->
+
+
+
 @endsection
