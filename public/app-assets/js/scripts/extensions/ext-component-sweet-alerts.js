@@ -36,8 +36,9 @@ $(function () {
   var question = $('#prompt-function');
   var ajax = $('#ajax-request');
 
-  var confirmText = $('#confirm-text');
-  var confirmColor = $('#confirm-color');
+  // var confirmText = $('#confirm-text');
+  var confirmText = $('.delete_btn');
+  // var confirmColor = $('#confirm-color');
 
   var assetPath = '../../../app-assets/';
   if ($('body').attr('data-framework') === 'laravel') {
@@ -500,6 +501,14 @@ $(function () {
       }).then(function (result) {
         if (result.value) {
     	    window.location.href=deleteUrl;
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Delete successfully',
+            customClass: {
+              confirmButton: 'btn btn-success'
+            }
+          });
     	  }
         // if (result.value) {
         //   Swal.fire({

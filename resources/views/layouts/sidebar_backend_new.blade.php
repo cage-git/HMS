@@ -29,7 +29,7 @@
                                     </g>
                                 </g>
                             </svg></span>
-                        <h2 class="brand-text">Vuexy</h2>
+                        <h2 class="brand-text">{{getSettings('site_page_title')}}</h2>
                     </a></li>
                 <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
             </ul>
@@ -39,6 +39,17 @@
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
             @if($permissionsArr['dashboard'])<li class=" nav-item"><a class="d-flex align-items-center" href="{{route('dashboard')}}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_dashboard')}}</span></a></li>@endif
 
+            @if($permissionsArr['add-laundry-item'] || $permissionsArr['list-laundry-item'] || $permissionsArr['add-laundry-order'] || $permissionsArr['list-laundry-order'])
+              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='droplet'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_laundry')}}</span></a>
+                    <ul class="menu-content">
+                        @if($permissionsArr['list-laundry-item'])<li><a class="d-flex align-items-center" href="{{route('list-laundry-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_item_all')}} </span></a></li>       
+                        @endif
+                        @if($permissionsArr['list-laundry-order'])<li><a class="d-flex align-items-center" href="{{route('list-laundry-order')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_order_all')}} </span></a></li>       
+                        @endif
+                    </ul>
+                </li>
+            @endif
+            
             @if($permissionsArr['add-companys'] || $permissionsArr['list-companys'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_companys')}}</span></a>
                     <ul class="menu-content">
