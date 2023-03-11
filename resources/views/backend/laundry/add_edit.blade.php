@@ -233,7 +233,7 @@
         </div>
     </div>
 
-    <div class="row hide_elem" id="existing_guest_section">
+    <!-- <div class="row hide_elem" id="existing_guest_section">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
@@ -250,7 +250,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="row" id="new_guest_section">
         <div class="col-md-12 col-sm-12 col-xs-12">

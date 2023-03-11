@@ -1,4 +1,4 @@
-@extends('layouts.master_backend')
+@extends('layouts.master_backend_new')
 @section('content')
 @php 
       $flag=0;
@@ -12,6 +12,67 @@
       $roomId = (isset($room_id)) ? $room_id : null;
       $reservationId = (isset($reservation_id)) ? $reservation_id : null;
   @endphp
+
+  <div class="col-md-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> {{$heading}} {{lang_trans('txt_laundry_item')}}</h4>
+            </div>
+            <div class="card-body">
+                @if($flag==1)
+                      {{ Form::model($data_row,array('url'=>route('save-housekeeping-order'),'id'=>"housekeeping-order-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
+                      {{Form::hidden('id',null)}}
+                  @else
+                      {{ Form::open(array('url'=>route('save-housekeeping-order'),'id'=>"housekeeping-order-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
+                      {{Form::hidden('reservation_id',$reservationId)}}
+                  @endif
+                        <div class="row">
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_housekeeping_item')}}</label>
+                                        {{ Form::select('items[]',$item_list,null,['class'=>'select2 form-select" id="select2-basic', 'id'=>'housekeeping_items', 'multiple'=>'multiple', 'required'=>true]) }}    
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_room')}}</label>
+                                        {{ Form::select('room_id',$room_list,$roomId,['class'=>'form-select','placeholder'=>lang_trans('ph_select')]) }}    
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_housekeeping_status')}}</label>
+                                        {{ Form::select('housekeeping_status_id',$status_list,null,['class'=>'form-select','placeholder'=>lang_trans('ph_select')]) }}    
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_assigned_to')}}</label>
+                                        {{ Form::select('housekeeper_id',$housekeeper_list,null,['class'=>'form-select','placeholder'=>lang_trans('ph_select')]) }}    
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_remark')}}</label>
+                                        {{Form::textarea('remark',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"remark", "rows"=>2])}}
+                                    </div>
+                                </div>
+
+                                
+
+                        </div>
+                    <button type="submit" class="btn btn-primary" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
+                    <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!-- 
 <div class="">
   <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
@@ -81,11 +142,17 @@
           </div>
       </div>
   </div>
-</div>
+</div> -->
 {{-- require set var in js var --}}
 <script>
   globalVar.page = 'housekeeping_order_add_edit';
   globalVar.selectedHousekeepingItems = "{{$housekeepingItems}}";
 </script> 
 <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script>       
+@endsection
+@section('scripts')
+
+    <!-- BEGIN: Page JS-->
+        <script src="{{URL::asset('public/app-assets/js/scripts/forms/house-keeping-order-form-validation.js')}}"></script>
+    <!-- END: Page JS-->
 @endsection

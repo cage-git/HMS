@@ -26,6 +26,7 @@ class CustomerController extends Controller
         return view('backend/customers/add_edit',$this->data);
     }
     public function saveCustomer(Request $request) {
+        // dd($request->all());
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
@@ -51,6 +52,8 @@ class CustomerController extends Controller
          $this->data['datalist']=Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC')->get();
          $this->data['customer_list']=getCustomerList('get');
          $this->data['search_data'] = ['customer_id'=>'','mobile_num'=>'','city'=>'','state'=>'','country'=>''];
+        dd($this->data);
+
         return view('backend/customers/list',$this->data);
     }
     public function deleteCustomer(Request $request) {

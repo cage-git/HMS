@@ -32,6 +32,7 @@ class HousekeepingController extends Controller
     }
     public function index() {  
         $this->data['datalist']=$this->getHousekeepingOrder('get');
+        // dd($this->data);
         return view('backend/housekeeping/list',$this->data);
     }
     public function addOrder($room_id = null, $reservation_id = null) {

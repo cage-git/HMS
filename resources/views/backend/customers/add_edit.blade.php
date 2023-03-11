@@ -29,7 +29,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_firstname')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        <!-- {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}} -->
+                                        {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}}
                                     </div>
                                 </div>
 
@@ -37,7 +37,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_surname')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        <!-- {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}} -->
+                                        {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}}
                                     </div>
                                 </div>
 
