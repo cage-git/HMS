@@ -96,14 +96,18 @@
     dropdownAutoWidth: true,
     dropdownParent: selectAjax.parent(),
     width: '100%',
+    tags: true,
     ajax: {
-      url: 'https://api.github.com/search/repositories',
+      // url: 'https://api.github.com/search/repositories',
+      url: '{{route("search-from-customer")}}',
       dataType: 'json',
       delay: 250,
       data: function (params) {
         return {
-          q: params.term, // search term
-          page: params.page
+          // q: params.term, // search term
+          // page: params.page
+          search_from_phone_idcard: params.term, 
+          category: "user",
         };
       },
       processResults: function (data, params) {
@@ -111,18 +115,21 @@
         // since we are using custom formatting functions we do not need to
         // alter the remote JSON data, except to indicate that infinite
         // scrolling can be used
-        params.page = params.page || 1;
+        // params.page = params.page || 1;
 
         return {
-          results: data.items,
-          pagination: {
-            more: params.page * 30 < data.total_count
-          }
+          results: $.map(data.customers, function(obj) {
+              return { id: obj.mobile , text: obj.name+' '+obj.mobile };
+          })
+          // results: data.items,
+          // pagination: {
+          //   more: params.page * 30 < data.total_count
+          // }
         };
       },
       cache: true
     },
-    placeholder: 'Search for a repository',
+    placeholder: 'Search a guest',
     escapeMarkup: function (markup) {
       return markup;
     }, // let our custom formatter work
@@ -132,7 +139,8 @@
   });
 
   function formatRepo(repo) {
-    if (repo.loading) return repo.text;
+    console.log(repo)
+    // if (repo.loading) return repo.text;
 
     var markup =
       "<div class='select2-result-repository clearfix'>" +

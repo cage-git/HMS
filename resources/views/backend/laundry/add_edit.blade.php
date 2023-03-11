@@ -88,9 +88,9 @@
                                   <label class="form-label" for="date_to">{{lang_trans('txt_remark')}}</label>
                                 
                                   {{Form::textarea('remark',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"remark", "rows"=>1])}}
-                              </div>
-                          </div>
+                            </div>
                         </div>
+                      </div>
 
                         <div class="row">  
                             <div class="col-xl-3 col-md-6 col-12">
@@ -133,6 +133,72 @@
                             </div>
                           </div> -->
                         @endif
+
+
+                      <div class="row">  
+                        <!-- Remote Data -->
+                        <div class="col-md-3 mb-1">
+                            <label class="form-label" for="select2-ajax">{{lang_trans('txt_firstname')}}</label>
+                            <div class="mb-1">
+                                <select name="customer_name" class="select2-data-ajax form-select" id="search_guest" ></select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 col-12">
+                              <div class="mb-1">
+                                  <label class="form-label" for="category">{{lang_trans('txt_email')}}</label>
+                                  {{Form::email('customer_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
+                              </div>
+                          </div>
+
+                          <div class="col-xl-3 col-md-6 col-12">
+                              <div class="mb-1">
+                                  <label class="form-label" for="category">{{lang_trans('txt_mobile_num')}}</label>
+                                  {{Form::text('customer_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                              </div>
+                          </div>
+
+                          <div class="col-xl-3 col-md-6 col-12">
+                              <div class="mb-1">
+                                  <label class="form-label" for="category">{{lang_trans('txt_address')}}</label>
+                                  {{Form::textarea('customer_address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                              </div>
+                          </div>
+
+                          <div class="col-xl-3 col-md-6 col-12">
+                              <div class="mb-1">
+                                  <label class="form-label" for="category">{{lang_trans('txt_gender')}}</label>
+                                  {{ Form::select('customer_gender',config('constants.GENDER'),null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
+                              </div>
+                          </div>
+                          
+
+                        </div>
+                          <!-- 
+                            <div class="row">
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label class="control-label"> {{lang_trans('txt_firstname')}} <span class="required">*</span></label>
+                      {{Form::text('customer_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label class="control-label"> {{lang_trans('txt_email')}} </label>
+                      {{Form::email('customer_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label class="control-label"> {{lang_trans('txt_mobile_num')}} <span class="required">*</span></label>
+                      {{Form::text('customer_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label class="control-label"> {{lang_trans('txt_address')}}</label>
+                      {{Form::textarea('customer_address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_gender')}} <span class="required">*</span></label>
+                        {{ Form::select('customer_gender',config('constants.GENDER'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
+                    </div>
+                  </div>
+                           -->
 
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="mb-1">
@@ -574,17 +640,390 @@
 </div>
 {{-- require set var in js var --}}
 <script>
-  globalVar.page = 'laundry_order_add_edit';
-  globalVar.customerList = {!! json_encode($customer_list) !!};
-  globalVar.applyGst = {{$gstApply}};
-  globalVar.gstPercent = {{$gstPerc}};
-  globalVar.cgstPercent = {{$cgstPerc}};
-  globalVar.gstAmount = {{$gstAmount}};
-  globalVar.cgstAmount = {{$cgstAmount}};
-  globalVar.subtotalAmount = {{$subtotalAmount}};
-  globalVar.totalAmount = {{$totalAmount}};
-  globalVar.discount = {{$totalDiscount}};
-  globalVar.isError = false;
+  // globalVar.page = 'laundry_order_add_edit';
+  // globalVar.customerList = {!! json_encode($customer_list) !!};
+  // globalVar.applyGst = {{$gstApply}};
+  // globalVar.gstPercent = {{$gstPerc}};
+  // globalVar.cgstPercent = {{$cgstPerc}};
+  // globalVar.gstAmount = {{$gstAmount}};
+  // globalVar.cgstAmount = {{$cgstAmount}};
+  // globalVar.subtotalAmount = {{$subtotalAmount}};
+  // globalVar.totalAmount = {{$totalAmount}};
+  // globalVar.discount = {{$totalDiscount}};
+  // globalVar.isError = false;
 </script>
-<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
+<!-- <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script> -->
+@endsection
+@section('scripts')
+<!-- BEGIN: Page JS-->
+  <!-- <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script> -->
+  <!-- <script src="{{URL::asset('public/app-assets/js/scripts/forms/form-select2.js')}}"></script> -->
+
+  <script>
+    (function (window, document, $) {
+  'use strict';
+  var select = $('.select2'),
+    selectIcons = $('.select2-icons'),
+    maxLength = $('.max-length'),
+    hideSearch = $('.hide-search'),
+    selectArray = $('.select2-data-array'),
+    selectAjax = $('.select2-data-ajax'),
+    selectLg = $('.select2-size-lg'),
+    selectSm = $('.select2-size-sm'),
+    selectInModal = $('.select2InModal');
+
+  select.each(function () {
+    var $this = $(this);
+    $this.wrap('<div class="position-relative"></div>');
+    $this.select2({
+      // the following code is used to disable x-scrollbar when click in select input and
+      // take 100% width in responsive also
+      dropdownAutoWidth: true,
+      width: '100%',
+      dropdownParent: $this.parent()
+    });
+  });
+
+  // Select With Icon
+  selectIcons.each(function () {
+    var $this = $(this);
+    $this.wrap('<div class="position-relative"></div>');
+    $this.select2({
+      dropdownAutoWidth: true,
+      width: '100%',
+      minimumResultsForSearch: Infinity,
+      dropdownParent: $this.parent(),
+      templateResult: iconFormat,
+      templateSelection: iconFormat,
+      escapeMarkup: function (es) {
+        return es;
+      }
+    });
+  });
+
+  // Format icon
+  function iconFormat(icon) {
+    var originalOption = icon.element;
+    if (!icon.id) {
+      return icon.text;
+    }
+
+    var $icon = feather.icons[$(icon.element).data('icon')].toSvg() + icon.text;
+
+    return $icon;
+  }
+
+  // Limiting the number of selections
+  maxLength.wrap('<div class="position-relative"></div>').select2({
+    dropdownAutoWidth: true,
+    width: '100%',
+    maximumSelectionLength: 2,
+    dropdownParent: maxLength.parent(),
+    placeholder: 'Select maximum 2 items'
+  });
+
+  // Hide Search Box
+  hideSearch.select2({
+    placeholder: 'Select an option',
+    minimumResultsForSearch: Infinity
+  });
+
+  // Loading array data
+  var data = [
+    { id: 0, text: 'enhancement' },
+    { id: 1, text: 'bug' },
+    { id: 2, text: 'duplicate' },
+    { id: 3, text: 'invalid' },
+    { id: 4, text: 'wontfix' }
+  ];
+
+  selectArray.wrap('<div class="position-relative"></div>').select2({
+    dropdownAutoWidth: true,
+    dropdownParent: selectArray.parent(),
+    width: '100%',
+    data: data
+  });
+
+  // Loading remote data
+  selectAjax.wrap('<div class="position-relative"></div>').select2({
+    dropdownAutoWidth: true,
+    dropdownParent: selectAjax.parent(),
+    width: '100%',
+    tags: true,
+    ajax: {
+      // url: 'https://api.github.com/search/repositories',
+      url: '{{route("search-from-customer")}}',
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        return {
+          // q: params.term, // search term
+          // page: params.page
+          search_from_phone_idcard: params.term, 
+          category: "user",
+          type: "name",
+        };
+      },
+      processResults: function (data, params) {
+        // parse the results into the format expected by Select2
+        // since we are using custom formatting functions we do not need to
+        // alter the remote JSON data, except to indicate that infinite
+        // scrolling can be used
+        // params.page = params.page || 1;
+
+        return {
+          // results: $.map(data.customers, function(obj) {
+          //     return { id: obj.mobile , text: obj.name+' '+obj.mobile };
+          // })
+          results: data.customers,
+          // results: data.items,
+          // pagination: {
+          //   more: params.page * 30 < data.total_count
+          // }
+        };
+      },
+      cache: true
+    },
+    placeholder: 'Search a guest',
+    escapeMarkup: function (markup) {
+      return markup;
+    }, // let our custom formatter work
+    minimumInputLength: 1,
+    templateResult: formatRepo,
+    templateSelection: formatRepoSelection
+  });
+
+  function formatRepo(repo) {
+    console.log("reo",repo)
+    // if (repo.loading) return repo.text;
+    if(repo.name){
+      var markup =
+      "<div class='select2-result-repository clearfix'>" +
+      // "<div class='select2-result-repository__avatar'><img src='" +
+      // repo.owner.avatar_url +
+      // "' /></div>" +
+      "<div class='select2-result-repository__meta'>" +
+      "<div class='select2-result-repository__title'>" +
+      repo.name +
+      '</div>';
+
+      if (repo.mobile) {
+        markup += "<div class='select2-result-repository__description'>" + repo.mobile + '</div>';
+      }
+    }else{
+      var markup =
+      "<div class='select2-result-repository clearfix'>" +
+      // "<div class='select2-result-repository__avatar'><img src='" +
+      // repo.owner.avatar_url +
+      // "' /></div>" +
+      "<div class='select2-result-repository__meta'>" +
+      "<div class='select2-result-repository__title'>" +
+      repo.text +
+      '</div>';
+    }
+
+    return markup;
+  }
+
+  function formatRepoSelection(repo) {
+    return repo.name || repo.text;
+  }
+
+  // Sizing options
+
+  // Large
+  selectLg.each(function () {
+    var $this = $(this);
+    $this.wrap('<div class="position-relative"></div>');
+    $this.select2({
+      dropdownAutoWidth: true,
+      dropdownParent: $this.parent(),
+      width: '100%',
+      containerCssClass: 'select-lg'
+    });
+  });
+
+  // Small
+  selectSm.each(function () {
+    var $this = $(this);
+    $this.wrap('<div class="position-relative"></div>');
+    $this.select2({
+      dropdownAutoWidth: true,
+      dropdownParent: $this.parent(),
+      width: '100%',
+      containerCssClass: 'select-sm'
+    });
+  });
+
+  $('#select2InModal').on('shown.bs.modal', function () {
+    selectInModal.select2({
+      placeholder: 'Select a state'
+    });
+  });
+})(window, document, jQuery);
+
+
+$(document).on('change', '#search_idcard', function(){
+    var val = $('#search_idcard').val();      
+    var guest_type = $('input:radio[name="guest_type"]:checked').val();
+    console.log("val",val);
+    getAjaxResponse('idcard_select_div', val, 'user', guest_type, 'search_idcard');
+});
+
+
+function getAjaxResponse(div_id, val, category, guest_type, field_id){
+             // var formData = new FormData(this);
+            // var search_from_phone_idcard = $("#search_from_phone_idcard").val();
+            $.ajax({
+                type:'GET',
+                url: '{{route("search-from-customer")}}',
+                data: {
+                    search_from_phone_idcard  : val,
+                    category: category,
+                },
+                dataType: "json",
+                success:function(data){
+                    // alert( "success");
+                    // if(typeof(data) !== 'undefined' ){
+                        console.log(data.customers[0], "success");
+                        var data = data.customers[0]; 
+                        if(data){
+                        if(data.cat && data.cat == "user"){
+                            // console.log( "success1");
+                            setCustomerData(data, div_id);
+                        }else if(data.cat && data.cat == "company"){
+                            // console.log( "succesxs2");
+                            setCompanydata(data, div_id);
+                        }
+                        }else{
+                            console.log("data not found", div_id, val, category, guest_type, field_id);
+                            if(field_id == "search_idcard"){
+                                $("#idcard_no").val(val);
+                            }else if(field_id == "search_phone"){
+
+                                $("#mobile").val(val);
+                            }else if(field_id == "search_companyname"){
+                                $("#company_name").val(val);
+                                $("#guest_type_category").val("new_company");
+                            }else if(field_id == "search_companyphone"){
+                                $("#company_mobile").val(val); 
+                                $("#guest_type_category").val("new_company");
+                            }
+
+                        }
+                },
+                error: function(error){
+                    console.log("error", error);
+                }
+            });
+        }
+
+
+        function setCompanydata(data_customer, id){
+
+          console.log("company data");
+          if(id == "companyname_select_div"){
+              $('#idcard_input_div').show();
+              $('#idcard_select_div').hide();
+              $('#companyphone_input_div').show();
+              $('#companyphone_select_div').hide();
+          }else if(id == "idcard_select_div"){
+              $('#companyname_select_div').hide();
+              $('#companyname_input_div').show();
+              $('#companyphone_input_div').show();
+              $('#companyphone_select_div').hide();
+          }else if(id == "companyphone_select_div"){
+              $('#companyname_select_div').hide();
+              $('#companyname_input_div').show();
+              $('#idcard_input_div').show();
+              $('#idcard_select_div').hide();
+          }
+
+          $("#company_name").val(data_customer.name);
+          $('#guest_type_category').val('existing_company');
+          $("#company_gst_num").val(data_customer.company_gst_num);
+          $("#type_of_ids_selector").val(data_customer.idcard_type);
+          $("#company_email").val(data_customer.email);
+          $("#company_mobile").val(data_customer.mobile);                
+          $("#company_address").val(data_customer.address);
+          $("#company_country").val(data_customer.country);
+          $("#company_state").val(data_customer.state);
+          $("#company_city").val(data_customer.city);
+          $("#selected_customer_id").val(data_customer.id);
+          if(data_customer.dob !=""){
+              $("#dob").val(data_customer.dob);
+          }else{
+              $("#dob").val("");
+          }
+
+          }
+
+      function setCustomerData(data_customer, id){
+          console.log(id);
+          // setCustomerNull();
+          if(id == "mobile_select_div"){
+              $('#idcard_input_div').show();
+              $('#idcard_select_div').hide();
+          }else if(id == "idcard_select_div"){
+              $('#mobile_input_div').show();
+              $('#mobile_select_div').hide();
+          }
+          console.log("testing", data_customer);
+
+          $('#guest_type_category').val('existing');
+          $("#idcard_no").val(data_customer.id_card_no);
+          $("#type_of_ids_selector").val(data_customer.idcard_type);
+          $("#mobile").val(data_customer.mobile);
+          $("#surname").val(data_customer.surname);
+          $("#name").val(data_customer.name);
+          $("#middle_name").val(data_customer.namiddle_nameme);
+          $("#email").val(data_customer.email);
+          $("#address").val(data_customer.address);
+          $("#country").val(data_customer.country);
+          $("#state").val(data_customer.state);
+          $("#city").val(data_customer.city);
+          $("#gender").val(data_customer.gender);
+          $("#dob").val(data_customer.dob);
+          $("#selected_customer_id").val(data_customer.id);
+          if(data_customer.dob !=""){
+              $("#dob").val(data_customer.dob);
+          }else{
+              $("#dob").val("");
+          }
+      }
+
+      function setCompanyNull(){
+          $('#guest_type_category').val('new');
+          $("#company_name").val('');
+          $("#company_gst_num").val('');
+          $("#type_of_ids_selector").val('');
+          $("#company_email").val('');
+          $("#company_mobile").val('');                
+          $("#company_address").val('');
+          $("#company_country").val('');
+          $("#company_state").val('');
+          $("#company_city").val('');
+          $("#selected_customer_id").val('');
+          }
+
+          function setCustomerNull(){
+          $('#guest_type_category').val('new');
+          $("#type_of_ids_selector").val('');
+          $("#surname").val('');
+          $("#name").val('');
+          $("#middle_name").val('');
+          $("#email").val('');
+          $("#mobile").val('');
+          $("#address").val('');
+          $("#country").val('');
+          $("#state").val('');
+          $("#city").val('');
+          $("#gender").val('');
+          $("#dob").val('');
+          $("#selected_customer_id").val('');
+      }
+
+</script>
+  <!-- <script src="{{URL::asset('public/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js')}}"></script> -->
+<!-- END: Page JS-->
 @endsection
