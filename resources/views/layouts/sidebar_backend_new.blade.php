@@ -60,6 +60,24 @@
                     </ul>
                 </li>
             @endif
+
+
+            @if($permissionsArr['reports'] || $permissionsArr['stock-history'])
+              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='file'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_reports')}}</span></a>
+                    <ul class="menu-content">
+                        @if($permissionsArr['reports'])<li><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'transactions'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_transactions_report')}} </span></a></li>       
+                        @endif
+                        @if($permissionsArr['reports'])<li><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'checkouts'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_checkout_report')}} </span></a></li>       
+                        @endif
+                        @if($permissionsArr['reports'])<li><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'bladi_report'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_bladi_report')}} </span></a></li>       
+                        @endif
+                        @if($permissionsArr['reports'])<li><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'expense'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a></li>       
+                        @endif
+                        @if($permissionsArr['reports'])<li><a class="d-flex align-items-center" href="{{route('stock-history')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_report')}} </span></a></li>       
+                        @endif
+                    </ul>
+                </li>
+            @endif
             
             @if($permissionsArr['add-companys'] || $permissionsArr['list-companys'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_companys')}}</span></a>
@@ -157,7 +175,7 @@
                         </li>
                     </ul>
                 </li> -->
-                <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
+                <!-- <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
                 </li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="app-email.html"><i data-feather="mail"></i><span class="menu-title text-truncate" data-i18n="Email">Email</span></a>
                 </li>
@@ -547,7 +565,7 @@
                 </li>
                 <li class=" nav-item"><a class="d-flex align-items-center" href="https://pixinvent.ticksy.com/" target="_blank"><i data-feather="life-buoy"></i><span class="menu-title text-truncate" data-i18n="Raise Support">Raise Support</span></a>
                 </li>
-            </ul>
+            </ul> -->
         </div>
     </div>
     <!-- END: Main Menu-->

@@ -10,10 +10,12 @@
 
 $(function () {
   'use strict';
-
+  console.log("testing");
   // form repeater jquery
   $('.invoice-repeater, .repeater-default').repeater({
+    
     show: function () {
+      console.log("test");
       $(this).slideDown();
       // Feather Icons
       if (feather) {
