@@ -25,6 +25,8 @@
 
 
 
+
+
 @if($isEditMode==1)
     {{ Form::model($data_row,array('url'=>route('save-laundry-order'),'id'=>"laundry-order-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
     {{Form::hidden('id',null)}}
@@ -298,143 +300,77 @@
 
                          <!-- end -->
 
-                         <div data-repeater-list="group-a">
-                                            <div class="repeater-wrapper" data-repeater-item>
-                                                <div class="row">
-                                                    <div class="col-12 d-flex product-details-border position-relative pe-0">
-                                                        <div class="row w-100 pe-lg-0 pe-1 py-2">
-                                                            <div class="col-lg-5 col-12 mb-lg-0 mb-2 mt-lg-0 mt-2">
-                                                                <p class="card-text col-title mb-md-50 mb-0">Item</p>
-                                                                <select class="form-select item-details">
-                                                                    <option value="App Design">App Design</option>
-                                                                    <option value="App Customization" selected>App Customization</option>
-                                                                    <option value="ABC Template">ABC Template</option>
-                                                                    <option value="App Development">App Development</option>
-                                                                </select>
-                                                                <textarea class="form-control mt-2" rows="1">Customization & Bug Fixes</textarea>
-                                                            </div>
-                                                            <div class="col-lg-3 col-12 my-lg-0 my-2">
-                                                                <p class="card-text col-title mb-md-2 mb-0">Cost</p>
-                                                                <input type="text" class="form-control" value="24" placeholder="24" />
-                                                                <div class="mt-2">
-                                                                    <span>Discount:</span>
-                                                                    <span class="discount">0%</span>
-                                                                    <span class="tax-1 ms-50" data-bs-toggle="tooltip" data-bs-placement="top" title="Tax 1">0%</span>
-                                                                    <span class="tax-2 ms-50" data-bs-toggle="tooltip" data-bs-placement="top" title="Tax 2">0%</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-2 col-12 my-lg-0 my-2">
-                                                                <p class="card-text col-title mb-md-2 mb-0">Qty</p>
-                                                                <input type="number" class="form-control" value="1" placeholder="1" />
-                                                            </div>
-                                                            <div class="col-lg-2 col-12 mt-lg-0 mt-2">
-                                                                <p class="card-text col-title mb-md-50 mb-0">Price</p>
-                                                                <p class="card-text mb-0">$24.00</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="
-                                                                d-flex
-                                                                flex-column
-                                                                align-items-center
-                                                                justify-content-between
-                                                                border-start
-                                                                invoice-product-actions
-                                                                py-50
-                                                                px-25
-                                                            ">
-                                                            <i data-feather="x" class="cursor-pointer font-medium-3" data-repeater-delete></i>
-                                                            <div class="dropdown">
-                                                                <i class="cursor-pointer more-options-dropdown me-0" data-feather="settings" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                </i>
-                                                                <div class="dropdown-menu dropdown-menu-end item-options-menu p-50" aria-labelledby="dropdownMenuButton">
-                                                                    <div class="mb-1">
-                                                                        <label for="discount-input" class="form-label">Discount(%)</label>
-                                                                        <input type="number" class="form-control" id="discount-input" />
-                                                                    </div>
-                                                                    <div class="form-row mt-50">
-                                                                        <div class="mb-1 col-md-6">
-                                                                            <label for="tax-1-input" class="form-label">Tax 1</label>
-                                                                            <select name="tax-1-input" id="tax-1-input" class="form-select tax-select">
-                                                                                <option value="0%" selected>0%</option>
-                                                                                <option value="1%">1%</option>
-                                                                                <option value="10%">10%</option>
-                                                                                <option value="18%">18%</option>
-                                                                                <option value="40%">40%</option>
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="mb-1 col-md-6">
-                                                                            <label for="tax-2-input" class="form-label">Tax 2</label>
-                                                                            <select name="tax-2-input" id="tax-2-input" class="form-select tax-select">
-                                                                                <option value="0%" selected>0%</option>
-                                                                                <option value="1%">1%</option>
-                                                                                <option value="10%">10%</option>
-                                                                                <option value="18%">18%</option>
-                                                                                <option value="40%">40%</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="dropdown-divider my-1"></div>
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <button type="button" class="btn btn-outline-primary btn-apply-changes">Apply</button>
-                                                                        <button type="button" class="btn btn-outline-secondary">Cancel</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-1">
-                                            <div class="col-12 px-0">
-                                                <button type="button" class="btn btn-primary btn-sm btn-add-new" data-repeater-create>
-                                                    <i data-feather="plus" class="me-25"></i>
-                                                    <span class="align-middle">Add Item</span>
-                                                </button>
-                                            </div>
-                                        </div>
+                         <div class="laundry_item_parent">
+                                @if(!$isEditMode)
+                                @include('backend/includes/laundry_item_form', ['show_label'=>true, 'show_plus_btn'=>true])
+                                @endif
 
-                                <!-- Invoice Total starts -->
-                                <div class="card-body invoice-padding">
-                                    <div class="row invoice-sales-total-wrapper">
-                                        <div class="col-md-6 order-md-1 order-2 mt-md-0 mt-3">
-                                            <div class="d-flex align-items-center mb-1">
-                                                <label for="salesperson" class="form-label">Salesperson:</label>
-                                                <input type="text" class="form-control ms-50" id="salesperson" placeholder="Edward Crowley" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 d-flex justify-content-end order-md-2 order-1">
-                                            <div class="invoice-total-wrapper">
-                                                <div class="invoice-total-item">
-                                                    <p class="invoice-total-title">Subtotal:</p>
-                                                    <p class="invoice-total-amount">$1800</p>
+                                @if($isEditMode)
+                                @forelse($data_row->order_items as $key=>$item)
+                                    @php
+                                    $show_label = ($key == 0) ? true : false;
+                                    $show_plus_btn = ($key == 0) ? true : false;
+                                    @endphp
+                                    @include('backend/includes/laundry_item_form', ['show_label'=>$show_label, 'show_plus_btn'=>$show_plus_btn, 'item'=>$item])
+                                @empty
+                                    @include('backend/includes/laundry_item_form', ['show_label'=>true, 'show_plus_btn'=>true])
+                                @endforelse
+                                @endif
+                            </div> 
+                                        
+
+                                        <table class="table table-striped table-bordered">
+                                            <tr>
+                                            <th class="text-right" style="float: right;" width="30%">{{lang_trans('txt_subtotal')}} {{Form::hidden('amount[subtotal]',$subtotalAmount,['id'=>'subtotal'])}}</th>
+                                            <td width="20%" id="td_subtotal">{{getCurrencySymbol()}} {{$subtotalAmount}}</td>
+                                            </tr>
+                                            <tr>
+                                            <th class="text-right" style="float: right;" width="30%">{{lang_trans('txt_gst_apply')}}</th>
+                                            <td width="20%">{{ Form::checkbox('gst_apply',$gstApply,($gstApply==1) ? true : false,['id'=>'apply_gst', 'class' => 'form-check-input']) }}</td>
+                                            </tr>
+                                            <tr>
+                                            <th class="text-right" style="float: right;" width="30%">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%) {{Form::hidden('amount[total_gst_amount]',null,['id'=>'total_gst_amount'])}}</th>
+                                            <td width="20%" id="td_total_gst_amount" class="text-right">{{getCurrencySymbol()}} {{ $gstAmount }}</td>
+                                            </tr>
+                                            <tr>
+                                            <th class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}" style="float: right;" width="30%">{{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_cgst_amount]',null,['id'=>'total_cgst_amount'])}}</th>
+                                            <td width="20%" id="td_total_cgst_amount" class="text-right">{{getCurrencySymbol()}} {{ $cgstAmount }}</td>
+                                            </tr>
+                                            <tr>
+                                            <th class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}" style="float: right;" width="30%">{{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_cgst_amount]',null,['id'=>'total_cgst_amount'])}}</th>
+                                            <td width="20%" id="td_total_cgst_amount" class="text-right">{{getCurrencySymbol()}} {{ $cgstAmount }}</td>
+                                            </tr>
+                                            <tr>
+                                            <th class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}" style="float: right;" width="30%">{{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_cgst_amount]',null,['id'=>'total_cgst_amount'])}}</th>
+                                            <td width="20%" id="td_total_cgst_amount" class="text-right">{{getCurrencySymbol()}} {{ $cgstAmount }}</td>
+                                            </tr>
+                                            <tr>
+                                            <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_discount')}}</th>
+                                            <td width="20%" id="td_advance_amount" class="text-right">
+                                                <div class="row col-md-12 col-sm-12 col-xs-12 p-left-0 p-right-0">
+                                                <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0" style="padding-right:0px; padding-left: 0px;">
+                                                    {{Form::number('amount[discount_amount]',$totalDiscount,['class'=>"form-control", "id"=>"discount", "placeholder"=>lang_trans('ph_any_discount'),"min"=>0])}}
                                                 </div>
-                                                <div class="invoice-total-item">
-                                                    <p class="invoice-total-title">Discount:</p>
-                                                    <p class="invoice-total-amount">$28</p>
+                                                <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0" style="padding-right:0px; padding-left: 0px;">
+                                                    {{ Form::select('amount[laundry_discount_in]',config('constants.DISCOUNT_TYPES'),'amt',['class'=>'form-select', "id"=>"laundry_discount_in"]) }}
                                                 </div>
-                                                <div class="invoice-total-item">
-                                                    <p class="invoice-total-title">Tax:</p>
-                                                    <p class="invoice-total-amount">21%</p>
                                                 </div>
-                                                <hr class="my-50" />
-                                                <div class="invoice-total-item">
-                                                    <p class="invoice-total-title">Total:</p>
-                                                    <p class="invoice-total-amount">$1690</p>
-                                                </div>
-                                            </div>
+                                                <span class="error discount_err_msg"></span>
+                                            </td>
+                                            </tr>
+                                            <tr class="">
+                                            <th style="float: right;" width="30%" class="text-right bg-warning">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[total_amount]',$totalAmount,['id'=>'total_amount'])}}</th>
+                                            <td width="20%" id="td_total_amount" class="text-right bg-warning">{{getCurrencySymbol()}} {{$totalAmount}}</td>
+                                            </tr>
+                                        </table>
+
+                                    <div class="col-xl-3 col-md-6 col-12">
+                                        <div class="mb-1">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
+                                        <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Invoice Total ends -->
-
-                        <div class="col-xl-3 col-md-6 col-12">
-                            <div class="mb-1">
-                            <br>
-                            <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
-                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
-                            </div>
-                        </div>
                        
                       </div>
                     {{ Form::close() }}

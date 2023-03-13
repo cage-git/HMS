@@ -17,9 +17,9 @@
   }
 @endphp
 
-
+<!-- 
 <div class="row">
-                        <!-- Invoice repeater -->
+                        <! -- Invoice repeater -- >
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
@@ -82,12 +82,8 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- /Invoice repeater -->
-                    </div>
-
-
-
-<!-- 
+                        < !-- /Invoice repeater - ->
+                    </div> -->
 <div class="row laundry_item_elem per_item_elem">
   <div class="col-md-2 col-sm-2 col-xs-12">
     <label class="control-label {{$show_label ? '' : 'hide_elem'}}"> {{lang_trans('txt_laundry_item')}} </label>
@@ -110,11 +106,12 @@
   <div class="col-md-2 col-sm-2 col-xs-12"> 
     @if($show_plus_btn)
       <label class="control-label {{$show_label ? '' : 'hide_elem'}}"> &nbsp;</label><br/>
-      <button type="button" class="btn btn-success add-row"><i class="fa fa-plus"></i></button>
+      <button type="button" class="btn btn-success add-row"><i data-feather='plus'></i></button>
     @else
-      <button type="button" class="btn btn-danger delete-row"><i class="fa fa-minus"></i></button>
+      <button type="button" class="btn btn-danger delete-row"><i data-feather='plus'></i></button>
     @endif
   </div>
-</div>  -->
+  <br/>
+</div> 
 
 

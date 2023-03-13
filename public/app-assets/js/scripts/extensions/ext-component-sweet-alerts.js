@@ -38,6 +38,7 @@ $(function () {
 
   // var confirmText = $('#confirm-text');
   var confirmText = $('.delete_btn');
+  var confirm_btn = $('.confirm_btn');
   // var confirmColor = $('#confirm-color');
 
   var assetPath = '../../../app-assets/';
@@ -524,15 +525,20 @@ $(function () {
     });
   }
 
-  // Confirm Color
-  if (confirmColor.length) {
-    confirmColor.on('click', function () {
+
+
+   //--------------- Confirm Options ---------------
+
+  // Confirm Text
+  if (confirm_btn.length) {
+    confirm_btn.on('click', function () {
+      var deleteUrl = $(this).data('url');
       Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: "",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'Yes, Confirm',
         customClass: {
           confirmButton: 'btn btn-primary',
           cancelButton: 'btn btn-outline-danger ms-1'
@@ -540,25 +546,57 @@ $(function () {
         buttonsStyling: false
       }).then(function (result) {
         if (result.value) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Deleted!',
-            text: 'Your file has been deleted.',
-            customClass: {
-              confirmButton: 'btn btn-success'
-            }
-          });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire({
-            title: 'Cancelled',
-            text: 'Your imaginary file is safe :)',
-            icon: 'error',
-            customClass: {
-              confirmButton: 'btn btn-success'
-            }
-          });
-        }
+    	    window.location.href=deleteUrl;
+    	  }
+        // if (result.value) {
+        //   Swal.fire({
+        //     icon: 'success',
+        //     title: 'Deleted!',
+        //     text: 'Your file has been deleted.',
+        //     customClass: {
+        //       confirmButton: 'btn btn-success'
+        //     }
+        //   });
+        // }
       });
     });
   }
+
+//   // Confirm Color
+//   if (confirmColor.length) {
+//     confirmColor.on('click', function () {
+//       Swal.fire({
+//         title: 'Are you sure?',
+//         text: "You won't be able to revert this!",
+//         icon: 'warning',
+//         showCancelButton: true,
+//         confirmButtonText: 'Yes, delete it!',
+//         customClass: {
+//           confirmButton: 'btn btn-primary',
+//           cancelButton: 'btn btn-outline-danger ms-1'
+//         },
+//         buttonsStyling: false
+//       }).then(function (result) {
+//         if (result.value) {
+//           Swal.fire({
+//             icon: 'success',
+//             title: 'Deleted!',
+//             text: 'Your file has been deleted.',
+//             customClass: {
+//               confirmButton: 'btn btn-success'
+//             }
+//           });
+//         } else if (result.dismiss === Swal.DismissReason.cancel) {
+//           Swal.fire({
+//             title: 'Cancelled',
+//             text: 'Your imaginary file is safe :)',
+//             icon: 'error',
+//             customClass: {
+//               confirmButton: 'btn btn-success'
+//             }
+//           });
+//         }
+//       });
+//     });
+//   }
 });
