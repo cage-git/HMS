@@ -1,4 +1,4 @@
-@extends('layouts.master_backend_new')
+@extends('layouts.master_backend')
 @section('content')
 @php
   $reservationId = Request::route('reservation_id');
@@ -7,15 +7,21 @@
   $gstPercFood = $settings['food_gst'];
   $cgstPercFood = $settings['food_cgst'];
 @endphp
-<!--  -->
+
+
+
+
+
+
 <div class="">
 {{ Form::open(array('url'=>route('save-food-order'),'id'=>"food-order-form", 'class'=>"form-horizontal form-label-left",'files'=>true)) }}
   {{Form::hidden('gst_perc',$gstPercFood)}}
   {{Form::hidden('cgst_perc',$cgstPercFood)}}
 
     @if($reservationId==null)
-<!-- 
-    <div class="col-md-12 col-12">
+
+<!--
+  <div class="col-md-12 col-12">
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title"> {{lang_trans('heading_customer_info')}}</h4>
@@ -82,8 +88,124 @@
                         </div>
               </div>
         </div>
-    </div> -->
-    <!-- <div class="row {{($reservationId>0) ? 'hide_elem' : ''}}" id="new_guest_section">
+    </div>
+  @endif
+
+
+
+  <section>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header border-bottom">
+                    <h4 class="card-title">{{lang_trans('heading_food_item')}}</h4>
+                </div>
+                <div class="row">
+                  <div class="row col-12">
+                    <div class="col-md-6 col-sm-6 col-12">
+                      <input type='text' id='txt_searchall' placeholder='Search Items...' class="form-control">
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                      <input type="checkbox" id="food_tax" name="food_tax" class="form-check-input"> <b> {{lang_trans('txt_gst_apply')}} </b>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <button class="btn btn-success" type="submit">{{lang_trans('btn_submit')}}</button>
+                    </div>
+                  </div>
+                </div>
+                <table class="datatables-basic table">
+                    <tbody>
+                    @foreach($categories_list as $k=>$val)
+                      <tr class="tr-bg">
+                        <td colspan="4"><b>{{$val->name}}</b></td>
+                      </tr>
+                      @foreach($val->food_items as $key=>$value)
+                        <tr class="tr-items">
+                          <td width="5%">{{$i++}}.</td>
+                          <td>{{$value->name}}</td>
+                          <td width="15%">{{getCurrencySymbol()}} {{$value->price}}</td>
+                          <td width="12%">
+                        
+                            <div class="input-group">
+                                <input name="item_qty['<?php $value->id; ?>']" type="number" class="touchspin" value="0" />
+                            </div>
+
+                            {{Form::hidden('items['.$value->id.']',$val->id.'~'.$val->name.'~'.$value->name.'~'.$value->price,['data-price'=>$value->price,'class'=>"form-control col-md-6 col-xs-12 item_qty","min"=>0])}}
+                          </td>
+                        </tr>
+                      @endforeach
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+
+
+<div class="row">
+              <div class="col-12">
+                  <div class="card">
+                      <table class="table table-striped ">
+                          <tr>
+                            <th class="text-right" style="float: right;" width="30%">{{lang_trans('txt_inv_applicable')}}</th>
+                            <td width="20%" id="td_invoice_apply" class="text-right">{{ Form::checkbox('food_invoice_apply',null,false ,['id'=>'apply_invoice', 'class'=> 'form-check-input']) }}</td>
+                          </tr>
+                          <tr>
+                            <th class="text-right" style="float: right;" width="30%" >{{lang_trans('txt_gst_apply')}}</th>
+                            <td width="20%" id="td_gst_apply" class="text-right">{{ Form::checkbox('food_gst_apply',0,false ,['id'=>'apply_gst', 'class'=> 'form-check-input']) }}</td>
+                          </tr>
+                          <tr>
+                            <th class="text-right" style="float: right;" width="30%" >{{lang_trans('txt_subtotal')}} {{Form::hidden('subtotal_amount',null,['id'=>'subtotal_amount'])}}</th>
+                            <td width="20%" id="td_subtotal_amount" class="text-right">{{getCurrencySymbol()}} 0.00</td>
+                          </tr>
+                          <tr>
+                            <th class="text-right" style="float: right;" width="30%">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%) {{Form::hidden('gst_amount',null,['id'=>'gst_amount'])}}</th>
+                            <td width="20%" id="td_gst_amount" class="text-right">{{getCurrencySymbol()}} 0.00</td>
+                          </tr>
+                          <tr class="{{$cgstPercFood > 0 ? '' : 'hide_elem'}}">
+                            <th class="text-right" style="float: right;" width="30%" >{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%) {{Form::hidden('cgst_amount',null,['id'=>'cgst_amount'])}}</th>
+                            <td width="20%" id="td_cgst_amount" class="text-right">{{getCurrencySymbol()}} 0.00</td>
+                          </tr>
+                          <tr>
+                            <th class="text-right" style="float: right;" width="30%">{{lang_trans('txt_discount')}}</th>
+                            <td width="20%" id="td_discount_amount" class="text-right">
+                                {{Form::number('discount_amount',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"discount_amount", "placeholder"=>"Enter Any Discount","min"=>0])}}
+                            </td>
+                          </tr>
+                          <tr class="bg-warning">
+                            <th class="text-right">{{lang_trans('txt_total_amount')}} {{Form::hidden('final_amount',null,['id'=>'final_amount'])}}</th>
+                            <td width="20%" id="td_final_amount" class="text-right">{{getCurrencySymbol()}} 0.00</td>
+                          </tr>
+                      </table>
+
+                          
+                      <div class="row">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                          <div class="x_content">
+                            <div class="col-md-12 col-sm-12 col-xs-12 text-right">
+                                <button class="btn btn-success" type="submit">{{lang_trans('btn_submit')}}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+-->
+
+
+
+
+<!-- 
+    <div class="row {{($reservationId>0) ? 'hide_elem' : ''}}" id="new_guest_section">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
@@ -125,128 +247,12 @@
                 </div>
             </div>
         </div>
-    </div> -->
-    @endif
-
-
-  <section id="">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-             
-                <div class="card-header border-bottom">
-                    <h4 class="card-title">{{lang_trans('heading_food_item')}}</h4>
-                    <div class="row">
-                        <div class="row col-12">
-                          <div class="col-md-4 col-sm-4 col-12">
-                            <input type='text' id='txt_searchall' placeholder='Search Items...' class="form-control">
-                          </div>
-                          <div class="col-md-4 col-sm-4">
-                            <input type="checkbox" id="food_tax" name="food_tax" class="form-check-input"> <b> {{lang_trans('txt_gst_apply')}} </b>
-                          </div>
-                          <div class="col-md-2 col-sm-2">
-                              <button class="btn btn-primary" type="submit">{{lang_trans('btn_submit')}}</button>
-                          </div>
-                        </div>
-                      </div>
-                </div>
-                <div class="card-body">
-                      {{ Form::hidden('reservation_id',$reservationId) }}
-                      <table class="datatables-basic table">
-                          <tbody>
-                          @foreach($categories_list as $k=>$val)
-                            <tr class="tr-bg">
-                              <td colspan="4"><b>{{$val->name}}</b></td>
-                            </tr>
-                            @foreach($val->food_items as $key=>$value)
-                              <tr class="tr-items">
-                                <td width="5%">{{$i++}}.</td>
-                                <td>{{$value->name}}</td>
-                                <td width="15%">{{getCurrencySymbol()}} {{$value->price}}</td>
-                                <td width="12%">
-                              
-                                  <div class="input-group">
-                                      <input name="item_qty['<?php //echo $value->id; ?>']" type="number" class="touchspin" value="0" />
-                                  </div>
-
-                                  {{Form::hidden('items['.$value->id.']',$val->id.'~'.$val->name.'~'.$value->name.'~'.$value->price,['data-price'=>$value->price,'class'=>"form-control col-md-6 col-xs-12 item_qty","min"=>0])}}
-                                </td>
-                              </tr>
-                            @endforeach
-                          @endforeach
-                          </tbody>
-                      </table>
-            
-                      <div class="col-xl-3 col-md-6 col-12">
-                        <div class="mb-1">
-                          <br>
-                            <button type="submit" class="btn btn-primary waves-effect waves-float waves-light">{{lang_trans('btn_submit')}}</button>
-                           
-                        </div>
-                    </div>
-                  </div>
-              </div>
-            </div>
-        </div>
-      </section>
     </div>
-  </div>
-</div>
-
-          <div class="row " style="display:none;">
-              <div class="col-12">
-                  <div class="card">
-                      <table class="table table-striped ">
-                          <tr>
-                            <th class="text-right" style="float: right;" width="30%">{{lang_trans('txt_inv_applicable')}}</th>
-                            <td width="20%" id="td_invoice_apply" class="text-right">{{ Form::checkbox('food_invoice_apply',null,false ,['id'=>'apply_invoice', 'class'=> 'form-check-input']) }}</td>
-                          </tr>
-                          <tr>
-                            <th class="text-right" style="float: right;" width="30%" >{{lang_trans('txt_gst_apply')}}</th>
-                            <td width="20%" id="td_gst_apply" class="text-right">{{ Form::checkbox('food_gst_apply',0,false ,['id'=>'apply_gst', 'class'=> 'form-check-input']) }}</td>
-                          </tr>
-                          <tr>
-                            <th class="text-right" style="float: right;" width="30%" >{{lang_trans('txt_subtotal')}} {{Form::hidden('subtotal_amount',null,['id'=>'subtotal_amount'])}}</th>
-                            <td width="20%" id="td_subtotal_amount" class="text-right">{{getCurrencySymbol()}} 0.00</td>
-                          </tr>
-                          <tr>
-                            <th class="text-right" style="float: right;" width="30%">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%) {{Form::hidden('gst_amount',null,['id'=>'gst_amount'])}}</th>
-                            <td width="20%" id="td_gst_amount" class="text-right">{{getCurrencySymbol()}} 0.00</td>
-                          </tr>
-                          <tr class="{{$cgstPercFood > 0 ? '' : 'hide_elem'}}">
-                            <th class="text-right" style="float: right;" width="30%" >{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%) {{Form::hidden('cgst_amount',null,['id'=>'cgst_amount'])}}</th>
-                            <td width="20%" id="td_cgst_amount" class="text-right">{{getCurrencySymbol()}} 0.00</td>
-                          </tr>
-                          <tr>
-                            <th class="text-right" style="float: right;" width="30%">{{lang_trans('txt_discount')}}</th>
-                            <td width="20%" id="td_discount_amount" class="text-right">
-                                {{Form::number('discount_amount',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"discount_amount", "placeholder"=>"Enter Any Discount","min"=>0])}}
-                            </td>
-                          </tr>
-                          <tr class="bg-warning">
-                            <th class="text-right">{{lang_trans('txt_total_amount')}} {{Form::hidden('final_amount',null,['id'=>'final_amount'])}}</th>
-                            <td width="20%" id="td_final_amount" class="text-right">{{getCurrencySymbol()}} 0.00</td>
-                          </tr>
-                      </table>
-
-                          
-                    <!-- <div class="row">
-                      <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                          <div class="x_content">
-                            <div class="col-md-12 col-sm-12 col-xs-12 text-right">
-                                <button class="btn btn-success" type="submit">{{lang_trans('btn_submit')}}</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div> -->
+     -->
 
 
 
-
-<!--
-  <div class="row">
+   <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
               <div class="x_title">
@@ -303,10 +309,11 @@
               </div>
           </div>
       </div>
-  </div> -->
+  </div> 
+                
+                                        
 
-
-    <!-- <div class="row {{(1==1) ? 'hide_elem' : ''}}">
+     <div class="row {{(1==1) ? 'hide_elem' : ''}}">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_content">
@@ -345,23 +352,23 @@
           </div>
         </div>
       </div>
-    </div> -->
-<!-- 
-  <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_content">
-          <div class="col-md-12 col-sm-12 col-xs-12 text-right">
-              <button class="btn btn-success" type="submit">{{lang_trans('btn_submit')}}</button>
+    </div> 
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_content">
+              <div class="col-md-12 col-sm-12 col-xs-12 text-right">
+                  <button class="btn btn-success" type="submit">{{lang_trans('btn_submit')}}</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div> -->
 
 {{ Form::close() }}
 </div>
-
+  {{-- require set var in js var --}}
 <script>
   globalVar.page = 'food_order_page';
   globalVar.gstPercentFood = {{$gstPercFood}};
@@ -371,4 +378,5 @@
 @endsection
 @section('scripts')
   <script src="{{URL::asset('public/app-assets/js/scripts/forms/form-number-input.js')}}"></script>
+
 @endsection

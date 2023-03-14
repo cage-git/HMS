@@ -327,18 +327,68 @@ $totalAmount = 0;
                                         </button> -->
                                         <!-- <div class="dropdown-menu"> -->
                                         <div class="dropdown">
-                                            <button type="button" class="btn btn-sm text-white dropdown-toggle hide-arrow py-0" data-bs-toggle="dropdown">
+                                            <button type="button" class="btn btn-sm  dropdown-toggle hide-arrow py-0" data-bs-toggle="dropdown">
                                                 <i data-feather="more-vertical"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">
-                                                    <i data-feather="edit-2" class="me-50"></i>
-                                                    <span>Edit</span>
-                                                </a>
-                                                <a class="dropdown-item" href="#">
-                                                    <i data-feather="trash" class="me-50"></i>
-                                                    <span>Delete</span>
-                                                </a>
+                                              
+                                                @if($val->reservation_type == 1)
+                                                    @if($val->cancelled == 1)
+                                                        <i class="btn btn-xs btn-danger dropdown-item w-100">{{lang_trans('booking_is_cancelled')}}</i>
+                                                    @else
+                                                        @if($val->reservation_type == 1)
+                                                            <a class="btn btn-sm btn-danger dropdown-item w-100" href="{{route('cancel-reservation',[$val->id])}}">
+                                                            <i data-feather="trash" class="me-50"></i>  
+                                                            <span>{{lang_trans('btn_cancel_booking')}}</span>
+                                                            </a>
+                                                        @endif
+                                                        <a class="btn btn-sm btn-info dropdown-item w-100" href="{{route('changeto-checkin-reservation',[$val->id])}}">{{lang_trans('btn_check_in')}}</a>
+                                                    @endif
+                                                    <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('invoice',[$val->id,1,'inv_type'=>($val->cancelled == 1) ? 'cnl' : 'org'])}}" target="_blank">{{lang_trans('btn_invoice_room_org')}}</a>
+                                                @else
+                                                    @if($val->cancelled == 1)
+                                                        <i class="btn btn-xs btn-danger dropdown-item w-100">{{lang_trans('reservation_is_cancelled')}}</i>
+                                                    @else
+                                                        @if(isPermission('add-housekeeping-order') && $val->booked_rooms->count())
+                                                            <a class="btn btn-sm btn-success dropdown-item w-100" href="{{route('add-housekeeping-order',['room_id'=>$val->booked_rooms[0]->room_id, 'reservation_id'=>$val->id])}}" target="_blank">
+                                                              <i data-feather='wind'></i> 
+                                                              <span>{{lang_trans('sidemenu_housekeeping')}}</span>
+                                                            </a>
+                                                        @endif
+                                                        <button class="btn btn-sm btn-warning dropdown-item w-100" data-toggle="modal" data-target="#advance_pay_{{$val->id}}">
+                                                          <i data-feather='dollar-sign'></i>
+                                                          <span>{{lang_trans('btn_advance_pay')}}</span>
+                                                        </button>
+                                                        <a class="btn btn-sm btn-info dropdown-item w-100" href="{{route('advance-slip',[base64_encode($val->id)])}}" target="_blank">
+                                                          <i data-feather='file-text'></i>
+                                                          <span>{{lang_trans('btn_advance_slip')}}</span>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-warning dropdown-item w-100" href="{{route('food-order',[$val->id])}}">
+                                                          <i data-feather='file-text'></i>
+                                                          <span>{{lang_trans('btn_food_order')}}</span>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('view-reservation',[$val->id])}}">
+                                                          <i data-feather='eye'></i>
+                                                          <span>{{lang_trans('btn_view')}}</span></a>
+                                                        <a class="btn btn-sm btn-danger dropdown-item w-100" href="{{route('check-out-room',[$val->id])}}">
+                                                          <i data-feather='dollar-sign'></i>
+                                                          <span>{{lang_trans('btn_checkout')}}</span>
+                                                        </a>
+                                                        @if($val->reservation_type == 1)
+                                                            <a class="btn btn-sm btn-danger dropdown-item w-100" href="{{route('cancel-reservation',[$val->id])}}">{{lang_trans('btn_cancel_reservation')}}</a>
+                                                        @endif
+
+                                                        <button class="btn btn-sm btn-info dropdown-item w-100" data-toggle="modal" data-target="#extend_reservation_{{$val->id}}">{{lang_trans('btn_extend_reservation')}}</button>
+                                                        @if($dateDiff)
+                                                            <a class="btn btn-sm btn-success dropdown-item w-100" href="{{route('swap-room',[$val->id])}}">
+                                                              <i data-feather='arrow-up'></i>
+                                                              <span>{{lang_trans('btn_swap_room')}}</span>
+                                                            </a>
+                                                        @endif
+                                                    @endif
+                                                    <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('invoice',[$val->id,1,'inv_type'=>($val->cancelled == 1) ? 'cnl' : 'org'])}}" target="_blank"><i data-feather='file-text'></i>
+                                                          <span>{{lang_trans('btn_invoice_room_org')}}</span></a>
+                                                @endif
                                             </div>
                                         </div>
 

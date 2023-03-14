@@ -1698,6 +1698,7 @@ class AdminController extends Controller
         return view('backend/food_order_final_page',$this->data);
     }
     public function saveFoodOrder(Request $request){
+        // dd($request->all());
         $insertRec = true;
         $insertRecOrderHistorty = true;
         $orderHistoryResId = null;
