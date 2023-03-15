@@ -179,6 +179,20 @@
                 </li>
             @endif
 
+
+            @if($permissionsArr['settings'] || $permissionsArr['dynamic-dropdown-list'] || $permissionsArr['permissions-list'] || $permissionsArr['language-translations'])
+              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_settings')}}</span></a>
+                    <ul class="menu-content">
+                        @if($permissionsArr['permissions-list'])<li><a class="d-flex align-items-center" href="{{route('permissions-list')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_permissions_settings')}}</span></a></li>
+                        @endif
+                        @if($permissionsArr['language-translations'])<li><a class="d-flex align-items-center" href="{{route('language-translations')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_lang_settings')}} </span></a></li>       
+                        @endif
+                    </ul>
+                </li>
+            @endif
+
+            
+
                     <!-- <ul class="menu-content">
                         <li><a class="d-flex align-items-center" href="dashboard-analytics.html"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Analytics">Analytics</span></a>
                         </li>

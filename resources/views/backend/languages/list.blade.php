@@ -1,5 +1,64 @@
-@extends('layouts.master_backend')
+@extends('layouts.master_backend_new')
 @section('content')
+
+
+<!-- Basic table -->
+<section id="basic-datatable">
+    <div class="row">
+        <div class=" col-12">
+            <div class="card">
+                <div class="card-header border-bottom">
+                    <h4 class="card-title">{{lang_trans('heading_language_translations')}}</h4>
+                </div>
+                <table class="datatables-basic table">
+                    <thead>
+                        <th class="text-center">{{lang_trans('txt_sno')}}</th>
+                        @foreach($languages as $lang_code=>$lang_name)
+                          <th class="text-center">
+                            {{strtoupper($lang_code)}}
+                            <sub>{{$lang_name}}</sub>
+                          </th>
+                        @endforeach
+                    </thead>
+                    <tbody>
+                        @foreach($datalist as $key=>$value)
+                          {{Form::open(array('url'=>route('save-language-translations')))}}
+                          @foreach($value as $k=>$val)
+                              <tr>
+                                <td class="text-center" width="2%">{{$key+1}}.{{$k+1}}</td>
+                                @foreach($languages as $lang_code=>$lang_name)
+                                  @php
+                                    $disabled = (in_array($lang_code, getLangForUpdateDisable())) ? true : false;
+
+                                  @endphp
+                                  <td>
+                                    {{Form::text('lang['.$val['id'].']['.$lang_code.']',$val[$lang_code],['class'=>"form-control col-xs-12", 'title'=>$val['lang_key'].': '.$val[$lang_code], 'placeholder'=>$lang_name, 'disabled'=>$disabled])}}
+                                  </td>
+                                @endforeach
+                              </tr>
+                            @endforeach
+                           <tr>
+                            <td colspan="{{count($languages)+1}}" class="text-right" style="float: right;" >
+                              <input type="submit" value="{{lang_trans('btn_update')}}" class="btn btn-primary" style="float: right;" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td >
+                              <hr>
+                            </td>
+                          </tr>
+                        {{ Form::close() }}
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</section>
+<!--/ Basic table -->
+
+<!-- 
 <div class="">
   <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
@@ -52,5 +111,5 @@
           </div>
       </div>
   </div>
-</div>
+</div> -->
 @endsection
