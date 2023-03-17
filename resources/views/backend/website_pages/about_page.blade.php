@@ -4,10 +4,10 @@
     $countFeatures = ($data_row->about_section_features!=null) ? 1 : 0;
     $featuresDecodeJson = json_decode($data_row->about_section_features);
   @endphp
-<!-- 
-  <section class="">
+
+  <!-- <section class="">
                     <div class="row">
-                        < !-- Invoice repeater - ->
+            
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                         </div>
-                        <! -- /Invoice repeater -- >
+                        
                     </div>
                 </section>
  -->
@@ -79,7 +79,7 @@
 
 <section>
   <div class="row">
-  {{Form::model($data_row,['route'=>'update-contact-page','id'=>'contact-page-form','files'=>true])}}
+    {{Form::model($data_row,['route'=>'update-about-page','id'=>'home-page-form','files'=>true, 'class' => 'invoice-repeater'])}}
       <div class="col-12">
           <div class="card">
               <div class="card-header border-bottom">
@@ -105,7 +105,7 @@
                   <h4 class="card-title">Introduction</h4>
               </div>
               <div class="card-body">
-              <div class="row">
+                  <div class="row">
                         <div class="col-6">
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name">Tagline</label>
@@ -141,18 +141,62 @@
 
 
                       <hr />
-              <div class="card-header border-bottom">
-                  <h4 class="card-title">Features</h4>
-              </div>
-                <div class="card-body">
-                  <div class="row">
+                      <div class="card-header border-bottom">
+                          <h4 class="card-title">Features</h4>
+                      </div>
+                      <div class="card-body">
+                        <div data-repeater-list="invoice">
+                              <div data-repeater-item>
+                              @if($countFeatures==1)
+                                @foreach($featuresDecodeJson as $key=>$features_data)
+                                  <div class="row d-flex align-items-end">
+                                      <div class="col-md-10 col-12">
+                                          <div class="mb-1">
+                                              <label class="form-label" for="itemname">Title</label>
+                                              {{ Form::text('about_sect_features[title][]',$features_data->title,['class'=>'form-control', 'placeholder'=>'Enter Title']) }}
+                                          </div>
+                                      </div>
 
+                                      <div class="col-md-2 col-12 mb-50">
+                                          <div class="mb-1">
+                                              <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                  <i data-feather="x" class="me-25"></i>
+                                                  <span>Delete</span>
+                                              </button>
+                                          </div>
+                                      </div>
 
-                  </div>
-                </div>
+                                      <div class="col-md-10 col-12">
+                                          <div class="mb-1">
+                                              <label class="form-label" for="itemcost">Cost</label>
+                                              {{ Form::textarea('about_sect_features[short_desc][]',$features_data->short_desc,['class'=>'form-control', 'placeholder'=>'Enter Short Description','rows'=>2]) }}
+                                          </div>
+                                      </div>
 
+                                      
+                                  </div>
+                                  <hr />
+                              </div>
+                              @endforeach
+                            @endif
+                          </div>
+                          <div class="row">
+                              <div class="col-12">
+                                  <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                      <i data-feather="plus" class="me-25"></i>
+                                      <span>Add New</span>
+                                  </button>
+                              </div>
+                          </div>
 
+                          <div class="row">
+                              <div class="col-12">
+                                  {{ Form::checkbox('about_section_publish',null, ['class'=>"form-check-input"]) }} Show this Section
+                              </div>
+                          </div>
 
+                          
+                      </div>
 
                       <div class="col-xl-4 col-md-6 col-12">
                           <button type="submit" class="btn btn-primary" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>

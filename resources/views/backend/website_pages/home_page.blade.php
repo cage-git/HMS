@@ -1,4 +1,4 @@
-@extends('layouts.master_backend')
+@extends('layouts.master_backend_new')
 @section('content')
   @php
     $countTestimonials = count($testimonials_rows);
@@ -13,8 +13,145 @@
     $featuresDecodeJson = json_decode($data_row->intro_section_features);
 
   @endphp
+
+
+  <section class="">
+                                    <form action="#" class="invoice-repeater">
+                                        <div data-repeater-list="invoice">
+                                            <div data-repeater-item>
+                                                <div class="row d-flex align-items-end">
+                                                    <div class="col-md-4 col-12">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="itemname">Item Name</label>
+                                                            <input type="text" class="form-control" id="itemname" aria-describedby="itemname" placeholder="Vuexy Admin Template" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="itemcost">Cost</label>
+                                                            <input type="number" class="form-control" id="itemcost" aria-describedby="itemcost" placeholder="32" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="itemquantity">Quantity</label>
+                                                            <input type="number" class="form-control" id="itemquantity" aria-describedby="itemquantity" placeholder="1" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="staticprice">Price</label>
+                                                            <input type="text" readonly class="form-control-plaintext" id="staticprice" value="$32" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12 mb-50">
+                                                        <div class="mb-1">
+                                                            <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                                <i data-feather="x" class="me-25"></i>
+                                                                <span>Delete</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                    <i data-feather="plus" class="me-25"></i>
+                                                    <span>Add New</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                
+                </section>
+
+
+
+  <section>
+  <div class="row">
+    {{Form::model($data_row,['route'=>'update-home-page','id'=>'home-page-form','files'=>true, 'class' => 'invoice-repeater'])}}
+      <div class="col-6">
+          <div class="card">
+              <div class="card-header border-bottom">
+                  <h4 class="card-title">Banner</h4>
+              </div>
+              <div class="card-body">
+
+                  <div class="row">
+
+                    <div class="col-xl-12 col-md-6 col-12">
+                        <div class="mb-1">
+                            <label class="form-label" for="basic-default-name">Tagline</label>
+                            
+                            {{ Form::text('banner_section_tagline',null,['class'=>'form-control', 'placeholder'=>'Enter Tagline']) }}
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 col-md-6 col-12">
+                        <div class="mb-1">
+                            <label class="form-label" for="basic-default-name">Heading</label>
+                            
+                            {{ Form::text('banner_section_heading',null,['class'=>'form-control', 'placeholder'=>'Enter Heading']) }}
+                        </div>
+                    </div>
+
+                    <div data-repeater-item>
+                        <div class="row d-flex align-items-end">
+                            <div class="col-md-10 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label" for="itemname">Banner Image</label>
+                                    <input type="file" name="banner_images[]" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-12">
+                                  <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                      <i data-feather="plus" class="me-25"></i>
+                                      <span>Add New</span>
+                                  </button>
+                              </div>
+                          </div>
+
+                  </div>
+              </div>
+          </div>
+
+      <div class=" col-6">
+          <div class="card">
+              <div class="card-header border-bottom">
+                  <h4 class="card-title">Contact Us</h4>
+              </div>
+              <div class="card-body">
+                     <div class="row">
+                       
+                        
+
+                      </div>
+              </div>
+          </div>
+      </div>
+</div>
+      {{ Form::close() }}
+  </div>
+
+</section>
+
+<!-- OLD UI -->
+
+
       <div class="row">
-        {{Form::model($data_row,['route'=>'update-home-page','id'=>'home-page-form','files'=>true])}}
+        <!-- {{Form::model($data_row,['route'=>'update-home-page','id'=>'home-page-form','files'=>true])}} -->
         <div class="col-md-6">
           <!-- ==========* Start Banner Section *========== -->
           <div class="x_panel">
@@ -313,7 +450,7 @@
         <div class="col-md-12 text-right">
           <input type="submit" value="Submit" class="btn btn-primary"/>
         </div>
-        {{ Form::close() }}
+        <!-- {{ Form::close() }} -->
       </div>
 
 <!-- ==========* Start Clone Elements Section *========== -->
@@ -444,5 +581,11 @@
     globalVar.counterCount = {{$countCounter}};
     globalVar.featuresCount = {{$countFeatures}};
   </script>
-  <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
+  <!-- <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script> -->
+@endsection
+@section('scripts')
+<!-- BEGIN: Page JS-->
+  <script src="{{URL::asset('public/app-assets/vendors/js/forms/repeater/jquery.repeater.min.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/js/scripts/forms/form-repeater.js')}}"></script>
+<!-- END: Page JS-->
 @endsection
