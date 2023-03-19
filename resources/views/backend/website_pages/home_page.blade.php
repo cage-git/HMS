@@ -14,41 +14,47 @@
 
   @endphp
 
+<!--  -->
 
-  <section class="">
-                                    <form action="#" class="invoice-repeater">
-                                        <div data-repeater-list="invoice">
+<section>
+    <div class="row">
+      {{Form::model($data_row,['route'=>'update-home-page','id'=>'home-page-form','files'=>true, 'class' => 'row'])}}
+          <div class="col-6">
+                <div class="card">
+                        <div class="card-header border-bottom">
+                            <h4 class="card-title">Banner</h4>
+                        </div>
+                        <div class="card-body">
+
+                                <div class="row banner-repeater">
+
+                                      <div class="col-xl-12 col-md-6 col-12">
+                                          <div class="mb-1">
+                                              <label class="form-label" for="basic-default-name">Tagline</label>
+                                              
+                                              {{ Form::text('banner_section_tagline',null,['class'=>'form-control', 'placeholder'=>'Enter Tagline']) }}
+                                          </div>
+                                      </div>
+
+                                      <div class="col-xl-12 col-md-6 col-12">
+                                          <div class="mb-1">
+                                              <label class="form-label" for="basic-default-name">Heading</label>
+                                              
+                                              {{ Form::text('banner_section_heading',null,['class'=>'form-control', 'placeholder'=>'Enter Heading']) }}
+                                          </div>
+                                      </div>
+
+                                      <div  data-repeater-list="banner">
                                             <div data-repeater-item>
                                                 <div class="row d-flex align-items-end">
-                                                    <div class="col-md-4 col-12">
+                                                    <div class="col-md-9 col-12">
                                                         <div class="mb-1">
-                                                            <label class="form-label" for="itemname">Item Name</label>
-                                                            <input type="text" class="form-control" id="itemname" aria-describedby="itemname" placeholder="Vuexy Admin Template" />
+                                                            <label class="form-label" for="itemname">Banner Image</label>
+                                                            <input type="file" class="form-control" name="banner_images[]"/>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-2 col-12">
-                                                        <div class="mb-1">
-                                                            <label class="form-label" for="itemcost">Cost</label>
-                                                            <input type="number" class="form-control" id="itemcost" aria-describedby="itemcost" placeholder="32" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-2 col-12">
-                                                        <div class="mb-1">
-                                                            <label class="form-label" for="itemquantity">Quantity</label>
-                                                            <input type="number" class="form-control" id="itemquantity" aria-describedby="itemquantity" placeholder="1" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-2 col-12">
-                                                        <div class="mb-1">
-                                                            <label class="form-label" for="staticprice">Price</label>
-                                                            <input type="text" readonly class="form-control-plaintext" id="staticprice" value="$32" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-2 col-12 mb-50">
+                                                    <div class="col-md-1 col-12 mb-50">
                                                         <div class="mb-1">
                                                             <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
                                                                 <i data-feather="x" class="me-25"></i>
@@ -68,81 +74,74 @@
                                                 </button>
                                             </div>
                                         </div>
-                                    </form>
-                                
-                </section>
-
-
-
-  <section>
-  <div class="row">
-    {{Form::model($data_row,['route'=>'update-home-page','id'=>'home-page-form','files'=>true, 'class' => 'invoice-repeater'])}}
-      <div class="col-6">
-          <div class="card">
-              <div class="card-header border-bottom">
-                  <h4 class="card-title">Banner</h4>
-              </div>
-              <div class="card-body">
-
-                  <div class="row">
-
-                    <div class="col-xl-12 col-md-6 col-12">
-                        <div class="mb-1">
-                            <label class="form-label" for="basic-default-name">Tagline</label>
-                            
-                            {{ Form::text('banner_section_tagline',null,['class'=>'form-control', 'placeholder'=>'Enter Tagline']) }}
-                        </div>
-                    </div>
-
-                    <div class="col-xl-12 col-md-6 col-12">
-                        <div class="mb-1">
-                            <label class="form-label" for="basic-default-name">Heading</label>
-                            
-                            {{ Form::text('banner_section_heading',null,['class'=>'form-control', 'placeholder'=>'Enter Heading']) }}
-                        </div>
-                    </div>
-
-                    <div data-repeater-item>
-                        <div class="row d-flex align-items-end">
-                            <div class="col-md-10 col-12">
-                                <div class="mb-1">
-                                    <label class="form-label" for="itemname">Banner Image</label>
-                                    <input type="file" name="banner_images[]" class="form-control" />
                                 </div>
-                            </div>
-                        </div>
-                        <hr />
-                        </div>
                           </div>
-                          <div class="row">
-                              <div class="col-12">
-                                  <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
-                                      <i data-feather="plus" class="me-25"></i>
-                                      <span>Add New</span>
-                                  </button>
-                              </div>
-                          </div>
-
                   </div>
-              </div>
           </div>
 
-      <div class=" col-6">
-          <div class="card">
-              <div class="card-header border-bottom">
-                  <h4 class="card-title">Contact Us</h4>
-              </div>
-              <div class="card-body">
-                     <div class="row">
-                       
-                        
+            <div class=" col-6">
+                  <div class="card">
+                        <div class="card-header border-bottom">
+                            <h4 class="card-title">Counter</h4>
+                        </div>
+                        <div class="card-body">
+                              <div class="row">
+                                        <div data-repeater-list="invoice">
+                                            <div data-repeater-item>
+                                            @if($countCounter==1)
+                                              @foreach($counterDecodeJson as $key=>$counter_data)
+                                                <div class="row d-flex align-items-end">
+                                                    <div class="col-md-12 col-12">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="itemname">Title</label>
+                                                            {{ Form::text('counter_section[title][]',$counter_data->title,['class'=>'form-control', 'placeholder'=>'Enter Title']) }}
+                                                        </div>
+                                                    </div>
 
-                      </div>
-              </div>
-          </div>
-      </div>
-</div>
-      {{ Form::close() }}
+                                                    <div class="col-md-4 col-12">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="itemname">Number</label>
+                                                            {{ Form::text('counter_section[number][]',$counter_data->number,['class'=>'form-control', 'placeholder'=>'Enter Value']) }}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-12">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="itemname">Prefix Text</label>
+                                                            {{ Form::text('counter_section[prefix][]',$counter_data->prefix,['class'=>'form-control', 'placeholder'=>'Enter Prefix']) }}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-1 col-12 mb-50">
+                                                        <div class="mb-1">
+                                                            <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                                <i data-feather="x" class="me-25"></i>
+                                                                <span>Delete</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                              @endforeach
+                                            @endif
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                    <i data-feather="plus" class="me-25"></i>
+                                                    <span>Add New</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+
+
+
+    {{ Form::close() }}
   </div>
 
 </section>
@@ -575,12 +574,12 @@
   </div>
 <!-- ==========* End Clone Elements Section *========== -->
 {{-- require set var in js var --}}
-  <script>
-    globalVar.page = 'website_home_page';
-    globalVar.testimonialCount = {{$countTestimonials}};
-    globalVar.counterCount = {{$countCounter}};
-    globalVar.featuresCount = {{$countFeatures}};
-  </script>
+  <!-- <script>
+    // globalVar.page = 'website_home_page';
+    // globalVar.testimonialCount = {{$countTestimonials}};
+    // globalVar.counterCount = {{$countCounter}};
+    // globalVar.featuresCount = {{$countFeatures}};
+  </script> -->
   <!-- <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script> -->
 @endsection
 @section('scripts')

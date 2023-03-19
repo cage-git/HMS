@@ -28,4 +28,82 @@ $(function () {
       }
     }
   });
+
+    // form repeater jquery
+    $('.banner-repeater').repeater({
+    
+      show: function () {
+        console.log("test");
+        $(this).slideDown();
+        // Feather Icons
+        if (feather) {
+          feather.replace({ width: 14, height: 14 });
+        }
+      },
+      hide: function (deleteElement) {
+        if (confirm('Are you sure you want to delete this element?')) {
+          $(this).slideUp(deleteElement);
+        }
+      }
+    });
+
+
+        // form repeater jquery
+        $('.amenties-repeater, .repeater-default').repeater({
+    
+          show: function () {
+            console.log("test");
+            $(this).slideDown();
+            // Feather Icons
+            if (feather) {
+              feather.replace({ width: 14, height: 14 });
+            }
+          },
+          hide: function (deleteElement) {
+            if (confirm('Are you sure you want to delete this element?')) {
+              $(this).slideUp(deleteElement);
+            }
+          }
+        });
+
+
+            // form repeater jquery
+    $('.counter-repeater, .repeater-default').repeater({
+    
+      show: function () {
+        console.log("test");
+        $(this).slideDown();
+        // Feather Icons
+        if (feather) {
+          feather.replace({ width: 14, height: 14 });
+        }
+      },
+      hide: function (deleteElement) {
+        if (confirm('Are you sure you want to delete this element?')) {
+          $(this).slideUp(deleteElement);
+        }
+      }
+    });
+
+
+        // form repeater jquery
+        $('.feature-repeater, .repeater-default').repeater({
+    
+          show: function () {
+            console.log("test");
+            $(this).slideDown();
+            // Feather Icons
+            if (feather) {
+              feather.replace({ width: 14, height: 14 });
+            }
+          },
+          hide: function (deleteElement) {
+            if (confirm('Are you sure you want to delete this element?')) {
+              $(this).slideUp(deleteElement);
+            }
+          }
+        });
+
+
+
 });

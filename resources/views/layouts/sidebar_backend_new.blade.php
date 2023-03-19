@@ -189,6 +189,23 @@
                         @endif
                         @if($permissionsArr['language-translations'])<li><a class="d-flex align-items-center" href="{{route('language-translations')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_lang_settings')}} </span></a></li>       
                         @endif
+                        @if($permissionsArr['dynamic-dropdown-list'])<li><a class="d-flex align-items-center" href="{{route('dynamic-dropdown-list')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_dynamic_dropdowns')}} </span></a></li>       
+                        @endif
+                    </ul>
+                </li>
+            @endif
+
+
+            @if($permissionsArr['home-page'] || $permissionsArr['about-page'] || $permissionsArr['contact-page'])
+              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_website')}}</span></a>
+                    <ul class="menu-content">
+                        @if($permissionsArr['home-page'])<li><a class="d-flex align-items-center" href="{{route('home-page')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_home_page')}}</span></a></li>
+                        @endif
+                        @if($permissionsArr['about-page'])<li><a class="d-flex align-items-center" href="{{route('about-page')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_aboutus_page')}}</span></a></li>
+                        @endif
+                        @if($permissionsArr['contact-page'])<li><a class="d-flex align-items-center" href="{{route('contact-page')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_contactus_page')}} </span></a></li>       
+                        @endif
+                       
                     </ul>
                 </li>
             @endif

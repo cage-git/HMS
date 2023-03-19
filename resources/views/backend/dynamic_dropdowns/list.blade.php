@@ -1,5 +1,81 @@
-@extends('layouts.master_backend')
+@extends('layouts.master_backend_new')
 @section('content')
+
+
+<section>
+
+    {{Form::open(array('url'=>route('save-dynamic-dropdowns'), 'class' => 'invoice-repeater row'))}}
+        @foreach($datalist as $key=>$val)
+            <div class="col-6">
+                    <div class="card">
+                            <div class="card-header border-bottom">
+                                <h4 class="card-title">{{$val['title']}}</h4>
+                            </div>
+                            <div class="card-body">
+
+                                    <div class="row">
+                                          <div class="col-xl-9 col-md-6 col-12">
+                                              <div class="mb-1">
+                                                  <label class="form-label" for="basic-default-name">{{lang_trans('txt_dropdown_values')}}</label>
+                                              </div>
+                                          </div>
+                                          <div class="col-xl-1 col-md-6 col-12">
+                                              <div class="mb-1">
+                                                  <label class="form-label" for="basic-default-name">{{lang_trans('txt_action')}}</label>
+                                              </div>
+                                          </div>
+                                    </div>
+                
+                        <!-- repeater -->
+
+                                    <div data-repeater-list="invoice">
+                                      <div data-repeater-item>
+                                        @if(count($val['values']) > 0)
+                                          @foreach($val['values'] as $k=>$v)
+                                            <div class="row d-flex align-items-end">
+                                                <div class="col-md-9 col-12">
+                                                    <div class="mb-1">
+                                                      {{Form::text($v->dropdown_name.'['.$v->id.']',$v->dropdown_value,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no", "required"=>"required"])}}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-1 col-12 mb-50">
+                                                    <div class="mb-1">
+                                                      @if($v->is_deletable == 1)
+                                                        <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                            <i data-feather="x" class="me-25"></i>
+                                                            <span>Delete</span>
+                                                        </button>
+                                                      @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                          @endforeach
+                                        @endif
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-12">
+                                          <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                              <i data-feather="plus" class="me-25"></i>
+                                              <span>Add New</span>
+                                          </button>
+                                      </div>
+                                  </div>
+
+                        <!-- end repeater -->
+                            </div>
+                      </div>
+              </div>
+        @endforeach
+    {{ Form::close() }}
+    
+</section>
+
+
+<!-- 
+
 <div class="">
   {{Form::open(array('url'=>route('save-dynamic-dropdowns')))}}
     <div class="row">
@@ -78,10 +154,16 @@
           </div>
       </div>
   </div>
-  {{ Form::close() }}
+  {{ Form::close() }} -->
   {{-- require set var in js var --}}
-  <script>
+  <!-- <script>
     globalVar.page = 'list_dynamic_dropdowns';
   </script>
-  <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script>
+  <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js')}}"></script> -->
+@endsection
+@section('scripts')
+<!-- BEGIN: Page JS-->
+  <script src="{{URL::asset('public/app-assets/vendors/js/forms/repeater/jquery.repeater.min.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/js/scripts/forms/form-repeater.js')}}"></script>
+<!-- END: Page JS-->
 @endsection
