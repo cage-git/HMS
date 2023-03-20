@@ -513,11 +513,8 @@
                         </div>
                   </div>
             </div>
-            <div class="row">
-              <div class="col-12">
-                <input type="submit" value="Submit" class="btn btn-primary"/>
-              </div>
-            </div>
+
+
 
     {{ Form::close() }}
   </div>
@@ -824,13 +821,13 @@
           </div> -->
           <!-- ==========* End RoomCategory Section Section *========== -->
 
-        <!-- </div> -->
+        </div>
 
-        <!-- <div class="col-md-12 text-right">
+        <div class="col-md-12 text-right">
           <input type="submit" value="Submit" class="btn btn-primary"/>
         </div>
-        <! -- {{ Form::close() }} -- >
-      </div> -->
+        <!-- {{ Form::close() }} -->
+      </div>
 
 <!-- ==========* Start Clone Elements Section *========== -->
   <div class="clone_banner_image_elem hide_elem" style="display:none;">
@@ -846,7 +843,7 @@
     </div>
   </div>
 
-  <div class="clone_features_elem hide_elem"  style="display:none;">
+  <div class="clone_features_elem hide_elem">
     <div class="row features-row border-btm pad-top-10">
       <div class="col-lg-6">
         <div class="form-group">
@@ -872,7 +869,7 @@
     </div>
   </div>
 
-  <div class="clone_counter_elem hide_elem"  style="display:none;">
+  <div class="clone_counter_elem hide_elem">
     <div class="row counter-sect-row border-btm pad-top-10">
       <div class="col-lg-12">
         <div class="form-group">
@@ -892,7 +889,7 @@
     </div>
   </div>
 
-  <div class="clone_testimonial_elem hide_elem"  style="display:none;">
+  <div class="clone_testimonial_elem hide_elem">
     <div class="row testimonial-sect-row border-btm pad-top-10">
       {{ Form::hidden('testimonial_section[ids][]',0) }}
       {{ Form::hidden('testimonial_section[prv_img][]','') }}
@@ -920,7 +917,7 @@
     </div>
   </div>
 
-  <div class="clone_cta_elem hide_elem"  style="display:none;">
+  <div class="clone_cta_elem hide_elem">
     <div class="row cta-sect-row border-btm pad-top-10">
         {{ Form::hidden('cta_section[ids][]',0) }}
         <div class="col-lg-12">
