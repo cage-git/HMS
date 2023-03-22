@@ -289,14 +289,14 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_checkin')}}</label>
-                                        {{Form::text('check_in_date',null,['class'=>"form-control col-md-6 col-xs-12  flatpickr-basic", "id"=>"check_in_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off", "readonly"=>true])}}
+                                        {{Form::text('check_in_date',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"check_in_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off", "readonly"=>true])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_checkout')}}</label>
-                                        {{Form::text('check_out_date',null,['class'=>"form-control col-md-6 col-xs-12  flatpickr-basic", "id"=>"check_out_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off", "readonly"=>true])}}
+                                        {{Form::text('check_out_date',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"check_out_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off", "readonly"=>true])}}
                                     </div>
                                 </div>
                                 
@@ -327,26 +327,19 @@
                         <hr />
 
 
-                        <div class="">
-                            @foreach($roomtypes_list as $k=>$val)
-                                @php
-                                    $change_value = explode('||',$val);
-                                @endphp
-                                <div class="row col-xl-6 col-md-6 col-12">
-                                    <h4 class="panel-title">
-                                        <i class="fa fa-list"></i>
-                                        <a class="room_type_by_rooms" data-roomtypeid="{{$k}}" data-toggle="collapse" href="#collapse{{$k}}">
-                                        {!! $val !!}
-                                        </a>
-                                        {{Form::number('roomtype_'.$k,rtrim($change_value[1], ')'),[ "data-original"=>rtrim($change_value[1], ')'),"class"=>"room_price calculate_total_amount form-control col-4","required"=>"required"])}}
-                                    </h4>
-                                </div>
-                                
-                            @endforeach    
+                        <div class="row">
+                        @foreach($roomtypes_list as $k=>$val)
+                            @php
+                                $change_value = explode('||',$val);
+                            @endphp
+
+                        
+
+                        @endforeach    
                         </div>
 
 
-                        <!-- <div class="row hide_elem" id="room_list_section">
+                        <div class="row hide_elem" id="room_list_section">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_content">
@@ -390,7 +383,7 @@
                             </div>
                         </div>
 
-                        <hr /> -->
+                        <hr />
 
                     
                         @if(!$quickCheckIn)
@@ -490,14 +483,14 @@
                                 </div>
                         </div>
 
-                        <!-- <hr /> -->
+                        <hr />
 
                         @endif
 
-<!-- 
+
                         <br />
                     <button type="submit" class="btn btn-primary" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
-                    <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button> -->
+                    <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
                 </form>
             </div>
         </div>
@@ -525,11 +518,47 @@
                         <div class="col-md-3 col-sm-4 col-xs-12">
                             {{Form::radio('guest_type','new',true,['class'=>"flat guest_type", 'id'=>'new_guest'])}} <label for="new_guest">{{lang_trans('txt_new_guest')}}</label>
                           </div>
-                        
+                         <!-- <div class="col-md-3 col-sm-4 col-xs-12">
+                            {{Form::radio('guest_type','existing',false,['class'=>"flat guest_type", 'id'=>'existing_guest'])}} <label for="existing_guest">{{lang_trans('txt_existing_guest')}}</label>
+                        </div> -->
                         <div class="col-md-3 col-sm-4 col-xs-12">
                             {{Form::radio('guest_type','new_company',false,['class'=>"flat guest_type", 'id'=>'new_company'])}} <label for="new_company">{{lang_trans('txt_new_company')}}</label>
                         </div>
-                       
+                        <!-- <div class="col-md-3 col-sm-4 col-xs-12">
+                            {{Form::radio('guest_type','existing_company',false,['class'=>"flat guest_type", 'id'=>'existing_company'])}} <label for="existing_company">{{lang_trans('txt_existing_company')}}</label>
+                        </div> -->
+
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_reservation_type')}} <span class="required">*</span></label>
+                        {{ Form::select('reservation_type',config('constants.RESERVATION_TYPE'),null,['class'=>'form-control']) }}
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+
+
+
+
+    <div class="row" >
+
+            
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>{{lang_trans('heading_search_from_customer')}}</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-md-10 col-sm-12 col-xs-12">
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <label class="control-label"> {{lang_trans('txt_search_from_phone_idcard')}} </label>
+                                <!-- {{Form::text('search_from_phone_idcard',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"search_from_phone_idcard", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_search_from_phone_idcard')])}} -->
                                 <br><select class="js-example-data-ajax" id="search_from_phone_idcard">
                                     <option value="" disable>Please enter a phone number and ID card number</option>
                                 </select>
@@ -558,7 +587,7 @@
                 <div class="col-md-10 col-sm-12 col-xs-12">
                     <div class="col-md-8 col-sm-8 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_search_from_phone_idcard')}} </label>
-                      
+                        <!-- {{Form::text('search_from_phone_idcard',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"search_from_phone_idcard", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_search_from_phone_idcard')])}} -->
                         <br><select class="js-example-data-ajax" id="search_from_phone_idcard">
                             <option value="" disable>Please enter a phone number and ID card number</option>
                         </select>
@@ -588,7 +617,7 @@
                 <div class="col-md-10 col-sm-12 col-xs-12">
                     <div class="col-md-8 col-sm-8 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_search_from_phone_idcard')}} </label>
-                     
+                        <!-- {{Form::text('search_from_phone_idcard',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"search_from_phone_idcard", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_search_from_phone_idcard')])}} -->
                         <br><select class="js-example-data-ajax" id="search_from_phone_idcard">
                             <option value="" disable>Please enter a phone number and ID card number</option>
                         </select>
@@ -610,7 +639,22 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                
+                                <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                        {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                        
+
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                        <select class="js-example-data-ajax" id="search_from_phone_idcard">
+                                            <option value="" disable>Please enter a phone number and ID card number</option>
+                                        </select>
+                                </div> -->
+
+                            
+
+                <!-- Ehsan code  Tax id -->
                 <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_select_div">
                         <label class="control-label"> {{lang_trans('txt_id_number')}} <span id="id_card_req" class="required">*</span> <span id="number_validation" style="display:none;color:red;">Test</span></label>
                             <select class="js-example-data-ajax" id="search_idcard">
@@ -625,10 +669,10 @@
                                         
                     </div>
 
-                   
+                    <!-- End Ehsan code -->
                     
 
-                               
+                                <!-- <div class="row"> -->
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         <label class="control-label">{{lang_trans('txt_type_id')}} <span id="type_id_card_req" class="required">*</span></label>
                                         {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
@@ -646,13 +690,16 @@
                                         </div>
                                     @endif
                                     
-                                   
+                                    <!-- <div class="col-md-4 col-sm-4 col-xs-12" style="display: none;">
+                                        <label class="control-label"> {{lang_trans('txt_upload_idcard')}} <sup class="color-ff4">{{lang_trans('txt_multiple')}}</sup> </label>
+                                        {{Form::file('id_image[]',['class'=>"form-control",'id'=>'idcard_image','multiple'=>true])}}
+                                    </div> -->
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} </label>{{--<span class="required">*</span>--}}
                                         {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_reason_of_visit'),"rows"=>1])}}
                                     </div>
-                              
+                                <!-- </div> -->
 
 
                             </div>
@@ -665,11 +712,100 @@
 
   
 
-  
+  <!-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> -->
       <div class="row" id="new_guest_section">
 
      
-         
+            <!-- <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>{{lang_trans('heading_search_from_customer')}}</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-10 col-sm-12 col-xs-12">
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <label class="control-label"> {{lang_trans('txt_search_from_phone_idcard')}} </label>
+                                    < !-- {{Form::text('search_from_phone_idcard',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"search_from_phone_idcard", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_search_from_phone_idcard')])}} -- >
+                                    <br><select class="js-example-data-ajax" id="search_from_phone_idcard">
+                                        <option value="" disable>Please enter a phone number and ID card number</option>
+                                    </select>
+                                    <button type="button" class="btn btn-primary" onclick="location.reload()">Reset</button>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if(!$quickCheckIn)
+                 
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>{{lang_trans('heading_idcard_info')}}</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <! -- <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                            
+
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                            <select class="js-example-data-ajax" id="search_from_phone_idcard">
+                                                <option value="" disable>Please enter a phone number and ID card number</option>
+                                            </select>
+                                    </div> -- >
+
+                                   
+
+                      < !-- Ehsan code  Tax id -- >
+                      <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_select_div">
+                             <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                <select class="js-example-data-ajax" id="search_idcard">
+                                    <option value="" disable>Please enter a phone number and ID card number</option>
+                                </select>
+                        </div>
+                      
+
+                        <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_input_div" style="display:none;">
+                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                            
+                        </div>
+
+                        < !-- End Ehsan code -- >
+                        
+
+                                    < !-- <div class="row"> - ->
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
+                                            {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                                        </div>
+                                        
+                                        <! -- <div class="col-md-4 col-sm-4 col-xs-12" style="display: none;">
+                                            <label class="control-label"> {{lang_trans('txt_upload_idcard')}} <sup class="color-ff4">{{lang_trans('txt_multiple')}}</sup> </label>
+                                            {{Form::file('id_image[]',['class'=>"form-control",'id'=>'idcard_image','multiple'=>true])}}
+                                        </div> -- >
+
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} </label>{{--<span class="required">*</span>--}}
+                                            {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_reason_of_visit'),"rows"=>1])}}
+                                        </div>
+                                    <! -- </div> -- >
+
+
+                                </div>
+                            </div>
+                        </div>
+                    
+            @endif
+-->
 
           <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
@@ -682,9 +818,15 @@
                         <input name="guest_type_category" id="guest_type_category" value="new" type="hidden" />
                         <input name="selected_customer_id" id="selected_customer_id" value="" type="hidden" />
                     
-                        
+                         <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label class="control-label">{{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                            {{Form::text('persons_info[idcard_no][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                        </div> -->
 
-                     
+                      <!--  <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
+                            {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                        </div> -->
 
                       
                       <div class="col-md-4 col-sm-4 col-xs-12">
@@ -696,12 +838,20 @@
                         <label class="control-label"> {{lang_trans('txt_surname')}} <span class="required">*</span></label>
                         {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}}
                       </div>
-                   
+                      <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_middlename')}} </label>
+                        {{Form::text('middle_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"middle_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_middlename')])}}
+                      </div> -->
                       <div class="col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_email')}} </label>
                         {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
                       </div>
-                    
+                      <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_mobile_num')}} <span class="required">*</span></label>
+                        {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                      </div> -->
+                 
+                      <!-- Ehsan code -->
                       <div class="col-md-4 col-sm-4 col-xs-12" id="mobile_select_div">
                                 <label class="control-label"> {{lang_trans('txt_mobile_num')}}<span class="required">*</span></label>
                                 <select class="js-example-data-ajax" id="search_phone">
@@ -715,7 +865,7 @@
                                 {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
                         </div>
 
-                       
+                        <!-- End Ehsan code -->
 
                       <div class="col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label"> {{lang_trans('txt_address')}} </label>
@@ -751,7 +901,7 @@
                       <div class="row">
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label">{{lang_trans('txt_guest')}}</label>
-                              
+                              <!-- {{Form::text('selected_customer_id',null,['class'=>"form-", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}} -->
                           </div>
                       </div>
                   </div>
@@ -761,7 +911,69 @@
 
       <div class="row hide_elem" id="new_company_section">
 
-         
+           <!-- <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>{{lang_trans('heading_search_from_company')}}</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-10 col-sm-12 col-xs-12">
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <label class="control-label"> {{lang_trans('txt_search_from_name_phone_idcard')}} </label>
+                                    < !-- {{Form::text('search',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"search_from_name_phone_idcard", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_search_from_name_phone_idcard')])}} - ->
+                                    <br>
+                                    <select class="js-example-data-ajax-company" id="search_from_name_phone_idcard">
+                                        <option value="" disable>Please enter a name, phone number and ID card number</option>
+                                    </select>
+                                    <button type="button" class="btn btn-primary" onclick="location.reload()">Reset</button>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @if(!$quickCheckIn)
+                 
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>{{lang_trans('heading_idcard_info')}}</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                    </div>
+                                    <! -- <div class="row"> -  ->
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
+                                            {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                                        </div>
+                                        
+                                        <! -- <div class="col-md-4 col-sm-4 col-xs-12" style="display: none;">
+                                            <label class="control-label"> {{lang_trans('txt_upload_idcard')}} <sup class="color-ff4">{{lang_trans('txt_multiple')}}</sup> </label>
+                                            {{Form::file('id_image[]',['class'=>"form-control",'id'=>'idcard_image','multiple'=>true])}}
+                                        </div> - ->
+
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} </label>{{--<span class="required">*</span>--}}
+                                            {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_reason_of_visit'),"rows"=>1])}}
+                                        </div>
+                                    < !-- </div> - ->
+
+
+                                </div>
+                            </div>
+                        </div>
+                    
+            @endif
+        -->
 
           <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
@@ -772,7 +984,17 @@
                   <div class="x_content">
                       <div class="row">
                       
-                      
+                        <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label class="control-label">{{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                            {{Form::text('persons_info[idcard_no][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"com_idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                        </div> -->
+
+                          <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_company_name')}}</label>
+                              {{Form::text('company_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_name')])}}
+                          </div> -->
+                        
+                      <!-- Ehsan code  COmpany name -->
                       <div class="col-md-4 col-sm-4 col-xs-12" id="companyname_select_div">
                             <label class="control-label"> {{lang_trans('txt_company_name')}} <span class="required">*</span></label>
                             <br />
@@ -786,7 +1008,8 @@
                               {{Form::text('company_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_name')])}}
                         </div>
 
-                        
+                        <!-- End Ehsan code -->
+
 
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_company_gst_num')}}</label>
@@ -797,7 +1020,12 @@
                               <label class="control-label"> {{lang_trans('txt_company_email')}} </label>
                               {{Form::email('company_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_email')])}}
                           </div>
-                          
+                          <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label class="control-label"> {{lang_trans('txt_company_mobile_num')}} <span class="required">*</span></label>
+                              {{Form::text('company_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_mobile_num')])}}
+                          </div> -->
+
+                        <!-- Ehsan code  COmpany phone -->
                         <div class="col-md-4 col-sm-4 col-xs-12" id="companyphone_select_div">
                         <label class="control-label"> {{lang_trans('txt_company_mobile_num')}} <span class="required">*</span></label>
                         <br/>
@@ -812,6 +1040,8 @@
                               {{Form::text('company_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_mobile_num')])}}
                                    
                         </div>
+
+                        <!-- End Ehsan code -->
 
                   
 
@@ -856,7 +1086,7 @@
                       <div class="row">
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label">{{lang_trans('txt_company')}}</label>
-                        
+                              <!-- {{Form::text('selected_company_id',null,['class'=>"form-", "id"=>"companies", "placeholder"=>lang_trans('ph_select')])}} -->     
                             </div>
                       </div>
                   </div>
@@ -893,7 +1123,10 @@
                           <label class="control-label"> {{lang_trans('txt_kids')}} </label>
                           {{Form::number('kids',0,['class'=>"form-control col-md-7 col-xs-12", "id"=>"kids", "required"=>"required","placeholder"=>lang_trans('ph_enter').lang_trans('txt_kids'),"min"=>0])}}
                       </div>
-
+{{--                      <div class="col-md-4 col-sm-4 col-xs-12">--}}
+{{--                          <label class="control-label"> {{lang_trans('txt_purpose_of_the_visiting')}} <span class="required">*</span></label>--}}
+{{--                          {{Form::text('purpose_of_the_visiting',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"purpose_of_the_visiting", "placeholder"=>lang_trans('txt_purpose_of_the_visiting')])}}--}}
+{{--                      </div>--}}
                   </div>
               </div>
           </div>
@@ -946,7 +1179,39 @@
 
 
   @if(!$quickCheckIn)
-   
+    <!-- <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="x_panel">
+                      <div class="x_title">
+                          <h2>{{lang_trans('heading_idcard_info')}}</h2>
+                          <div class="clearfix"></div>
+                      </div>
+                      <div class="x_content">
+                          <div class="row">
+                              <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <label class="control-label">{{lang_trans('txt_type_id')}} <span class="required">*</span></label>
+                                  {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                              </div>
+                              < !-- <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                  {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                              </div> -- >
+                              <div class="col-md-4 col-sm-4 col-xs-12" style="display: none;">
+                                  <label class="control-label"> {{lang_trans('txt_upload_idcard')}} <sup class="color-ff4">{{lang_trans('txt_multiple')}}</sup> </label>
+                                  {{Form::file('id_image[]',['class'=>"form-control",'id'=>'idcard_image','multiple'=>true])}}
+                              </div>
+
+                              <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} </label>{{--<span class="required">*</span>--}}
+                                  {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_reason_of_visit'),"rows"=>1])}}
+                              </div>
+                          </div>
+
+
+                      </div>
+                  </div>
+              </div>
+          </div> -->
   @endif
 
   @if(!$quickCheckIn)
@@ -1041,7 +1306,15 @@
                       </div>
                       <div class="x_content">
                           <div class="row">
-
+{{--                              <div class="col-md-4 col-sm-4 col-xs-12">--}}
+{{--                                  <label class="control-label"> {{lang_trans('txt_total_number_of_guest')}} <span class="required">*</span></label>--}}
+{{--                                  {{ Form::number('mt_total_number_of_guest',1,['class'=>'form-control col-md-6 col-xs-12', 'required'=>'required']) }}--}}
+{{--                                  {{ Form::hidden('mt_iscreate',1,['class'=>'form-control col-md-6 col-xs-12', 'required'=>'required']) }}--}}
+{{--                              </div>--}}
+{{--                              <div class="col-md-4 col-sm-4 col-xs-12">--}}
+{{--                                  <label class="control-label"> {{lang_trans('txt_date_of_birth')}} <span class="required">*</span></label>--}}
+{{--                                  {{ Form::date('mt_date_of_birth','',['class'=>'form-control col-md-6 col-xs-12', 'required'=>'required']) }}--}}
+{{--                              </div>--}}
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_nationality')}} <span class="required">*</span></label>
                                   {{ Form::select('mt_nationality',getDynamicDropdownList('nationalities', true),null,['class'=>'form-control col-md-6 col-xs-12', "id"=>"mt_nationality", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
@@ -1050,7 +1323,10 @@
                                   <label class="control-label"> {{lang_trans('txt_room_rent_type')}} <span class="required">*</span></label>
                                   {{ Form::select('mt_room_rent_type',getDynamicDropdownList('room_rent_type', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_room_rent_type", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
-
+{{--                              <div class="col-md-4 col-sm-4 col-xs-12">--}}
+{{--                                  <label class="control-label"> {{lang_trans('txt_gender')}} <span class="required">*</span></label>--}}
+{{--                                  {{ Form::select('mt_gender',getDynamicDropdownList('gender', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_gender", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}--}}
+{{--                              </div>--}}
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_customer_types')}} <span class="required">*</span></label>
                                   {{ Form::select('mt_customer_types',getDynamicDropdownList('customer_types', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_customer_types", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
@@ -2239,6 +2515,5 @@ function getAjaxResponse(div_id, val, category, guest_type, field_id){
   <!-- <script src="{{URL::asset('public/app-assets/vendors/js/forms/repeater/jquery.repeater.min.js')}}"></script>
   <script src="{{URL::asset('public/app-assets/js/scripts/forms/form-repeater.js')}}"></script> -->
   <!-- <script src="{{URL::asset('public/custom/js/add_reservation.js')}}"></script> -->
-  <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
 <!-- END: Page JS-->
 @endsection

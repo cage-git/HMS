@@ -102,6 +102,8 @@
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
         <!-- END: Page CSS-->
     <?php } ?>
+    <script type="text/javascript" src="{{URL::asset('public/js/init.js?v='.rand(1111,9999).'')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('public/assets/moment/min/moment.min.js?v='.rand(1111,9999).'')}}"></script>
 
     @yield('styles')
 

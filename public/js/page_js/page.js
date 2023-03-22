@@ -387,6 +387,7 @@ if(globalVar.page=='room_reservation_add'){
 
   $('.guest_type').on('ifChanged',function(){
     $('#new_guest_section,#existing_guest_section,#existing_company_section,#new_company_section').hide();
+      console.log("test");
     var type = $(this).val();
     if(type=='new'){
       $('#new_guest_section').show();
@@ -406,14 +407,15 @@ if(globalVar.page=='room_reservation_add'){
       $('#referred_by_name').val(val);
   });
 
-  $('#check_in_date').datetimepicker(datetimePickerOptions);
+  // $('#check_in_date').datetimepicker(datetimePickerOptions);
+  // $('#check_in_date').flatpickr();
   $("#check_in_date").on("change",function(){
       globalVar.checkInDate = $(this).val();
       globalVar.checkOutDate = "";
       $("#check_out_date,#duration_of_stay").val('');
       $('#room_list_section').addClass('hide_elem');
   });
-  $('#check_out_date').datetimepicker(datetimePickerOptions);
+  // $('#check_out_date').datetimepicker(datetimePickerOptions);
   $("#check_out_date").on("change",function(){
       if(!globalVar.checkInDate){
         $("#check_out_date").val('');
@@ -450,6 +452,7 @@ if(globalVar.page=='room_reservation_add'){
         globalVar.roomTypeSelector.html('');
         $('#room_num').html('');
         const post_data = {room_type_id:$(this).data('roomtypeid'), checkin_date: globalVar.checkInDate, checkout_date: globalVar.checkOutDate};
+        console.log(post_data)
         globalFunc.ajaxCall('api/get-room-num-list', post_data, 'POST', globalFunc.before, globalFunc.listOfRooms, globalFunc.error, globalFunc.complete);
     // }
   });
