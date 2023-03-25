@@ -1,207 +1,532 @@
-/*=========================================================================================
-    File Name: form-select2.js
-    Description: Select2 is a jQuery-based replacement for select boxes.
-    It supports searching, remote data sets, and pagination of results.
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy  - Vuejs, HTML & Laravel Admin Dashboard Template
-    Author: Pixinvent
-    Author URL: hhttp://www.themeforest.net/user/pixinvent
-==========================================================================================*/
-// (function (window, document, $) {
-//   'use strict';
-//   var select = $('.select2'),
-//     selectIcons = $('.select2-icons'),
-//     maxLength = $('.max-length'),
-//     hideSearch = $('.hide-search'),
-//     selectArray = $('.select2-data-array'),
-//     selectAjax = $('.select2-data-ajax'),
-//     selectLg = $('.select2-size-lg'),
-//     selectSm = $('.select2-size-sm'),
-//     selectInModal = $('.select2InModal');
 
-//   select.each(function () {
-//     var $this = $(this);
-//     $this.wrap('<div class="position-relative"></div>');
-//     $this.select2({
-//       // the following code is used to disable x-scrollbar when click in select input and
-//       // take 100% width in responsive also
-//       dropdownAutoWidth: true,
-//       width: '100%',
-//       dropdownParent: $this.parent()
-//     });
-//   });
+(function (window, document, $) {
+    'use strict';
+    var selectAjax = $('#search_customer');
+    var selectAjaxForID = $('#search_from_phone_idcard');
+    var selectAjaxForPhone = $('#search_customer_from_phone');
+    var selectAjaxForCompanyName = $('#search_from_company_name');
+    var selectAjaxForCompanyPhone = $('#search_from_company_phone');
 
-//   // Select With Icon
-//   selectIcons.each(function () {
-//     var $this = $(this);
-//     $this.wrap('<div class="position-relative"></div>');
-//     $this.select2({
-//       dropdownAutoWidth: true,
-//       width: '100%',
-//       minimumResultsForSearch: Infinity,
-//       dropdownParent: $this.parent(),
-//       templateResult: iconFormat,
-//       templateSelection: iconFormat,
-//       escapeMarkup: function (es) {
-//         return es;
-//       }
-//     });
-//   });
+    // Loading remote data
+    selectAjax.wrap('<div class="position-relative"></div>').select2({
+        dropdownAutoWidth: true,
+        dropdownParent: selectAjax.parent(),
+        width: '100%',
+        tags: true,
+        ajax: {
+        url: route_search_customer,
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+            search_from_phone_idcard: params.term, 
+            category: "company",
+            type: "name",
+            };
+        },
+        processResults: function (data, params) {
+            return {
+            results: data.customers,
+            };
+        },
+        cache: true
+        },
+        placeholder: 'Search a customer',
+        escapeMarkup: function (markup) {
+        return markup;
+        }, 
+        // let our custom formatter work
+        minimumInputLength: 1,
+        templateResult: formatRepo,
+        templateSelection: formatRepoSelection
+    });
 
-//   // Format icon
-//   function iconFormat(icon) {
-//     var originalOption = icon.element;
-//     if (!icon.id) {
-//       return icon.text;
-//     }
+    function formatRepo(repo) {
+        // console.log("reo",repo)
+        // if (repo.loading) return repo.text;
+        if(repo.name){
+        var markup =
+        "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" +
+        repo.name +
+        '</div>';
 
-//     var $icon = feather.icons[$(icon.element).data('icon')].toSvg() + icon.text;
+        if (repo.mobile) {
+            markup += "<div class='select2-result-repository__description'>" + repo.mobile + '</div>';
+        }
+        }else{
+        var markup =
+        "<div class='select2-result-repository clearfix'>" +
 
-//     return $icon;
-//   }
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" +
+        repo.text +
+        '</div>';
+        }
+        // $('#search_from_phone_idcard').select2().val(['repo.name']).trigger("change");
+        return markup;
+    }
 
-//   // Limiting the number of selections
-//   maxLength.wrap('<div class="position-relative"></div>').select2({
-//     dropdownAutoWidth: true,
-//     width: '100%',
-//     maximumSelectionLength: 2,
-//     dropdownParent: maxLength.parent(),
-//     placeholder: 'Select maximum 2 items'
-//   });
+    function formatRepoSelection(repo) {
+        // 
+        if (repo) {
+            // $('#search_from_phone_idcard').val(repo.name);
+            // selectAjaxForID.val(repo.id_card_no);
+            // $('#search_from_phone_idcard').val([repo.id_card_no]).trigger('change');
+            // $('#search_from_phone_idcard').val(repo.id_card_no);
+            //     'data': repo.id_card_no,
+            //     allowClear: true
+            // });
+            // console.log(repo.name, repo.id_card_no);
+            $('#search_from_phone_idcard').val(repo.id_card_no).trigger('change');
+            // $('#search_from_phone_idcard').data().select2.updateSelection(repo.name);
+          }
+        return repo.name || repo.text;
+    }
 
-//   // Hide Search Box
-//   hideSearch.select2({
-//     placeholder: 'Select an option',
-//     minimumResultsForSearch: Infinity
-//   });
 
-//   // Loading array data
-//   var data = [
-//     { id: 0, text: 'enhancement' },
-//     { id: 1, text: 'bug' },
-//     { id: 2, text: 'duplicate' },
-//     { id: 3, text: 'invalid' },
-//     { id: 4, text: 'wontfix' }
-//   ];
+    selectAjaxForID.wrap('<div class="position-relative"></div>').select2({
+        dropdownAutoWidth: true,
+        dropdownParent: selectAjax.parent(),
+        width: '100%',
+        tags: true,
+        ajax: {
+        url: route_search_customer,
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+            // q: params.term, // search term
+            // page: params.page
+            search_from_phone_idcard: params.term, 
+            category: "company",
+            type: "name",
+            };
+        },
+        processResults: function (data, params) {
+            
+            return {
+                results: data.customers,
+            };
+        },
+        cache: true
+        },
+        placeholder: 'Search a customer',
+        escapeMarkup: function (markup) {
+        return markup;
+        }, // let our custom formatter work
+        minimumInputLength: 1,
+        templateResult: formatRepoForID,
+        templateSelection: formatRepoSelectionForID
+    });
 
-//   selectArray.wrap('<div class="position-relative"></div>').select2({
-//     dropdownAutoWidth: true,
-//     dropdownParent: selectArray.parent(),
-//     width: '100%',
-//     data: data
-//   });
+    function formatRepoForID(repo) {
+        if(repo.name){
+        var markup =
+        "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" +
+        repo.name +
+        '</div>';
 
-//   // Loading remote data
-//   selectAjax.wrap('<div class="position-relative"></div>').select2({
-//     dropdownAutoWidth: true,
-//     dropdownParent: selectAjax.parent(),
-//     width: '100%',
-//     ajax: {
-//       url: 'https://api.github.com/search/repositories',
-//       dataType: 'json',
-//       delay: 250,
-//       data: function (params) {
-//         return {
-//           q: params.term, // search term
-//           page: params.page
-//         };
-//       },
-//       processResults: function (data, params) {
-//         // parse the results into the format expected by Select2
-//         // since we are using custom formatting functions we do not need to
-//         // alter the remote JSON data, except to indicate that infinite
-//         // scrolling can be used
-//         params.page = params.page || 1;
+        if (repo.mobile) {
+            markup += "<div class='select2-result-repository__description'>" + repo.mobile + '</div>';
+        }
+        }else{
+        var markup =
+        "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" +
+        repo.text +
+        '</div>';
+        }
 
-//         return {
-//           results: data.items,
-//           pagination: {
-//             more: params.page * 30 < data.total_count
-//           }
-//         };
-//       },
-//       cache: true
-//     },
-//     placeholder: 'Search a customer',
-//     escapeMarkup: function (markup) {
-//       return markup;
-//     }, // let our custom formatter work
-//     minimumInputLength: 1,
-//     templateResult: formatRepo,
-//     templateSelection: formatRepoSelection
-//   });
+        return markup;
+    }
 
-//   function formatRepo(repo) {
-//     if (repo.loading) return repo.text;
+    function formatRepoSelectionForID(repo) {
+        return repo.name || repo.text;
+    }
 
-//     var markup =
-//       "<div class='select2-result-repository clearfix'>" +
-//       "<div class='select2-result-repository__avatar'><img src='" +
-//       repo.owner.avatar_url +
-//       "' /></div>" +
-//       "<div class='select2-result-repository__meta'>" +
-//       "<div class='select2-result-repository__title'>" +
-//       repo.full_name +
-//       '</div>';
 
-//     if (repo.description) {
-//       markup += "<div class='select2-result-repository__description'>" + repo.description + '</div>';
-//     }
+    selectAjaxForPhone.wrap('<div class="position-relative"></div>').select2({
+        dropdownAutoWidth: true,
+        dropdownParent: selectAjax.parent(),
+        width: '100%',
+        tags: true,
+        ajax: {
+        url: route_search_customer,
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+            // q: params.term, // search term
+            // page: params.page
+            search_from_phone_idcard: params.term, 
+            category: "user",
+            type: "name",
+            };
+        },
+        processResults: function (data, params) {
+            
+            return {
+                results: data.customers,
+            };
+        },
+        cache: true
+        },
+        placeholder: 'Search a guest',
+        escapeMarkup: function (markup) {
+        return markup;
+        }, // let our custom formatter work
+        minimumInputLength: 1,
+        templateResult: formatRepoForID,
+        templateSelection: formatRepoSelectionForID
+    });
 
-//     markup +=
-//       "<div class='select2-result-repository__statistics'>" +
-//       "<div class='select2-result-repository__forks'>" +
-//       feather.icons['share-2'].toSvg({ class: 'me-50' }) +
-//       repo.forks_count +
-//       ' Forks</div>' +
-//       "<div class='select2-result-repository__stargazers'>" +
-//       feather.icons['star'].toSvg({ class: 'me-50' }) +
-//       repo.stargazers_count +
-//       ' Stars</div>' +
-//       "<div class='select2-result-repository__watchers'>" +
-//       feather.icons['eye'].toSvg({ class: 'me-50' }) +
-//       repo.watchers_count +
-//       ' Watchers</div>' +
-//       '</div>' +
-//       '</div></div>';
+    function formatRepoForID(repo) {
+        if(repo.name){
+        var markup =
+        "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" +
+        repo.name +
+        '</div>';
 
-//     return markup;
-//   }
+        if (repo.mobile) {
+            markup += "<div class='select2-result-repository__description'>" + repo.mobile + '</div>';
+        }
+        }else{
+        var markup =
+        "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" +
+        repo.text +
+        '</div>';
+        }
 
-//   function formatRepoSelection(repo) {
-//     return repo.full_name || repo.text;
-//   }
+        return markup;
+    }
 
-//   // Sizing options
+    function formatRepoSelectionForID(repo) {
+        return repo.name || repo.text;
+    }
 
-//   // Large
-//   selectLg.each(function () {
-//     var $this = $(this);
-//     $this.wrap('<div class="position-relative"></div>');
-//     $this.select2({
-//       dropdownAutoWidth: true,
-//       dropdownParent: $this.parent(),
-//       width: '100%',
-//       containerCssClass: 'select-lg'
-//     });
-//   });
 
-//   // Small
-//   selectSm.each(function () {
-//     var $this = $(this);
-//     $this.wrap('<div class="position-relative"></div>');
-//     $this.select2({
-//       dropdownAutoWidth: true,
-//       dropdownParent: $this.parent(),
-//       width: '100%',
-//       containerCssClass: 'select-sm'
-//     });
-//   });
+    selectAjaxForCompanyPhone.wrap('<div class="position-relative"></div>').select2({
+        dropdownAutoWidth: true,
+        dropdownParent: selectAjax.parent(),
+        width: '100%',
+        tags: true,
+        ajax: {
+        url: route_search_customer,
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+            // q: params.term, // search term
+            // page: params.page
+            search_from_phone_idcard: params.term, 
+            category: "user",
+            type: "name",
+            };
+        },
+        processResults: function (data, params) {
+            
+            return {
+                results: data.customers,
+            };
+        },
+        cache: true
+        },
+        placeholder: 'Search a company',
+        escapeMarkup: function (markup) {
+        return markup;
+        }, // let our custom formatter work
+        minimumInputLength: 1,
+        templateResult: formatRepoForID,
+        templateSelection: formatRepoSelectionForID
+    });
 
-//   $('#select2InModal').on('shown.bs.modal', function () {
-//     selectInModal.select2({
-//       placeholder: 'Select a state'
-//     });
-//   });
-// })(window, document, jQuery);
+    function formatRepoForID(repo) {
+        if(repo.name){
+        var markup =
+        "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" +
+        repo.name +
+        '</div>';
+
+        if (repo.mobile) {
+            markup += "<div class='select2-result-repository__description'>" + repo.mobile + '</div>';
+        }
+        }else{
+        var markup =
+        "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" +
+        repo.text +
+        '</div>';
+        }
+
+        return markup;
+    }
+
+    function formatRepoSelectionForID(repo) {
+        return repo.name || repo.text;
+    }
+
+    
+    selectAjaxForCompanyName.wrap('<div class="position-relative"></div>').select2({
+        dropdownAutoWidth: true,
+        dropdownParent: selectAjax.parent(),
+        width: '100%',
+        tags: true,
+        ajax: {
+        url: route_search_customer,
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+            // q: params.term, // search term
+            // page: params.page
+            search_from_phone_idcard: params.term, 
+            category: "company",
+            type: "name",
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data.customers,
+            };
+        },
+        cache: true
+        },
+        placeholder: 'Search a company',
+        escapeMarkup: function (markup) {
+        return markup;
+        }, // let our custom formatter work
+        minimumInputLength: 1,
+        templateResult: formatRepoForID,
+        templateSelection: formatRepoSelectionForID
+    });
+
+    function formatRepoForID(repo) {
+        if(repo.name){
+        var markup =
+        "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" +
+        repo.name +
+        '</div>';
+
+        if (repo.mobile) {
+            markup += "<div class='select2-result-repository__description'>" + repo.mobile + '</div>';
+        }
+        }else{
+        var markup =
+        "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" +
+        repo.text +
+        '</div>';
+        }
+
+        return markup;
+    }
+
+    function formatRepoSelectionForID(repo) {
+        return repo.name || repo.text;
+    }
+
+
+})(window, document, jQuery);
+
+
+$(document).on('change', '#search_customer', function(){
+    var val = $('#search_customer').val();      
+    var guest_type = $('input:radio[name="guest_type"]:checked').val();
+    getAjaxResponse('idcard_select_div', val, 'user', guest_type, 'search_idcard');
+});
+
+$(document).on('change', '#search_from_phone_idcard', function(){
+    var val = $('#search_from_phone_idcard').val();      
+    var guest_type = $('input:radio[name="guest_type"]:checked').val();
+    getAjaxResponse('idcard_select_div', val, 'user', guest_type, 'search_idcard');
+});
+
+$(document).on('change', '#search_customer_from_phone', function(){
+    var val = $('#search_customer_from_phone').val();      
+    var guest_type = $('input:radio[name="guest_type"]:checked').val();
+    getAjaxResponse('idcard_select_div', val, 'user', guest_type, 'search_idcard');
+});
+
+$(document).on('change', '#search_from_company', function(){
+    var val = $('#search_from_company').val();      
+    var guest_type = $('input:radio[name="guest_type"]:checked').val();
+    getAjaxResponse('idcard_select_div', val, 'company', guest_type, 'search_idcard');
+});
+
+$(document).on('change', '#search_from_company_phone', function(){
+    var val = $('#search_from_company_phone').val();      
+    var guest_type = $('input:radio[name="guest_type"]:checked').val();
+    getAjaxResponse('idcard_select_div', val, 'company', guest_type, 'search_idcard');
+});
+
+
+
+$(document).on('change', '#search_from_company_name', function(){
+    var val = $('#search_from_company_name').val();      
+    var guest_type = $('input:radio[name="guest_type"]:checked').val();
+    getAjaxResponse('idcard_select_div', val, 'company', guest_type, 'search_idcard');
+});
+
+function getAjaxResponse(div_id, val, category, guest_type, field_id){
+         // var formData = new FormData(this);
+        // var search_from_phone_idcard = $("#search_from_phone_idcard").val();
+        $.ajax({
+            type:'GET',
+            url: route_search_customer,
+            data: {
+                search_from_phone_idcard  : val,
+                category: category,
+            },
+            dataType: "json",
+            success:function(data){
+                // alert( "success");
+                // if(typeof(data) !== 'undefined' ){
+                // console.log(data.customers[0], "success");
+                    var data = data.customers[0]; 
+                    if(data){
+                        if(data.cat && data.cat == "user"){
+                            setCustomerData(data, div_id);
+                        }else if(data.cat && data.cat == "company"){
+                            setCompanydata(data, div_id);
+                        }
+                    }else{
+                        // console.log("data not found", div_id, val, category, guest_type, field_id);
+                        if(field_id == "search_idcard"){
+                            $("#idcard_no").val(val);
+                        }else if(field_id == "search_phone"){
+                            $("#mobile").val(val);
+                        }else if(field_id == "search_companyname"){
+                            $("#company_name").val(val);
+                            $("#guest_type_category").val("new_company");
+                        }else if(field_id == "search_companyphone"){
+                            $("#company_mobile").val(val); 
+                            $("#guest_type_category").val("new_company");
+                        }
+                    }
+            },
+            error: function(error){
+                console.log("error", error);
+            }
+        });
+    }
+
+
+    function setCompanydata(data_customer, id){
+
+    //   console.log("company data");
+      if(id == "companyname_select_div"){
+          $('#idcard_input_div').show();
+          $('#idcard_select_div').hide();
+          $('#companyphone_input_div').show();
+          $('#companyphone_select_div').hide();
+      }else if(id == "idcard_select_div"){
+          $('#companyname_select_div').hide();
+          $('#companyname_input_div').show();
+          $('#companyphone_input_div').show();
+          $('#companyphone_select_div').hide();
+      }else if(id == "companyphone_select_div"){
+          $('#companyname_select_div').hide();
+          $('#companyname_input_div').show();
+          $('#idcard_input_div').show();
+          $('#idcard_select_div').hide();
+      }
+
+      $("#company_name").val(data_customer.name);
+      $('#guest_type_category').val('existing_company');
+      $("#company_gst_num").val(data_customer.company_gst_num);
+      $("#type_of_ids_selector").val(data_customer.idcard_type);
+      $("#company_email").val(data_customer.email);
+      $("#company_mobile").val(data_customer.mobile);                
+      $("#company_address").val(data_customer.address);
+      $("#company_country").val(data_customer.country);
+      $("#company_state").val(data_customer.state);
+      $("#company_city").val(data_customer.city);
+      $("#selected_customer_id").val(data_customer.id);
+      if(data_customer.dob !=""){
+          $("#dob").val(data_customer.dob);
+      }else{
+          $("#dob").val("");
+      }
+
+      }
+
+  function setCustomerData(data_customer, id){
+      // console.log(id);
+      // setCustomerNull();
+      if(id == "mobile_select_div"){
+          $('#idcard_input_div').show();
+          $('#idcard_select_div').hide();
+      }else if(id == "idcard_select_div"){
+          $('#mobile_input_div').show();
+          $('#mobile_select_div').hide();
+      }
+      //  console.log("testing", data_customer);
+
+      $('#guest_type_category').val('existing');
+      $("#idcard_no").val(data_customer.id_card_no);
+      $("#type_of_ids_selector").val(data_customer.idcard_type);
+      $("#mobile").val(data_customer.mobile);
+      $("#surname").val(data_customer.surname);
+      $("#name").val(data_customer.name);
+      $("#middle_name").val(data_customer.namiddle_nameme);
+      $("#email").val(data_customer.email);
+      $("#address").val(data_customer.address);
+      $("#country").val(data_customer.country);
+      $("#state").val(data_customer.state);
+      $("#city").val(data_customer.city);
+      $("#gender").val(data_customer.gender);
+      $("#dob").val(data_customer.dob);
+      $("#selected_customer_id").val(data_customer.id);
+      if(data_customer.dob !=""){
+          $("#dob").val(data_customer.dob);
+      }else{
+          $("#dob").val("");
+      }
+  }
+
+  function setCompanyNull(){
+      $('#guest_type_category').val('new');
+      $("#company_name").val('');
+      $("#company_gst_num").val('');
+      $("#type_of_ids_selector").val('');
+      $("#company_email").val('');
+      $("#company_mobile").val('');                
+      $("#company_address").val('');
+      $("#company_country").val('');
+      $("#company_state").val('');
+      $("#company_city").val('');
+      $("#selected_customer_id").val('');
+      }
+
+      function setCustomerNull(){
+      $('#guest_type_category').val('new');
+      $("#type_of_ids_selector").val('');
+      $("#surname").val('');
+      $("#name").val('');
+      $("#middle_name").val('');
+      $("#email").val('');
+      $("#mobile").val('');
+      $("#address").val('');
+      $("#country").val('');
+      $("#state").val('');
+      $("#city").val('');
+      $("#gender").val('');
+      $("#dob").val('');
+      $("#selected_customer_id").val('');
+  }
 

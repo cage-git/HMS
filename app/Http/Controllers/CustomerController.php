@@ -73,10 +73,18 @@ class CustomerController extends Controller
                 ->orWhere('mobile', 'like', '%' . $request->search_from_phone_idcard . '%')
                 ->orWhere('name', 'like', '%' . $request->search_from_phone_idcard . '%')
                 ->orderBy('name','ASC')->get();
-        // if($request->type){
-        //     $data ['type'] = $request->type;
-        // }
 
         return response()->json(['customers'=> $data], 200);
    }
+   public function searchFromCompany(Request $request) {
+    $data=Customer::where('cat','=',$request->category)
+            ->where('is_deleted',0)
+            ->where('mobile',$request->search_from_phone_idcard)
+            ->orWhere('id_card_no', 'like', '%' . $request->search_from_phone_idcard . '%')
+            ->orWhere('mobile', 'like', '%' . $request->search_from_phone_idcard . '%')
+            ->orWhere('name', 'like', '%' . $request->search_from_phone_idcard . '%')
+            ->orderBy('name','ASC')->get();
+
+    return response()->json(['customers'=> $data], 200);
+}
 }

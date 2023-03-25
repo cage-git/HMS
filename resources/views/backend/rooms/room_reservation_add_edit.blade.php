@@ -12,6 +12,13 @@
     }
   @endphp
   
+<style>
+    .hide_elem{
+       display:none;
+    }
+
+</style>    
+
 
 <div class="col-md-12 col-12">
         <div class="card">
@@ -59,7 +66,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_search_from_phone_idcard')}}</label>
                                       
-                                        <select name="customer_name" class="select2-data-ajax form-select" id="search_guest" ></select>
+                                        <select name="customer_name" class="select2-data-ajax form-select" id="search_customer" ></select>
                                     </div>
                                 </div>
                         </div>
@@ -75,11 +82,16 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_id_number">{{lang_trans('txt_id_number')}}</label>
 
-                                        <select class="select2-data- ajax form-select" id="search_from_phone_idcard">
-                                                <option value="" disable>Please enter a phone number and ID card number</option>
-                                            </select>
+                                        <select class="select2-data-ajax form-select" id="search_from_phone_idcard">
+                                        </select>
 
                                          <!-- <select class="select2-data-ajax form-select" id="select2-ajax"></select> -->
+
+                                         <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_input_div" style="display:none;">
+                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                                            
+                                        </div>
                                     </div>
                                 </div>
 
@@ -152,11 +164,17 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_mobile_num')}}</label>
-                                        <select class="select2-data- ajax form-select" id="search_from_phone_idcard">
-                                            <option value="" disable>Please enter a phone number and ID card number</option>
+                                        <select class="select2-data-ajax form-select" id="search_customer_from_phone">
+                                            <!-- <option value="" disable>Please enter a phone number and ID card number</option> -->
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12" id="mobile_input_div" style="display:none;">
+                                        <label class="control-label"> {{lang_trans('txt_mobile_num')}}<span class="required">*</span></label>
+                                        {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                                </div>
+                                <!-- <input name="mobile"> -->
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
@@ -189,14 +207,14 @@
 
                         </div>
 
-                        <div class="row hide_elem" id="new_company_section">
+                        <div class="row " id="new_company_section">
                                 <h4 class="card-title"> {{lang_trans('heading_company_info')}}</h4>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_name')}}</label>
-                                        <select class="select2-data- ajax form-select" >
-                                            <option value="" disable>Please enter a phone number and ID card number</option>
+                                        <select class="select2-data-ajax form-select" id="search_from_company_name">
+                                            <!-- <option value="" disable>Please enter a phone number and ID card number</option> -->
                                         </select>
                                     </div>
                                 </div>
@@ -218,8 +236,8 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_mobile_num')}}</label>
-                                        <select class="select2-data- ajax form-select" id="search_from_phone_idcard">
-                                            <option value="" disable>Please enter a phone number and ID card number</option>
+                                        <select class="select2-data-ajax form-select" id="search_from_company_phone">
+                                            <!-- <option value="" disable>Please enter a phone number and ID card number</option> -->
                                         </select>
                                     </div>
                                 </div>
@@ -490,386 +508,236 @@
   globalVar.page = 'room_reservation_add';
   globalVar.customerList = {!! json_encode($customer_list) !!};
   globalVar.companiesList = {!! json_encode($companies_list) !!};
-</script> 
+  var route_search_customer = '{{ route("search-from-customer")}}';
+  
+  $(document).ready(function(){
+    $('#new_company_section').hide();
+  });
+</script>
  <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 
 @endsection
 
 @section('scripts')
+
+
+
 <!-- BEGIN: Page JS-->
   <script src="{{URL::asset('public/app-assets/vendors/js/forms/repeater/jquery.repeater.min.js')}}"></script>
   <script src="{{URL::asset('public/app-assets/js/scripts/forms/form-repeater.js')}}"></script>
   <!-- <script src="{{URL::asset('public/custom/js/add_reservation.js')}}"></script> -->
   <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
-  <!-- <script src="{{URL::asset('public/app-assets/js/scripts/forms/customer.js')}}"></script> -->
+  <script src="{{URL::asset('public/app-assets/js/scripts/forms/customer.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js')}}"></script>
 <!-- END: Page JS-->
 
-
-
 <script>
-    (function (window, document, $) {
-  'use strict';
-  var select = $('.select2'),
-    selectIcons = $('.select2-icons'),
-    maxLength = $('.max-length'),
-    hideSearch = $('.hide-search'),
-    selectArray = $('.select2-data-array'),
-    selectAjax = $('.select2-data-ajax'),
-    selectLg = $('.select2-size-lg'),
-    selectSm = $('.select2-size-sm'),
-    selectInModal = $('.select2InModal');
 
-  select.each(function () {
-    var $this = $(this);
-    $this.wrap('<div class="position-relative"></div>');
-    $this.select2({
-      // the following code is used to disable x-scrollbar when click in select input and
-      // take 100% width in responsive also
-      dropdownAutoWidth: true,
-      width: '100%',
-      dropdownParent: $this.parent()
-    });
-  });
+  $(document).on('submit', '#add-reservation-form', function(e){
+            e.preventDefault();
+            // checkError();
+            var app_nt_enable = $("#app_nt_enable").val();
+            if(app_nt_enable == "1"){
+                console.log("app_nt_enable", app_nt_enable);
+                var error = "";
+                var error_flag = false;
+                var dob = $("#dob").val();
+                var gender = $("#gender").val();
+                var advance_payment = $("#advance_payment").val();
+                var mt_nationality = $("#mt_nationality").val();
+                var mt_room_rent_type = $("#mt_room_rent_type").val();
+                var mt_customer_types = $("#mt_customer_types").val();
+                var mt_room_type = $("#mt_room_type").val();
+                var mt_reason_of_visit = $("#mt_reason_of_visit").val();
+                var mt_payment_type = $("#mt_payment_type").val();
+                // var mt_reason_of_visit = $("input[name=mt_reason_of_visit]").val();
+                var div_id = "";
+                
+                if(!gender){
+                    error = "{{lang_trans('txt_gender')}}";
+                    error_flag = true;
+                    div_id = "gender";
+                }else if(!dob){
+                    error = "{{lang_trans('txt_dob')}}";
+                    error_flag = true;
+                    div_id = "dob";
+                }else if(!advance_payment){
+                    error = "{{lang_trans('txt_advance_payment')}}";
+                    error_flag = true;
+                    div_id = "advance_payment";
+                }else if(!mt_nationality){
+                    error = "{{lang_trans('txt_nationality')}}";
+                    error_flag = true;
+                    div_id = "mt_nationality";
+                }else if(!mt_room_rent_type){
+                    error = "{{lang_trans('txt_room_rent_type')}}";
+                    error_flag = true;
+                    div_id = "mt_room_rent_type";
+                }else if(!mt_customer_types){
+                    error = "{{lang_trans('txt_customer_types')}}";
+                    error_flag = true;
+                    div_id = "mt_customer_types";
+                }else if(!mt_room_type){
+                    error = "{{lang_trans('txt_room_type')}}";
+                    error_flag = true;
+                    div_id = "mt_room_type";
+                }else if(!mt_reason_of_visit){
+                    error = "{{lang_trans('txt_reason_of_visit')}} ";
+                    error_flag = true;
+                    div_id = "mt_reason_of_visit";
+                }else if(!mt_payment_type){
+                    error = "{{lang_trans('txt_payment_type')}}";
+                    error_flag = true;
+                    div_id = "mt_payment_type";
+                }
+           
+                if(error_flag == true){
+                    Swal.fire({
+                        title: error + " {{lang_trans('txt_require')}}",
+                        // showCancelButton: true,
+                        confirmButtonText: 'OK',
+                    }).then((result) => {
+                        $("#"+div_id).focus();
+                        // setTimeout(function() { $('#dob').focus() }, 3000);
+                        // return; 
+                    })
+                    // $("#"+div_id).focus();
+                    // setTimeout(function() { $('#dob').focus() }, 3000);
+                     return; 
+                }
+               
+                // console.log("done");
+                // return;
+            }else{
 
-  // Select With Icon
-  selectIcons.each(function () {
-    var $this = $(this);
-    $this.wrap('<div class="position-relative"></div>');
-    $this.select2({
-      dropdownAutoWidth: true,
-      width: '100%',
-      minimumResultsForSearch: Infinity,
-      dropdownParent: $this.parent(),
-      templateResult: iconFormat,
-      templateSelection: iconFormat,
-      escapeMarkup: function (es) {
-        return es;
-      }
-    });
-  });
+                var guest_type = $('input:radio[name="guest_type"]:checked').val();
 
-  // Format icon
-  function iconFormat(icon) {
-    var originalOption = icon.element;
-    if (!icon.id) {
-      return icon.text;
-    }
+                var error = "";
+                var error_flag = false;
+                
+                var check_in_date = $("#check_in_date").val();
+                var check_out_date = $("#check_out_date").val();
+                var duration_of_stay = $("#duration_of_stay").val();
+                var adult = $("#adult").val();
+                var div_id = "";
+            
+                if(guest_type=="new_company"){
+                    var company_address = $("#company_address").val();
+                    var company_name = $("#company_name").val();
+                    var company_mobile = $("#company_mobile").val();
+                    if(!company_name){
+                        error = "{{lang_trans('txt_company_name')}}";
+                        error_flag = true;
+                        div_id = "search_companyname";
+                    }else if(!company_mobile){
+                        error = "{{lang_trans('txt_company_mobile_num')}}";
+                        error_flag = true;
+                        div_id = "company_mobile";
+                    }else if(!company_address){
+                        error = "{{lang_trans('txt_company_address')}}";
+                        error_flag = true;
+                        div_id = "company_address";
+                    }
+                    
+                }else if(guest_type=="new"){
+                    var idcard_no = $("#idcard_no").val();
+                    var type_of_ids_selector = $("#type_of_ids_selector").val();
+                    var gender = $("#gender").val();
+                    var name = $("#name").val();
+                    var surname = $("#surname").val();
+                    // var mobile = $("#mobile").val();
+                    // if(!idcard_no){
+                    //     error = "{{lang_trans('txt_id_number')}}";
+                    //     error_flag = true;
+                    //     div_id = "idcard_select_div";
+                    // }else 
+                    if(!type_of_ids_selector){
+                        error = "{{lang_trans('txt_type_id')}}";
+                        error_flag = true;
+                        div_id = "type_of_ids_selector";
+                    }else if(!gender){
+                        error = "{{lang_trans('txt_gender')}}";
+                        error_flag = true;
+                        div_id = "gender";
+                    }else if(!name){
+                        error = "{{lang_trans('txt_name')}}";
+                        error_flag = true;
+                        div_id = "name";
+                    }else if(!surname){
+                        error = "{{lang_trans('txt_surname')}}";
+                        error_flag = true;
+                        div_id = "surname";
+                    // }else if(!mobile){
+                    //     error = "{{lang_trans('txt_mobile_num')}}";
+                    //     error_flag = true;
+                    //     div_id = "mobile";
+                    }
+                }
+                
+                
+                
+                if(!check_in_date){
+                    error = "{{lang_trans('txt_checkin')}}";
+                    error_flag = true;
+                    div_id = "check_in_date";
+                }else if(!check_out_date){
+                    error = "{{lang_trans('txt_checkout')}}";
+                    error_flag = true;
+                    div_id = "check_out_date";
+                }else if(!duration_of_stay){
+                    error = "{{lang_trans('txt_duration_of_stay')}}";
+                    error_flag = true;
+                    div_id = "duration_of_stay";
+                }else if(!adult){
+                    error = "{{lang_trans('txt_adults')}}";
+                    error_flag = true;
+                    div_id = "adult";
+                }
 
-    var $icon = feather.icons[$(icon.element).data('icon')].toSvg() + icon.text;
-
-    return $icon;
-  }
-
-  // Limiting the number of selections
-  maxLength.wrap('<div class="position-relative"></div>').select2({
-    dropdownAutoWidth: true,
-    width: '100%',
-    maximumSelectionLength: 2,
-    dropdownParent: maxLength.parent(),
-    placeholder: 'Select maximum 2 items'
-  });
-
-  // Hide Search Box
-  hideSearch.select2({
-    placeholder: 'Select an option',
-    minimumResultsForSearch: Infinity
-  });
-
-  // Loading array data
-  var data = [
-    { id: 0, text: 'enhancement' },
-    { id: 1, text: 'bug' },
-    { id: 2, text: 'duplicate' },
-    { id: 3, text: 'invalid' },
-    { id: 4, text: 'wontfix' }
-  ];
-
-  selectArray.wrap('<div class="position-relative"></div>').select2({
-    dropdownAutoWidth: true,
-    dropdownParent: selectArray.parent(),
-    width: '100%',
-    data: data
-  });
-
-  // Loading remote data
-  selectAjax.wrap('<div class="position-relative"></div>').select2({
-    dropdownAutoWidth: true,
-    dropdownParent: selectAjax.parent(),
-    width: '100%',
-    tags: true,
-    ajax: {
-      // url: 'https://api.github.com/search/repositories',
-      url: '{{route("search-from-customer")}}',
-      dataType: 'json',
-      delay: 250,
-      data: function (params) {
-        return {
-          // q: params.term, // search term
-          // page: params.page
-          search_from_phone_idcard: params.term, 
-          category: "user",
-          type: "name",
-        };
-      },
-      processResults: function (data, params) {
-        // parse the results into the format expected by Select2
-        // since we are using custom formatting functions we do not need to
-        // alter the remote JSON data, except to indicate that infinite
-        // scrolling can be used
-        // params.page = params.page || 1;
-
-        return {
-          // results: $.map(data.customers, function(obj) {
-          //     return { id: obj.mobile , text: obj.name+' '+obj.mobile };
-          // })
-          results: data.customers,
-          // results: data.items,
-          // pagination: {
-          //   more: params.page * 30 < data.total_count
-          // }
-        };
-      },
-      cache: true
-    },
-    placeholder: 'Search a guest',
-    escapeMarkup: function (markup) {
-      return markup;
-    }, // let our custom formatter work
-    minimumInputLength: 1,
-    templateResult: formatRepo,
-    templateSelection: formatRepoSelection
-  });
-
-  function formatRepo(repo) {
-    console.log("reo",repo)
-    // if (repo.loading) return repo.text;
-    if(repo.name){
-      var markup =
-      "<div class='select2-result-repository clearfix'>" +
-      // "<div class='select2-result-repository__avatar'><img src='" +
-      // repo.owner.avatar_url +
-      // "' /></div>" +
-      "<div class='select2-result-repository__meta'>" +
-      "<div class='select2-result-repository__title'>" +
-      repo.name +
-      '</div>';
-
-      if (repo.mobile) {
-        markup += "<div class='select2-result-repository__description'>" + repo.mobile + '</div>';
-      }
-    }else{
-      var markup =
-      "<div class='select2-result-repository clearfix'>" +
-      // "<div class='select2-result-repository__avatar'><img src='" +
-      // repo.owner.avatar_url +
-      // "' /></div>" +
-      "<div class='select2-result-repository__meta'>" +
-      "<div class='select2-result-repository__title'>" +
-      repo.text +
-      '</div>';
-    }
-
-    return markup;
-  }
-
-  function formatRepoSelection(repo) {
-    return repo.name || repo.text;
-  }
-
-  // Sizing options
-
-  // Large
-  selectLg.each(function () {
-    var $this = $(this);
-    $this.wrap('<div class="position-relative"></div>');
-    $this.select2({
-      dropdownAutoWidth: true,
-      dropdownParent: $this.parent(),
-      width: '100%',
-      containerCssClass: 'select-lg'
-    });
-  });
-
-  // Small
-  selectSm.each(function () {
-    var $this = $(this);
-    $this.wrap('<div class="position-relative"></div>');
-    $this.select2({
-      dropdownAutoWidth: true,
-      dropdownParent: $this.parent(),
-      width: '100%',
-      containerCssClass: 'select-sm'
-    });
-  });
-
-  $('#select2InModal').on('shown.bs.modal', function () {
-    selectInModal.select2({
-      placeholder: 'Select a state'
-    });
-  });
-})(window, document, jQuery);
+                if(error_flag == true){
+                    Swal.fire({
+                        title: error + " {{lang_trans('txt_require')}}",
+                        confirmButtonText: 'OK',
+                    }).then((result) => {
+                        $("#"+div_id).focus();
+                    })
+            
+                     return; 
+                }
+            }
 
 
-$(document).on('change', '#search_idcard', function(){
-    var val = $('#search_idcard').val();      
-    var guest_type = $('input:radio[name="guest_type"]:checked').val();
-    console.log("val",val);
-    getAjaxResponse('idcard_select_div', val, 'user', guest_type, 'search_idcard');
-});
-
-
-function getAjaxResponse(div_id, val, category, guest_type, field_id){
-             // var formData = new FormData(this);
-            // var search_from_phone_idcard = $("#search_from_phone_idcard").val();
+            $('#custom-loader').css('display', 'flex');
+            var formData = new FormData(this);
             $.ajax({
-                type:'GET',
-                url: '{{route("search-from-customer")}}',
-                data: {
-                    search_from_phone_idcard  : val,
-                    category: category,
-                },
-                dataType: "json",
+                type:'POST',
+                url: $(this).attr('action'),
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
                 success:function(data){
-                    // alert( "success");
-                    // if(typeof(data) !== 'undefined' ){
-                        console.log(data.customers[0], "success");
-                        var data = data.customers[0]; 
-                        if(data){
-                        if(data.cat && data.cat == "user"){
-                            // console.log( "success1");
-                            setCustomerData(data, div_id);
-                        }else if(data.cat && data.cat == "company"){
-                            // console.log( "succesxs2");
-                            setCompanydata(data, div_id);
+                    $('#custom-loader').css('display', 'none');
+                    Swal.fire({
+                        title: data.msg,
+                        showCancelButton: true,
+                        confirmButtonText: "{{lang_trans('txt_view_invoice')}}",
+                    }).then((result) => {
+                        // console.log(result);
+                        if (result.isConfirmed) {
+                            window.location = data.invoice
+                        } else {
+                            location.reload();
                         }
-                        }else{
-                            console.log("data not found", div_id, val, category, guest_type, field_id);
-                            if(field_id == "search_idcard"){
-                                $("#idcard_no").val(val);
-                            }else if(field_id == "search_phone"){
-
-                                $("#mobile").val(val);
-                            }else if(field_id == "search_companyname"){
-                                $("#company_name").val(val);
-                                $("#guest_type_category").val("new_company");
-                            }else if(field_id == "search_companyphone"){
-                                $("#company_mobile").val(val); 
-                                $("#guest_type_category").val("new_company");
-                            }
-
-                        }
+                    })
                 },
                 error: function(error){
-                    console.log("error", error);
+                    alert(error.responseJSON.msg);
+                    $('#custom-loader').css('display', 'none');
                 }
             });
-        }
-
-
-        function setCompanydata(data_customer, id){
-
-          console.log("company data");
-          if(id == "companyname_select_div"){
-              $('#idcard_input_div').show();
-              $('#idcard_select_div').hide();
-              $('#companyphone_input_div').show();
-              $('#companyphone_select_div').hide();
-          }else if(id == "idcard_select_div"){
-              $('#companyname_select_div').hide();
-              $('#companyname_input_div').show();
-              $('#companyphone_input_div').show();
-              $('#companyphone_select_div').hide();
-          }else if(id == "companyphone_select_div"){
-              $('#companyname_select_div').hide();
-              $('#companyname_input_div').show();
-              $('#idcard_input_div').show();
-              $('#idcard_select_div').hide();
-          }
-
-          $("#company_name").val(data_customer.name);
-          $('#guest_type_category').val('existing_company');
-          $("#company_gst_num").val(data_customer.company_gst_num);
-          $("#type_of_ids_selector").val(data_customer.idcard_type);
-          $("#company_email").val(data_customer.email);
-          $("#company_mobile").val(data_customer.mobile);                
-          $("#company_address").val(data_customer.address);
-          $("#company_country").val(data_customer.country);
-          $("#company_state").val(data_customer.state);
-          $("#company_city").val(data_customer.city);
-          $("#selected_customer_id").val(data_customer.id);
-          if(data_customer.dob !=""){
-              $("#dob").val(data_customer.dob);
-          }else{
-              $("#dob").val("");
-          }
-
-          }
-
-      function setCustomerData(data_customer, id){
-          console.log(id);
-          // setCustomerNull();
-          if(id == "mobile_select_div"){
-              $('#idcard_input_div').show();
-              $('#idcard_select_div').hide();
-          }else if(id == "idcard_select_div"){
-              $('#mobile_input_div').show();
-              $('#mobile_select_div').hide();
-          }
-          console.log("testing", data_customer);
-
-          $('#guest_type_category').val('existing');
-          $("#idcard_no").val(data_customer.id_card_no);
-          $("#type_of_ids_selector").val(data_customer.idcard_type);
-          $("#mobile").val(data_customer.mobile);
-          $("#surname").val(data_customer.surname);
-          $("#name").val(data_customer.name);
-          $("#middle_name").val(data_customer.namiddle_nameme);
-          $("#email").val(data_customer.email);
-          $("#address").val(data_customer.address);
-          $("#country").val(data_customer.country);
-          $("#state").val(data_customer.state);
-          $("#city").val(data_customer.city);
-          $("#gender").val(data_customer.gender);
-          $("#dob").val(data_customer.dob);
-          $("#selected_customer_id").val(data_customer.id);
-          if(data_customer.dob !=""){
-              $("#dob").val(data_customer.dob);
-          }else{
-              $("#dob").val("");
-          }
-      }
-
-      function setCompanyNull(){
-          $('#guest_type_category').val('new');
-          $("#company_name").val('');
-          $("#company_gst_num").val('');
-          $("#type_of_ids_selector").val('');
-          $("#company_email").val('');
-          $("#company_mobile").val('');                
-          $("#company_address").val('');
-          $("#company_country").val('');
-          $("#company_state").val('');
-          $("#company_city").val('');
-          $("#selected_customer_id").val('');
-          }
-
-          function setCustomerNull(){
-          $('#guest_type_category').val('new');
-          $("#type_of_ids_selector").val('');
-          $("#surname").val('');
-          $("#name").val('');
-          $("#middle_name").val('');
-          $("#email").val('');
-          $("#mobile").val('');
-          $("#address").val('');
-          $("#country").val('');
-          $("#state").val('');
-          $("#city").val('');
-          $("#gender").val('');
-          $("#dob").val('');
-          $("#selected_customer_id").val('');
-      }
-
-</script>
+        });
+</script> 
 
 @endsection
