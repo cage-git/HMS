@@ -17,7 +17,7 @@ $(document).ready(function() {
   } else if(apply_gst_val == false){
       globalVar.applyFoodGst = 0;
   }
-  console.log("test", apply_gst_val);
+  // console.log("test", apply_gst_val);
   // $(this).val(globalVar.applyFoodGst);
   paymentInfo();
 
@@ -25,7 +25,7 @@ $(document).ready(function() {
 
   function paymentInfo(){
     if(globalVar.durationOfStayDays>=0) $('#td_dur_stay').html(globalVar.durationOfStayDays);
-      console.log("tester 1");
+  
     //start room Amount Calculation
       var totalRoomAmount = 0;
       $('.per_room_tr').each(function(i, selector){
@@ -385,9 +385,10 @@ if(globalVar.page=='room_reservation_add'){
     $(this).parents('.persons_info_elem').remove();
   });
 
-  $('.guest_type').on('ifChanged',function(){
+  $('.guest_type').on('change',function(){
+    console.log('radio button changed')
     $('#new_guest_section,#existing_guest_section,#existing_company_section,#new_company_section').hide();
-      console.log("test");
+ 
     var type = $(this).val();
     if(type=='new'){
       $('#new_guest_section').show();
@@ -447,22 +448,33 @@ if(globalVar.page=='room_reservation_add'){
 
 
   $(document).on('click','.room_type_by_rooms',function(e){
-    // if(($(this).parents('.panel-heading').siblings('.panel-collapse').find('.rooms_list').html().replace(/ /g,'').trim() == '')){
+    
+    if(($(this).parents('.panel-heading').siblings('.panel-collapse').find('.rooms_list').html().replace(/ /g,'').trim() == '')){
+        
+        $('#collapse'+$(this).data('roomtypeid')).addClass('show');
+        console.log($(this).data('roomtypeid'));
         globalVar.roomTypeSelector = $(this).parents('.panel-heading').siblings('.panel-collapse').find('.rooms_list');
         globalVar.roomTypeSelector.html('');
         $('#room_num').html('');
         const post_data = {room_type_id:$(this).data('roomtypeid'), checkin_date: globalVar.checkInDate, checkout_date: globalVar.checkOutDate};
         console.log(post_data)
         globalFunc.ajaxCall('api/get-room-num-list', post_data, 'POST', globalFunc.before, globalFunc.listOfRooms, globalFunc.error, globalFunc.complete);
-    // }
+    }else{
+      if($('#collapse'+$(this).data('roomtypeid')).hasClass('show')==true){
+        $('#collapse'+$(this).data('roomtypeid')).removeClass('show');
+      }else{
+        $('#collapse'+$(this).data('roomtypeid')).addClass('show');
+      }
+    }
   });
   globalFunc.listOfRooms=function(data){
+
     var bookedRooms = data.booked_rooms;
     if(Object.keys(data.rooms).length>0){
         var k=1;
         $.each(data.rooms,function(index,val){
           var statusBtn = '<span class="btn btn-xs btn-success">Available</span>';
-          var checkbox = '<input name="room_num[]" type="checkbox" data-roomid="'+index+'" value="'+val.room_type_id+'~'+val.id+'" class="room_checkbox calculate_total_amount">';
+          var checkbox = '<input name="room_num[]" type="checkbox" data-roomid="'+index+'" value="'+val.room_type_id+'~'+val.id+'" class="room_checkbox calculate_total_amount form-check-input">';
           if(bookedRooms[val.id]!=undefined){
             statusBtn = '<span class="btn btn-xs btn-cust">Booked</span>';
             checkbox = '<input name="room_num_booked[]" type="checkbox" value="'+val.room_type_id+'~'+val.id+'" disabled>';
@@ -474,6 +486,8 @@ if(globalVar.page=='room_reservation_add'){
                 <td>'+statusBtn+'</td>\
               </tr>');
         });
+        // console.log(globalVar.roomTypeSelector);
+        // globalVar.roomTypeSelector.html('');
     } else {
       addNoRoomTr();
     }
@@ -602,9 +616,9 @@ if(globalVar.page=='food_order_final'){
 
       $('#subtotal_amount').val(parseFloat(globalVar.subtotalAmount).toFixed(2));
       $('#final_amount').val(parseFloat(finalAmount).toFixed(2));
-
-      $('#td_subtotal_amount').html(currency_symbol+' '+ parseFloat(globalVar.subtotalAmount).toFixed(2));
-      $('#td_final_amount').html(currency_symbol+' '+ parseFloat(finalAmount).toFixed(2));
+// 
+      // $('#td_subtotal_amount').html(currency_symbol+' '+ parseFloat(globalVar.subtotalAmount).toFixed(2));
+      // $('#td_final_amount').html(currency_symbol+' '+ parseFloat(finalAmount).toFixed(2));
   }
 
   function gstCalculation(amount,type){
@@ -618,8 +632,8 @@ if(globalVar.page=='food_order_final'){
       $('#gst_amount').val(parseFloat(globalVar.gstOrderAmount).toFixed(2));
       $('#cgst_amount').val(parseFloat(globalVar.cgstOrderAmount).toFixed(2));
 
-      $('#td_gst_amount').html(currency_symbol+' '+parseFloat(globalVar.gstOrderAmount).toFixed(2));
-      $('#td_cgst_amount').html(currency_symbol+' '+parseFloat(globalVar.cgstOrderAmount).toFixed(2));
+      // $('#td_gst_amount').html(currency_symbol+' '+parseFloat(globalVar.gstOrderAmount).toFixed(2));
+      // $('#td_cgst_amount').html(currency_symbol+' '+parseFloat(globalVar.cgstOrderAmount).toFixed(2));
   }
 }
 /* ***** ***** ***** ***** ***** end foodorder final page ***** ***** ***** ***** ***** */
@@ -944,6 +958,31 @@ function cloneElements(section){
     $(".testimonial-sect-elem").append(html);
   }
 }
+
+function cloneElements(section){
+  if(section == 'banner_image'){
+    var html = $(".clone_banner_image_elem").html();
+    $(".banner-img-parent").append(html);
+  } else if(section == 'testimonila'){
+    var html = $(".clone_testimonial_elem").html();
+    $(".testimonial-sect-elem").append(html);
+  } else if(section == 'features'){
+    var html = $(".clone_features_elem").html();
+    $(".features-elem").append(html);
+  } else if(section == 'counter'){
+    var html = $(".clone_counter_elem").html();
+    $(".counter-sect-elem").append(html);
+  } else if(section == 'cta'){
+    var html = $(".clone_cta_elem").html();
+    $(".cta-sect-elem").append(html);
+  } else if(section == 'ourteam'){
+    var html = $(".clone_ourteam_elem").html();
+    $(".testimonial-sect-elem").append(html);
+  }
+}
+
+
+
 /* ***** ***** ***** ***** ***** end websitePages page ***** ***** ***** ***** ***** */
 
 /* ***** ***** ***** ***** ***** start housekeeping add/edit page ***** ***** ***** ***** ***** */
@@ -968,6 +1007,7 @@ if(globalVar.page=='laundry_order_add_edit'){
     $(this).parents('.laundry_item_elem').remove();
   });
   $('.guest_type').on('ifChanged',function(){
+    console.log('radio button changed')
     $('#new_guest_section,#existing_guest_section').hide();
     var type = $(this).val();
     if(type=='new'){

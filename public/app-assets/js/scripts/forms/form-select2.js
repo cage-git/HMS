@@ -98,8 +98,8 @@
     width: '100%',
     tags: true,
     ajax: {
-      // url: 'https://api.github.com/search/repositories',
-      url: '{{route("search-from-customer")}}',
+      url: 'https://api.github.com/search/repositories',
+      // url: '{{route("search-from-customer")}}',
       dataType: 'json',
       delay: 250,
       data: function (params) {

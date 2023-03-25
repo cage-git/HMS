@@ -8,6 +8,7 @@
   });
 
   $('.guest_type').on('ifChanged',function(){
+    console.log('radio button changed')
     $('#new_guest_section,#existing_guest_section').hide();
     var type = $(this).val();
     if(type=='new'){

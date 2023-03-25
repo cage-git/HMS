@@ -30,7 +30,13 @@
     <script src="{{URL::asset('public/app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
     <!-- END: Page Vendor JS-->
 
-
+    {{-- this inline script is required: set global access var --}}
+        <script>
+          var base_url="{{url('/').'/'}}";
+          var csrf_token="{{ csrf_token() }}";
+          var currency_symbol="{{getCurrencySymbol()}}";
+          var current_segment = "";
+        </script>
 
     <!-- BEGIN: Page JS-->
     <!-- <script src="{{URL::asset('public/app-assets/js/scripts/pages/dashboard-ecommerce.js')}}"></script> -->
@@ -64,6 +70,7 @@
     <script src="{{URL::asset('public/app-assets/js/scripts/tables/table-datatables-basic.js')}}"></script>
     <!-- <script src="{{URL::asset('public/app-assets/js/scripts/tables/table-datatables-basic.js')}}"></script> -->
     <!-- <script src="{{URL::asset('public/app-assets/js/custom.js?v='.rand(1111,9999).'')}}"></script> -->
+    <script src="{{URL::asset('public/js/ajax_call.js?v='.rand(1111,9999).'')}}"></script>
     <script>
         $(window).on('load', function() {
             if (feather) {
