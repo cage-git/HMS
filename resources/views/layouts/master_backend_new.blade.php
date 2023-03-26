@@ -16,8 +16,8 @@
         <!-- ltr  -->
         <!-- BEGIN: Vendor CSS-->
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/vendors/css/vendors.min.css')}}">
-        <!-- <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/vendors/css/charts/apexcharts.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/vendors/css/extensions/toastr.min.css')}}"> -->
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/vendors/css/charts/apexcharts.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/vendors/css/extensions/toastr.min.css')}}">
         <!-- END: Vendor CSS-->
 
         <!-- BEGIN: Vendor CSS-->
@@ -44,8 +44,8 @@
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/bootstrap-extended.css')}}">
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/form-quill-editor.css')}}">
-        <!-- <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/charts/chart-apex.css')}}"> -->
-        <!-- <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/extensions/ext-component-toastr.css')}}"> -->
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/charts/chart-apex.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/extensions/ext-component-toastr.css')}}">
         <!-- END: Page CSS-->
 
 

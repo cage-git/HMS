@@ -42,7 +42,6 @@
     });
 
     function formatRepo(repo) {
-        // console.log("reo",repo)
         // if (repo.loading) return repo.text;
         if(repo.name){
         var markup =
@@ -69,20 +68,10 @@
     }
 
     function formatRepoSelection(repo) {
-        // 
+
         if (repo) {
-            // $('#search_from_phone_idcard').val(repo.name);
-            // selectAjaxForID.val(repo.id_card_no);
-            // $('#search_from_phone_idcard').val([repo.id_card_no]).trigger('change');
-            // $('#search_from_phone_idcard').val(repo.id_card_no);
-            //     'data': repo.id_card_no,
-            //     allowClear: true
-            // });
-            // console.log(repo.name, repo.id_card_no);
             $('#search_from_phone_idcard').val(repo.id_card_no).trigger('change');
-            // $('#search_from_phone_idcard').data().select2.updateSelection(repo.name);
-          }
-        return repo.name || repo.text;
+          }        return repo.name || repo.text;
     }
 
 

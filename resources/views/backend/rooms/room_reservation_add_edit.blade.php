@@ -448,12 +448,21 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <hr />
+                                                <!-- <hr /> -->
                                               
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="col-xl-4 col-md-6 col-12">
+                                            <div class="mb-1">
+                                                <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                    <i data-feather="plus" class="me-25"></i>
+                                                    <span>Add New</span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="row">
                                             <div class="col-12">
                                                 <div class="form-check form-check-inline">
                                                 
@@ -463,9 +472,7 @@
                                                     <span>Add New</span>
                                                 </button>
                                             </div>
-                                        </div>
-
-
+                                        </div> -->
                         </div>
 
                         <hr />

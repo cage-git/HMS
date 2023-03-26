@@ -26,6 +26,8 @@
     <!-- <script src="{{URL::asset('public/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js')}}"></script> -->
     <!--  -->
     <!-- BEGIN: Page Vendor JS-->
+
+    <script src="{{URL::asset('public/app-assets/js/scripts/pages/dashboard-ecommerce.js')}}"></script>
     <script src="{{URL::asset('public/app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
     <script src="{{URL::asset('public/app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
     <!-- END: Page Vendor JS-->
