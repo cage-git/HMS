@@ -794,13 +794,27 @@ function getCalendarEventsByDate($params){
             }catch(\Exception $e){
                 $rtitle = '';
             }
+            // Old Code
+            // $datalist[] = [
+            //     'title'=>$v->room->room_no.$rtitle,
+            //     'start'=>dateConvert($v->check_in).'T01:00:00+05:30',
+            //     'end'=>dateConvert($v->check_out).'T01:00:00+05:30',
+            //     'color'=>$v->reservation_type == 1? '#aeae1a' :'#f56868',
+            //     'url'=>route('check-out-room',[$v->reservation_id]),
+            //     'extendedProps'=>['is_booked'=>1, 'room_info'=>$v->room],
+            // ];
+            // New code 
             $datalist[] = [
                 'title'=>$v->room->room_no.$rtitle,
-                'start'=>dateConvert($v->check_in).'T01:00:00+05:30',
-                'end'=>dateConvert($v->check_out).'T01:00:00+05:30',
+                'start'=> [ 'Tue Mar 27 2023 23:52:22 GMT+0500 (Pakistan Standard Time)'], //dateConvert($v->check_in).'T01:00:00+05:30',
+                'end'=> ['Tue Mar 28 2023 23:52:22 GMT+0500 (Pakistan Standard Time)'],//dateConvert($v->check_out).'T01:00:00+05:30',
                 'color'=>$v->reservation_type == 1? '#aeae1a' :'#f56868',
                 'url'=>route('check-out-room',[$v->reservation_id]),
-                'extendedProps'=>['is_booked'=>1, 'room_info'=>$v->room],
+                // 'extendedProps'=>[
+                //     // 'is_booked'=>1, 
+                //     // 'room_info'=>$v->room, 
+                //     'calendar' => 'Business' ],
+                'allDay'=> false,
             ];
 
         }

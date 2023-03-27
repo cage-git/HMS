@@ -391,10 +391,14 @@
         </div>
 
         <!-- Calendar -->
-        <div class="col position-relative">
-            <div class="card shadow-none border-0 mb-0 rounded-0">
-                <div class="card-body pb-0">
-                    <div id="calendar"></div>
+        <div class="col-12">
+            <div class="card">
+                <div class="col position-relative">
+                    <div class="card shadow-none border-0 mb-0 rounded-0">
+                        <div class="card-body pb-0">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -526,13 +530,13 @@
     </div> -->
 
     <!-- Calendar -->
-    <div class="col position-relative">
+    <!-- <div class="col position-relative">
         <div class="card shadow-none border-0 mb-0 rounded-0">
             <div class="card-body pb-0">
                 <div id="calendar"></div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- /Calendar -->
 
     <!-- <div class="row">
@@ -749,11 +753,16 @@
 </div>
 {{-- require set var in js var --}}
   <script>
-  globalVar.page = 'dashboard_page';
-</script>
-<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
+    globalVar.page = 'dashboard_page';
+    var db_event = <?php echo $events; ?>;
+    console.log("event",db_event); 
+    </script>
+
+<!-- <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script> -->
 @endsection
 @section('scripts')
+
+<script src="{{URL::asset('public/app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script>
 <script src="{{URL::asset('public/app-assets/js/scripts/pages/app-calendar-events.js')}}"></script>
 <script src="{{URL::asset('public/app-assets/js/scripts/pages/app-calendar.js')}}"></script>
 @endsection

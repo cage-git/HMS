@@ -53,6 +53,15 @@ class AdminController extends Controller
 
          $dateRange = ['checkin_date'=>date('Y-m-01'), 'checkout_date'=>date('Y-m-t')];
          $this->getRoomList();
+
+
+         $sDate = date("Y-m-01", strtotime('2023-03-01'));
+         $eDate = date("Y-m-t", strtotime('2023-04-01'));
+         $params = ['start_date'=>$sDate, 'end_date'=>$eDate];
+         $this->data['events'] = json_encode(getCalendarEventsByDate($params));
+        //  return response()->json($this->data);
+        // dd($this->data);
+
         return view('backend/dashboard',$this->data);
     }
 
