@@ -29,75 +29,73 @@ $(document).on('click', '.body-content-overlay', function (e) {
   $('.app-calendar-sidebar, .body-content-overlay').removeClass('show');
 });
 
+// Ehsan changes
 
-/* ***** ***** ***** ***** ***** start dashboard page ***** ***** ***** ***** ***** */
-if(globalVar.page=='dashboard_page'){
-  globalVar.calendar = null;
-  globalVar.calendarEl = null;
-  globalVar.currDate = new Date();
-  globalVar.cdate = new Date();
-  function getDatesObj(){
-    if(globalVar.calendar){
-      globalVar.cdate = globalVar.calendar.getDate();
-    }
-    return { month: globalVar.cdate.getMonth()+1, year: globalVar.cdate.getFullYear() }
-  }
-  function getCalendarEvents(){
-      const dateObj = getDatesObj();
-      const post_data={month: dateObj.month, year: dateObj.year};
-      globalFunc.ajaxCall('api/get-calendar-events', post_data, 'POST', globalFunc.before, globalFunc.successEvents, globalFunc.error, globalFunc.complete);
-  }
-  globalFunc.successEvents=function(data){
-    if(globalVar.calendarEl){
-        globalVar.calendar = new FullCalendar.Calendar(globalVar.calendarEl, {
-          timeZone: globalVar.timezone,
-          locale: globalVar.locale,
-          initialDate: globalVar.cdate,
-          editable: false,
-          selectable: true,
-          businessHours: false,
-          displayEventTime : false,
-          dayMaxEvents: true,
-          aspectRatio: 1.50,
-          headerToolbar: {
-            left: 'dayGridMonth,'
-                // +
-                // 'timeGridMonth,' +
-                // 'dayGridWeek,' +
-                // 'timeGridWeek,' +
-                // 'dayGridDay,' +
-                // 'list'
-              ,
-                // 'timeGridDay',
-            center: 'title',
-            right: 'prev next',
-          },
-          events: data.events,
-          eventClick: function(info) {
-            console.log('Event: ', info.event, 'Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY, 'View: ' + info.view.type);
-          }
-        });
-        globalVar.calendar.render();
+// if(globalVar.page=='dashboard_page'){
+//   globalVar.calendar = null;
+//   globalVar.calendarEl = null;
+  // globalVar.currDate = new Date();
+  // globalVar.cdate = new Date();
+  // function getDatesObj(){
+  //   if(globalVar.calendar){
+  //     globalVar.cdate = globalVar.calendar.getDate();
+  //   }
+  //   return { month: new Date().getMonth()+1, year: new Date().getFullYear() }
+  // }
+//   function getCalendarEvents(){
+//       const dateObj = getDatesObj();
+//       const post_data={month: dateObj.month, year: dateObj.year};
+//       globalFunc.ajaxCall('api/get-calendar-events', post_data, 'POST', globalFunc.before, globalFunc.successEvents, globalFunc.error, globalFunc.complete);
+//   }
+//   globalFunc.successEvents=function(data){
+//     if(globalVar.calendarEl){
+//         globalVar.calendar = new FullCalendar.Calendar(globalVar.calendarEl, {
+//           timeZone: globalVar.timezone,
+//           locale: globalVar.locale,
+//           initialDate: globalVar.cdate,
+//           editable: false,
+//           selectable: true,
+//           businessHours: false,
+//           displayEventTime : false,
+//           dayMaxEvents: true,
+//           aspectRatio: 1.50,
+//           headerToolbar: {
+//             left: 'dayGridMonth,'
+//                 // +
+//                 // 'timeGridMonth,' +
+//                 // 'dayGridWeek,' +
+//                 // 'timeGridWeek,' +
+//                 // 'dayGridDay,' +
+//                 // 'list'
+//               ,
+//                 // 'timeGridDay',
+//             center: 'title',
+//             right: 'prev next',
+//           },
+//           events: data.events,
+//           eventClick: function(info) {
+//             console.log('Event: ', info.event, 'Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY, 'View: ' + info.view.type);
+//           }
+//         });
+//         globalVar.calendar.render();
 
-    }
-  }
-  $(document).ready(function(){
-    globalVar.calendarEl = document.getElementById('calendar');
-    getCalendarEvents('current');
-  });
-  $(document).on('click', '.fc-prev-button', function() {
-    const m1 = globalVar.currDate.getMonth()+1;
-    const m2 = globalVar.cdate.getMonth()+1;
-    getCalendarEvents('prev');
-  });
-  $(document).on('click', '.fc-next-button', function() {
-    getCalendarEvents('next');
-  });
-}
-/* ***** ***** ***** ***** ***** end dashboard page ***** ***** ***** ***** ***** */
+//     }
+//   }
+//   $(document).ready(function(){
+//     globalVar.calendarEl = document.getElementById('calendar');
+//     getCalendarEvents('current');
+//   });
+//   $(document).on('click', '.fc-prev-button', function() {
+//     const m1 = globalVar.currDate.getMonth()+1;
+//     const m2 = globalVar.cdate.getMonth()+1;
+//     getCalendarEvents('prev');
+//   });
+//   $(document).on('click', '.fc-next-button', function() {
+//     getCalendarEvents('next');
+//   });
+// }
 
-
-
+// End Ehsan changes
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -288,31 +286,64 @@ document.addEventListener('DOMContentLoaded', function () {
   // --------------------------------------------------------------------------------------------------
   function fetchEvents(info, successCallback) {
     // Fetch Events from API endpoint reference
-    /* $.ajax(
-      {
-        url: '../../../app-assets/data/app-calendar-events.js',
-        type: 'GET',
-        success: function (result) {
-          // Get requested calendars as Array
-          var calendars = selectedCalendars();
 
-          return [result.events.filter(event => calendars.includes(event.extendedProps.calendar))];
-        },
-        error: function (error) {
-          console.log(error);
-        }
-      }
-    ); */
+
+    // const dateObj = getDatesObj();
+    //       const post_data={month: dateObj.month, year: dateObj.year};
+    //       globalFunc.ajaxCall('api/get-calendar-events', post_data, 'POST', globalFunc.before, globalFunc.successEvents, globalFunc.error, globalFunc.complete);
+    //  $.ajax(
+    //   {
+    //     url: 'api/get-calendar-events',
+    //     type: 'POST',
+    //     success: function (result) {
+    //       // Get requested calendars as Array
+    //       console.log("result", result);
+    //       var calendars = selectedCalendars();
+
+    //       return [result.events.filter(event => calendars.includes(event.extendedProps.calendar))];
+    //     },
+    //     error: function (error) {
+    //       console.log(error);
+    //     }
+    //   }
+
+    //   $.ajax({
+    //     url: base_url + 'api/get-calendar-events',
+    //     data: {month: new Date().getMonth()+1, year: new Date().getFullYear()},
+    //     type: 'POST',
+    //     dataType: "json",
+    //     headers: {
+    //         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    //     },
+    //     success: function (result) {
+    //       // Get requested calendars as Array
+    //       console.log("result", result);
+    //       var calendars = selectedCalendars();
+
+    //       return [result.events.filter(event => calendars.includes(event.extendedProps.calendar))];
+    //     },
+    //     error: function (error) {
+    //       console.log(error);
+    //     }
+    //     // beforeSend: b_send,
+    //     // success: success,
+    //     // error: error,
+    //     // complete: complete
+    // })
+
+
+    // );
 
     var calendars = selectedCalendars();
     // We are reading event object from app-calendar-events.js file directly by including that file above app-calendar file.
     // You should make an API call, look into above commented API call for reference
+    // console.log(result.events);
     selectedEvents = events.filter(function (event) {
       // console.log(event.extendedProps.calendar.toLowerCase());
       return calendars.includes(event.extendedProps.calendar.toLowerCase());
     });
     // if (selectedEvents.length > 0) {
-    successCallback(selectedEvents);
+    // successCallback(selectedEvents);
     // }
   }
 

@@ -115,27 +115,35 @@ var prevMonth = date.getMonth() === 11 ? new Date(date.getFullYear() - 1, 0, 1) 
 // //     getCalendarEvents('next');
 // //   });
 // // }
+// // getDatesObj();
+// getCalendarEvents();
 
-// var events = db_event;
-function getDatesObj(){
-  if(globalVar.calendar){
-    globalVar.cdate = globalVar.calendar.getDate();
-  }
-  return { month: globalVar.cdate.getMonth()+1, year: globalVar.cdate.getFullYear() }
-}
-function getCalendarEvents(){
-    const dateObj = getDatesObj();
-    const post_data={month: dateObj.month, year: dateObj.year};
-    globalFunc.ajaxCall('api/get-calendar-events', post_data, 'POST', globalFunc.before, globalFunc.successEvents, globalFunc.error, globalFunc.complete);
-  console.log("requested");
-  }
-var events = [];
-globalFunc.successEvents=function(data){
-  console.log("ajax response", data)
-  events.push(data.events);
-}
+// // var events = db_event;
+// function getDatesObj(){
+//     // get dates
+//     console.log("get dates");
 
+//   if(globalVar.calendar){
+//     globalVar.cdate = globalVar.calendar.getDate();
+//   }
+//   return { month: globalVar.cdate.getMonth()+1, year: globalVar.cdate.getFullYear() }
+// }
+// function getCalendarEvents(){
+//   console.log("get dates a");
+//     const dateObj = getDatesObj();
+//     console.log(dateObj);
+//     const post_data={month: dateObj.month, year: dateObj.year};
+//     console.log("requested");
+//     globalFunc.ajaxCall('api/get-calendar-events', post_data, 'POST', globalFunc.before, globalFunc.successEvents, globalFunc.error, globalFunc.complete);
+  
+//   }
+// var events = [];
+// globalFunc.successEvents=function(data){
+//   console.log("ajax response", data)
+//   events.push(data.events);
+// }
 
+// const events =[];
 // var events = [
 //   {
 //     getCalendarEventsByDate: 1,
@@ -260,4 +268,4 @@ globalFunc.successEvents=function(data){
 //   //   }
 //   // }
 // ];
-console.log(events, "front end events");
+// console.log(events, "front end events");

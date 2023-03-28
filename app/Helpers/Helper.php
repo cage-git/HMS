@@ -806,14 +806,14 @@ function getCalendarEventsByDate($params){
             // New code 
             $datalist[] = [
                 'title'=>$v->room->room_no.$rtitle,
-                'start'=> [ 'Tue Mar 27 2023 23:52:22 GMT+0500 (Pakistan Standard Time)'], //dateConvert($v->check_in).'T01:00:00+05:30',
-                'end'=> ['Tue Mar 28 2023 23:52:22 GMT+0500 (Pakistan Standard Time)'],//dateConvert($v->check_out).'T01:00:00+05:30',
+                'start'=> dateConvert($v->check_in).'T01:00:00+05:30',
+                'end'=> dateConvert($v->check_out).'T01:00:00+05:30',
                 'color'=>$v->reservation_type == 1? '#aeae1a' :'#f56868',
                 'url'=>route('check-out-room',[$v->reservation_id]),
-                // 'extendedProps'=>[
+                'extendedProps'=>[
                 //     // 'is_booked'=>1, 
                 //     // 'room_info'=>$v->room, 
-                //     'calendar' => 'Business' ],
+                    'calendar' => 'Business' ],
                 'allDay'=> false,
             ];
 

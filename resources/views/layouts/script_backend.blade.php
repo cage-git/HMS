@@ -4,7 +4,7 @@
 
     <!-- BEGIN: Page Vendor JS-->
     <script src="{{URL::asset('public/app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
-    <script src="{{URL::asset('public/app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
+    <!-- <script src="{{URL::asset('public/app-assets/vendors/js/extensions/toastr.min.js')}}"></script> -->
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -28,8 +28,8 @@
     <!-- BEGIN: Page Vendor JS-->
 
     <script src="{{URL::asset('public/app-assets/js/scripts/pages/dashboard-ecommerce.js')}}"></script>
-    <script src="{{URL::asset('public/app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
-    <script src="{{URL::asset('public/app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
+    <!-- <script src="{{URL::asset('public/app-assets/vendors/js/charts/apexcharts.min.js')}}"></script> -->
+    <!-- <script src="{{URL::asset('public/app-assets/vendors/js/extensions/toastr.min.js')}}"></script> -->
     <!-- END: Page Vendor JS-->
 
     {{-- this inline script is required: set global access var --}}

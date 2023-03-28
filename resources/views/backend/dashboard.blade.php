@@ -1,11 +1,20 @@
 @extends('layouts.master_backend_new')
 @section('content')
-  <link rel="stylesheet" href="{{URL::asset('public/assets/fullcalendar/main.css')}}">
-  <link rel="stylesheet" href="{{URL::asset('public/assets/fullcalendar/style_backend.css')}}">
-  <script type="text/javascript" src="{{URL::asset('public/assets/fullcalendar/main.js?v='.rand(1111,9999).'')}}"></script>
-  <script type="text/javascript" src="{{URL::asset('public/assets/fullcalendar/locales-all.min.js?v='.rand(1111,9999).'')}}"></script>
+  <!-- <link rel="stylesheet" href="{{URL::asset('public/assets/fullcalendar/main.css')}}"> -->
+  <!-- <link rel="stylesheet" href="{{URL::asset('public/assets/fullcalendar/style_backend.css')}}"> -->
+  <!-- <script type="text/javascript" src="{{URL::asset('public/assets/fullcalendar/main.js?v='.rand(1111,9999).'')}}"></script> -->
+  <!-- <script type="text/javascript" src="{{URL::asset('public/assets/fullcalendar/locales-all.min.js?v='.rand(1111,9999).'')}}"></script> -->
   <!-- <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/vendors/css/charts/apexcharts.css')}}">  -->
   <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/pages/app-calendar.css')}}"> 
+
+        <?php if(getSettings('site_theme') == 'dark'){   ?> 
+            <style>
+                .fc .fc-day-today{
+                    background: none !important;
+                    background-color: none !important;
+                }
+            </style>
+        <?php } ?>
 
     <!-- Dashboard Ecommerce Starts -->
     <section id="dashboard-ecommerce">
@@ -466,7 +475,7 @@
     </section>
     <!-- Dashboard Ecommerce ends -->
 
-
+<!-- 
 
   <div class="">
      @section('rightColContent')
@@ -517,9 +526,11 @@
                     </div>
                 </div>
             </a>
-            </div>
+            </div> 
+
+
       @endsection
-    <!-- <div class="row">
+    <! -- <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
               <div class="x_content">
@@ -749,8 +760,8 @@
                 </div>
             </div>
         </div>
-    </div> -->
-</div>
+    </div> 
+</div> -->
 {{-- require set var in js var --}}
   <script>
     globalVar.page = 'dashboard_page';
