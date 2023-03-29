@@ -59,18 +59,27 @@ if(globalVar.page=='dashboard_page'){
           displayEventTime : false,
           dayMaxEvents: true,
           aspectRatio: 1.50,
+          // headerToolbar: {
+          //   left: 'dayGridMonth,'
+          //       // +
+          //       // 'timeGridMonth,' +
+          //       // 'dayGridWeek,' +
+          //       // 'timeGridWeek,' +
+          //       // 'dayGridDay,' +
+          //       // 'list'
+          //     ,
+          //       // 'timeGridDay',
+          //   center: 'title',
+          //   right: 'prev next',
+          // },
+          customButtons: {
+            sidebarToggle: {
+              text: 'Sidebar'
+            }
+          },
           headerToolbar: {
-            left: 'dayGridMonth,'
-                // +
-                // 'timeGridMonth,' +
-                // 'dayGridWeek,' +
-                // 'timeGridWeek,' +
-                // 'dayGridDay,' +
-                // 'list'
-              ,
-                // 'timeGridDay',
-            center: 'title',
-            right: 'prev next',
+            start: 'sidebarToggle, prev,next, title',
+            end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
           },
           events: data.events,
           eventClick: function(info) {
