@@ -52,7 +52,7 @@ class CustomerController extends Controller
          $this->data['datalist']=Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC')->get();
          $this->data['customer_list']=getCustomerList('get');
          $this->data['search_data'] = ['customer_id'=>'','mobile_num'=>'','city'=>'','state'=>'','country'=>''];
-        dd($this->data);
+        // dd($this->data);
 
         return view('backend/customers/list',$this->data);
     }

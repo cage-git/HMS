@@ -169,7 +169,7 @@
         {{--                        <td>{{$val->state}}</td>--}}
         {{--                        <td>{{$val->city}}</td>--}}
                                 <td>
-                                  <a class="btn btn-sm btn-info" href="{{route('edit-customer',[$val->id])}}"><i class="fa fa-pencil"></i></a>
+                                  <a class="btn btn-sm btn-info" href="{{route('edit-customer',[$val->id])}}"><i data-feather='edit'></i></a>
                                 </td>
                               </tr>
                             @endforeach
