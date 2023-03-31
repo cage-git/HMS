@@ -143,7 +143,7 @@
 
                                     ?>
 
-                                        {{lang_trans('txt_reservation')}} {{$k+1}} : <a class="btn btn-xs btn-primary" href="{{route('view-reservation',[$data_row->id])}}" target="_blank">{{lang_trans('btn_view')}}</a>
+                                        {{lang_trans('txt_reservation')}} {{$k+1}} : <a class="btn btn-xs btn-primary" href="{{route('view-reservation',[$data_row->id])}}" target="_blank" style="margin:10px" >{{lang_trans('btn_view')}}</a>
         {{--                                <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#booked_room_{{$data_row->id}}">--}}
         {{--                                    {{lang_trans('btn_view')}} {{lang_trans('txt_room')}}--}}
         {{--                                </button> --}}

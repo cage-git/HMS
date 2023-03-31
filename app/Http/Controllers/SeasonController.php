@@ -36,9 +36,10 @@ class SeasonController extends Controller
         return redirect()->back()->with(['error' => $splashMsg['error']]);
     }
     public function delete(Request $request) {
-        if($this->core->checkWebPortal()==0){
-            return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
-        }  
+        // dd($this->core->checkWebPortal());
+        // if($this->core->checkWebPortal()==0){
+        //     return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
+        // }  
         if(Season::whereId($request->id)->update(['is_deleted'=>1])){
             return redirect()->back()->with(['success' => config('constants.FLASH_REC_DELETE_1')]);
         }

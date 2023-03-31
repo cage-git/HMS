@@ -125,7 +125,7 @@
                                 {{ Form::open(array('url'=>route('do-login'),'id'=>"login-form", 'class'=>"auth-login-form mt-2")) }}
                                     <div class="mb-1">
                                         <label class="form-label" for="login-email"> {{lang_trans('txt_email')}}</label>
-                                        <input class="form-control" id="login-email" type="text" name="username" placeholder="john@example.com" aria-describedby="login-email" autofocus="" tabindex="1" />
+                                        <input class="form-control" type="text" name="username" placeholder="Username" aria-describedby="login-email" autofocus="" tabindex="1" />
                                     </div>
                                     <div class="mb-1">
                                         <div class="d-flex justify-content-between">

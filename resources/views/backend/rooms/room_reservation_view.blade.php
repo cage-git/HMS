@@ -347,8 +347,8 @@
                                 <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($advancePayment) }}</td>
                             </tr>
                               <tr>
-                                <th style="float: right;" width="30%" class="text-right bg-success">{{lang_trans('txt_final_amount')}}</th>
-                                <td width="15%" id="td_final_amount" class="text-right bg-success">{{getCurrencySymbol()}} {{ numberFormat($subTotalRoomAmount - $advancePayment) }}</td>
+                                <th style="float: right;" width="30%" class="text-right ">{{lang_trans('txt_final_amount')}}</th>
+                                <td width="15%" id="td_final_amount" class="text-right ">{{getCurrencySymbol()}} {{ numberFormat($subTotalRoomAmount - $advancePayment) }}</td>
                               </tr>
                         </table>
                         <hr/>
@@ -401,8 +401,8 @@
                       <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalOrderAmountDiscount)}}</td>
                     </tr>
                     <tr class="">
-                      <th style="float: right;" width="30%" class="text-right bg-success">{{lang_trans('txt_final_amount')}}</th>
-                      <td width="15%" id="td_final_amount" class="text-right bg-success">{{getCurrencySymbol()}} {{ numberFormat($finalOrderAmount) }}</td>
+                      <th style="float: right;" width="30%" class="text-right ">{{lang_trans('txt_final_amount')}}</th>
+                      <td width="15%" id="td_final_amount" class="text-right ">{{getCurrencySymbol()}} {{ numberFormat($finalOrderAmount) }}</td>
                     </tr>
                 </table>
 
@@ -419,10 +419,10 @@
 
                 <table class="table ">
                       <tr class="">
-                        <th style="float: right;" width="30%" class="text-right bg-warning">{{lang_trans('txt_grand_total')}}</th>
+                        <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_grand_total')}}</th>
                         <!-- <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($finalRoomAmount+$finalOrderAmount+$additionalAmount) }}</td> -->
                         <!-- change the logic of filnal price -->
-                        <td width="15%" class="text-right bg-warning">{{getCurrencySymbol()}} {{ numberFormat($finalAmount) }}</td>
+                        <td width="15%" class="text-right ">{{getCurrencySymbol()}} {{ numberFormat($finalAmount) }}</td>
                       </tr>
                 </table>
             </div>

@@ -502,14 +502,14 @@ $(function () {
       }).then(function (result) {
         if (result.value) {
     	    window.location.href=deleteUrl;
-          Swal.fire({
-            icon: 'success',
-            title: 'Deleted!',
-            text: 'Delete successfully',
-            customClass: {
-              confirmButton: 'btn btn-success'
-            }
-          });
+          // Swal.fire({
+          //   icon: 'success',
+          //   title: 'Deleted!',
+          //   text: 'Delete successfully',
+          //   customClass: {
+          //     confirmButton: 'btn btn-success'
+          //   }
+          // });
     	  }
         // if (result.value) {
         //   Swal.fire({

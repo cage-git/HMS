@@ -172,7 +172,8 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listRoom() {
-         $this->data['datalist']=Room::whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
+        //  $this->data['datalist']=Room::whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
+         $this->data['datalist']=Room::whereIsDeleted(0)->orderBy('order_num','ASC')->get();
         return view('backend/rooms/room_list',$this->data);
     }
     public function deleteRoom(Request $request) {
@@ -227,7 +228,8 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listRoomType() {
-         $this->data['datalist']=RoomType::whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
+        //  $this->data['datalist']=RoomType::whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
+         $this->data['datalist']=RoomType::whereIsDeleted(0)->orderBy('order_num','ASC')->get();
         return view('backend/rooms/room_types_list',$this->data);
     }
     public function deleteRoomType(Request $request) {
@@ -271,7 +273,8 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listAmenities() {
-        $this->data['datalist']=Amenities::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
+        // $this->data['datalist']=Amenities::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
+        $this->data['datalist']=Amenities::whereIsDeleted(0)->orderBy('name','ASC')->get();
         return view('backend/rooms/amenities_list',$this->data);
     }
     public function deleteAmenities(Request $request) {
@@ -1640,14 +1643,15 @@ class AdminController extends Controller
             $error = config('constants.FLASH_REC_ADD_0');
         }
         $res = Product::updateOrCreate(['id'=>$request->id],$request->except(['_token','curr_stock']));
-        dd($res);
+        // dd($res);
         if($res){
             return redirect()->back()->with(['success' => $success]);
         }
         return redirect()->back()->with(['error' => $error]);
     }
     public function listProduct() {
-         $this->data['datalist']=Product::whereStatus(1)->whereIsDeleted(0)->orderBy('stock_qty','ASC')->get();
+        //  $this->data['datalist']=Product::whereStatus(1)->whereIsDeleted(0)->orderBy('stock_qty','ASC')->get();
+         $this->data['datalist']=Product::whereIsDeleted(0)->orderBy('stock_qty','ASC')->get();
         return view('backend/product_list',$this->data);
     }
     public function deleteProduct(Request $request) {
