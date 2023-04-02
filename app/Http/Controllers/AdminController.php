@@ -1452,7 +1452,8 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listFoodCategory() {
-         $this->data['datalist']=FoodCategory::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
+        //  $this->data['datalist']=FoodCategory::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
+         $this->data['datalist']=FoodCategory::whereIsDeleted(0)->orderBy('name','ASC')->get();
         return view('backend/food_category_list',$this->data);
     }
     public function deleteFoodCategory(Request $request) {
@@ -1495,7 +1496,8 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listFoodItem() {
-         $this->data['datalist']=FoodItem::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
+        //  $this->data['datalist']=FoodItem::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
+         $this->data['datalist']=FoodItem::whereIsDeleted(0)->orderBy('name','ASC')->get();
         return view('backend/food_item_list',$this->data);
     }
     public function deleteFoodItem(Request $request) {
@@ -1536,7 +1538,8 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listExpenseCategory() {
-         $this->data['datalist']=ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->get();
+        //  $this->data['datalist']=ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->get();
+         $this->data['datalist']=ExpenseCategory::orderBy('name','ASC')->get();
         return view('backend/expenses/category_list',$this->data);
     }
     public function deleteExpenseCategory(Request $request) {

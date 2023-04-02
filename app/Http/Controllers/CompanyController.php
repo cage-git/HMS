@@ -46,15 +46,14 @@ class CompanyController extends Controller
                 "name" => $request->name,
                 "middle_name" => '',
                 "father_name" => '',
-                "email" => ($request->email != '') ? $request->email :  str_replace(' ', rand(1111,9999), $request->name.$request->mobile).'@fake_email.com',
+                "email" => ($request->email != '') ? $request->email : '', //str_replace(' ', rand(1111,9999), $request->name.$request->mobile).'@fake_email.com',
                 "mobile" => $request->mobile,
                 "address" => $request->address,
-
                 "country" => $request->country,
                 "state" => $request->state,
                 "city" => $request->city,
                 "gender" => 'Other',
-                "age" => '50',
+                // "age" => '50',
                 "password" => Hash::make($request->mobile),
             ];
             $res = Customer::insert($customerData);

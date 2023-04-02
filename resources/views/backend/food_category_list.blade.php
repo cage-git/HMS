@@ -81,3 +81,10 @@
   </div>
 </div>           -->
 @endsection
+@section('scripts')
+<!-- BEGIN: Page JS-->
+  <!-- <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script> -->
+  <script src="{{URL::asset('public/app-assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js')}}"></script>
+<!-- END: Page JS-->
+@endsection

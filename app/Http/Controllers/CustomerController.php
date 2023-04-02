@@ -40,7 +40,7 @@ class CustomerController extends Controller
         $request->merge(['password'=>Hash::make($request->mobile)]);
         $res = Customer::where('cat','=','user')->updateOrCreate(['id'=>$request->id],$request->except(['_token']));
         if($res){
-
+            // dd($res);
             //sync user and customer
             $this->core->syncUserAndCustomer();
 

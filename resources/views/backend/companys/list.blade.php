@@ -18,7 +18,7 @@
                             <div class="mb-1">
                                 <label class="form-label" for="category">{{lang_trans('txt_category')}}</label>
                               
-                                {{Form::text('company_id',null,['class'=>"form-control", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
+                                {{Form::text('company_name',null,['class'=>"form-control", "id"=>"customers", "placeholder"=>lang_trans('txt_company_name')])}}
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">

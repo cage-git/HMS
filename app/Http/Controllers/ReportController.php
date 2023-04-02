@@ -50,9 +50,6 @@ class ReportController extends Controller
                                         ->distinct()
                                         ->orderBy('year', 'asc')
                                         ->get();
-           
-
-
         }else if($this->data['report_of'] == 'expense'){
             $this->data['category_list']=getExpenseCategoryList();
             $searcData['category_id'] = '';
@@ -75,8 +72,9 @@ class ReportController extends Controller
     public function searchCheckouts(Request $request) {
         $this->data['list'] = 'check_outs';
         $query = Reservation::whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC');
-        if($request->customer_id){
-            $query->where('customer_id', $request->customer_id);
+        if($request->customer_name){
+            // $query->where('customer_id', $request->customer_id);
+            $query->where('name', 'like', "%{$request->customer_name}%");
         }
         if($request->date_from){
             $query->whereDate('check_out', '>=', dateConvert($request->date_from,'Y-m-d'));
@@ -165,7 +163,7 @@ class ReportController extends Controller
     }
 
     public function searchStockHistory(Request $request) {
-        // dd($request->all());
+   
         $query = StockHistory::orderBy('id','DESC');
         if($request->product_id){
             $query->where('product_id', $request->product_id);
@@ -179,6 +177,7 @@ class ReportController extends Controller
         if($request->is_stock){
             $query->where('stock_is', $request->is_stock);
         }
+
         $this->data['datalist']=$query->get();
         $this->data['products']=Product::where('is_deleted',0)->pluck('name','id');
         $this->data['search_data'] = $request->all();
@@ -241,8 +240,9 @@ class ReportController extends Controller
     }
     public function searchCustomer(Request $request) {
         $query = Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC');
-        if($request->customer_id){
-            $query->where('id', $request->customer_id);
+        if($request->customer_name){
+            // $query->where('id', $request->customer_id);
+            $query->where('name', 'like', "%{$request->customer_name}%");
         }
         if($request->mobile_num){
             $query->where('mobile', $request->mobile_num);
@@ -270,9 +270,11 @@ class ReportController extends Controller
         }
     }
     public function searchCompany(Request $request) {
+        // dd($request->all());
         $query = Customer::where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC');
-        if($request->customer_id){
-            $query->where('id', $request->customer_id);
+        if($request->company_name){
+            // $query->where('id', $request->customer_id);
+            $query->where('name', 'like', "%{$request->company_name}%");
         }
         if($request->mobile_num){
             $query->where('mobile', $request->mobile_num);
@@ -287,6 +289,7 @@ class ReportController extends Controller
             $query->where('country', $request->country);
         }
 
+        // dd($request->customer_name, $query->get());
         $this->data['datalist']=$query->get();
         $this->data['customer_list']=getCustomerList('get','company');
         $this->data['search_data'] = $request->all();
