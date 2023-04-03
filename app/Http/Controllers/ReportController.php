@@ -60,7 +60,7 @@ class ReportController extends Controller
         }
 
         $this->data['search_data'] = $searcData;
-
+        // dd($this->data);
         return view('backend/reports',$this->data);
     }
 
@@ -70,11 +70,12 @@ class ReportController extends Controller
          return view('backend/rooms/room_reservation_list',$this->data);
     }
     public function searchCheckouts(Request $request) {
+        // dd($request->all());
         $this->data['list'] = 'check_outs';
-        $query = Reservation::whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC');
+        $query = Reservation::leftjoin('customers as c', 'c.id', '=', 'reservations.customer_id')->whereStatus(1)->where('reservations.is_deleted',0)->whereIsCheckout(1)->orderBy('reservations.created_at','DESC');
         if($request->customer_name){
             // $query->where('customer_id', $request->customer_id);
-            $query->where('name', 'like', "%{$request->customer_name}%");
+            $query->where('c.name', 'like', "%{$request->customer_name}%");
         }
         if($request->date_from){
             $query->whereDate('check_out', '>=', dateConvert($request->date_from,'Y-m-d'));
@@ -306,25 +307,26 @@ class ReportController extends Controller
 
 
     public function searchPaymentHistory(Request $request) {
-        $query = PaymentHistory::orderBy('created_at','DESC');
-        $query = PaymentHistory::with('reservation')->orderBy('created_at','DESC');
-        if($request->customer_id){
-            $query->where('customer_id', $request->customer_id);
+        // dd($request->all());
+        // $query = PaymentHistory::orderBy('created_at','DESC');
+        $query = PaymentHistory::leftjoin('customers as c', 'c.id', '=', 'payment_history.customer_id')->with('reservation')->orderBy('payment_history.created_at','DESC');
+        if($request->customer_name){
+            $query->where('c.name', $request->customer_name);
         }
         if($request->user_id){
             $query->where('user_id', $request->user_id);
         }
         if($request->date_from){
-            $query->whereDate('payment_date', '>=', dateConvert($request->date_from,'Y-m-d'));
+            $query->whereDate('payment_history.payment_date', '>=', dateConvert($request->date_from,'Y-m-d'));
         }
         if($request->date_to){
-            $query->whereDate('payment_date', '<=', dateConvert($request->date_to,'Y-m-d'));
+            $query->whereDate('payment_history.payment_date', '<=', dateConvert($request->date_to,'Y-m-d'));
         }
         if($request->payment_of){
-            $query->where('payment_of', $request->payment_of);
+            $query->where('payment_history.payment_of', $request->payment_of);
         }
         if($request->payment_type){
-            $query->where('payment_type', $request->payment_type);
+            $query->where('payment_history.payment_type', $request->payment_type);
         }
         $this->data['datalist']=$query->get();
         $this->data['search_data'] = $request->all();

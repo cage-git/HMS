@@ -1,14 +1,23 @@
-<div id="extend_reservation_alert_{{$val->id}}" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+<!-- <div id="extend_reservation_alert_{{$val->id}}" class="modal fade" role="dialog"> -->
+<div class="modal fade" id="extend_reservation_alert_{{$val->id}}" tabindex="-1" aria-labelledby="referEarnTitle" aria-hidden="true">
+  <!-- <div class="modal-dialog"> -->
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-refer-earn">
     <div class="modal-content">
-      <div class="modal-header">
+      <!-- <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">{{lang_trans('btn_extend_reservation')}}</h4>
+      </div> -->
+
+      <div class="modal-header bg-transparent">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <div class="modal-body px-sm-5 mx-50 pb-4">
+          <h1 class="text-center mb-1" id="shareProjectTitle">{{lang_trans('btn_extend_reservation')}} </h1>
+
       {{ Form::open(array('url'=>route('extend-reservation'),'id'=>"extend-reservation-form")) }}
       {{ Form::hidden('id', $val->id) }}
 
-        <div class="modal-body">
+        <div class="modal-body px-sm-5 mx-50 pb-4">
             @php
                 $date = \Carbon\Carbon::parse($val->check_out);
                 $now = \Carbon\Carbon::now();
@@ -24,7 +33,7 @@
               <div class="row">
                 <div class="col-lg-12">
                     {{Form::radio('days_type','0',true,['class'=>"".$val->id."_days_type", 'id'=>'extend_type'])}} <label>{{lang_trans('txt_extend')}}</label>
-{{--                    {{Form::radio('days_type','1',false,['class'=>"".$val->id."_days_type", 'id'=>'reduce_type'])}} <label>{{lang_trans('txt_reduce')}}</label>--}}
+              {{--    {{Form::radio('days_type','1',false,['class'=>"".$val->id."_days_type", 'id'=>'reduce_type'])}} <label>{{lang_trans('txt_reduce')}}</label>--}}
                   </div>
               </div>
               <div class="row">

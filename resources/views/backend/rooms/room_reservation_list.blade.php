@@ -39,7 +39,7 @@ $totalAmount = 0;
                             <div class="mb-1">
                                 <label class="form-label" for="category">{{lang_trans('txt_guest')}}</label>
                               
-                                {{Form::text('customer_id',null,['class'=>"form-control", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
+                                {{Form::text('customer_name',null,['class'=>"form-control", "id"=>"customers", "placeholder"=>lang_trans('txt_fullname')])}}
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
@@ -378,7 +378,11 @@ $totalAmount = 0;
                                                             <a class="btn btn-sm btn-danger dropdown-item w-100" href="{{route('cancel-reservation',[$val->id])}}">{{lang_trans('btn_cancel_reservation')}}</a>
                                                         @endif
 
-                                                        <button class="btn btn-sm btn-info dropdown-item w-100" data-toggle="modal" data-target="#extend_reservation_{{$val->id}}">{{lang_trans('btn_extend_reservation')}}</button>
+                                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#extend_reservation_{{$val->id}}" >
+                                                        <!-- class="btn btn-sm btn-info dropdown-item w-100" 
+                                                        data-toggle="modal" data-target="#extend_reservation_{{$val->id}}" -->
+                                                        
+                                                        {{lang_trans('btn_extend_reservation')}}</button>
                                                         @if($dateDiff)
                                                             <a class="btn btn-sm btn-success dropdown-item w-100" href="{{route('swap-room',[$val->id])}}">
                                                               <i data-feather='arrow-up'></i>

@@ -25,7 +25,7 @@
                             <div class="mb-1">
                                 <label class="form-label" for="category">{{lang_trans('txt_guest')}}</label>
                               
-                                {{Form::text('customer_id',null,['class'=>"form-control", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
+                                {{Form::text('customer_name',null,['class'=>"form-control", "id"=>"customers", "placeholder"=>lang_trans('txt_fullname')])}}
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
@@ -303,7 +303,7 @@
                             <div class="mb-1">
                                 <label class="form-label" for="category">{{lang_trans('txt_guest')}}</label>
                               
-                                {{Form::text('customer_id',null,['class'=>"form-control", "id"=>"customers", "placeholder"=>lang_trans('txt_fullname')])}}
+                                {{Form::text('customer_name',null,['class'=>"form-control", "id"=>"customers", "placeholder"=>lang_trans('txt_fullname')])}}
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
