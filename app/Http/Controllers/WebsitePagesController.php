@@ -170,6 +170,7 @@ class WebsitePagesController extends Controller
        return view('backend/website_pages/about_page',$this->data);
     }
     public function updateAboutPage(Request $request){
+        // dd($request->all());
         $dataRow = AboutusSection::first();
 
         $aboutUsSectionData = [];
@@ -202,9 +203,9 @@ class WebsitePagesController extends Controller
             }
         }
         if(count($featuresData)>0){
-            $aboutUsSectionData['about_section_features'] = json_encode($featuresData);
+            // $aboutUsSectionData['about_section_features'] = json_encode($featuresData);
         } else {
-            $aboutUsSectionData['about_section_features'] = null;
+            // $aboutUsSectionData['about_section_features'] = null;
         }
 
         AboutusSection::where('id',1)->update($aboutUsSectionData);

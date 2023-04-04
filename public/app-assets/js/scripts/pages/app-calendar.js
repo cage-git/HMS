@@ -340,14 +340,14 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     headerToolbar: {
       start: 'sidebarToggle, prev,next, title',
-      end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+      end: 'dayGridMonth'
+      // ,timeGridWeek,timeGridDay,listMonth'
     },
     direction: direction,
     initialDate: new Date(),
     navLinks: true, // can click day/week names to navigate views
     eventClassNames: function ({ event: calendarEvent }) {
       const colorName = calendarsColor[calendarEvent._def.extendedProps.calendar];
-
       return [
         // Background Color
         'bg-light-' + colorName

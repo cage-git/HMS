@@ -1,6 +1,11 @@
 @extends('layouts.master_backend_new')
 @section('content')
 
+<style>
+input[type='checkbox']:checked {
+    background-size: 65%;
+}
+</style>
 
 <section id="basic-datatable">  
   <div class="row">
@@ -36,12 +41,12 @@
                               </td>
                             <td class="text-center" width="10%">
                               {{Form::hidden('ids[]',$val->id)}}
-                              {{ Form::checkbox('super_admin['.$val->id.']',null, ($val->super_admin==1) ? true: false,['class'=>"disable-checkbox form-check-input"] ) }}
+                              {{ Form::checkbox('super_admin['.$val->id.']',null, ($val->super_admin==1) ? true: false,['class'=>"disable-checkbox form-check-input checkbox"] ) }}
                             </td>
-                            <td class="text-center" width="10%">{{ Form::checkbox('admin['.$val->id.']',null, ($val->admin==1) ? true: false , ['class'=>"form-check-input"]) }}</td>
-                            <td class="text-center" width="10%">{{ Form::checkbox('receptionist['.$val->id.']',null, ($val->receptionist==1) ? true: false, ['class'=>"form-check-input"] ) }}</td>
-                            <td class="text-center" width="10%">{{ Form::checkbox('store_manager['.$val->id.']',null, ($val->store_manager==1) ? true: false, ['class'=>"form-check-input"] ) }}</td>
-                            <td class="text-center" width="10%">{{ Form::checkbox('financial_manager['.$val->id.']',null, ($val->financial_manager==1) ? true: false, ['class'=>"form-check-input"] ) }}</td>
+                            <td class="text-center" width="10%">{{ Form::checkbox('admin['.$val->id.']',null, ($val->admin==1) ? true: false , ['class'=> "form-check-input checkbox" ]) }}</td>
+                            <td class="text-center" width="10%">{{ Form::checkbox('receptionist['.$val->id.']',null, ($val->receptionist==1) ? true: false, ['class'=>"form-check-input checkbox"] ) }}</td>
+                            <td class="text-center" width="10%">{{ Form::checkbox('store_manager['.$val->id.']',null, ($val->store_manager==1) ? true: false, ['class'=>"form-check-input checkbox"] ) }}</td>
+                            <td class="text-center" width="10%">{{ Form::checkbox('financial_manager['.$val->id.']',null, ($val->financial_manager==1) ? true: false, ['class'=>"form-check-input checkbox"] ) }}</td>
                           </tr>
                         @endforeach
                     

@@ -75,19 +75,23 @@
                 </section>
  -->
 
-
+ <style>
+  input[type='checkbox']:checked {
+      background-size: 65%;
+  }
+</style>
 
 <section>
-  <div class="row">
-    {{Form::model($data_row,['route'=>'update-about-page','id'=>'home-page-form','files'=>true, 'class' => 'invoice-repeater'])}}
-      <div class="col-12">
+  <!-- <div class="row"> -->
+    {{Form::model($data_row,['route'=>'update-about-page','id'=>'home-page-form','files'=>true, 'class' => 'invoice-repeater row'])}}
+      <div class="col-6">
           <div class="card">
               <div class="card-header border-bottom">
                   <h4 class="card-title">Banner Image</h4>
               </div>
               <div class="card-body">
                   <div class="row">
-                        <div class="col-xl-4 col-md-6 col-12">
+                        <div class="col-xl-12 col-md-6 col-12">
                             <div class="mb-1">
                               <label>Image</label>
                               <input type="file" name="banner_image" class="form-control">
@@ -97,10 +101,14 @@
                             </div>
                         </div>
             
-                 
                   </div>
+              </div>
+          </div>
+      </div>
               
-              <hr />
+          
+      <div class="col-6">
+          <div class="card">
               <div class="card-header border-bottom">
                   <h4 class="card-title">Introduction</h4>
               </div>
@@ -130,7 +138,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-md-6 col-12">
+                        <div class="col-xl-12 col-md-6 col-12">
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name">Image</label>
                                 <input type="file" name="about_section_image" class="form-control">
@@ -150,7 +158,7 @@
                               @if($countFeatures==1)
                                 @foreach($featuresDecodeJson as $key=>$features_data)
                                   <div class="row d-flex align-items-end">
-                                      <div class="col-md-10 col-12">
+                                      <div class="col-md-8 col-12">
                                           <div class="mb-1">
                                               <label class="form-label" for="itemname">Title</label>
                                               {{ Form::text('about_sect_features[title][]',$features_data->title,['class'=>'form-control', 'placeholder'=>'Enter Title']) }}
@@ -188,10 +196,10 @@
                                   </button>
                               </div>
                           </div>
-
+                          <hr />
                           <div class="row">
                               <div class="col-12">
-                                  {{ Form::checkbox('about_section_publish',null, ['class'=>"form-check-input"]) }} Show this Section
+                                  {{ Form::checkbox('about_section_publish', null,null, ['class'=>"form-check-input checkbox"]) }} Show this Section
                               </div>
                           </div>
 
@@ -208,7 +216,7 @@
           </div>
       </div>
       {{ Form::close() }}
-  </div>
+  <!-- </div> -->
 
 </section>
 

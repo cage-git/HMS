@@ -2,8 +2,8 @@
 @section('content')
 
 <section>
-  <div class="row">
-  {{Form::model($data_row,['route'=>'update-contact-page','id'=>'contact-page-form','files'=>true])}}
+  <!-- <div class="row"> -->
+  {{Form::model($data_row,['route'=>'update-contact-page','id'=>'contact-page-form','files'=>true, 'class'=>'row'])}}
       <div class=" col-6">
           <div class="card">
               <div class="card-header border-bottom">
@@ -21,14 +21,14 @@
               </div>
           </div>
       </div>
-      <div class=" col-12">
+      <div class=" col-6">
           <div class="card">
               <div class="card-header border-bottom">
                   <h4 class="card-title">Contact Us</h4>
               </div>
               <div class="card-body">
                      <div class="row">
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name">Tagline</label>
                                 
@@ -36,7 +36,7 @@
                             </div>
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name">Heading</label>
                                 
@@ -44,7 +44,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-md-6 col-12">
+                        <div class="col-xl-6 col-md-6 col-12">
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name">Facebook Link</label>
                                 {{ Form::text('facebook_link',null,['class'=>'form-control', 'placeholder'=>'Enter Facebook Link']) }}
@@ -52,7 +52,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-md-6 col-12">
+                        <div class="col-xl-6 col-md-6 col-12">
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name">Twitter Link</label>
                                 {{ Form::text('twitter_link',null,['class'=>'form-control', 'placeholder'=>'Enter Twitter Link']) }}
@@ -60,7 +60,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-md-6 col-12">
+                        <div class="col-xl-6 col-md-6 col-12">
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name">Instagram Link</label>
                                 {{ Form::text('instagram_link',null,['class'=>'form-control', 'placeholder'=>'Enter Instagram Link']) }}
@@ -68,7 +68,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-md-6 col-12">
+                        <div class="col-xl-6 col-md-6 col-12">
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name">Linkedin Link</label>
                                 {{ Form::text('linkedin_link',null,['class'=>'form-control', 'placeholder'=>'Enter Linkedin Link']) }}
@@ -85,7 +85,7 @@
           </div>
       </div>
       {{ Form::close() }}
-  </div>
+  <!-- </div> -->
 
 </section>
 

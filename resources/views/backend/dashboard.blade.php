@@ -400,7 +400,7 @@
         </div>
 
         <!-- Calendar -->
-        <div class="col-12">
+        <!-- <div class="col-12">
             <div class="card">
                 <div class="col position-relative">
                     <div class="card shadow-none border-0 mb-0 rounded-0">
@@ -410,7 +410,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- /Calendar -->
 
         <div class="row g-0">
