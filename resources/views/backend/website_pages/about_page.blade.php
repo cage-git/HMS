@@ -83,7 +83,7 @@
 
 <section>
   <!-- <div class="row"> -->
-    {{Form::model($data_row,['route'=>'update-about-page','id'=>'home-page-form','files'=>true, 'class' => 'invoice-repeater row'])}}
+    {{Form::model($data_row,['route'=>'update-about-page','id'=>'home-page-form','files'=>true, 'class' => 'about_sect_features-repeater row'])}}
       <div class="col-6">
           <div class="card">
               <div class="card-header border-bottom">
@@ -153,7 +153,7 @@
                           <h4 class="card-title">Features</h4>
                       </div>
                       <div class="card-body">
-                        <div data-repeater-list="invoice">
+                        <div data-repeater-list="about_sect_features">
                               <div data-repeater-item>
                               @if($countFeatures==1)
                                 @foreach($featuresDecodeJson as $key=>$features_data)

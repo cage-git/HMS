@@ -170,7 +170,7 @@ class WebsitePagesController extends Controller
        return view('backend/website_pages/about_page',$this->data);
     }
     public function updateAboutPage(Request $request){
-        // dd($request->all());
+        // dd($request->about_sect_features[0]['title']);
         $dataRow = AboutusSection::first();
 
         $aboutUsSectionData = [];
@@ -194,18 +194,28 @@ class WebsitePagesController extends Controller
             $aboutUsSectionData['about_section_image'] = $filename;
         }
 
-        if(isset($request->about_sect_features['title'])){
+        // if(isset($request->about_sect_features['title'])){
+        //     $featuresReqData = $request->about_sect_features;
+        //     foreach($featuresReqData['title'] as $k=>$val){
+        //         if($val!=''){
+        //             $featuresData[] = ['title'=>$val, 'short_desc'=>$featuresReqData['short_desc'][$k] ];
+        //         }
+        //     }
+        // }
+
+        if(count($request->about_sect_features)>0){
             $featuresReqData = $request->about_sect_features;
-            foreach($featuresReqData['title'] as $k=>$val){
+            foreach($featuresReqData as $val){
                 if($val!=''){
-                    $featuresData[] = ['title'=>$val, 'short_desc'=>$featuresReqData['short_desc'][$k] ];
+                    $featuresData[] = ['title'=>$val["title"], 'short_desc'=>$val['short_desc']];
                 }
             }
         }
+        // dd($featuresData);
         if(count($featuresData)>0){
-            // $aboutUsSectionData['about_section_features'] = json_encode($featuresData);
+            $aboutUsSectionData['about_section_features'] = json_encode($featuresData);
         } else {
-            // $aboutUsSectionData['about_section_features'] = null;
+            $aboutUsSectionData['about_section_features'] = null;
         }
 
         AboutusSection::where('id',1)->update($aboutUsSectionData);

@@ -186,7 +186,7 @@
                         </div>
                         <div class="card-body feature-repeater">
                               <div class="row">
-                                        <div data-repeater-list="counter">
+                                        <div data-repeater-list="Features">
                                             <div>
                                             @if($countFeatures==1)
                                               @foreach($featuresDecodeJson as $key=>$features_data)
@@ -336,9 +336,9 @@
                         <div class="card-header border-bottom">
                             <h4 class="card-title">Client Testimonials</h4>
                         </div>
-                        <div class="card-body feature-repeater">
+                        <div class="card-body Testimonials-repeater">
                               <div class="row">
-                                        <div data-repeater-list="counter">
+                                        <div data-repeater-list="Testimonials">
                                             <div>
                                              <div class="row d-flex align-items-end">
                                                   <div class="col-md-6 col-12">
@@ -464,9 +464,9 @@
                         <div class="card-header border-bottom">
                             <h4 class="card-title">Room Category Section</h4>
                         </div>
-                        <div class="card-body feature-repeater">
+                        <div class="card-body Category-repeater">
                               <div class="row">
-                                        <div data-repeater-list="counter">
+                                        <div data-repeater-list="Category">
                                             <div data-repeater-item>
                                           
                                                 <div class="row d-flex align-items-end">
