@@ -84,9 +84,9 @@
                         <div class="card-header border-bottom">
                             <h4 class="card-title">Counter</h4>
                         </div>
-                        <div class="card-body counter-repeater">
+                        <div class="card-body counter_section-repeater">
                               <div class="row">
-                                        <div data-repeater-list="counter">
+                                        <div data-repeater-list="counter_section">
                                             <div>
                                             @if($countCounter==1)
                                               @foreach($counterDecodeJson as $key=>$counter_data)
@@ -283,7 +283,7 @@
                         </div>
                         <div class="card-body feature-repeater">
                               <div class="row">
-                                        <div data-repeater-list="counter">
+                                        <div data-repeater-list="feature">
                                             <div data-repeater-item>
                                           
                                                 <div class="row d-flex align-items-end">

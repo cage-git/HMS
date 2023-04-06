@@ -1962,6 +1962,7 @@ class AdminController extends Controller
             }
         }
         $this->data['datalist'] = $datalist;
+        // dd($this->data);
         return view('backend/dynamic_dropdowns/list',$this->data);
     }
     public function saveDynamicDropdowns(Request $request) {

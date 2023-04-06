@@ -4,14 +4,14 @@
 
 <section>
 
-    {{Form::open(array('url'=>route('save-dynamic-dropdowns'), 'class' => 'invoice-repeater row'))}}
+    {{Form::open(array('url'=>route('save-dynamic-dropdowns'), 'class' => ' row'))}}
         @foreach($datalist as $key=>$val)
             <div class="col-6">
                     <div class="card">
                             <div class="card-header border-bottom">
                                 <h4 class="card-title">{{$val['title']}}</h4>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body <?= str_replace(" ","_",$val['title']); ?>-repeater">
 
                                     <div class="row">
                                           <div class="col-xl-9 col-md-6 col-12">
@@ -28,7 +28,7 @@
                 
                         <!-- repeater -->
 
-                                    <div data-repeater-list="invoice">
+                                    <div data-repeater-list="<?= $val['title']; ?>">
                                       <div data-repeater-item>
                                         @if(count($val['values']) > 0)
                                           @foreach($val['values'] as $k=>$v)

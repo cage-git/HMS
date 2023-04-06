@@ -26,9 +26,11 @@ class WebsitePagesController extends Controller
         $this->data['data_row'] = HomeSection::first();
         $this->data['banner_images'] = MediaFile::where('tbl_id', 1)->where('type', 'home_banner')->get();
         $this->data['testimonials_rows'] = Testimonial::all();
+        // dd($this->data);
         return view('backend/website_pages/home_page',$this->data);
     }
     public function updateHomePage(Request $request){
+        // dd($request->all());
         $homeSectionData = [];
         $bannerImages = $featuresData = $testimonialsData = $countersData = $ctaData = [];
 
@@ -117,6 +119,14 @@ class WebsitePagesController extends Controller
                     }
                 }
             } 
+
+            // if(is_array($request->counter_section)) {
+            //      foreach($request->counter_section as $val){
+            //         print_r($val);
+            //      }
+            // }
+
+            // dd($request->all(), "test");
             if(count($countersData)>0){
                  $homeSectionData['counter_section_json'] = json_encode($countersData);
             } else {

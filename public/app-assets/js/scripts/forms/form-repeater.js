@@ -121,10 +121,28 @@ $(function () {
 
 
             // form repeater jquery
-    $('.counter-repeater').repeater({
+    $('.counter_section-repeater').repeater({
     
       show: function () {
-        console.log("test");
+        console.log("test 123");
+        $(this).slideDown();
+        // Feather Icons
+        if (feather) {
+          feather.replace({ width: 14, height: 14 });
+        }
+      },
+      hide: function (deleteElement) {
+        if (confirm('Are you sure you want to delete this element?')) {
+          $(this).slideUp(deleteElement);
+        }
+      }
+    });
+
+
+    $('.txt_dropdown_booking_cancel_reasons-repeater').repeater({
+    
+      show: function () {
+        console.log("test 123");
         $(this).slideDown();
         // Feather Icons
         if (feather) {

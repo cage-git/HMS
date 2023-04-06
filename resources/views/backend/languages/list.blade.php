@@ -10,6 +10,8 @@
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_language_translations')}}</h4>
                 </div>
+                @foreach($datalist as $key=>$value)
+                {{Form::open(array('url'=>route('save-language-translations')))}}
                 <table class="datatables-basic table">
                     <thead>
                         <th class="text-center">{{lang_trans('txt_sno')}}</th>
@@ -21,8 +23,7 @@
                         @endforeach
                     </thead>
                     <tbody>
-                        @foreach($datalist as $key=>$value)
-                          {{Form::open(array('url'=>route('save-language-translations')))}}
+          
                           @foreach($value as $k=>$val)
                               <tr>
                                 <td class="text-center" width="2%">{{$key+1}}.{{$k+1}}</td>
@@ -47,10 +48,11 @@
                               <hr>
                             </td>
                           </tr>
-                        {{ Form::close() }}
-                        @endforeach
+                        
                     </tbody>
                 </table>
+                {{ Form::close() }}
+                @endforeach
             </div>
         </div>
     </div>
