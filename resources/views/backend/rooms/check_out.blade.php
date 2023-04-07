@@ -33,13 +33,17 @@
   $finalAmount = $finalRoomAmount+$finalOrderAmount+$additionalAmount;
 @endphp
 
-
-
+<style>
+ .remove_padding{
+  padding-left: 0px;
+  padding-right: 0px;
+ }
+</style>
 <div class="col-md-12 col-12">
               <div class="card">
-                  <div class="card-header">
+                  <!-- <div class="card-header">
                       <h4 class="card-title"> {{lang_trans('heading_guest_type')}}</h4>
-                  </div>
+                  </div> -->
                   <div class="card-body">
                   {{ Form::model($data_row,array('url'=>route('check-out'),'id'=>"check-out-form", 'class'=>"form-horizontal form-label-left",'files'=>true,'autocomplete'=>"off")) }}
                     {{Form::hidden('id',null)}}
@@ -48,7 +52,7 @@
                           <div class="card-header">
                               <h4 class="card-title mb-50">{{lang_trans('heading_guest_info')}}</h4>
                           </div>
-                          <hr/>
+                          <!-- <hr/> -->
                           <div class="card-body">
                               <div class="row">
                                   <div class="col-xl-7 col-12">
@@ -232,7 +236,7 @@
                                           </tbody>
                                         </table>
                                   
-                                        <table class="table table-striped ">
+                                        <table class="table">
                                                     <tr>
                                                       <th  style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_subtotal')}} {{Form::hidden('amount[total_room_amount]',$totalRoomAmount,['id'=>'total_room_amount'])}}</th>
                                                       <td width="15%" class="text-right td_total_room_amount">{{getCurrencySymbol()}} {{ $totalRoomAmount }}</td>
@@ -240,12 +244,12 @@
                                                       <tr>
                                                           <th  style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_discount')}}</th>
                                                           <td width="15%" id="td_advance_amount" class="text-right">
-                                                              <div class="col-md-12 col-sm-12 col-xs-12 p-left-0 p-right-0">
-                                                                  <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0">
-                                                                      {{Form::number('discount_amount',$roomAmountDiscount,['class'=>"form-control", "id"=>"discount", "placeholder"=>lang_trans('ph_any_discount'),"min"=>0])}}
+                                                              <div class="row" style="height:20px;">
+                                                                  <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0 remove_padding">
+                                                                      {{Form::number('discount_amount',$roomAmountDiscount,['class'=>"form-control", 'style'=>"padding:0.3rem 1rem", "id"=>"discount", "placeholder"=>lang_trans('ph_any_discount'),"min"=>0])}}
                                                                   </div>
-                                                                  <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0">
-                                                                      {{ Form::select('room_discount_in',config('constants.DISCOUNT_TYPES'),'amt',['class'=>'form-control', "id"=>"room_discount_in"]) }}
+                                                                  <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0 remove_padding">
+                                                                      {{ Form::select('room_discount_in',config('constants.DISCOUNT_TYPES'),'amt',['class'=>'form-control', 'style'=>"padding:0.3rem 1rem", "id"=>"room_discount_in"]) }}
                                                                   </div>
                                                               </div>
                                                               <span class="error discount_room_err_msg"></span>
@@ -319,6 +323,12 @@
                                                         {{getCurrencySymbol()}} {{ numberFormat($additionalAmount) }}
                                                       </td>
                                                     </tr>
+                                                    <td style="float: right;" width="30%" id="td_additional_amount" class="text-right">
+                                                      @if(env('APP_NT_ENABLE'))
+                                                          <label class="control-label"> &nbsp;</label>
+                                                      @endif
+                                                    {{Form::number('additional_amount',$additionalAmount,['class'=>"form-control col-md-7 col-xs-12", "id"=>"additional_amount", "placeholder"=>lang_trans('txt_additional_amount'),"min"=>0])}}
+                                                  </td>
                                                 </table>
                                                 <hr/>
                                         <div class="card-header border-bottom">
@@ -359,14 +369,15 @@
 
                                           </tr>
                                           <tr>
-                                              <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_discount')}}</th>
+                                              <th style="float:right;" width="30%" class="text-right">{{lang_trans('txt_discount')}}</th>
                                               <td width="15%" id="td_advance_amount" class="text-right">
-                                                  <div class="col-md-12 col-sm-12 col-xs-12 p-left-0 p-right-0">
-                                                      <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0">
-                                                          {{Form::number('discount_order_amount',$foodOrderAmountDiscount,['class'=>"form-control col-md-7 col-xs-12", "id"=>"order_discount", "placeholder"=>lang_trans('ph_any_discount'),"min"=>0])}}
+                                                  <!-- <div class="col-md-12 col-sm-12 col-xs-12 p-left-0 p-right-0"> -->
+                                                  <div class="row" style="height:20px;">
+                                                      <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0 remove_padding" >
+                                                          {{Form::number('discount_order_amount',$foodOrderAmountDiscount,['class'=>"form-control col-md-7 col-xs-12", 'style'=>"padding:0.3rem 1rem", "id"=>"order_discount", "placeholder"=>lang_trans('ph_any_discount'),"min"=>0])}}
                                                       </div>
-                                                      <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0">
-                                                          {{ Form::select('order_discount_in',config('constants.DISCOUNT_TYPES'),'amt',['class'=>'form-control', "id"=>"order_discount_in"]) }}
+                                                      <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0 remove_padding">
+                                                          {{ Form::select('order_discount_in',config('constants.DISCOUNT_TYPES'),'amt',['class'=>'form-control', 'style'=>"padding:0.3rem 1rem", "id"=>"order_discount_in"]) }}
                                                       </div>
                                                   </div>
                                                   <span class="error discount_order_err_msg"></span>

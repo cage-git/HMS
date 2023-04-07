@@ -313,7 +313,7 @@
                   </tbody>
                 </table>
           
-                <table class="table table-striped ">
+                <table class="table">
                               <tr>
                                 <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_subtotal')}}</th>
                                 <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalRoomAmount) }}</td>

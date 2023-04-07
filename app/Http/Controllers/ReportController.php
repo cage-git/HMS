@@ -72,7 +72,10 @@ class ReportController extends Controller
     public function searchCheckouts(Request $request) {
         // dd($request->all());
         $this->data['list'] = 'check_outs';
-        $query = Reservation::leftjoin('customers as c', 'c.id', '=', 'reservations.customer_id')->whereStatus(1)->where('reservations.is_deleted',0)->whereIsCheckout(1)->orderBy('reservations.created_at','DESC');
+        $query = Reservation::
+        leftjoin('customers as c', 'c.id', '=', 'reservations.customer_id')->
+        select('reservations.*')->
+        whereStatus(1)->where('reservations.is_deleted',0)->whereIsCheckout(1)->orderBy('reservations.created_at','DESC');
         if($request->customer_name){
             // $query->where('customer_id', $request->customer_id);
             $query->where('c.name', 'like', "%{$request->customer_name}%");

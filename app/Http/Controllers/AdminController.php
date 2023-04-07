@@ -789,18 +789,6 @@ class AdminController extends Controller
         return view('backend/rooms/room_reservation_view',$this->data);
     }
     public function checkOut(Request $request) {
-
-
-
-
-
-
-
-
-
-
-
-
         $this->data['data_row']=Reservation::with('orders_items','orders_info', 'booked_rooms')->whereId($request->id)->whereIsCheckout(0)->first();
         if($this->data['data_row']){
             return view('backend/rooms/check_out',$this->data);
