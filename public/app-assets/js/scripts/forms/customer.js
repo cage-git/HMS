@@ -340,27 +340,31 @@ $(document).on('change', '#search_customer', function(){
 });
 
 $(document).on('change', '#search_from_phone_idcard', function(){
-    var val = $('#search_from_phone_idcard').val();      
+    console.log("test");
+    var val = $('#search_from_phone_idcard').val();
+    console.log("user id card or mobile phone", val)      
     var guest_type = $('input:radio[name="guest_type"]:checked').val();
     getAjaxResponse('idcard_select_div', val, 'user', guest_type, 'search_idcard');
 });
 
 $(document).on('change', '#search_customer_from_phone', function(){
     var val = $('#search_customer_from_phone').val();      
+    console.log("user mobile phone", val)     
     var guest_type = $('input:radio[name="guest_type"]:checked').val();
-    getAjaxResponse('idcard_select_div', val, 'user', guest_type, 'search_idcard');
+    // getAjaxResponse('idcard_select_div', val, 'user', guest_type, 'search_idcard');
+    getAjaxResponse('mobile_select_div', val, 'user', guest_type, 'search_phone');
 });
 
 $(document).on('change', '#search_from_company', function(){
     var val = $('#search_from_company').val();      
-    var guest_type = $('input:radio[name="guest_type"]:checked').val();
-    getAjaxResponse('idcard_select_div', val, 'company', guest_type, 'search_idcard');
+    getAjaxResponse('companyname_select_div', val, 'company', 'new_company', 'search_companyname');
 });
 
 $(document).on('change', '#search_from_company_phone', function(){
     var val = $('#search_from_company_phone').val();      
     var guest_type = $('input:radio[name="guest_type"]:checked').val();
-    getAjaxResponse('idcard_select_div', val, 'company', guest_type, 'search_idcard');
+    // getAjaxResponse('idcard_select_div', val, 'company', guest_type, 'search_idcard');
+    getAjaxResponse('companyphone_select_div', val, 'company', guest_type, 'search_companyphone');
 });
 
 
@@ -464,7 +468,6 @@ function getAjaxResponse(div_id, val, category, guest_type, field_id){
           $('#mobile_input_div').show();
           $('#mobile_select_div').hide();
       }
-      //  console.log("testing", data_customer);
 
       $('#guest_type_category').val('existing');
       $("#idcard_no").val(data_customer.id_card_no);

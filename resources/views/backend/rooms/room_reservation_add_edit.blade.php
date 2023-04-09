@@ -78,24 +78,22 @@
 
                                 <h4 class="card-title"> {{lang_trans('heading_idcard_info')}}</h4>
                                 
-                                <div class="col-xl-4 col-md-6 col-12">
+                                <div class="col-xl-4 col-md-6 col-12" id="idcard_select_div">
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_id_number">{{lang_trans('txt_id_number')}}</label>
-
                                         <select class="select2-data-ajax form-select" id="search_from_phone_idcard">
                                         </select>
-
-                                         <!-- <select class="select2-data-ajax form-select" id="select2-ajax"></select> -->
-
-                                         <div class="col-md-4 col-sm-4 col-xs-12" id="idcard_input_div" style="display:none;">
-                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
-                                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
-                                                            
-                                        </div>
                                     </div>
                                 </div>
 
-                               
+                                <div class="col-xl-4 col-md-6 col-12"  id="idcard_input_div" style="display:none;">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="txt_id_number">{{lang_trans('txt_id_number')}}</label>
+                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                    </div>
+                                </div>
+
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
@@ -103,7 +101,7 @@
                                         {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
                                     </div>
                                 </div>
-
+                                
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_type_id">{{lang_trans('txt_gender')}}</label>
@@ -161,18 +159,19 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
+                                <div class="col-xl-4 col-md-6 col-12" id="mobile_select_div" >
+                                    <div class="mb-1" >
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_mobile_num')}}</label>
                                         <select class="select2-data-ajax form-select" id="search_customer_from_phone">
-                                            <!-- <option value="" disable>Please enter a phone number and ID card number</option> -->
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-sm-4 col-xs-12" id="mobile_input_div" style="display:none;">
-                                        <label class="control-label"> {{lang_trans('txt_mobile_num')}}<span class="required">*</span></label>
+                                <div class="col-xl-4 col-md-6 col-12"  id="mobile_input_div" style="display:none;">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_mobile_num')}}</label>
                                         {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                                    </div>
                                 </div>
                                 <!-- <input name="mobile"> -->
 
@@ -210,14 +209,48 @@
                         <div class="row " id="new_company_section">
                                 <h4 class="card-title"> {{lang_trans('heading_company_info')}}</h4>
 
-                                <div class="col-xl-4 col-md-6 col-12">
+                                <div class="col-xl-4 col-md-6 col-12" id="companyname_select_div">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_name')}}</label>
                                         <select class="select2-data-ajax form-select" id="search_from_company_name">
-                                            <!-- <option value="" disable>Please enter a phone number and ID card number</option> -->
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="col-xl-4 col-md-6 col-12"  id="companyname_input_div" style="display:none;">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="txt_id_number">{{lang_trans('txt_company_name')}}</label>
+                                            <!-- <label class="control-label"> {{lang_trans('txt_company_name')}} <span class="required">*</span> </label> -->
+                                            {{Form::text('company_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                    </div>
+                                </div>
+
+<!--
+
+                                <div class="col-xl-4 col-md-6 col-12" id="idcard_select_div">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="txt_id_number">{{lang_trans('txt_id_number')}}</label>
+                                        <select class="select2-data-ajax form-select" id="search_from_phone_idcard">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12"  id="idcard_input_div" style="display:none;">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="txt_id_number">{{lang_trans('txt_id_number')}}</label>
+                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                    </div>
+                                </div>
+
+-->
+
+                                <!-- <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_company_name')}}</label>
+                                        
+                                    </div>
+                                </div> -->
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
@@ -233,19 +266,38 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-4 col-md-6 col-12">
+                                <!-- <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_mobile_num')}}</label>
                                         <select class="select2-data-ajax form-select" id="search_from_company_phone">
-                                            <!-- <option value="" disable>Please enter a phone number and ID card number</option> -->
+                                            <! -- <option value="" disable>Please enter a phone number and ID card number</option> - ->
+                                        </select>
+                                    </div>
+                                </div> -->
+
+                                <!-- new changes -->
+
+                                <div class="col-xl-4 col-md-6 col-12" id="companyphone_select_div">
+                                    <div class="mb-1">
+                                    <label class="form-label" for="season_start_date">{{lang_trans('txt_company_mobile_num')}}</label>
+                                        <select class="select2-data-ajax form-select" id="search_from_company_phone">
                                         </select>
                                     </div>
                                 </div>
 
+                                <div class="col-xl-4 col-md-6 col-12"  id="companyphone_input_div" style="display:none;">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="txt_id_number">{{lang_trans('txt_company_mobile_num')}}</label>
+                                        {{Form::text('company_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                    </div>
+                                </div>
+
+                                <!-- end new changes -->
+
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_address')}}</label>
-                                        {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                                        {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
                                     </div>
                                 </div>
 

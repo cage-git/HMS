@@ -357,11 +357,11 @@ class AdminController extends Controller
             $custName = $custData->name;
         }
         elseif($request->guest_type_category=='existing_company'){
-            $customerId = $request->selected_company_id;
+            $customerId = $request->selected_customer_id;
             $custData = Customer::whereId($customerId)->where('cat', '=', 'company')->first();
             $custName = $custData->name;
-        }
-        elseif($request->guest_type_category=='new_company'){
+            // return response()->json(['msg' => $success, 'cusName' => $request->all(), 'customerId'=> $request->selected_company_id,  'custData' => $custData  ], 200);
+        }elseif($request->guest_type_category=='new_company'){
             $custName = $request->company_name;
             if(
                 // !$request->company_gst_num ||
