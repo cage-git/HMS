@@ -131,8 +131,8 @@
                           <div class="col-md-3 mb-1">
                               <label class="form-label" for="select2-ajax">{{lang_trans('txt_firstname')}}</label>
                               <div class="mb-1">
-                                  <select name="customer_name" class="select2-data-ajax form-select" id="search_guest" ></select>
-                                  <!-- {{Form::text('customer_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}} -->
+                                  <!-- <select name="customer_name" class="select2-data-ajax form-select" id="search_guest" ></select> -->
+                                  {{Form::text('customer_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}}
                               </div>
                           </div>
 
@@ -171,7 +171,7 @@
                         <!-- start -->
 
                         <div class="row">
-                          <div class="col-md-12 col-sm-12 col-xs-12">
+                           <div class="col-md-12 col-sm-12 col-xs-12">
                                       <div class="x_panel">
                                           <div class="x_title">
                                               <h2>{{lang_trans('txt_laundry_item')}}</h2>
