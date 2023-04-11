@@ -37,6 +37,10 @@
     padding-left: 0px;
     padding-right: 0px;
   }
+
+  .hide_elem{
+    display:none;
+  }
 </style>
 
 <section id="basic-datatable">
@@ -120,13 +124,65 @@
                             </div>
                           </div>
 
-
-
-               
                         @endif
 
 
-                      <div class="row">  
+                        @if(!$isEditMode)
+                          <!-- <div class="row">
+                            <div class="ln_solid"></div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                              <div class="col-md-2 col-sm-2 col-xs-12">
+                                {{Form::radio('guest_type','new',true,['class'=>"flat guest_type", 'id'=>'new_guest'])}} <label for="new_guest">{{lang_trans('txt_new_guest')}}</label>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12">
+                                {{Form::radio('guest_type','existing',false,['class'=>"flat guest_type", 'id'=>'existing_guest'])}} <label for="existing_guest">{{lang_trans('txt_existing_guest')}}</label>
+                              </div>
+                            </div>
+                          </div> -->
+
+                          <div class="demo-inline-spacing">
+                            <div class="form-check form-check-inline">
+                                  {{Form::radio('guest_type','new',true,['class'=>"form-check-input guest_type", 'id'=>'new_guest'])}}
+                                  <label class="form-check-label" for="inlineRadio1">{{lang_trans('txt_new_guest')}}</label>
+                            </div>  
+                          </div>
+
+                          <div class="demo-inline-spacing">
+                            <div class="form-check form-check-inline">
+                            {{Form::radio('guest_type','existing',false,['class'=>"form-check-input guest_type", 'id'=>'existing_guest'])}} 
+                                  <label class="form-check-label" for="inlineRadio1">{{lang_trans('txt_existing_guest')}}</label>
+                            </div>  
+                          </div>
+                        @endif
+
+                        <div class="row hide_elem" id="existing_guest_section">  
+                          <div class="card-header">
+                              <h4 class="card-title">{{lang_trans('heading_existing_guest_list')}}</h4>
+                          </div>
+
+                          <div class="col-md-3 mb-1">
+                              <label class="form-label" for="select2-ajax">{{lang_trans('txt_guest')}}</label>
+                              <div class="mb-1">
+                                  <!-- {{Form::text('selected_customer_id',null,['class'=>"form-control", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}} -->
+
+                          <select name="selected_customer_id" class="form-select" >
+                        
+                                @foreach($customer_list as $val)
+                                  <option value="{{$val->id}}">{{$val->display_text}}</option>
+                                  @endforeach
+                                </select>
+                          
+                              </div>
+                          </div>
+
+                        </div>
+
+
+
+                      <div class="row" id="new_guest_section">  
+                        <div class="card-header">
+                            <h4 class="card-title">{{lang_trans('heading_guest_info')}}</h4>
+                        </div>
                     
                           <div class="col-md-3 mb-1">
                               <label class="form-label" for="select2-ajax">{{lang_trans('txt_firstname')}}</label>
@@ -166,6 +222,78 @@
                           
 
                         </div>
+<!-- 
+                @if(!$isEditMode)
+                    <div class="row">
+                      <div class="ln_solid"></div>
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                          {{Form::radio('guest_type','new',true,['class'=>"flat guest_type", 'id'=>'new_guest'])}} <label for="new_guest">{{lang_trans('txt_new_guest')}}</label>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                          {{Form::radio('guest_type','existing',false,['class'=>"flat guest_type", 'id'=>'existing_guest'])}} <label for="existing_guest">{{lang_trans('txt_existing_guest')}}</label>
+                        </div>
+                      </div>
+                    </div>
+                  @endif
+
+               
+
+                        <div class="row hide_elem" id="existing_guest_section">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>{{lang_trans('heading_existing_guest_list')}}</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <div class="row">
+                   <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label">{{lang_trans('txt_guest')}}</label>
+                        {{Form::text('selected_customer_id',null,['class'=>"form-", "id"=>"customers", "placeholder"=>lang_trans('ph_select')])}}
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <div class="row" id="new_guest_section">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>{{lang_trans('heading_guest_info')}}</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <div class="row">
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label class="control-label"> {{lang_trans('txt_firstname')}} <span class="required">*</span></label>
+                      {{Form::text('customer_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label class="control-label"> {{lang_trans('txt_email')}} </label>
+                      {{Form::email('customer_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label class="control-label"> {{lang_trans('txt_mobile_num')}} <span class="required">*</span></label>
+                      {{Form::text('customer_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label class="control-label"> {{lang_trans('txt_address')}}</label>
+                      {{Form::textarea('customer_address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> {{lang_trans('txt_gender')}} <span class="required">*</span></label>
+                        {{ Form::select('customer_gender',config('constants.GENDER'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+                        <!-- end old code  -->
 
                         
                         <!-- start -->
@@ -195,7 +323,7 @@
                                                   @endforelse
                                                 @endif
                                               </div>
-
+                                              <hr />
 
                                                 <div>
                                                   <table class="table" >
@@ -237,24 +365,27 @@
                                                 </div>
 
                                               <div class="ln_solid"></div>
-                                              <div class="col-md-12 col-sm-12 col-xs-12 text-right">
+                                              <!-- <div class="col-md-12 col-sm-12 col-xs-12 text-right">
                                                 <button class="btn btn-success btn-submit-form {{$isShowFinalStepElem ? 'confirm_form' : ''}}" data-form="laundry-order-form" type="submit" disabled_>{{ ($isShowFinalStepElem) ? lang_trans('btn_complete_order') : lang_trans('btn_submit') }}</button>
-                                              </div>
+                                              </div> -->
                                           </div>
                                       </div>
                                   </div>
                               </div>
+                              <hr /> 
+                              <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
+                              <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
                           </div>
 
                          <!-- end -->
 
-                        <div class="col-xl-3 col-md-6 col-12">
-                            <div class="mb-1">
-                            <br>
-                            <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
-                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
-                            </div>
-                        </div>
+                        <!-- <div class="col-xl-3 col-md-6 col-12">
+                            <div class="mb-1"> -->
+                            <!-- <br> -->
+                            <!-- <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
+                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button> -->
+                            <!-- </div>
+                        </div> -->
                        
                       </div>
                     <!-- {{ Form::close() }} -->
@@ -283,21 +414,22 @@
 <!-- <div class="colne_laundry_item_elem hide_elem">
   < !-- @ include('backend/includes/laundry_item_form', ['show_label'=>false, 'show_plus_btn'=>false, 'blank_form'=>true]) -- > 
 </div> -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 {{-- require set var in js var --}}
 <script>
-  // globalVar.page = 'laundry_order_add_edit';
-  // globalVar.customerList = {!! json_encode($customer_list) !!};
-  // globalVar.applyGst = {{$gstApply}};
-  // globalVar.gstPercent = {{$gstPerc}};
-  // globalVar.cgstPercent = {{$cgstPerc}};
-  // globalVar.gstAmount = {{$gstAmount}};
-  // globalVar.cgstAmount = {{$cgstAmount}};
-  // globalVar.subtotalAmount = {{$subtotalAmount}};
-  // globalVar.totalAmount = {{$totalAmount}};
-  // globalVar.discount = {{$totalDiscount}};
-  // globalVar.isError = false;
+  globalVar.page = 'laundry_order_add_edit';
+  globalVar.customerList = {!! json_encode($customer_list) !!};
+  globalVar.applyGst = {{$gstApply}};
+  globalVar.gstPercent = {{$gstPerc}};
+  globalVar.cgstPercent = {{$cgstPerc}};
+  globalVar.gstAmount = {{$gstAmount}};
+  globalVar.cgstAmount = {{$cgstAmount}};
+  globalVar.subtotalAmount = {{$subtotalAmount}};
+  globalVar.totalAmount = {{$totalAmount}};
+  globalVar.discount = {{$totalDiscount}};
+  globalVar.isError = false;
 </script>
-<!-- <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script> -->
+<script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 @endsection
 @section('scripts')
 <!-- BEGIN: Page JS-->
@@ -508,6 +640,23 @@
 })(window, document, jQuery);
 
 
+
+
+
+
+$(document).on('change', '.guest_type', function(){
+  if($("input:radio[name='guest_type'][value='existing']").is(":checked")) { 
+    console.log("test");
+    $("#existing_guest_section").show();
+    $("#new_guest_section").hide();
+  }else{
+    // console.log("test1");
+    $("#existing_guest_section").hide();
+    $("#new_guest_section").show();
+  }
+});
+
+
 $(document).on('change', '#search_idcard', function(){
     var val = $('#search_idcard').val();      
     var guest_type = $('input:radio[name="guest_type"]:checked').val();
@@ -669,6 +818,14 @@ function getAjaxResponse(div_id, val, category, guest_type, field_id){
       }
 
 </script>
+  <!-- <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script> -->
   <!-- <script src="{{URL::asset('public/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js')}}"></script> -->
+<!-- END: Page JS-->
+@endsection
+
+@section('scripts')
+<!-- BEGIN: Page JS-->
+  <script src="{{URL::asset('public/app-assets/vendors/js/forms/repeater/jquery.repeater.min.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/js/scripts/forms/form-repeater.js')}}"></script>
 <!-- END: Page JS-->
 @endsection

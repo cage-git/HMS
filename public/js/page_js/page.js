@@ -1017,6 +1017,18 @@ if(globalVar.page=='laundry_order_add_edit'){
     }
   });
 
+
+  $('.guest_type').on('click',function(){
+    console.log('radio button changed')
+    $('#new_guest_section,#existing_guest_section').hide();
+    var type = $(this).val();
+    if(type=='new'){
+      $('#new_guest_section').show();
+    } else {
+      $('#existing_guest_section').show();
+    }
+  });
+
   $("#apply_gst").on("click",function(){
       if($(this).prop("checked") == true){
           globalVar.applyGst = 1;
@@ -1028,9 +1040,11 @@ if(globalVar.page=='laundry_order_add_edit'){
   });
 
   $(document).on("keyup click", ".per_item_price", function(){
+    console.log("per item price");
       laundryPaymentInfo();
   });
   $(document).on("keyup click", ".per_item_rcv_qty", function(){
+    console.log("per item price");
       laundryPaymentInfo();
   });
   $("#laundry_discount_in").on("change",function(){

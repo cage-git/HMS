@@ -106,17 +106,40 @@ class LaundryController extends Controller
                 // remove all items for save new
                 LaundryOrderItem::where('laundry_order_id', $res->id)->delete();
 
-                if(count($request->item['ids'])){
-                    foreach ($request->item['ids'] as $key => $value) {
-                        $price = (isset($request->item['price'][$key])) ? $request->item['price'][$key] : 0.00;
-                        $sentQty = (isset($request->item['sent_qty'][$key])) ? $request->item['sent_qty'][$key] : 0;
-                        $rcvQty = (isset($request->item['rcv_qty'][$key])) ? $request->item['rcv_qty'][$key] : 0;
+                // if(count($request->item['ids'])){
+                //     foreach ($request->item['ids'] as $key => $value) {
+                //         $price = (isset($request->item['price'][$key])) ? $request->item['price'][$key] : 0.00;
+                //         $sentQty = (isset($request->item['sent_qty'][$key])) ? $request->item['sent_qty'][$key] : 0;
+                //         $rcvQty = (isset($request->item['rcv_qty'][$key])) ? $request->item['rcv_qty'][$key] : 0;
+                //         if($value == null){
+                //             continue;
+                //         }
+                //         $items[] = [
+                //             'laundry_order_id'=>$res->id,
+                //             'item_id'=>$value,
+                //             'item_name'=>NULL,
+                //             'item_price'=>$price,
+                //             'sent_item_qty'=>(int)$sentQty,
+                //             'rcv_item_qty'=>(int)$rcvQty,
+                //         ];
+                //     }
+                //     if(count($items)){
+                //         LaundryOrderItem::insert($items);
+                //     }
+                // }
+                // New logic
+                    if(count($request->item)){
+                    foreach ($request->item as $value) {
+                        // dd($value["price"], count($request->item));
+                        $price = (isset($value["price"])) ? $value["price"] : 0.00;
+                        $sentQty = (isset($value["sent_qty"])) ? $value["sent_qty"] : 0;
+                        $rcvQty = (isset($value["rcv_qty"])) ? $value["rcv_qty"] : 0;
                         if($value == null){
                             continue;
                         }
                         $items[] = [
                             'laundry_order_id'=>$res->id,
-                            'item_id'=>$value,
+                            'item_id'=>$value["ids"],
                             'item_name'=>NULL,
                             'item_price'=>$price,
                             'sent_item_qty'=>(int)$sentQty,
