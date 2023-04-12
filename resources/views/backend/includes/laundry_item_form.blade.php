@@ -27,7 +27,7 @@
                 </div> -->
                 <div class="card-body item-repeater">
                     <!-- <form action="" class="invoice-repeater"> -->
-                        <div data-repeater-list="item">
+                        <div data-repeater-list="item" class="per_item_elem">
                             <div data-repeater-item>
                                 <div class="row d-flex align-items-end">
                                     <div class="col-md-4 col-12">
@@ -51,6 +51,13 @@
                                         <div class="mb-1">
                                             <label for="itemquantity" class="form-label {{$show_label ? '' : 'hide_elem'}}"> {{lang_trans('txt_rcv_qty')}} </label>
                                               {{Form::number('item[rcv_qty][]',$rcvQty,['class'=>"form-control col-md-7 col-xs-12 per_item_rcv_qty", "id"=>"rcv_qty", "min"=>1, "step"=>1, "required"=>"required"])}}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 col-12">
+                                        <div class="mb-1">
+                                            <label for="itemquantity" class="form-label {{$show_label ? '' : 'hide_elem'}}"> {{lang_trans('txt_price')}} </label>
+                                            {{Form::text('item[price][]',$price,['class'=>"form-control col-md-7 col-xs-12 per_item_price", "id"=>"price", "required"=>"required"])}}
                                         </div>
                                     </div>
 

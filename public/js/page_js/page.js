@@ -10,7 +10,172 @@ $(document).on('click', '[data-toggle="lightbox"]', function(event) {
 
 // add for load page and calculate every thing
 $(document).ready(function() { 
+
+ 
+  $(document).on("keyup", ".per_item_price", function(){
+      laundryPaymentInfo();
+  });
+
+
+  $("#apply_gst").on("click",function(){
+      if($(this).prop("checked") == true){
+          globalVar.applyGst = 1;
+      } else if($(this).prop("checked") == false){
+          globalVar.applyGst = 0;
+      }
+      $(this).val(globalVar.applyGst);
+      laundryPaymentInfo();
+  });
   
+  $(document).on("keyup", ".per_item_rcv_qty", function(){
+    console.log("per item price");
+      laundryPaymentInfo();
+  });
+  $("#laundry_discount_in").on("change",function(){
+    $("#discount").trigger('click');
+  });
+  $("#discount").on("keyup",function(){
+    console.log("testing")
+      $('.discount_err_msg').html('');
+      if(globalVar.laundrySubtotalAmount>0){
+        if($(this).val()>0) {
+          globalVar.discount = $(this).val();
+          if($('#laundry_discount_in').val() == 'perc'){
+            globalVar.discount = getPercentOfAmount(globalVar.discount, globalVar.laundrySubtotalAmount);
+          }
+        } else {
+          globalVar.discount = 0;
+        }
+
+        var maxDisc = globalVar.laundrySubtotalAmount; //getMaxDiscount(globalVar.laundrySubtotalAmount);
+        if(globalVar.discount>maxDisc){
+          globalVar.isError = true;
+          $('.discount_err_msg').html('Allow only 100% of total amount');
+        } else {
+          globalVar.isError = false;
+          laundryPaymentInfo();
+        }
+      } else {
+        $(this).val(0);
+      }
+  });
+
+  $(document).on("keyup", ".per_item_rcv_qty", function(){
+      console.log("per item price");
+      laundryPaymentInfo();
+  });
+  $("#laundry_discount_in").on("change",function(){
+    console.log("testing")
+    $("#discount").trigger('click');
+  });
+  $("#discount").on("keyup",function(){
+    console.log("testing")
+      $('.discount_err_msg').html('');
+      if(globalVar.laundrySubtotalAmount>0){
+        if($(this).val()>0) {
+          globalVar.discount = $(this).val();
+          if($('#laundry_discount_in').val() == 'perc'){
+            globalVar.discount = getPercentOfAmount(globalVar.discount, globalVar.laundrySubtotalAmount);
+          }
+        } else {
+          globalVar.discount = 0;
+        }
+
+        var maxDisc = getMaxDiscount(globalVar.laundrySubtotalAmount);
+        if(globalVar.discount>maxDisc){
+          globalVar.isError = true;
+          $('.discount_err_msg').html('Allow only 100% of total amount');
+        } else {
+          globalVar.isError = false;
+          laundryPaymentInfo();
+        }
+      } else {
+        $(this).val(0);
+      }
+  });
+
+  function laundryPaymentInfo(){
+
+      let subtotalAmount = 0;
+      $('.per_item_elem').each(function(i, selector){
+
+        let perItemRcvQty = parseInt($(selector).find('.per_item_sent_qty').val());
+        perItemRcvQty = (perItemRcvQty > 0) ? perItemRcvQty : 0;
+
+        let perItemPrice = parseFloat($(selector).find('.per_item_price').val());
+        perItemPrice = (perItemPrice > 0) ? perItemPrice : 0;
+        console.log(perItemPrice, perItemRcvQty);
+        subtotalAmount += parseFloat(perItemRcvQty*perItemPrice);
+      });
+      globalVar.laundrySubtotalAmount = subtotalAmount;
+      gstCalculation(subtotalAmount,'laundry_gst');
+
+
+
+      $('#td_subtotal').html(getAmountWithCurrency(subtotalAmount));
+      $('#subtotal').val(parseFloat(subtotalAmount).toFixed(2));
+
+      const totalAmount = ( parseFloat(subtotalAmount)+parseFloat(globalVar.gstAmount)+parseFloat(globalVar.cgstAmount)-parseFloat(globalVar.discount) );
+      $('#td_total_amount').html(getAmountWithCurrency(totalAmount));
+      $('#total_amount').val(parseFloat(totalAmount).toFixed(2));
+      console.log("inner", subtotalAmount, totalAmount)
+  }
+
+
+
+function gstCalculation(amount,type){
+  if(type=='room_gst'){
+    console.log(amount);      
+    globalVar.cgstRoomAmount = (globalVar.cgstPercent/100)*parseFloat(amount);
+    globalVar.gstRoomAmount = (globalVar.gstPercent/100)*parseFloat(amount + globalVar.cgstRoomAmount);
+   
+
+    $('#total_room_amount_gst').val(globalVar.gstRoomAmount);
+    $('#total_room_amount_cgst').val(globalVar.cgstRoomAmount);
+    $('#total_room_amount_with_cgst').val(amount + globalVar.cgstRoomAmount);
+
+    $('#td_total_room_amount_gst').html(currency_symbol+' '+parseFloat(globalVar.gstRoomAmount).toFixed(3));
+    $('#td_total_room_amount_cgst').html(currency_symbol+' '+parseFloat(globalVar.cgstRoomAmount).toFixed(3));
+    $('#td_total_room_amount_with_cgst').html(currency_symbol+' '+parseFloat(amount + globalVar.cgstRoomAmount).toFixed(3));
+
+  } else if(type=='laundry_gst'){
+    if(globalVar.applyGst==1){
+      globalVar.gstAmount = getPercentOfAmount(globalVar.gstPercent, amount);
+      globalVar.cgstAmount = getPercentOfAmount(globalVar.cgstPercent, amount);
+    } else {
+      globalVar.gstAmount = '0.00';
+      globalVar.cgstAmount = '0.00';
+    }
+
+    $('#total_gst_amount').val(globalVar.gstAmount);
+    $('#total_cgst_amount').val(globalVar.cgstAmount);
+
+    $('#td_total_gst_amount').html(getAmountWithCurrency(globalVar.gstAmount));
+    $('#td_total_cgst_amount').html(getAmountWithCurrency(globalVar.cgstAmount));
+  }
+  else{
+    if(globalVar.applyFoodGst==1){
+      globalVar.gstOrderAmount = getPercentOfAmount(globalVar.gstPercentFood, amount);
+      globalVar.cgstOrderAmount = getPercentOfAmount(globalVar.cgstPercentFood, amount);
+    } else {
+      globalVar.gstOrderAmount = '0.00';
+      globalVar.cgstOrderAmount = '0.00';
+    }
+    $('#total_order_amount_gst').val(parseFloat(globalVar.gstOrderAmount).toFixed(2));
+    $('#total_order_amount_cgst').val(parseFloat(globalVar.cgstOrderAmount).toFixed(2));
+
+    $('#td_order_amount_gst').html(getAmountWithCurrency(globalVar.gstOrderAmount));
+    $('#td_order_amount_cgst').html(getAmountWithCurrency(globalVar.cgstOrderAmount));
+  }
+  return;
+}
+
+});
+
+
+// add for load page and calculate every thing
+$(document).ready(function() { 
+      console.log("runing state")
   var apply_gst_val = $('#apply_gst').val();
   if(apply_gst_val == true){
       globalVar.applyFoodGst = 1;
@@ -1039,10 +1204,15 @@ if(globalVar.page=='laundry_order_add_edit'){
       laundryPaymentInfo();
   });
 
-  $(document).on("keyup click", ".per_item_price", function(){
-    console.log("per item price");
+  $(document).on("keyup", ".per_item_price", function(){
+    console.log("value update");
       laundryPaymentInfo();
   });
+  
+  // $(document).on("keyup click", ".per_item_price", function(){
+  //   laundryPaymentInfo();
+  // });
+
   $(document).on("keyup click", ".per_item_rcv_qty", function(){
     console.log("per item price");
       laundryPaymentInfo();
@@ -1051,6 +1221,7 @@ if(globalVar.page=='laundry_order_add_edit'){
     $("#discount").trigger('click');
   });
   $("#discount").on("keyup click",function(){
+    console.log("testing")
       $('.discount_err_msg').html('');
       if(globalVar.laundrySubtotalAmount>0){
         if($(this).val()>0) {
@@ -1112,7 +1283,7 @@ function gstCalculation(amount,type){
       // $('#td_total_room_amount_gst').html(getAmountWithCurrency(globalVar.gstRoomAmount));
       // $('#td_total_room_amount_cgst').html(getAmountWithCurrency(globalVar.cgstRoomAmount));
       // $('#td_total_room_amount_with_cgst').html(currency_symbol+' '+parseFloat(amount + globalVar.cgstRoomAmount).toFixed(3));
-      console.log(amount);      
+      // console.log(amount);      
       globalVar.cgstRoomAmount = (globalVar.cgstPercent/100)*parseFloat(amount);
       globalVar.gstRoomAmount = (globalVar.gstPercent/100)*parseFloat(amount + globalVar.cgstRoomAmount);
      

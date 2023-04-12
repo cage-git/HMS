@@ -18,7 +18,24 @@
   $subtotalAmount = $calculatedAmount['subtotalAmount'];
   $totalAmount = $calculatedAmount['totalAmount'];
 
+
+
   $isShowFinalStepElem = ($isEditMode && $data_row->order_status == 2) ? true : false;
+
+// New changes
+
+
+  $settings = getSettings();
+ // dd($settings);
+// $gstApply = $settings['gst'];
+  $gstPerc = $settings['gst'];
+//  $cgstPerc = $settings['cgst'];
+//  $gstAmount = $settings['gstAmount'];
+// $cgstAmount = $settings['cgstAmount'];
+//  $subtotalAmount = $settings['subtotalAmount'];
+//  $totalAmount = $settings['totalAmount'];
+//  $totalDiscount = $settings['totalDiscount'];
+
 @endphp
 
 
