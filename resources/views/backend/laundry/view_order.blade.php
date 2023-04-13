@@ -10,6 +10,13 @@
   $totalDiscount = $calculatedAmount['totalDiscount'];
   $subtotalAmount = $calculatedAmount['subtotalAmount'];
   $totalAmount = $calculatedAmount['totalAmount'];
+  // dd($calculatedAmount );
+
+  if($data_row->total_amount){
+    $gstAmount = $data_row->gst_amount;
+    $totalDiscount = $data_row->discount;
+    $totalAmount = $data_row->total_amount;
+  }
 @endphp
 
 <div class="card">
@@ -133,18 +140,18 @@
                 </table>
           
                 <table class="table">
-                    <tr>
+                    <!-- <tr>
                       <th  style="float: right;" width="30%" class="text-right">{{lang_trans('txt_subtotal')}}</th>
                       <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($subtotalAmount) }}</td>
-                    </tr>
+                    </tr> -->
                     <tr>
                       <th style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_sgst')}} ({{$data_row->gst_perc}}%)</th>
                       <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($gstAmount) }}</td>
                     </tr>
-                    <tr class="{{$data_row->cgst_perc > 0 ? '' : 'hide_elem'}}">
+                    <!-- <tr class="{{$data_row->cgst_perc > 0 ? '' : 'hide_elem'}}">
                       <th style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_cgst')}} ({{$data_row->cgst_perc}}%)</th>
                       <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($cgstAmount) }}</td>
-                    </tr>
+                    </tr> -->
                     <tr>
                       <th style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_discount')}}</th>
                       <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalDiscount) }}</td>

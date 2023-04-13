@@ -194,6 +194,16 @@ class LaundryController extends Controller
                     $paymentHistoryData['transaction_id'] = getNextInvoiceNo('ph');
                     $this->core->updateOrCreatePH($where, $paymentHistoryData);
                 }                
+            }else{
+                $mergeRequestArr['order_num'];
+                $orderData = LaundryOrder::with('order_items')->find($mergeRequestArr['order_num']);
+                $orderData->total_amount = $request->amount["total_amount"]; //$calculatedAmount['totalAmount'];
+                $orderData->discount = $request->amount["discount_amount"];  //$calculatedAmount['totalDiscount'];
+                $orderData->gst_amount = $request->amount["total_gst_amount"];  //$calculatedAmount['gstAmount'];
+                $orderData->cgst_amount = $request->amount["total_cgst_amount"];  //$calculatedAmount['cgstAmount'];
+
+                $orderData->save();
+
             }
             return redirect()->route('list-laundry-order')->with(['success' => $splashMsg['success']]);
         }

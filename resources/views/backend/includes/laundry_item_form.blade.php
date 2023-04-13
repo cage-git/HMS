@@ -27,8 +27,8 @@
                 </div> -->
                 <div class="card-body item-repeater">
                     <!-- <form action="" class="invoice-repeater"> -->
-                        <div data-repeater-list="item" class="per_item_elem">
-                            <div data-repeater-item>
+                        <div data-repeater-list="item" >
+                            <div data-repeater-item class="per_item_elem">
                                 <div class="row d-flex align-items-end">
                                     <div class="col-md-4 col-12">
                                         <div class="mb-1">

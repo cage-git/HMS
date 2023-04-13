@@ -19,6 +19,7 @@ use App\Exports\CustomerExport;
 use App\Exports\OrderExport;
 use App\Exports\PaymentHistoryExport;
 use App\Exports\BladiExport;
+use App\LaundryOrder;
 
 class ReportController extends Controller
 {
@@ -342,6 +343,25 @@ class ReportController extends Controller
         } else {
             return view('backend/reports',$this->data);
         }
+    }
+
+
+    // New Method for Search laundary Orders
+
+    public function searchLaundryOrder(Request $request) {
+
+        $query=LaundryOrder::where('status','=',1)->orderBy('created_at','DESC');
+        
+        if($request->date_from){
+            $query->whereDate('created_at', '>=', dateConvert($request->date_from,'Y-m-d'));
+        }
+        if($request->date_to){
+            $query->whereDate('created_at', '<=', dateConvert($request->date_to,'Y-m-d'));
+        }
+
+        $this->data['datalist']=$query->get();
+        $this->data['search_data'] = $request->all();
+        return view('backend/orders_list',$this->data);
     }
 
 }
