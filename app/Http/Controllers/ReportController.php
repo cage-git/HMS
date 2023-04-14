@@ -350,8 +350,26 @@ class ReportController extends Controller
 
     public function searchLaundryOrder(Request $request) {
 
-        $query=LaundryOrder::where('status','=',1)->orderBy('created_at','DESC');
+        // dd($request->all());
+
+        $query=LaundryOrder::orderBy('created_at','DESC');
         
+        if($request->order_num){
+            $query->where('status', '=', $request->order_status);
+        }
+
+        if($request->vendor_id){
+            $query->where('vendor_id', '=', $request->vendor_id);
+        }
+
+        if($request->room_id){
+            $query->where('room_id', '=', $request->room_id);
+        }
+
+        if($request->order_num){
+            $query->where('id', '=', $request->order_num);
+        }
+
         if($request->date_from){
             $query->whereDate('created_at', '>=', dateConvert($request->date_from,'Y-m-d'));
         }
@@ -359,9 +377,16 @@ class ReportController extends Controller
             $query->whereDate('created_at', '<=', dateConvert($request->date_to,'Y-m-d'));
         }
 
-        $this->data['datalist']=$query->get();
-        $this->data['search_data'] = $request->all();
-        return view('backend/orders_list',$this->data);
+        // $this->data['datalist']=$query->get();
+        // $this->data['search_data'] = $request->all();
+        $startDate = getNextPrevDate('prev'); 
+        $this->data['datalist']= $query->get(); //LaundryOrder::whereStatus(1)->whereDate('order_date', '>=', $startDate." 00:00:00")->whereDate('order_date', '<=', DB::raw('CURDATE()'))->orderBy('order_status','ASC')->orderBy('order_num','DESC')->get();
+        $this->data['vendor_list'] = getVendorList();
+        $this->data['room_list'] = getRoomList(2);
+        $this->data['status_list']=getConstants('LIST_LAUNDRY_ORDER_STATUS');
+        $this->data['search_data'] = ['order_num'=>'','vendor_id'=>'','room_id'=>'','order_status'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
+        // dd($this->data);
+        return view('backend/laundary_orders_list',$this->data);
     }
 
 }

@@ -1,184 +1,165 @@
 @extends('layouts.master_backend_new')
 @section('content')
-<div class="">
-  <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-            <h2>{{lang_trans('heading_filter_orders')}}</h2>
-            <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-            {{ Form::model($search_data,array('url'=>route('search-orders'),'id'=>"search-orders", 'class'=>"form-horizontal form-label-left")) }}
-              <div class="form-group col-sm-3">
-                <label class="control-label">{{lang_trans('txt_type')}}</label>
-                {{Form::select('order_type',config('constants.LIST_ORDER_TYPES'),null,['class'=>"form-control"])}}
+
+<style>
+
+.margin-button{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+</style>
+
+<section id="basic-datatable">
+
+      <div class="row">
+        <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                  <h4 class="card-title">{{lang_trans('heading_filter_laundry_orders')}}</h4>
               </div>
-              <div class="form-group col-sm-3">
-                <label class="control-label">{{lang_trans('txt_date_from')}}</label>
-                {{Form::text('date_from',null,['class'=>"form-control datepicker", 'placeholder'=>lang_trans('ph_date_from')])}}
+              <div class="card-body">
+                  {{ Form::model($search_data,array('url'=>route('search-laundry-order'),'id'=>"search-laundry-order", 'class'=>"form-horizontal form-label-left")) }}
+                      <div class="row">  
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="category">{{lang_trans('txt_order_num')}}</label>
+                              
+                                {{Form::text('order_num',null,['class'=>"form-control", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_order_num')])}}
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="date_from">{{lang_trans('txt_order_status')}}</label>
+                              
+                                {{Form::select('order_status',$status_list,null,['class'=>"form-select",'placeholder'=>lang_trans('ph_select')])}}
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="date_to">{{lang_trans('txt_vendor')}}</label>
+                              
+                                {{Form::select('vendor_id',$vendor_list,null,['class'=>"form-select",'placeholder'=>lang_trans('ph_select')])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="date_to">{{lang_trans('txt_room')}}</label>
+                              
+                                {{Form::select('room_id',$room_list,null,['class'=>"form-select",'placeholder'=>lang_trans('ph_select')])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="date_to">{{lang_trans('txt_date_from')}}</label>
+                              
+                                {{Form::text('date_from',null,['class'=>"form-control flatpickr-basic", 'placeholder'=>lang_trans('ph_date_from')])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="date_to">{{lang_trans('txt_date_to')}}</label>
+                              
+                                {{Form::text('date_to',null,['class'=>"form-control flatpickr-basic", 'placeholder'=>lang_trans('ph_date_to')])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="mb-1">
+                            <br>
+                            <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
+                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                            </div>
+                        </div>
+                       
+                      </div>
+                    {{ Form::close() }}
               </div>
-              <div class="form-group col-sm-3">
-                <label class="control-label">{{lang_trans('txt_date_to')}}</label>
-                {{Form::text('date_to',null,['class'=>"form-control datepicker", 'placeholder'=>lang_trans('ph_date_to')])}}
-              </div>
-              <div class="form-group col-sm-3">
-                <br/>
-                 <button class="btn btn-success search-btn" name="submit_btn" value="search" type="submit">{{lang_trans('btn_search')}}</button>
-                 <button class="btn btn-primary export-btn" name="submit_btn" value="export" type="submit">{{lang_trans('btn_export')}}</button>
-              </div>
-            {{ Form::close() }}
-          </div>
+            </div>
         </div>
       </div>
-    </div>
 
-  <div class="row">
-      <div class="col-md-12 col-sm-12 col-xs-12">
-          <div class="x_panel">
-              <div class="x_title">
-                  <h2>{{lang_trans('heading_all_orders')}}</h2>
-                  <div class="clearfix"></div>
-              </div>
-              <div class="x_content">
-                  <br/>
-                  <table id="datatable" class="table table-striped table-bordered">
-                  <thead>
-                    <tr>
-                      <th>{{lang_trans('txt_sno')}}</th>
-                      <th>{{lang_trans('txt_order_by')}}</th>
-                      <th>{{lang_trans('txt_inv_num')}}</th>
-                      <th>{{lang_trans('txt_tbl_room_num')}}</th>
-                      <th>{{lang_trans('txt_customer_name')}}</th>
-                      <th>{{lang_trans('txt_customer_email')}}</th>
-                      <th>{{lang_trans('txt_customer_mobile')}}</th>
-                      <th>{{lang_trans('txt_order_date')}}</th>
-                      <th>{{lang_trans('txt_pay_date')}}</th>
-                      <th>{{lang_trans('txt_order_list')}}</th>
-                      <th>{{lang_trans('txt_total_amount')}}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($datalist as $key=>$value)
-                      @php 
-                      $totalOrdersAmount = $finalOrderAmount = 0; 
-                      $totalOrderAmountGst = $totalOrderAmountCGst = $totalOrderAmountDiscount = $orderGst = $orderCGst = 0;
-                      $orderInfo = $value;
-                      if($orderInfo){
-                        $orderGst = $orderInfo->gst_perc;
-                        $orderCGst = $orderInfo->cgst_perc;
+    <div class="row">
+        <div class=" col-12">
+            <div class="card">
+                <div class="card-header border-bottom">
+                    <h4 class="card-title">{{lang_trans('txt_order_list')}}</h4>
+                    <a href="{{route('add-laundry-order')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_order_add')}} </button></a>
+                </div>
+                  @php
+                    $totalAmount = 0;
+                  @endphp
+                <table class="datatables-basic table">
+                    <thead>
+                        <tr>
+                        <th>{{lang_trans('txt_sno')}}</th>
+                        <th>{{lang_trans('txt_vendor')}}</th>
+                        <th>{{lang_trans('txt_order_num')}}</th>
+                        <th>{{lang_trans('txt_date')}}</th>
+                        <th>{{lang_trans('txt_room')}}</th>
+                        <th>{{lang_trans('txt_order_status')}}</th>
+                        <th>{{lang_trans('txt_total_amount')}}</th>
+                        <th>{{lang_trans('txt_action')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                        $totalOrderAmountGst = $orderInfo->gst_amount;
-                        $totalOrderAmountCGst = $orderInfo->cgst_amount;
-                        $totalOrderAmountDiscount = $orderInfo->discount;
-                      }
-                                   
-                      $countOrderHistory = ($value->order_history) ? $value->order_history->count() : 0;
-                      $reservationId = $value->reservation_id;
+                        @foreach($datalist as $k=>$val)
+                          @php
+                            $btnText = isset($status_list[$val->order_status+1]) ? $status_list[$val->order_status+1] : null;
+                          @endphp
+                          <tr>
+                            <td>{{$k+1}}</td>
+                            <td>{{$val->vendor_info->vendor_name}}</td>
+                            <td>{{$val->order_num}}</td>
+                            <td>{{dateConvert($val->order_date, 'Y-m-d')}}</td>
+                            <td>{{ ($val->room_info) ? $val->room_info->room_no.' | '.$val->room_info->room_name : '' }}</td>
+                            <td>{!!getStatusBtn($val->order_status,4)!!}</td>
+                            <td class="text-right">{{numberFormat($val->total_amount)}}</td>
+                            <td>                          
+                              @if(isPermission('view-laundry-order'))
+                                <a class="btn btn-sm btn-primary" href="{{route('view-laundry-order',[$val->id])}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i data-feather='eye'></i></a>
+                              @endif
+                    
+                              @if(isPermission('edit-laundry-order') && in_array($val->order_status, [0, 1]))
+                                <a class="btn btn-sm btn-info" href="{{route('edit-laundry-order',[$val->id])}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='edit'></i></a>
+                              @endif
 
-                      $name = $value->name;
-                      $email = $value->email;
-                      $mobile = $value->mobile;
-                      $checkOutDate = '';
-                      if($reservationId>0){
-                        if($value->reservation_data){
-                          if($value->reservation_data->customer){
-                            $name = $value->reservation_data->customer->name;
-                            $email = $value->reservation_data->customer->email;
-                            $mobile = $value->reservation_data->customer->mobile;
-                            $checkOutDate = $value->reservation_data->check_out;
-                          }
-                        }
-                        $type = lang_trans('txt_room_order');
-                      } else {
-                        $type = lang_trans('txt_tbl_order');
-                      }
-                      @endphp
-                      <tr>
-                        <td>{{$key+1}}</td>
-                        <td>{{$type}}</td>
-                        <td>{{$value->invoice_num}}</td>
-                        <td>{{($value->reservation_data!=null) ? $value->reservation_data->room_num : $value->table_num }}</td>
-                        <td>{{$name}}</td>
-                        <td>{{$email}}</td>
-                        <td>{{$mobile}}</td>
-                        <td>{{dateConvert($value->created_at,'d-m-Y H:i')}}</td>
-                        <td>{{ ($value->original_date!=null) ? dateConvert($value->original_date,'d-m-Y H:i') : 'NA'}}</td>
-                        <td width="40%">
-                          <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#tbl-{{$key}}">{{lang_trans('btn_view_item')}}</button>
-                          {{-- @if($value->reservation_data==null) --}}
-                          <a href="{{route('order-invoice-final',[$orderInfo->id])}}" class="btn btn-sm btn-warning" target="_blank">{{lang_trans('txt_invoice')}}</a>
-                          {{-- @endif --}}
-                          <div id="tbl-{{$key}}" class="collapse">
-                            <table class="table table-bordered items-tbl">
-                              <thead>
-                                <tr>
-                                  <th width="2%">{{lang_trans('txt_sno')}}</th>
-                                  <th width="20%">{{lang_trans('txt_item_details')}}</th>
-                                  <th width="5%">{{lang_trans('txt_item_qty')}}</th>
-                                  <th width="5%">{{lang_trans('txt_item_price')}}</th>
-                                  <th width="10%">{{lang_trans('txt_subtotal')}}</th>
-                                  <th width="10%">{{lang_trans('txt_date')}}</th>
-                                  <th width="5%">{{lang_trans('txt_action')}}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @forelse($value->orders_items as $k=>$val)
-                                  @php
-                                    $totalOrdersAmount = $totalOrdersAmount + ($val->item_qty*$val->item_price);
-                                    $finalOrderAmount = ($totalOrdersAmount+$totalOrderAmountGst+$totalOrderAmountCGst-$totalOrderAmountDiscount);
+                              @if(isPermission('delete-laundry-order') && in_array($val->order_status, [0]))
+                                <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-laundry-order',[$val->id])}}" title="{{lang_trans('btn_delete')}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i data-feather='trash-2'></i></button>
+                              @endif
+                              
+                              @if(isPermission('update-laundry-order-status') && $btnText && in_array($val->order_status, [0, 1]))
+                                <button class="btn btn-warning btn-sm confirm_btn laundry_order_status_btn margin-button" data-url="{{route('update-laundry-order-status',['order_id'=>$val->id, 'status'=>$val->order_status])}}" title="{{$btnText}}">{{lang_trans('txt_set')}} {{$btnText}}</button>
+                              @endif
 
-                                    $flag = false;
+                              @if(isPermission('edit-laundry-order') && $val->order_status == 2)
+                                  <a class="btn btn-sm btn-success margin-button" href="{{route('edit-laundry-order',[$val->id])}}">{{lang_trans('txt_set')}} {{$btnText}}</a>
+                              @endif
 
-                                    if(Auth::user()->role_id==1){
-                                      if($reservationId>0){
-                                          if($checkOutDate=='' & $checkOutDate==null){
-                                            $flag = true;
-                                          }
-                                      } else if($countOrderHistory>0){
-                                        $flag = true;
-                                      }
-                                    }
-                                  @endphp
-                                  <tr>
-                                    <td>{{$k+1}}</td>
-                                    <td>{{$val->item_name}}</td>
-                                    <td>{{$val->item_qty}}</td>
-                                    <td>{{getCurrencySymbol()}} {{$val->item_price}}</td>
-                                    <td>{{getCurrencySymbol()}} {{$val->item_qty*$val->item_price}}</td>
-                                     <td>{{dateConvert($val->created_at,'d-m-Y H:i')}}</td>
-                                    <td> 
-                                      @if($flag)
-                                        <button class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-order-item',[$val->id])}}" title="{{lang_trans('btn_delete')}}"><i class="fa fa-trash"></i></button>
-                                      @else
-                                        <button class="btn btn-default btn-sm bgcolor-eee" title="{{lang_trans('btn_delete')}}"><i class="fa fa-trash color-cbc"></i></button>
-                                      @endif
-                                    </td>
-                                  </tr>
-                                @empty
-                                  <tr>
-                                    <td colspan="6">{{lang_trans('txt_no_orders')}}</td>
-                                  </tr>
-                                @endforelse
-                                <tr>
-                                    <th colspan="5" class="text-right">{{lang_trans('txt_total_amount')}}</td>
-                                    <td>{{getCurrencySymbol()}} {{numberFormat($finalOrderAmount)}}</td>
-                                    <td></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </th>
-                        </td>
-                       <td>{{getCurrencySymbol()}} {{numberFormat($finalOrderAmount)}}</td>
-                      </tr>
-                    @endforeach
-                  </tbody>
+                              @if(isPermission('invoice-laundry-order') && $val->order_status == 3)
+                                <a class="btn btn-sm btn-danger margin-button" href="{{route('invoice-laundry-order',[$val->id])}}">{{lang_trans('txt_invoice')}}</a>
+                              @endif
+                            </td>
+                          </tr>
+                        @endforeach
+                    
+                    </tbody>
                 </table>
-               
-              </div>
-          </div>
-      </div>
-  </div>
-</div>  
-     
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+@endsection
+@section('scripts')
+<!-- BEGIN: Page JS-->
+  <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js')}}"></script>
+<!-- END: Page JS-->
 @endsection
