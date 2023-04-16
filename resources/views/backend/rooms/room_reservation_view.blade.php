@@ -55,51 +55,81 @@
 
 @endphp
 
+<style>
+
+.child_table_left_col{
+    float: right;
+    width: 30%;
+  }
+
+  .child_table_right_col{
+    width: 15%;
+  }
+
+  @media screen and (max-width: 410px) {
+    /* .table.child > :not(caption) > * > * {
+      padding: 0rem 0rem !important;
+    } */
+    .child_table_left_col{
+      float:left;
+      width: 50%;
+    }
+
+    .child_table_right_col{
+      float:right;
+      width: 50%;
+    }
+  }
 
 
+</style>
 
 
-<div class="card">
-      <div class="card-header">
-          <h4 class="card-title mb-50">{{lang_trans('heading_guest_info')}}</h4>
-      </div>
-      <hr/>
-      <div class="card-body">
-          <div class="row">
-              <div class="col-xl-7 col-12">
-                  <dl class="row mb-0">
-                      <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_fullname')}}:</dt>
-                      <dd class="col-sm-8 mb-1">{{$data_row->customer->name}}</dd>
+<section id="basic-datatable">
+    <div class="row">
+        <div class=" col-12">
+          <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-50">{{lang_trans('heading_guest_info')}}</h4>
+                </div>
+                <hr/>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-7 col-12">
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_fullname')}}:</dt>
+                                <dd class="col-sm-8 mb-1">{{$data_row->customer->name}}</dd>
 
-                      <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_email')}}:</dt>
-                      <dd class="col-sm-8 mb-1">{{$data_row->customer->email}}</dd>
+                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_email')}}:</dt>
+                                <dd class="col-sm-8 mb-1">{{$data_row->customer->email}}</dd>
 
-                      <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_gender')}}:</dt>
-                      <dd class="col-sm-8 mb-1">{{$data_row->customer->gender}}</dd>
+                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_gender')}}:</dt>
+                                <dd class="col-sm-8 mb-1">{{$data_row->customer->gender}}</dd>
 
-                     
+                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_address')}}:</dt>
+                                <dd class="col-sm-8 mb-1">{{$data_row->customer->address}}, {{$data_row->customer->city}}, {{$data_row->customer->state}}, {{$data_row->customer->country}}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-xl-5 col-12">
+                            <dl class="row mb-0">
 
-                      <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_address')}}:</dt>
-                      <dd class="col-sm-8 mb-1">{{$data_row->customer->address}}, {{$data_row->customer->city}}, {{$data_row->customer->state}}, {{$data_row->customer->country}}</dd>
-                  </dl>
-              </div>
-              <div class="col-xl-5 col-12">
-                  <dl class="row mb-0">
+                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_father_name')}}:</dt>
+                                <dd class="col-sm-8 mb-1">{{$data_row->customer->father_name}}</dd>
 
-                      <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_father_name')}}:</dt>
-                      <dd class="col-sm-8 mb-1">{{$data_row->customer->father_name}}</dd>
+                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_mobile_num')}}:</dt>
+                                <dd class="col-sm-8 mb-1">{{$data_row->customer->mobile}}</dd>
 
-                      <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_mobile_num')}}:</dt>
-                      <dd class="col-sm-8 mb-1">{{$data_row->customer->mobile}}</dd>
+                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_age')}}:</dt>
+                                <dd class="col-sm-8 mb-1">{{$data_row->customer->age}} {{lang_trans('txt_years')}}</dd>
 
-                      <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_age')}}:</dt>
-                      <dd class="col-sm-8 mb-1">{{$data_row->customer->age}} {{lang_trans('txt_years')}}</dd>
-
-                  </dl>
-              </div>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
           </div>
       </div>
-  </div>
+</section>
 
 
 
@@ -181,14 +211,14 @@
       </div>
   </div>
 
-  <section id="basic-datatable">
+  <section>
     <div class="row">
-        <div class=" col-12">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_person_info')}}</h4>
                 </div>
-                <table class="datatables-basic table">
+                <table class="datatables-basic table table-responsive">
                     <tr>
                         <th>{{lang_trans('txt_sno')}}.</th>
                         <th>{{lang_trans('txt_name')}}</th>
@@ -223,14 +253,14 @@
     
 </section>
 
-<section id="basic-datatable">
+<section>
     <div class="row">
-        <div class=" col-12">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('txt_idcard_uploaded')}}</h4>
                 </div>
-                <table class="datatables-basic table">
+                <table class="datatables-basic table table-responsive">
                     <tr>
                         <th>{{lang_trans('txt_sno')}}.</th>
                         <th>{{lang_trans('txt_action')}}</th>
@@ -261,14 +291,14 @@
 </section>
 
 
-<section id="basic-datatable">
+<section>
     <div class="row">
-        <div class=" col-12">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_payment_info')}}</h4>
                 </div>
-                <table class="datatables-basic table">
+                <table class="datatables-basic table table-responsive">
                   <tr>
                     <th>{{lang_trans('txt_payment_mode')}}</th>
                     <td>{{ ($data_row->payment_mode>0) ? config('constants.PAYMENT_MODES')[$data_row->payment_mode] : 'NA' }}</td>
@@ -276,7 +306,7 @@
                 </table>
             
 
-                <table class="datatables-basic table">
+                <table class="datatables-basic table table-responsive dataTable" >
                   <thead>
                     <th class="text-center" width="2%">{{lang_trans('txt_sno')}}.</th>
                     <th class="text-center" width="20%">{{lang_trans('txt_room')}}</th>
@@ -313,49 +343,50 @@
                   </tbody>
                 </table>
           
-                <table class="table">
+                <table class="table child">
                               <tr>
-                                <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_subtotal')}}</th>
-                                <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalRoomAmount) }}</td>
+                                <th class="text-right child_table_left_col">{{lang_trans('txt_subtotal')}}</th>
+                                <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($totalRoomAmount) }}</td>
                               </tr>
                               <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
-                                <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_cgst')}}</th>
-                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountCGst) }}</td>
+                                <th class="text-right child_table_left_col">{{lang_trans('txt_cgst')}}</th>
+                                <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($roomAmountCGst) }}</td>
                               </tr>
 
                               <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
-                                <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_total_cgst')}}</th>
-                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountWithCGstAmount) }}</td>
+                                <th class="text-right child_table_left_col">{{lang_trans('txt_total_cgst')}}</th>
+                                <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($roomAmountWithCGstAmount) }}</td>
                               </tr>
                               
                               <tr>
-                                <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%)</th>
-                                <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountGst) }}</td>
+                                <th class="text-right child_table_left_col">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%)</th>
+                                <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($roomAmountGst) }}</td>
                               </tr>
 
                               <tr>
-                                <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_discount')}}</th>
-                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($roomAmountDiscount) }}</td>
+                                <th class="text-right child_table_left_col">{{lang_trans('txt_discount')}}</th>
+                                <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($roomAmountDiscount) }}</td>
                               </tr>
                             <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
-                                <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_subtotal')}}</th>
-                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($subTotalRoomAmount) }}</td>
+                                <th class="text-right child_table_left_col">{{lang_trans('txt_subtotal')}}</th>
+                                <td  id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($subTotalRoomAmount) }}</td>
                             </tr>
 
                             <tr>
-                                <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_advance_amount')}}</th>
-                                <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($advancePayment) }}</td>
+                                <th class="text-right child_table_left_col">{{lang_trans('txt_advance_amount')}}</th>
+                                <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($advancePayment) }}</td>
                             </tr>
                               <tr>
-                                <th style="float: right;" width="30%" class="text-right ">{{lang_trans('txt_final_amount')}}</th>
-                                <td width="15%" id="td_final_amount" class="text-right ">{{getCurrencySymbol()}} {{ numberFormat($subTotalRoomAmount - $advancePayment) }}</td>
+                                <th  class="text-right child_table_left_col">{{lang_trans('txt_final_amount')}}</th>
+                                <td  id="td_final_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($subTotalRoomAmount - $advancePayment) }}</td>
                               </tr>
                         </table>
                         <hr/>
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('txt_food_orders')}}</h4>
                 </div>
-                <table class="datatables-basic table">
+                <table
+                 class="datatables-basic table table-responsive dataTable" >
                   <thead>
                       <th width="2%">{{lang_trans('txt_sno')}}.</th>
                       <th width="20%">{{lang_trans('txt_item_details')}}</th>
@@ -382,36 +413,36 @@
                   </tbody>
                 </table>
 
-                <table class="table ">
+                <table class="table">
                     <tr>
-                      <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_subtotal')}}</th>
-                      <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalOrdersAmount) }}</td>
+                      <th  class="text-right child_table_left_col">{{lang_trans('txt_subtotal')}}</th>
+                      <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($totalOrdersAmount) }}</td>
                     </tr>
                     <tr>
-                      <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%)</th>
-                      <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($foodAmountGst) }}</td>
+                      <th class="text-right child_table_left_col">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%)</th>
+                      <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($foodAmountGst) }}</td>
                     </tr>
 
                     <tr class="{{$cgstPercFood > 0 ? '' : 'hide_elem'}}">
-                      <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%)</th>
-                      <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($foodAmountCGst) }}</td>
+                      <th class="text-right child_table_left_col">{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%)</th>
+                      <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($foodAmountCGst) }}</td>
                     </tr>
                     <tr>
-                      <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_discount')}}</th>
-                      <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalOrderAmountDiscount)}}</td>
+                      <th class="text-right child_table_left_col">{{lang_trans('txt_discount')}}</th>
+                      <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($totalOrderAmountDiscount)}}</td>
                     </tr>
                     <tr class="">
-                      <th style="float: right;" width="30%" class="text-right ">{{lang_trans('txt_final_amount')}}</th>
-                      <td width="15%" id="td_final_amount" class="text-right ">{{getCurrencySymbol()}} {{ numberFormat($finalOrderAmount) }}</td>
+                      <th class="text-right child_table_left_col">{{lang_trans('txt_final_amount')}}</th>
+                      <td id="td_final_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($finalOrderAmount) }}</td>
                     </tr>
                 </table>
 
                 <table class="table ">
                     <tr class="">
-                      <th style="float: right;" width="30%" class="text-right bg-default">
+                      <th class="text-right child_table_left_col bg-default">
                         {{ ($additionalAmountReason) ? $additionalAmountReason : lang_trans('txt_additional_amount_reason') }}
                       </th>
-                      <td width="15%" class="text-right">
+                      <td  class="text-right child_table_right_col">
                         {{getCurrencySymbol()}} {{ numberFormat($additionalAmount) }}
                       </td>
                     </tr>
@@ -419,10 +450,10 @@
 
                 <table class="table ">
                       <tr class="">
-                        <th style="float: right;" width="30%" class="text-right">{{lang_trans('txt_grand_total')}}</th>
+                        <th class="text-right child_table_left_col">{{lang_trans('txt_grand_total')}}</th>
                         <!-- <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($finalRoomAmount+$finalOrderAmount+$additionalAmount) }}</td> -->
                         <!-- change the logic of filnal price -->
-                        <td width="15%" class="text-right ">{{getCurrencySymbol()}} {{ numberFormat($finalAmount) }}</td>
+                        <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($finalAmount) }}</td>
                       </tr>
                 </table>
             </div>

@@ -137,7 +137,7 @@ $totalAmount = 0;
 
 
    <!-- start new ui of report -->
-   <section id="basic-datatable">
+<section id="basic-datatable">
     <div class="row">
         <div class=" col-12">
             <div class="card">
@@ -145,7 +145,7 @@ $totalAmount = 0;
                   <h4 class="card-title">{{lang_trans('txt_checkout_report')}}</h4>
               </div>
               <div class="card-body">
-              {{ Form::model($search_data,array('url'=>route('search-bladi'),'id'=>"search-bladi", 'class'=>"form-horizontal form-label-left")) }}
+                  {{ Form::model($search_data,array('url'=>route('search-bladi'),'id'=>"search-bladi", 'class'=>"form-horizontal form-label-left")) }}
                       <div class="row">  
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="mb-1">
@@ -197,7 +197,7 @@ $totalAmount = 0;
             </div>
         </div>
       </div>
-
+</section>
 <!--   
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
@@ -269,7 +269,7 @@ $totalAmount = 0;
 
 <section>
   <div class="row">
-        <div class=" col-12">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_checkout_list')}}</h4>
@@ -470,7 +470,7 @@ $totalAmount = 0;
 
                 <table class="table table-striped table-bordered">
                     <tr>
-                      <th class="text-right" style="float: right;" width="30%">{{lang_trans('txt_grand_total')}}</th>
+                      <th class="text-right"  width="30%">{{lang_trans('txt_grand_total')}}</th>
                       <th width="20%"><b>{{getCurrencySymbol()}} {{numberFormat($totalAmount)}}</b></th>
                     </tr>
                 </table>

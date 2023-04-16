@@ -19,6 +19,35 @@
   }
 @endphp
 
+<style>
+
+  .child_table_left_col{
+      float: right;
+      width: 30%;
+    }
+
+    .child_table_right_col{
+      width: 15%;
+    }
+
+    @media screen and (max-width: 410px) {
+      /* .table.child > :not(caption) > * > * {
+        padding: 0rem 0rem !important;
+      } */
+      .child_table_left_col{
+        float:left;
+        width: 50%;
+      }
+
+      .child_table_right_col{
+        float:right;
+        width: 50%;
+      }
+    }
+
+
+</style>
+
 <div class="card">
       <div class="card-header">
           <h4 class="card-title mb-50">{{lang_trans('heading_guest_info')}}</h4>
@@ -114,7 +143,7 @@
                     <h4 class="card-title">{{lang_trans('heading_payment_info')}}</h4>
                 </div>
                
-                <table class=" table">
+                <table class="datatables-basic table table-responsive dataTable" style="width:100%;">
                   <thead>
                   <th class="text-center" width="2%">{{lang_trans('txt_sno')}}.</th>
                   <th class="text-center" width="20%">{{lang_trans('txt_laundry_item')}}</th>
@@ -145,20 +174,20 @@
                       <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($subtotalAmount) }}</td>
                     </tr> -->
                     <tr>
-                      <th style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_sgst')}} ({{$data_row->gst_perc}}%)</th>
-                      <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($gstAmount) }}</td>
+                      <th class="text-right child_table_left_col">{{lang_trans('txt_sgst')}} ({{$data_row->gst_perc}}%)</th>
+                      <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($gstAmount) }}</td>
                     </tr>
                     <!-- <tr class="{{$data_row->cgst_perc > 0 ? '' : 'hide_elem'}}">
                       <th style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_cgst')}} ({{$data_row->cgst_perc}}%)</th>
                       <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($cgstAmount) }}</td>
                     </tr> -->
                     <tr>
-                      <th style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_discount')}}</th>
-                      <td width="15%" id="td_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalDiscount) }}</td>
+                      <th class="text-right child_table_left_col">{{lang_trans('txt_discount')}}</th>
+                      <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($totalDiscount) }}</td>
                     </tr>
                     <tr class="">
-                      <th style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_final_amount')}}</th>
-                      <td width="15%" id="td_final_amount" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($totalAmount) }}</td>
+                      <th class="text-right child_table_left_col">{{lang_trans('txt_final_amount')}}</th>
+                      <td id="td_final_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($totalAmount) }}</td>
                     </tr>
                 </table>
             
