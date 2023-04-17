@@ -38,6 +38,44 @@
   padding-left: 0px;
   padding-right: 0px;
  }
+
+.child_table_left_col{
+    float: right;
+    width: 30%;
+  }
+
+  .child_table_right_col{
+    width: 15%;
+  }
+
+  .overflow_text{
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  @media screen and (max-width: 410px) {
+    /* .table.child > :not(caption) > * > * {
+      padding: 0rem 0rem !important;
+    } */
+    .child_table_left_col{
+      float:left;
+      width: 50%;
+    }
+
+    .child_table_right_col{
+      float:right;
+      width: 50%;
+    }
+
+    .spacing{
+      border-top: 60px solid transparent;
+    }
+/* 
+    .remove_padding{
+      padding:5px 0px !important;
+    } */
+  }
+
 </style>
 <div class="col-md-12 col-12">
               <div class="card">
@@ -199,7 +237,7 @@
                                         </table>
                                     
 
-                                        <table class="datatables-basic table">
+                                        <table class="datatables-basic table table-responsive dataTable">
                                           <thead>
                                             <th class="text-center" width="2%">{{lang_trans('txt_sno')}}.</th>
                                             <th class="text-center" width="20%">{{lang_trans('txt_room')}}</th>
@@ -238,12 +276,12 @@
                                   
                                         <table class="table">
                                                     <tr>
-                                                      <th  style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_subtotal')}} {{Form::hidden('amount[total_room_amount]',$totalRoomAmount,['id'=>'total_room_amount'])}}</th>
-                                                      <td width="15%" class="text-right td_total_room_amount">{{getCurrencySymbol()}} {{ $totalRoomAmount }}</td>
+                                                      <th class="text-right child_table_left_col">{{lang_trans('txt_subtotal')}} {{Form::hidden('amount[total_room_amount]',$totalRoomAmount,['id'=>'total_room_amount'])}}</th>
+                                                      <td class="text-right td_total_room_amount child_table_right_col">{{getCurrencySymbol()}} {{ $totalRoomAmount }}</td>
                                                     </tr>
                                                       <tr>
-                                                          <th  style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_discount')}}</th>
-                                                          <td width="15%" id="td_advance_amount" class="text-right">
+                                                          <th class="text-right child_table_left_col">{{lang_trans('txt_discount')}}</th>
+                                                          <td id="td_advance_amount" class="text-right child_table_right_col">
                                                               <div class="row" style="height:20px;">
                                                                   <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0 remove_padding">
                                                                       {{Form::number('discount_amount',$roomAmountDiscount,['class'=>"form-control", 'style'=>"padding:0.3rem 1rem", "id"=>"discount", "placeholder"=>lang_trans('ph_any_discount'),"min"=>0])}}
@@ -257,48 +295,48 @@
                                                       </tr>
                                                   
                                                     <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
-                                                        <th  style="float: right;" width="30%"  class="text-right"> {{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_room_amount_cgst]',null,['id'=>'total_room_amount_cgst'])}}
+                                                        <th class="text-right child_table_left_col spacing"> {{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_room_amount_cgst]',null,['id'=>'total_room_amount_cgst'])}}
                                                         {{Form::hidden('amount[org_room_amount_cgst]',$roomAmountCGst,['id'=>'org_room_amount_cgst'])}}
                                                         </th>
-                                                        <td width="15%" id="td_total_room_amount_cgst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountCGst }}</td>
+                                                        <td id="td_total_room_amount_cgst" class="text-right child_table_right_col spacing">{{getCurrencySymbol()}} {{ $roomAmountCGst }}</td>
                                                       </tr>
                                                       <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
-                                                        <th  style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_total_cgst')}}  {{Form::hidden('amount[total_room_amount_with_cgst]',null,['id'=>'total_room_amount_with_cgst'])}}</th>
-                                                        <td width="15%" id="td_total_room_amount_with_cgst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountWithCGstAmount }}</td>
+                                                        <th class="text-right child_table_left_col">{{lang_trans('txt_total_cgst')}}  {{Form::hidden('amount[total_room_amount_with_cgst]',null,['id'=>'total_room_amount_with_cgst'])}}</th>
+                                                        <td id="td_total_room_amount_with_cgst" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ $roomAmountWithCGstAmount }}</td>
                                                       </tr>
                                                       <tr>
-                                                        <th  style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%) {{Form::hidden('amount[total_room_amount_gst]',null,['id'=>'total_room_amount_gst'])}}
+                                                        <th class="text-right child_table_left_col">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%) {{Form::hidden('amount[total_room_amount_gst]',null,['id'=>'total_room_amount_gst'])}}
                                                         {{Form::hidden('amount[org_room_amount_gst]',$roomAmountGst,['id'=>'org_room_amount_with_cgst'])}}
                                                         </th>
-                                                        <td width="15%" id="td_total_room_amount_gst" class="text-right">{{getCurrencySymbol()}} {{ $roomAmountGst }}</td>
+                                                        <td id="td_total_room_amount_gst" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ $roomAmountGst }}</td>
                                                       </tr>
 
                                                     <tr>
-                                                      <th  style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_advance_amount')}} {{Form::hidden('amount[total_room_advance_amount]',$advancePayment)}}</th>
-                                                      <td width="15%" id="td_room_advance_amount" class="text-right">{{getCurrencySymbol()}} {{ $advancePayment }}</td>
+                                                      <th   class="text-right child_table_left_col" >{{lang_trans('txt_advance_amount')}} {{Form::hidden('amount[total_room_advance_amount]',$advancePayment)}}</th>
+                                                      <td id="td_room_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ $advancePayment }}</td>
                                                     </tr>
 
                                                     <tr class="">
-                                                      <th  style="float: right;" width="30%"  class="text-right">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[total_room_final_amount]',null,['id'=>'total_room_final_amount'])}}</th>
-                                                      <td width="15%" id="td_room_final_amount" class="text-right">{{getCurrencySymbol()}} {{ $finalRoomAmount }}</td>
+                                                      <th class="text-right child_table_left_col">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[total_room_final_amount]',null,['id'=>'total_room_final_amount'])}}</th>
+                                                      <td id="td_room_final_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ $finalRoomAmount }}</td>
                                                     </tr>
                                                 </table>
                                                 
                                                 <table class="table ">
                                                     <tr class="bg-default">
-                                                      <th style="float: right;" width="30%" class="text-right">
+                                                      <th class="text-right child_table_left_col">
                                                           @if(env('APP_NT_ENABLE'))
                                                               <label class="control-label"> &nbsp;</label>
                                                           @endif
                                                         {{Form::text('amount[additional_order_amount_reason]',$additionalOrderAmountReason,['class'=>"form-control col-md-7 col-xs-12", "id"=>"additional_order_amount_reason", "placeholder"=>lang_trans('txt_additional_amount_reason')])}}
                                                       </th>
                                                         @if(env('APP_NT_ENABLE'))
-                                                      <th style="float: right;" width="30%">
+                                                      <th class="">
                                                           <label class="control-label"> {{lang_trans('ministory_of_tourism_section')}} <span class="required">*</span></label>
                                                           {{ Form::select('mt_expence_type_id_additional',getDynamicDropdownList('expence_type_id', true),null,['class'=>'form-control col-md-6 col-xs-12', 'required'=>'required']) }}
                                                       </th>
                                                         @endif
-                                                      <td width="15%" id="td_additional_amount" class="text-right">
+                                                      <td id="td_additional_amount" class="text-right child_table_right_col">
                                                           @if(env('APP_NT_ENABLE'))
                                                               <label class="control-label"> &nbsp;</label>
                                                           @endif
@@ -309,21 +347,21 @@
 
                                                 <table class="table ">
                                                     <tr>
-                                                      <th style="float: right;" width="30%" class="">{{lang_trans('txt_grand_food_total')}} {{Form::hidden('amount[total_food_final_amount]',null,['id'=>'total_food_final_amount'])}}</th>
-                                                      <td width="15%" id="td_total_food_final_amount" class="text-right ">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td>
+                                                      <th class="child_table_left_col remove_padding">{{lang_trans('txt_grand_food_total')}} {{Form::hidden('amount[total_food_final_amount]',null,['id'=>'total_food_final_amount'])}}</th>
+                                                      <td id="td_total_food_final_amount" class="text-right child_table_right_col remove_padding">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td>
                                                     </tr>
                                                 </table>
 
                                                 <table class="table ">
                                                     <tr class="">
-                                                      <th style="float: right;" width="30%" class="text-right bg-default">
+                                                      <th class="text-right bg-default child_table_left_col remove_padding" >
                                                         {{ ($additionalAmountReason) ? $additionalAmountReason : lang_trans('txt_additional_amount_reason') }}
                                                       </th>
-                                                      <td width="15%" class="text-right">
+                                                      <td class="text-right child_table_right_col remove_padding">
                                                         {{getCurrencySymbol()}} {{ numberFormat($additionalAmount) }}
                                                       </td>
                                                     </tr>
-                                                    <td style="float: right;" width="30%" id="td_additional_amount" class="text-right">
+                                                    <td id="td_additional_amount" class="text-right child_table_right_col">
                                                       @if(env('APP_NT_ENABLE'))
                                                           <label class="control-label"> &nbsp;</label>
                                                       @endif
@@ -334,7 +372,7 @@
                                         <div class="card-header border-bottom">
                                             <h4 class="card-title">{{lang_trans('txt_food_orders')}}</h4>
                                         </div>
-                                        <table class="datatables-basic table">
+                                        <table class="datatables-basic table table-responsive dataTable">
                                           <thead>
                                               <th width="2%">{{lang_trans('txt_sno')}}.</th>
                                               <th width="20%">{{lang_trans('txt_item_details')}}</th>
@@ -369,8 +407,8 @@
 
                                           </tr>
                                           <tr>
-                                              <th style="float:right;" width="30%" class="text-right">{{lang_trans('txt_discount')}}</th>
-                                              <td width="15%" id="td_advance_amount" class="text-right">
+                                              <th class="text-right child_table_left_col">{{lang_trans('txt_discount')}}</th>
+                                              <td id="td_advance_amount" class="text-right child_table_right_col">
                                                   <!-- <div class="col-md-12 col-sm-12 col-xs-12 p-left-0 p-right-0"> -->
                                                   <div class="row" style="height:20px;">
                                                       <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0 remove_padding" >
@@ -385,38 +423,38 @@
                                           </tr>
                                                 
                                           <tr>
-                                          <th  style="float: right;" width="30%" class="text-right">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%) {{Form::hidden('amount[order_amount_gst]',$foodAmountGst,['id'=>'total_order_amount_gst'])}}</th>
-                                            <td width="15%" id="td_order_amount_gst" class="text-right">{{getCurrencySymbol()}} {{$foodAmountGst}}</td>
+                                          <th class="text-right child_table_left_col spacing">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%) {{Form::hidden('amount[order_amount_gst]',$foodAmountGst,['id'=>'total_order_amount_gst'])}}</th>
+                                            <td id="td_order_amount_gst" class="text-right child_table_right_col spacing">{{getCurrencySymbol()}} {{$foodAmountGst}}</td>
 
                                           </tr>
                                   
                                           <tr class="{{$cgstPercFood > 0 ? '' : 'hide_elem'}}">
-                                            <th  style="float: right;" width="30%" class="text-right">{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%) {{Form::hidden('amount[order_amount_cgst]',$foodAmountCGst,['id'=>'total_order_amount_cgst'])}}</th>
-                                            <td width="15%" id="td_order_amount_cgst" class="text-right">{{getCurrencySymbol()}} {{$foodAmountCGst}}</td>
+                                            <th   class="text-right child_table_left_col">{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%) {{Form::hidden('amount[order_amount_cgst]',$foodAmountCGst,['id'=>'total_order_amount_cgst'])}}</th>
+                                            <td id="td_order_amount_cgst" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{$foodAmountCGst}}</td>
                                           </tr>
                                         
                                           <tr class="">
-                                            <th  style="float: right;" width="30%" class="text-right">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[order_final_amount]',null,['id'=>'total_order_final_amount'])}}</th>
-                                            <td width="15%" id="td_order_final_amount" class="text-right">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td>
+                                            <th  class="text-right child_table_left_col">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[order_final_amount]',null,['id'=>'total_order_final_amount'])}}</th>
+                                            <td id="td_order_final_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td>
                                             <!-- <th class="text-right">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[order_final_amount]',null,['id'=>'total_order_final_amount'])}}</th>
                                             <td width="15%" id="td_order_final_amount" class="text-right">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td> -->
                                           </tr>
                                         </table>
                                         <table class="table ">
                                             <tr class="bg-default">
-                                              <th   style="float: right;" width="30%" class="text-right" style="float: right;" width="30%">
+                                              <th class="text-right ">
                                                   @if(env('APP_NT_ENABLE'))
                                                       <label class="control-label"> &nbsp;</label>
                                                   @endif
                                                 {{Form::text('amount[additional_order_amount_reason]',$additionalOrderAmountReason,['class'=>"form-control col-md-7 col-xs-12", "id"=>"additional_order_amount_reason", "placeholder"=>lang_trans('txt_additional_amount_reason')])}}
                                               </th>
                                                 @if(env('APP_NT_ENABLE'))
-                                              <th style="float: right;" width="30%">
+                                              <th class="">
                                                   <label class="control-label"> {{lang_trans('ministory_of_tourism_section')}} <span class="required">*</span></label>
                                                   {{ Form::select('mt_expence_type_id_additional',getDynamicDropdownList('expence_type_id', true),null,['class'=>'form-control col-md-6 col-xs-12', 'required'=>'required']) }}
                                               </th>
                                                 @endif
-                                              <td width="15%" id="td_additional_amount" class="text-right">
+                                              <td  id="td_additional_amount" class="text-right ">
                                                   @if(env('APP_NT_ENABLE'))
                                                       <label class="control-label"> &nbsp;</label>
                                                   @endif
@@ -427,17 +465,17 @@
 
                                         <table class="table ">
                                             <tr >
-                                              <th style="float: right;" width="30%" class="">{{lang_trans('txt_grand_food_total')}} {{Form::hidden('amount[total_food_final_amount]',null,['id'=>'total_food_final_amount'])}}</th>
-                                              <td width="15%" id="td_total_food_final_amount" class="text-right ">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td>
+                                              <th class="">{{lang_trans('txt_grand_food_total')}} {{Form::hidden('amount[total_food_final_amount]',null,['id'=>'total_food_final_amount'])}}</th>
+                                              <td id="td_total_food_final_amount" class="text-right ">{{getCurrencySymbol()}} {{ $finalOrderAmount }}</td>
                                             </tr>
                                         </table>
 
                                         <table class="table ">
                                             <tr class="">
-                                              <th style="float: right;" width="30%" class="text-right bg-default">
+                                              <th  class="text-right bg-default ">
                                                 {{ ($additionalAmountReason) ? $additionalAmountReason : lang_trans('txt_additional_amount_reason') }}
                                               </th>
-                                              <td width="15%" class="text-right">
+                                              <td class="text-right ">
                                                 {{getCurrencySymbol()}} {{ numberFormat($additionalAmount) }}
                                               </td>
                                             </tr>
@@ -445,10 +483,10 @@
 
                                         <table class="table ">
                                               <tr class="">
-                                                <th style="float: right;" width="30%" class="text-right ">{{lang_trans('txt_grand_total')}}</th>
+                                                <th class="text-right ">{{lang_trans('txt_grand_total')}}</th>
                                                 <!-- <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($finalRoomAmount+$finalOrderAmount+$additionalAmount) }}</td> -->
                                                 <!-- change the logic of filnal price -->
-                                                <td width="15%" class="text-right ">{{getCurrencySymbol()}} {{ numberFormat($finalAmount) }}</td>
+                                                <td  class="text-right ">{{getCurrencySymbol()}} {{ numberFormat($finalAmount) }}</td>
                                               </tr>
                                         </table>
                                     </div>
