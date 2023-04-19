@@ -95,6 +95,8 @@
             @if($permissionsArr['add-companys'] || $permissionsArr['list-companys'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_companys')}}</span></a>
                     <ul class="menu-content">
+                        @if($permissionsArr['add-companys'])<li><a class="d-flex align-items-center" href="{{route('add-company')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_company_add')}} </span></a></li>       
+                        @endif
                         @if($permissionsArr['list-companys'])<li><a class="d-flex align-items-center" href="{{route('list-company')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_company_all')}} </span></a></li>       
                         @endif
                     </ul>
@@ -104,6 +106,8 @@
             @if($permissionsArr['add-customer'] || $permissionsArr['list-customer'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_customers')}}</span></a>
                     <ul class="menu-content">
+                        @if($permissionsArr['add-customer'])<li><a class="d-flex align-items-center" href="{{route('add-customer')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_customer_add')}} </span></a></li>       
+                        @endif
                         @if($permissionsArr['list-customer'])<li><a class="d-flex align-items-center" href="{{route('list-customer')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_customer_all')}} </span></a></li>       
                         @endif
                     </ul>
@@ -113,6 +117,8 @@
             @if($permissionsArr['add-user'] || $permissionsArr['list-user'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_users')}}</span></a>
                     <ul class="menu-content">
+                        @if($permissionsArr['add-user'])<li><a class="d-flex align-items-center" href="{{route('add-user')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_user_add')}} </span></a></li>       
+                        @endif
                         @if($permissionsArr['list-user'])<li><a class="d-flex align-items-center" href="{{route('list-user')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_user_all')}} </span></a></li>       
                         @endif
                     </ul>
@@ -122,7 +128,11 @@
             @if($permissionsArr['add-food-category'] || $permissionsArr['list-food-category'] || $permissionsArr['add-food-item'] || $permissionsArr['list-food-item'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='coffee'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_fooditems')}}</span></a>
                     <ul class="menu-content">
+                        @if($permissionsArr['add-food-category']) <li><a class="d-flex align-items-center" href="{{route('add-food-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_foodcat_add')}}</span></a></li>
+                        @endif
                         @if($permissionsArr['list-food-category']) <li><a class="d-flex align-items-center" href="{{route('list-food-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_foodcat_all')}}</span></a></li>
+                        @endif
+                        @if($permissionsArr['add-food-item']) <li><a class="d-flex align-items-center" href="{{route('add-food-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_fooditem_add')}} </span></a></li>       
                         @endif
                         @if($permissionsArr['list-food-item']) <li><a class="d-flex align-items-center" href="{{route('list-food-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_fooditem_all')}} </span></a></li>       
                         @endif
@@ -133,7 +143,11 @@
             @if($permissionsArr['add-product'] || $permissionsArr['list-product'] || $permissionsArr['io-stock'] || $permissionsArr['stock-history'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='shopping-cart'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_stocks')}}</span></a>
                     <ul class="menu-content">
+                        @if($permissionsArr['add-product']) <li><a class="d-flex align-items-center" href="{{route('add-product')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_product_add')}}</span></a></li>
+                        @endif
                         @if($permissionsArr['list-product']) <li><a class="d-flex align-items-center" href="{{route('list-product')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_product_all')}}</span></a></li>
+                        @endif
+                        @if($permissionsArr['io-stock']) <li><a class="d-flex align-items-center" href="{{route('io-stock')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_add')}} </span></a></li>       
                         @endif
                         @if($permissionsArr['stock-history']) <li><a class="d-flex align-items-center" href="{{route('stock-history')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_history')}} </span></a></li>       
                         @endif

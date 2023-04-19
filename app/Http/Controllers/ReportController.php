@@ -168,7 +168,7 @@ class ReportController extends Controller
     }
 
     public function searchStockHistory(Request $request) {
-   
+        // dd($request->all());
         $query = StockHistory::orderBy('id','DESC');
         if($request->product_id){
             $query->where('product_id', $request->product_id);
@@ -187,7 +187,7 @@ class ReportController extends Controller
         $this->data['products']=Product::where('is_deleted',0)->pluck('name','id');
         $this->data['search_data'] = $request->all();
         // dd($this->data['datalist'],$this->data['search_data']);
-
+        // dd($this->data['datalist']);
         if($request->submit_btn=='export'){
             $params=['data'=>$this->data['datalist'],'view'=>'excel_view.stock_history_excel'];
             $filename='stock_history.xlsx';

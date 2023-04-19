@@ -53,7 +53,7 @@
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.45;
-  --bs-body-color: #6e6b7b;
+  --bs-body-color: #222225;
   --bs-body-bg: #f8f8f8; }
 
 *,
@@ -2350,7 +2350,7 @@ textarea.form-control-lg {
   display: inline-block;
   font-weight: 400;
   line-height: 1;
-  color: #6e6b7b;
+  color: #1e1e20;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;

@@ -60,8 +60,10 @@
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="mb-1">
                             <br>
-                            <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
-                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                            <!-- <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
+                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button> -->
+                            <button class="btn btn-success search-btn" name="submit_btn" value="search" type="submit">{{lang_trans('btn_search')}}</button>
+                            <button class="btn btn-primary export-btn" name="submit_btn" value="export" type="submit">{{lang_trans('btn_export')}}</button>
                             </div>
                         </div>
                        
@@ -338,8 +340,10 @@
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="mb-1">
                             <br>
-                            <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
-                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                            <!-- <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
+                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button> -->
+                            <button class="btn btn-success search-btn" name="submit_btn" value="search" type="submit">{{lang_trans('btn_search')}}</button>
+                            <button class="btn btn-primary export-btn" name="submit_btn" value="export" type="submit">{{lang_trans('btn_export')}}</button>
                             </div>
                         </div>
                        
@@ -399,7 +403,6 @@
 
 
 
-
    <!-- start new ui of report -->
    <section id="basic-datatable">
     <div class="row">
@@ -450,8 +453,11 @@
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="mb-1">
                             <br>
-                            <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
-                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                            <!-- <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
+                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button> -->
+
+                            <button class="btn btn-success search-btn" name="submit_btn" value="search" type="submit">{{lang_trans('btn_search')}}</button>
+                            <button class="btn btn-primary export-btn" name="submit_btn" value="export" type="submit">{{lang_trans('btn_export')}}</button>
                             </div>
                         </div>
                        
@@ -571,13 +577,17 @@
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="mb-1">
                             <br>
-                            <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
-                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                            <button class="btn btn-success search-btn" name="submit_btn" value="search" type="submit">{{lang_trans('btn_search')}}</button>
+                            <button class="btn btn-primary export-btn" name="submit_btn" value="export" type="submit">{{lang_trans('btn_export')}}</button>
+                            <!-- <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
+                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button> -->
                             </div>
                         </div>
                        
                       </div>
-                  </form>
+
+                  {{ Form::close() }}
+                  <!-- </form> -->
               </div>
             </div>
         </div>
