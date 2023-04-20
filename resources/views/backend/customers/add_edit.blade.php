@@ -29,7 +29,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_firstname')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}}
+                                        {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_firstname')])}}
                                     </div>
                                 </div>
 
@@ -37,7 +37,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_surname')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}}
+                                        {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_surname')])}}
                                     </div>
                                 </div>
 
@@ -45,7 +45,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_email')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
+                                        {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_email')])}}
                                     </div>
                                 </div>
 
@@ -54,7 +54,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_mobile_num')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                                        {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_mobile_num')])}}
                                     </div>
                                 </div>
 
@@ -63,7 +63,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_address')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                                        {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_address'),"rows"=>1])}}
                                     </div>
                                 </div>
 
@@ -79,7 +79,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_state')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        {{Form::text('state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"state", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_state')])}}
+                                        {{Form::text('state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"state", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_state')])}}
                                     </div>
                                 </div>
 
@@ -102,7 +102,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                         <div class="mb-1">
                                             <label class="form-label" for="txt_type_id">{{lang_trans('txt_dob')}}</label>
-                                            {{Form::date('dob',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"dob", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_dob')])}}
+                                            {{Form::date('dob',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"dob", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_dob')])}}
                                         </div>
                                     </div>
 

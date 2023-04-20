@@ -90,7 +90,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_id_number">{{lang_trans('txt_id_number')}}</label>
                                             <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
-                                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                            {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_id_number')])}}
                                     </div>
                                 </div>
 
@@ -113,7 +113,7 @@
                                     <div class="col-xl-4 col-md-6 col-12">
                                         <div class="mb-1">
                                             <label class="form-label" for="txt_type_id">{{lang_trans('txt_dob')}}</label>
-                                            {{Form::date('dob',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"dob", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_dob')])}}
+                                            {{Form::date('dob',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"dob", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_dob')])}}
                                         </div>
                                     </div>
                                 @endif
@@ -122,7 +122,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_type_id">{{lang_trans('txt_reason_of_visit')}}</label>
-                                        {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_reason_of_visit'),"rows"=>1])}}
+                                        {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_reason_of_visit'),"rows"=>1])}}
                                     </div>
                                 </div>
                                 
@@ -148,14 +148,14 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_surname')}}</label>
-                                        {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_surname')])}}
+                                        {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_surname')])}}
                                     </div>
                                 </div>
                                 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_email')}}</label>
-                                        {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
+                                        {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_email')])}}
                                     </div>
                                 </div>
 
@@ -170,7 +170,7 @@
                                 <div class="col-xl-4 col-md-6 col-12"  id="mobile_input_div" style="display:none;">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_mobile_num')}}</label>
-                                        {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                                        {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_mobile_num')])}}
                                     </div>
                                 </div>
                                 <!-- <input name="mobile"> -->
@@ -178,7 +178,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_address')}}</label>
-                                        {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                                        {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_address'),"rows"=>1])}}
                                     </div>
                                 </div>
 
@@ -192,14 +192,14 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_state')}}</label>
-                                        {{Form::text('state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"state", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_state')])}}
+                                        {{Form::text('state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"state", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_state')])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_city')}}</label>
-                                        {{Form::text('city',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"city", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_city')])}}
+                                        {{Form::text('city',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"city", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_city')])}}
                                     </div>
                                 </div>
 
@@ -221,7 +221,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_id_number">{{lang_trans('txt_company_name')}}</label>
                                             <!-- <label class="control-label"> {{lang_trans('txt_company_name')}} <span class="required">*</span> </label> -->
-                                            {{Form::text('company_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                            {{Form::text('company_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_name", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_id_number')])}}
                                     </div>
                                 </div>
 
@@ -255,14 +255,14 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_gst_num')}}</label>
-                                        {{Form::text('company_gst_num',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_gst_num", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_gst_num')])}}
+                                        {{Form::text('company_gst_num',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_gst_num", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_company_gst_num')])}}
                                     </div>
                                 </div>
                                 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_email')}}</label>
-                                        {{Form::email('company_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_email')])}}
+                                        {{Form::email('company_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_email", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_company_email')])}}
                                     </div>
                                 </div>
 
@@ -288,7 +288,7 @@
                                 <div class="col-xl-4 col-md-6 col-12"  id="companyphone_input_div" style="display:none;">
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_id_number">{{lang_trans('txt_company_mobile_num')}}</label>
-                                        {{Form::text('company_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                        {{Form::text('company_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_mobile", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_id_number')])}}
                                     </div>
                                 </div>
 
@@ -297,7 +297,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_address')}}</label>
-                                        {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                                        {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_address", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_address'),"rows"=>1])}}
                                     </div>
                                 </div>
 
@@ -311,21 +311,21 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_state')}}</label>
-                                        {{Form::text('company_state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_state", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_state')])}}
+                                        {{Form::text('company_state',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_state", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_company_state')])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_city')}}</label>
-                                        {{Form::text('company_city',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_city", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_company_city')])}}
+                                        {{Form::text('company_city',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_city", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_company_city')])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_remark')}}</label>
-                                        {{Form::textarea('remark',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"remark", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_remark'),"rows"=>1])}}
+                                        {{Form::textarea('remark',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"remark", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_remark'),"rows"=>1])}}
                                     </div>
                                 </div>
 
@@ -362,14 +362,14 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_adults')}}</label>
-                                        {{Form::number('adult',1,['class'=>"form-control col-md-7 col-xs-12", "id"=>"adult", "required"=>"required","placeholder"=>lang_trans('ph_enter').lang_trans('txt_adults'),"min"=>1])}}
+                                        {{Form::number('adult',1,['class'=>"form-control col-md-7 col-xs-12", "id"=>"adult", "required"=>"required","placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_adults'),"min"=>1])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_kids')}}</label>
-                                        {{Form::number('kids',0,['class'=>"form-control col-md-7 col-xs-12", "id"=>"kids", "required"=>"required","placeholder"=>lang_trans('ph_enter').lang_trans('txt_kids'),"min"=>0])}}
+                                        {{Form::number('kids',0,['class'=>"form-control col-md-7 col-xs-12", "id"=>"kids", "required"=>"required","placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_kids'),"min"=>0])}}
                                     </div>
                                 </div>
 
@@ -421,7 +421,11 @@
                                                 </h4>
                                                 </div>
                                                 <div id="collapse{{$k}}" class="panel-collapse collapse">
-                                                <table class="table table-striped table-bordered">
+                                                
+                                                <input type="text" class="search_from_table">
+
+                                                <table class="table table-striped table-bordered table_search">
+                                                <!-- <table class="datatables-basic table "> -->
                                                     <thead>
                                                     <tr>
                                                         <th>{{lang_trans('txt_sno')}}</th>
@@ -457,7 +461,7 @@
                                                 <div class="row d-flex align-items-end">
                                                     <div class="col-md-4 col-12">
                                                         <div class="mb-1">
-                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_name')}}</label>{{Form::text('persons_info[name][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"person_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_name')])}}
+                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_name')}}</label>{{Form::text('persons_info[name][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"person_name", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_name')])}}
                                                         </div>
                                                     </div>
 
@@ -476,13 +480,13 @@
                                                     <div class="col-xl-4 col-md-6 col-12">
                                                         <div class="mb-1">
                                                             <label class="form-label" for="txt_type_id">{{lang_trans('txt_dob')}}</label>
-                                                            {{Form::date('dob',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"dob", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_dob')])}}
+                                                            {{Form::date('dob',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"dob", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_dob')])}}
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4 col-12">
                                                         <div class="mb-1">
-                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_address')}}</label>{{Form::textarea('persons_info[address][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_address')}}</label>{{Form::textarea('persons_info[address][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_address'),"rows"=>1])}}
                                                         </div>
                                                     </div>
 
@@ -494,7 +498,7 @@
 
                                                     <div class="col-md-4 col-12">
                                                         <div class="mb-1">
-                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_id_number')}}</label>{{Form::text('persons_info[idcard_no][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_id_number')}}</label>{{Form::text('persons_info[idcard_no][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_id_number')])}}
                                                         </div>
                                                     </div>
 
@@ -542,7 +546,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_advance_payment')}}</label>
-                                        {{Form::number('advance_payment',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"advance_payment", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_advance_payment'),"min"=>0])}}
+                                        {{Form::number('advance_payment',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"advance_payment", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_advance_payment'),"min"=>0])}}
                                     </div>
                                 </div>
 
@@ -804,6 +808,12 @@
                 }
             });
         });
+
+    // var oTable = $('.table_search').DataTable();
+    // $('.search_from_table').keyup(function(){
+    //     console.log("test");
+    //     oTable.search($(this).val()).draw();
+    // })
 </script> 
 
 @endsection

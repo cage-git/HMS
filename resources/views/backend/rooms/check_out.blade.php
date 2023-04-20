@@ -159,14 +159,14 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="">{{lang_trans('txt_remark_amount')}}</label>
-                                        {{Form::number('remark_amount',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"Remark Amount","placeholder"=>lang_trans('ph_enter').lang_trans('txt_remark_amount'),"min"=>0])}}
+                                        {{Form::number('remark_amount',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"Remark Amount","placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_remark_amount'),"min"=>0])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="">{{lang_trans('txt_remark')}}</label>
-                                        {{Form::textarea('remark',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"remark", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_remark'),"rows"=>1])}}
+                                        {{Form::textarea('remark',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"remark", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_remark'),"rows"=>1])}}
                                     </div>
                                 </div>
 
@@ -191,7 +191,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="">{{lang_trans('txt_id_number')}}</label>
-                                        {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_id_number')])}}
+                                        {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_id_number')])}}
                                     </div>
                                 </div>
                                 

@@ -205,28 +205,28 @@
                               <label class="form-label" for="select2-ajax">{{lang_trans('txt_firstname')}}</label>
                               <div class="mb-1">
                                   <!-- <select name="customer_name" class="select2-data-ajax form-select" id="search_guest" ></select> -->
-                                  {{Form::text('customer_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_firstname')])}}
+                                  {{Form::text('customer_name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_firstname')])}}
                               </div>
                           </div>
 
                           <div class="col-xl-3 col-md-6 col-12">
                                 <div class="mb-1">
                                     <label class="form-label" for="category">{{lang_trans('txt_email')}}</label>
-                                    {{Form::email('customer_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_email')])}}
+                                    {{Form::email('customer_email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_email')])}}
                                 </div>
                             </div>
 
                           <div class="col-xl-3 col-md-6 col-12">
                               <div class="mb-1">
                                   <label class="form-label" for="category">{{lang_trans('txt_mobile_num')}}</label>
-                                  {{Form::text('customer_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                                  {{Form::text('customer_mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_mobile_num')])}}
                               </div>
                           </div>
 
                           <div class="col-xl-3 col-md-6 col-12">
                               <div class="mb-1">
                                   <label class="form-label" for="category">{{lang_trans('txt_address')}}</label>
-                                  {{Form::textarea('customer_address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_address'),"rows"=>1])}}
+                                  {{Form::textarea('customer_address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_address'),"rows"=>1])}}
                               </div>
                           </div>
 

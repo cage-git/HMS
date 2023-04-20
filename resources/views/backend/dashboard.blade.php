@@ -16,6 +16,16 @@
             </style>
         <?php } ?>
 
+        <style>
+                .showTable{
+                    display:block;
+                }
+
+                .hideTable{
+                    display:none;
+                }
+            </style>
+
     <!-- Dashboard Ecommerce Starts -->
     <section id="dashboard-ecommerce">
         <div class="row match-height">
@@ -313,7 +323,7 @@
                             </div>
                             <div class="card-body feature-repeater">
                                 <div class="row">
-                                <table class="datatables-basic table">
+                                <table class="datatables-basic table" id="example">
                                 <thead>
                                     <tr>
                                         <th>{{lang_trans('txt_sno')}}</th>
@@ -364,8 +374,10 @@
                                         <td>{{lang_trans('txt_adults')}}: {{$val->adult_capacity}} &nbsp; {{lang_trans('txt_kids')}}: {{$val->kids_capacity}} </td>
                                         <td>{{getCurrencySymbol()}} {{$val->base_price}}</td>
                                         <td>
+                                            <button class="btn btn-primary" id="button_room_table_<?php echo $key; ?>" onclick='showHideTableContent("room_table_<?php echo $key; ?>")'>Show
+                                            </button>
                                             @if($val->rooms->count())
-                                                <table class="table table-striped table-bordered">
+                                                <table id="room_table_<?php echo $key; ?>" class="table table-striped table-bordered hideTable">
                                                 <thead>
                                                     <tr>
                                                         <th>{{lang_trans('txt_sno')}}</th>
@@ -767,6 +779,22 @@
     globalVar.page = 'dashboard_page';
     var db_event = <?php echo $events; ?>;
     console.log("event",db_event); 
+
+    function showHideTableContent(id){
+        console.log(id);
+        var hideTable = $("#"+id).hasClass("hideTable")
+        if(hideTable){
+            console.log(id, hideTable, "#"+id);
+            $("#"+id).removeClass("hideTable");
+            $("#button_"+id).html("Hide");
+        }else{
+            console.log(id, hideTable, "#"+id);
+            $("#"+id).addClass("hideTable");
+            $("#button_"+id).html("Show");
+        }
+        
+    }
+
     </script>
 
 <!-- <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script> -->
@@ -776,4 +804,21 @@
 <script src="{{URL::asset('public/app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script>
 <script src="{{URL::asset('public/app-assets/js/scripts/pages/app-calendar-events.js')}}"></script>
 <script src="{{URL::asset('public/app-assets/js/scripts/pages/app-calendar.js')}}"></script>
+
+<script>
+//     $(document).ready(function() {
+//     $('#example').DataTable( {
+//         select: true,
+//         language: {
+//             select: {
+//                 rows: {
+//                     _: "You have selected %d rows",
+//                     0: "Click a row to select it",
+//                     1: "Only 1 row selected"
+//                 }
+//             }
+//         }
+//     } );
+// } );
+</script>
 @endsection
