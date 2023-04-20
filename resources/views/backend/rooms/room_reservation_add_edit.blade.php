@@ -467,9 +467,16 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-4 col-12">
+                                                    <!-- <div class="col-md-4 col-12">
                                                         <div class="mb-1">
                                                             <label class="form-label" for="itemname"> {{lang_trans('txt_age')}}</label>{{Form::number('persons_info[age][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"person_age", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_age'),"min"=>10])}}
+                                                        </div>
+                                                    </div> -->
+
+                                                    <div class="col-xl-4 col-md-6 col-12">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="txt_type_id">{{lang_trans('txt_dob')}}</label>
+                                                            {{Form::date('dob',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"dob", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_dob')])}}
                                                         </div>
                                                     </div>
 

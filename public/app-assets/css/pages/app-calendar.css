@@ -111,7 +111,9 @@
 
 .fc tbody td,
 .fc thead th {
-  border-color: #ebe9f1; }
+  /* border-color: #ebe9f1;  */
+  border-color: #1b1b1c;
+}
 
 .fc tbody td.fc-col-header-cell,
 .fc thead th.fc-col-header-cell {
@@ -130,7 +132,9 @@
   padding: 0.25rem 0.5rem; }
 
 .fc .fc-daygrid-event-harness + .fc-daygrid-event-harness {
-  margin-top: 0.3rem !important; }
+  /* margin-top: 0.3rem !important; */
+  /* margin-top: 15px !important; */
+ }
 
 .fc .fc-daygrid-day-bottom {
   margin-top: 0.3rem !important; }
@@ -144,7 +148,9 @@
 .fc .fc-daygrid-day-number,
 .fc .fc-timegrid-slot-label-cushion,
 .fc .fc-list-event-time {
-  color: #6e6b7b; }
+  color: #6e6b7b;
+  font-weight: 500;
+}
 
 .fc .fc-day-today {
   background: #f8f8f8 !important;

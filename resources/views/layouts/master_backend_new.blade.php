@@ -65,11 +65,7 @@
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/form-validation.css')}}">
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
-        <style>
-            body{
-                color: #1b1b1c !important;
-            }
-        </style>
+        
         <!-- END: Page CSS-->
     <?php }else if(getSettings('site_language') == 'ar'){   ?> 
         <!-- rtl -->
@@ -122,7 +118,13 @@
                 background: none;
             }
         </style>
-     <?php } ?>
+     <?php }else{ ?>
+        <style>
+             div > span,a, h1, h2, h3, h4, h5, tr, td, p, label, div, option, select, input{
+                color: #1b1b1c !important;
+            }
+        </style>
+    <?php } ?> 
 </head>
 <!-- END: Head-->
     <body 
