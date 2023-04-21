@@ -421,10 +421,13 @@
                                                 </h4>
                                                 </div>
                                                 <div id="collapse{{$k}}" class="panel-collapse collapse">
-                                                
-                                                <input type="text" class="search_from_table">
-
-                                                <table class="table table-striped table-bordered table_search">
+                                                <div class="row">
+                                                    <label>Search Room: </label>
+                                                    <div class="col-xl-4 col-md-6 col-12">
+                                                        <input type="text" class="form-control" onkeyup="search_from_table('table_search_<?php echo $k; ?>',$(this).val())">
+                                                    </div>    
+                                                </div>    
+                                                <table class="table table-striped table-bordered table_search" id="table_search_<?php echo $k; ?>">
                                                 <!-- <table class="datatables-basic table "> -->
                                                     <thead>
                                                     <tr>
@@ -809,11 +812,50 @@
             });
         });
 
-    // var oTable = $('.table_search').DataTable();
-    // $('.search_from_table').keyup(function(){
-    //     console.log("test");
-    //     oTable.search($(this).val()).draw();
-    // })
+
+// var oTable = $('.table_search').DataTable(Testing);
+// $('#search_from_table').keyup(function(){
+//     console.log("test",testing);
+//     oTable.search($(this).val()).draw();
+// })
+
+//     $(".search_from_table").on("keyup", function() {
+//     var value = $(this).val();
+// console.log("test",value);
+//     $(".table_search tr").each(function(index) {
+//         if (index != 0) {
+
+//             $row = $(this);
+
+//             var id = $row.find("td:first").text();
+
+//             if (id.indexOf(value) != 0) {
+//                 $(this).hide();
+//             }
+//             else {
+//                 $(this).show();
+//             }
+//         }
+//     });
+// });​
+
+
+function search_from_table(table_name,val){
+    console.log(table_name,val);
+    $("#"+ table_name +" tr").each(function(index) {
+     
+        if (index != 0) {
+            $row = $(this);
+            var id = $row.find("td:nth-child(3)").text();
+            if (id.indexOf(val) != 0) {
+                $(this).hide();
+            }else {
+                $(this).show();
+            }
+        }
+    });
+}
+
 </script> 
 
 @endsection
