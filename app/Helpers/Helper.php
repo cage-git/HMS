@@ -109,15 +109,27 @@ function getDynamicDropdownById($id, $clm = 'all'){
 function getDynamicDropdownRecord($where){
     return DynamicDropdown::where($where)->first();
 }
-function getDynamicDropdownList($dropdownName, $hasKey = false){
+function getDynamicDropdownList($dropdownName, $hasKey = false, $lang=""){
     $data = DynamicDropdown::where('dropdown_name', $dropdownName)->where('is_deleted', 0)->where('status', 1)->get();
     $list = [];
     if($data){
         foreach ($data as $key => $value) {
             if($hasKey){
-                $list[$value->drop_down_key] = $value->dropdown_value;
+                if($lang=="ar"){
+                    $list[$value->drop_down_key] = $value->dropdown_value_ar;
+                }else if($lang=="en"){
+                    $list[$value->drop_down_key] = $value->dropdown_value_en;
+                }else{
+                    $list[$value->drop_down_key] = $value->dropdown_value;
+                }
             }else{
-                $list[$value->id] = $value->dropdown_value;
+                if($lang=="ar"){
+                    $list[$value->id] = $value->dropdown_value_ar;
+                }else if($lang=="en"){
+                    $list[$value->id] = $value->dropdown_value_en;
+                }else{
+                    $list[$value->id] = $value->dropdown_value;
+                }
             }
         }
     }

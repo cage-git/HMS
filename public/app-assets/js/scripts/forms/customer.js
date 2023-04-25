@@ -31,7 +31,7 @@
         },
         cache: true
         },
-        placeholder: 'Search a customer',
+        placeholder: lang=='en' ? 'Search a customer':'البحث عن زبون',
         escapeMarkup: function (markup) {
         return markup;
         }, 
@@ -101,7 +101,7 @@
         },
         cache: true
         },
-        placeholder: 'Search a customer',
+        placeholder:  lang=='en' ? 'Search a customer':'البحث عن زبون',
         escapeMarkup: function (markup) {
         return markup;
         }, // let our custom formatter work
@@ -165,7 +165,7 @@
         },
         cache: true
         },
-        placeholder: 'Search a guest',
+        placeholder: lang=='en' ? 'Search a guest':'البحث عن ضيف',
         escapeMarkup: function (markup) {
         return markup;
         }, // let our custom formatter work
@@ -229,7 +229,7 @@
         },
         cache: true
         },
-        placeholder: 'Search a company',
+        placeholder: lang=='en' ? 'Search a company':'ابحث عن شركة',
         escapeMarkup: function (markup) {
         return markup;
         }, // let our custom formatter work
@@ -292,7 +292,7 @@
         },
         cache: true
         },
-        placeholder: 'Search a company',
+        placeholder: lang=='en' ? 'Search a company':'ابحث عن شركة',
         escapeMarkup: function (markup) {
         return markup;
         }, // let our custom formatter work

@@ -59,9 +59,14 @@ return [
         //'es' => 'Spanish, Castilian',
     ],
     'GENDER'=>[
-        'Male'=>'ذكر',
-        'Female'=>'أنثى',
-        'Other'=>'أخرى',
+        'Male'=>'Male',
+        'Female'=>'Female',
+        'Other'=>'Other',
+    ],
+    'GENDER_AR'=>[
+      'Male'=>'ذكر',
+      'Female'=>'أنثى',
+      'Other'=>'أخرى',
     ],
     'MT_GENDER'=>[
         'Male'=>'1',
@@ -72,6 +77,10 @@ return [
         0 => 'Check-in',
         1 => 'Booking',
     ],
+    'RESERVATION_TYPE_AR'=>[
+      0 => 'تحقق في',
+      1 => 'الحجز',
+     ],
     'STATUS_LIST'=>[
         1=>'مفعل',
         0=>'غير مفعل',
@@ -88,6 +97,15 @@ return [
         '1'=>'January','2'=>'February','3'=>'March','4'=>'April','5'=>'May','6'=>'June','7'=>'July','8'=>'August','9'=>'September','10'=>'October','11'=>'November','12'=>'December'
     ],
     'PAYMENT_MODES'=>[
+      1=>'Cash',
+      2=>'Credit card',
+      3=>'Paid by the company',
+      4=>'Check',
+      5=>'Other',
+      6=>'Electronic channel',
+      7=>'Unspecified No payment',
+    ],
+    'PAYMENT_MODES_AR'=>[
       1=>'نقد',
       2=>'بطاقةائتمانية',
       3=>'المدفوع من قبل الشركة',

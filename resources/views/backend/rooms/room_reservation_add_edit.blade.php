@@ -10,6 +10,11 @@
         $flag=1;
         $heading=lang_trans('btn_update');
     }
+    $lang = getSettings('site_language');
+    $RESERVATION_TYPE = getSettings('site_language') == 'ar'? config('constants.RESERVATION_TYPE_AR'): config('constants.RESERVATION_TYPE');  
+    $PAYMENT_MODES= getSettings('site_language') == 'ar'? config('constants.PAYMENT_MODES_AR'): config('constants.PAYMENT_MODES');
+    $GENDER= getSettings('site_language') == 'ar'? config('constants.GENDER_AR'): config('constants.GENDER');
+
   @endphp
   
 <style>
@@ -51,7 +56,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_reservation_type')}}</label>
-                                        {{ Form::select('reservation_type',config('constants.RESERVATION_TYPE'),null,['class'=>'form-select']) }}
+                                        {{ Form::select('reservation_type',$RESERVATION_TYPE,null,['class'=>'form-select']) }}
                                        
                                     </div>
                                 </div>
@@ -98,14 +103,14 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_type_id">{{lang_trans('txt_type_id')}}</label>
-                                        {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                                        {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids', false, $lang),null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
                                     </div>
                                 </div>
                                 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_type_id">{{lang_trans('txt_gender')}}</label>
-                                        {{ Form::select('gender',config('constants.GENDER'),null,['class'=>'form-select col-md-6 col-xs-12', "id"=>"gender",'placeholder'=>lang_trans('ph_select')]) }}
+                                        {{ Form::select('gender',$GENDER,null,['class'=>'form-select col-md-6 col-xs-12', "id"=>"gender",'placeholder'=>lang_trans('ph_select')]) }}
                                     </div>
                                 </div>
 
@@ -470,7 +475,7 @@
 
                                                     <div class="col-md-4 col-12">
                                                         <div class="mb-1">
-                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_gender')}}</label>{{ Form::select('persons_info[gender][]',config('constants.GENDER'),null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
+                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_gender')}}</label>{{ Form::select('persons_info[gender][]',$GENDER,null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
                                                         </div>
                                                     </div>
 
@@ -495,7 +500,7 @@
 
                                                     <div class="col-md-4 col-12">
                                                         <div class="mb-1">
-                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_type_id')}}</label>{{ Form::select('persons_info[idcard_type][]',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-select col-md-6 col-xs-12',"id"=>"type_of_ids", 'placeholder'=>lang_trans('ph_select')]) }}
+                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_type_id')}}</label>{{ Form::select('persons_info[idcard_type][]',getDynamicDropdownList('type_of_ids', false, $lang),null,['class'=>'form-select col-md-6 col-xs-12',"id"=>"type_of_ids", 'placeholder'=>lang_trans('ph_select')]) }}
                                                         </div>
                                                     </div>
 
@@ -556,7 +561,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_payment_mode')}}</label>
-                                        {{Form::select('payment_mode',config('constants.PAYMENT_MODES'),1,['class'=>"form-select", 'required'=>true])}}
+                                        {{Form::select('payment_mode',$PAYMENT_MODES,1,['class'=>"form-select", 'required'=>true])}}
                                     </div>
                                 </div>
                                 <hr>
@@ -582,6 +587,7 @@
   globalVar.customerList = {!! json_encode($customer_list) !!};
   globalVar.companiesList = {!! json_encode($companies_list) !!};
   var route_search_customer = '{{ route("search-from-customer")}}';
+  var lang = "<?php if(getSettings('site_language') == 'en'){ echo 'en'; }else{ echo 'ar'; }  ?>";
   
   $(document).ready(function(){
     $('#new_company_section').hide();

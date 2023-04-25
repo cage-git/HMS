@@ -82,5 +82,13 @@
                 });
             }
         })
+
+        // $(document).ready(function() {
+        //     $('#DataTables_Table_0').DataTable( {
+        //         "language": {
+        //             "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+        //         }
+        //     } );
+        // } );
     </script>
     @yield('scripts')

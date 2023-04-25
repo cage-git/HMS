@@ -33,9 +33,14 @@
                                         @if(count($val['values']) > 0)
                                           @foreach($val['values'] as $k=>$v)
                                             <div class="row d-flex align-items-end">
-                                                <div class="col-md-9 col-12">
+                                                <div class="col-md-4 col-12">
                                                     <div class="mb-1">
                                                       {{Form::text($v->dropdown_name.'['.$v->id.']',$v->dropdown_value,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no", "required"=>"required"])}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-12">
+                                                    <div class="mb-1">
+                                                      {{Form::text($v->dropdown_name_ar.'['.$v->id.']',$v->dropdown_value_ar,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no", "required"=>"required"])}}
                                                     </div>
                                                 </div>
 
@@ -63,12 +68,13 @@
                                           </button>
                                       </div>
                                   </div>
-
+                                 
                         <!-- end repeater -->
                             </div>
                       </div>
               </div>
         @endforeach
+        <input type="submit" value="{{lang_trans('btn_update')}}" class="btn btn-primary"/>
     {{ Form::close() }}
     
 </section>
