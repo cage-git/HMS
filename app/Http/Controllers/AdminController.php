@@ -1954,22 +1954,43 @@ class AdminController extends Controller
         return view('backend/dynamic_dropdowns/list',$this->data);
     }
     public function saveDynamicDropdowns(Request $request) {
+        // dd($request->all());
         if($this->core->checkWebPortal()==0){
             return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
         }
        $res = null;
        foreach($request->all() as $dropdownName => $dropdownValues){
+        // print_r($dropdownValues);
             $ids = [];
             if(is_array($dropdownValues)){
                 foreach($dropdownValues as $k=>$v){
-                    $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
-                    $data = ['dropdown_name'=>$dropdownName, 'dropdown_value'=>$v, 'is_deletable'=>1];
+                    // if(strpos($k, "_ar")){
+                    //     $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+                    //     $data = ['dropdown_name'=>$dropdownName, 'dropdown_value_ar'=>$v, 'is_deletable'=>1];
+                    // }else{
+                        $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+                        $data = ['dropdown_name'=>$dropdownName, 'dropdown_value'=>$v, 'dropdown_value_en'=>$v, 'is_deletable'=>1];
 
+                    // }
+
+                    // $check = $k."_ar";
+                    // if($check =="_ar"){
+                    //     $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+                    //     $data = ['dropdown_name'=>$dropdownName, 'dropdown_value_ar'=>$v, 'is_deletable'=>1];
+                    // }else{
+                    //     $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+                    //     $data = ['dropdown_name'=>$dropdownName, 'dropdown_value'=>$v, 'dropdown_value_en'=>$v, 'is_deletable'=>1];
+                    // }
+
+                    // print_r($k);
+                    // dd($where)
                     $dropdownObj = getDynamicDropdownRecord($where);
                     if($dropdownObj){
                         $data['is_deletable'] = $dropdownObj->is_deletable;
                     }
+                    // dd($where, $data);
                     $res = DynamicDropdown::updateOrCreate($where, $data);
+                    // dd($res);
                     $ids[] = $res->id;
                 }
                 if(count($ids) > 0){
@@ -1977,6 +1998,7 @@ class AdminController extends Controller
                 }
             }
         }
+        exit;
         if($res){
             return redirect()->back()->with(['success' => config('constants.FLASH_REC_UPDATE_1')]);
         }

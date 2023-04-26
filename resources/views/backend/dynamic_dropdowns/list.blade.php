@@ -32,15 +32,30 @@
                                       <div data-repeater-item>
                                         @if(count($val['values']) > 0)
                                           @foreach($val['values'] as $k=>$v)
+                                          <?php //print_r($k." ".$v->dropdown_name." ".$v->id."   ".$v->dropdown_name.'['.$v->id.']'); ?>
                                             <div class="row d-flex align-items-end">
                                                 <div class="col-md-4 col-12">
                                                     <div class="mb-1">
-                                                      {{Form::text($v->dropdown_name.'['.$v->id.']',$v->dropdown_value,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no", "required"=>"required"])}}
+                                                      {{Form::text($v->dropdown_name.'['.$v->id.']',$v->dropdown_value,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no"])}}
                                                     </div>
                                                 </div>
+
+                                                <!-- <div class="col-md-4 col-12">
+                                                    <div class="mb-1">
+                                                      {{Form::text($v->dropdown_name.'['.$v->id.']_ar',$v->dropdown_value_ar,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no_ar"])}}
+                                                    </div>
+                                                </div> 
+
                                                 <div class="col-md-4 col-12">
                                                     <div class="mb-1">
-                                                      {{Form::text($v->dropdown_name_ar.'['.$v->id.']',$v->dropdown_value_ar,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no", "required"=>"required"])}}
+                                                      {{Form::text('arabic',$v->dropdown_value_ar,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no_ar"])}}
+                                                    </div>
+                                                </div> 
+                                              
+                                              -->
+                                                <div class="col-md-4 col-12">
+                                                    <div class="mb-1">
+                                                      {{Form::text($v->dropdown_name.'['.$v->id.'_ar]',$v->dropdown_value_ar,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no_ar"])}}
                                                     </div>
                                                 </div>
 
