@@ -29,7 +29,7 @@
                         <!-- repeater -->
 
                                     <div data-repeater-list="<?= $val['title']; ?>">
-                                      <div data-repeater-item>
+                                      <div>
                                         @if(count($val['values']) > 0)
                                           @foreach($val['values'] as $k=>$v)
                                           <?php //print_r($k." ".$v->dropdown_name." ".$v->id."   ".$v->dropdown_name.'['.$v->id.']'); ?>
@@ -74,7 +74,35 @@
                                           @endforeach
                                         @endif
                                       </div>
+                                        <div data-repeater-item>
+                                            <div class="row d-flex align-items-end">
+                                                <div class="col-md-4 col-12">
+                                                    <div class="mb-1">
+                                                    {{Form::text($v->dropdown_name,$v->dropdown_value,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no"])}}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 col-12">
+                                                    <div class="mb-1">
+                                                    {{Form::text($v->dropdown_name,$v->dropdown_value_ar,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no_ar"])}}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-1 col-12 mb-50">
+                                                    <div class="mb-1">
+                                                        <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                            <i data-feather="x" class="me-25"></i>
+                                                            <span>Delete</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                        </div>
                                   </div>
+
+                                 
+
                                   <div class="row">
                                       <div class="col-12">
                                           <button class="btn btn-icon btn-primary" type="button" data-repeater-create>

@@ -303,4 +303,267 @@ $(function () {
         });
 
 
+        // new changes
+
+         // form repeater jquery
+         $('.txt_dropdown_booking_cancel_reasons-repeater, .repeater-default').repeater({
+    
+          show: function () {
+            console.log("test");
+            $(this).slideDown();
+            // Feather Icons
+            if (feather) {
+              feather.replace({ width: 14, height: 14 });
+            }
+          },
+          hide: function (deleteElement) {
+            if (confirm('Are you sure you want to delete this element?')) {
+              $(this).slideUp(deleteElement);
+            }
+          }
+        });
+
+         // form repeater jquery
+         $('.txt_dropdown_cancel_with_charges-repeater, .repeater-default').repeater({
+    
+          show: function () {
+            console.log("test");
+            $(this).slideDown();
+            // Feather Icons
+            if (feather) {
+              feather.replace({ width: 14, height: 14 });
+            }
+          },
+          hide: function (deleteElement) {
+            if (confirm('Are you sure you want to delete this element?')) {
+              $(this).slideUp(deleteElement);
+            }
+          }
+        });
+
+
+        // form repeater jquery
+        $('.Customer_Type-repeater, .repeater-default').repeater({
+    
+          show: function () {
+            console.log("test");
+            $(this).slideDown();
+            // Feather Icons
+            if (feather) {
+              feather.replace({ width: 14, height: 14 });
+            }
+          },
+          hide: function (deleteElement) {
+            if (confirm('Are you sure you want to delete this element?')) {
+              $(this).slideUp(deleteElement);
+            }
+          }
+        });
+
+        // form repeater jquery
+        $('.txt_dropdown_expence_type_id-repeater, .repeater-default').repeater({
+    
+          show: function () {
+            console.log("test");
+            $(this).slideDown();
+            // Feather Icons
+            if (feather) {
+              feather.replace({ width: 14, height: 14 });
+            }
+          },
+          hide: function (deleteElement) {
+            if (confirm('Are you sure you want to delete this element?')) {
+              $(this).slideUp(deleteElement);
+            }
+          }
+        });
+
+
+
+        // form repeater jquery
+        $('.Housekeeping_Status_Dropdowns-repeater, .repeater-default').repeater({
+    
+          show: function () {
+            console.log("test");
+            $(this).slideDown();
+            // Feather Icons
+            if (feather) {
+              feather.replace({ width: 14, height: 14 });
+            }
+          },
+          hide: function (deleteElement) {
+            if (confirm('Are you sure you want to delete this element?')) {
+              $(this).slideUp(deleteElement);
+            }
+          }
+        });
+
+        // form repeater jquery
+        $('.Measurement_Dropdowns-repeater, .repeater-default').repeater({
+    
+          show: function () {
+            console.log("test");
+            $(this).slideDown();
+            // Feather Icons
+            if (feather) {
+              feather.replace({ width: 14, height: 14 });
+            }
+          },
+          hide: function (deleteElement) {
+            if (confirm('Are you sure you want to delete this element?')) {
+              $(this).slideUp(deleteElement);
+            }
+          }
+        });
+
+        // form repeater jquery
+        $('.Nationalities-repeater, .repeater-default').repeater({
+    
+          show: function () {
+            console.log("test");
+            $(this).slideDown();
+            // Feather Icons
+            if (feather) {
+              feather.replace({ width: 14, height: 14 });
+            }
+          },
+          hide: function (deleteElement) {
+            if (confirm('Are you sure you want to delete this element?')) {
+              $(this).slideUp(deleteElement);
+            }
+          }
+        });
+
+
+          // form repeater jquery
+          $('.Payment_Mode-repeater, .repeater-default').repeater({
+    
+            show: function () {
+              console.log("test");
+              $(this).slideDown();
+              // Feather Icons
+              if (feather) {
+                feather.replace({ width: 14, height: 14 });
+              }
+            },
+            hide: function (deleteElement) {
+              if (confirm('Are you sure you want to delete this element?')) {
+                $(this).slideUp(deleteElement);
+              }
+            }
+          });
+
+
+
+          // form repeater jquery
+          $('.Reason_of_visit-repeater, .repeater-default').repeater({
+    
+            show: function () {
+              console.log("test");
+              $(this).slideDown();
+              // Feather Icons
+              if (feather) {
+                feather.replace({ width: 14, height: 14 });
+              }
+            },
+            hide: function (deleteElement) {
+              if (confirm('Are you sure you want to delete this element?')) {
+                $(this).slideUp(deleteElement);
+              }
+            }
+          });
+
+              // form repeater jquery
+              $('.Room_Floor_Dropdowns-repeater, .repeater-default').repeater({
+    
+                show: function () {
+                  console.log("test");
+                  $(this).slideDown();
+                  // Feather Icons
+                  if (feather) {
+                    feather.replace({ width: 14, height: 14 });
+                  }
+                },
+                hide: function (deleteElement) {
+                  if (confirm('Are you sure you want to delete this element?')) {
+                    $(this).slideUp(deleteElement);
+                  }
+                }
+              });
+
+
+                // form repeater jquery
+                $('.Room_Rent_Type-repeater, .repeater-default').repeater({
+    
+                  show: function () {
+                    console.log("test");
+                    $(this).slideDown();
+                    // Feather Icons
+                    if (feather) {
+                      feather.replace({ width: 14, height: 14 });
+                    }
+                  },
+                  hide: function (deleteElement) {
+                    if (confirm('Are you sure you want to delete this element?')) {
+                      $(this).slideUp(deleteElement);
+                    }
+                  }
+                });
+
+
+                  // form repeater jquery
+                  $('.Room_Type-repeater, .repeater-default').repeater({
+    
+                    show: function () {
+                      console.log("test");
+                      $(this).slideDown();
+                      // Feather Icons
+                      if (feather) {
+                        feather.replace({ width: 14, height: 14 });
+                      }
+                    },
+                    hide: function (deleteElement) {
+                      if (confirm('Are you sure you want to delete this element?')) {
+                        $(this).slideUp(deleteElement);
+                      }
+                    }
+                  });
+
+                    // form repeater jquery
+                    $('.Transaction_Type-repeater, .repeater-default').repeater({
+    
+                      show: function () {
+                        console.log("test");
+                        $(this).slideDown();
+                        // Feather Icons
+                        if (feather) {
+                          feather.replace({ width: 14, height: 14 });
+                        }
+                      },
+                      hide: function (deleteElement) {
+                        if (confirm('Are you sure you want to delete this element?')) {
+                          $(this).slideUp(deleteElement);
+                        }
+                      }
+                    });
+
+
+                     // form repeater jquery
+                     $('.Type_of_Ids_Dropdown-repeater, .repeater-default').repeater({
+    
+                      show: function () {
+                        console.log("test");
+                        $(this).slideDown();
+                        // Feather Icons
+                        if (feather) {
+                          feather.replace({ width: 14, height: 14 });
+                        }
+                      },
+                      hide: function (deleteElement) {
+                        if (confirm('Are you sure you want to delete this element?')) {
+                          $(this).slideUp(deleteElement);
+                        }
+                      }
+                    });
+
 });

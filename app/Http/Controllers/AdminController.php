@@ -1954,24 +1954,32 @@ class AdminController extends Controller
         return view('backend/dynamic_dropdowns/list',$this->data);
     }
     public function saveDynamicDropdowns(Request $request) {
-        // dd($request->all());
+        // dd($request->all(), $request["txt_dropdown_booking_cancel_reasons"][0]["390_ar"]);
+
         if($this->core->checkWebPortal()==0){
             return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
         }
        $res = null;
        foreach($request->all() as $dropdownName => $dropdownValues){
-        // print_r($dropdownValues);
+        // dd($dropdownValues);
             $ids = [];
+            // echo "<pre/>";
             if(is_array($dropdownValues)){
-                foreach($dropdownValues as $k=>$v){
-                    // if(strpos($k, "_ar")){
-                    //     $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
-                    //     $data = ['dropdown_name'=>$dropdownName, 'dropdown_value_ar'=>$v, 'is_deletable'=>1];
-                    // }else{
+                foreach($dropdownValues[0] as $k=>$v){
+                    $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+                    var_dump("k =>",$k,"v",$v ,"where", $where);
+                    // foreach($v as $num){
+                    //     print_r($num);
+                    // }
+                    if(strpos($k, "_ar")){
+                        $k = str_replace("_ar","", $k);
+                        $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+                        $data = ['dropdown_name'=>$dropdownName, 'dropdown_value_ar'=>$v, 'is_deletable'=>1];
+                    }else{
                         $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
                         $data = ['dropdown_name'=>$dropdownName, 'dropdown_value'=>$v, 'dropdown_value_en'=>$v, 'is_deletable'=>1];
 
-                    // }
+                    }
 
                     // $check = $k."_ar";
                     // if($check =="_ar"){
@@ -1988,7 +1996,7 @@ class AdminController extends Controller
                     if($dropdownObj){
                         $data['is_deletable'] = $dropdownObj->is_deletable;
                     }
-                    // dd($where, $data);
+                    // // dd($where, $data);
                     $res = DynamicDropdown::updateOrCreate($where, $data);
                     // dd($res);
                     $ids[] = $res->id;
@@ -1998,7 +2006,7 @@ class AdminController extends Controller
                 }
             }
         }
-        exit;
+        // exit;
         if($res){
             return redirect()->back()->with(['success' => config('constants.FLASH_REC_UPDATE_1')]);
         }
