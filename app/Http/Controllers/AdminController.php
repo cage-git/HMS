@@ -19,6 +19,8 @@ use App\DynamicDropdown;
 use App\MediaFile;
 use App\Permission;
 use Session;
+use Illuminate\Support\Facades\File;
+
 class AdminController extends Controller
 {
     private $paginate=10;
@@ -1940,6 +1942,28 @@ class AdminController extends Controller
 
 /* ***** Start Dynamic Dropdowns Functions ***** */
     public function listDynamicDropdowns() {
+
+
+        $en = File::getRequire(base_path().'/resources/lang/en/dynamic_dropdown.php');
+        $ar = File::getRequire(base_path().'/resources/lang/ar/dynamic_dropdown.php');
+        // dd($en);
+        $data =[];
+        // $i=0;
+        foreach($en as $key => $value)
+        {
+            echo "$key => $value<br>";
+            $data["en"][$key] = $value;
+            // $i++;
+        }
+
+        foreach($ar as $key => $value)
+        {
+            // echo "$key => $value<br>";
+            $data["ar"][$key] = $value;
+            // $i++;
+        }
+        // dd($data);
+        // exit;
         $dynamicDropdowns=DynamicDropdown::where('status', 1)->where('is_deleted', 0)->orderBy('dropdown_name','ASC')->orderBy('is_deletable','ASC')->get();
         $datalist = [];
         foreach ($dynamicDropdowns as $key => $value) {
@@ -1954,63 +1978,67 @@ class AdminController extends Controller
         return view('backend/dynamic_dropdowns/list',$this->data);
     }
     public function saveDynamicDropdowns(Request $request) {
+        dd($request->all());
         // dd($request->all(), $request["txt_dropdown_booking_cancel_reasons"][0]["390_ar"]);
 
         if($this->core->checkWebPortal()==0){
             return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
         }
-       $res = null;
-       foreach($request->all() as $dropdownName => $dropdownValues){
-        // dd($dropdownValues);
-            $ids = [];
-            // echo "<pre/>";
-            if(is_array($dropdownValues)){
-                foreach($dropdownValues[0] as $k=>$v){
-                    $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
-                    var_dump("k =>",$k,"v",$v ,"where", $where);
-                    // foreach($v as $num){
-                    //     print_r($num);
-                    // }
-                    if(strpos($k, "_ar")){
-                        $k = str_replace("_ar","", $k);
-                        $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
-                        $data = ['dropdown_name'=>$dropdownName, 'dropdown_value_ar'=>$v, 'is_deletable'=>1];
-                    }else{
-                        $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
-                        $data = ['dropdown_name'=>$dropdownName, 'dropdown_value'=>$v, 'dropdown_value_en'=>$v, 'is_deletable'=>1];
+    //    $res = null;
+    //    foreach($request->all() as $dropdownName => $dropdownValues){
+    //     // dd($dropdownValues);
+    //         $ids = [];
+    //         // echo "<pre/>";
+    //         if(is_array($dropdownValues)){
+    //             foreach($dropdownValues[0] as $k=>$v){
+    //                 $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+    //                 var_dump("k =>",$k,"v",$v ,"where", $where);
+    //                 // foreach($v as $num){
+    //                 //     print_r($num);
+    //                 // }
+    //                 if(strpos($k, "_ar")){
+    //                     $k = str_replace("_ar","", $k);
+    //                     $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+    //                     $data = ['dropdown_name'=>$dropdownName, 'dropdown_value_ar'=>$v, 'is_deletable'=>1];
+    //                 }else{
+    //                     $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+    //                     $data = ['dropdown_name'=>$dropdownName, 'dropdown_value'=>$v, 'dropdown_value_en'=>$v, 'is_deletable'=>1];
 
-                    }
+    //                 }
 
-                    // $check = $k."_ar";
-                    // if($check =="_ar"){
-                    //     $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
-                    //     $data = ['dropdown_name'=>$dropdownName, 'dropdown_value_ar'=>$v, 'is_deletable'=>1];
-                    // }else{
-                    //     $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
-                    //     $data = ['dropdown_name'=>$dropdownName, 'dropdown_value'=>$v, 'dropdown_value_en'=>$v, 'is_deletable'=>1];
-                    // }
+    //                 // $check = $k."_ar";
+    //                 // if($check =="_ar"){
+    //                 //     $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+    //                 //     $data = ['dropdown_name'=>$dropdownName, 'dropdown_value_ar'=>$v, 'is_deletable'=>1];
+    //                 // }else{
+    //                 //     $where = ["id"=> $k, "dropdown_name"=>$dropdownName];
+    //                 //     $data = ['dropdown_name'=>$dropdownName, 'dropdown_value'=>$v, 'dropdown_value_en'=>$v, 'is_deletable'=>1];
+    //                 // }
 
-                    // print_r($k);
-                    // dd($where)
-                    $dropdownObj = getDynamicDropdownRecord($where);
-                    if($dropdownObj){
-                        $data['is_deletable'] = $dropdownObj->is_deletable;
-                    }
-                    // // dd($where, $data);
-                    $res = DynamicDropdown::updateOrCreate($where, $data);
-                    // dd($res);
-                    $ids[] = $res->id;
-                }
-                if(count($ids) > 0){
-                    DynamicDropdown::where("dropdown_name", $dropdownName)->whereNotIn('id', $ids)->where('is_deletable', 1)->where('status', 1)->update(['is_deleted'=>1]);
-                }
-            }
-        }
-        // exit;
-        if($res){
-            return redirect()->back()->with(['success' => config('constants.FLASH_REC_UPDATE_1')]);
-        }
-        return redirect()->back()->with(['error' => config('constants.FLASH_REC_UPDATE_0')]);
+    //                 // print_r($k);
+    //                 // dd($where)
+    //                 $dropdownObj = getDynamicDropdownRecord($where);
+    //                 if($dropdownObj){
+    //                     $data['is_deletable'] = $dropdownObj->is_deletable;
+    //                 }
+    //                 // // dd($where, $data);
+    //                 $res = DynamicDropdown::updateOrCreate($where, $data);
+    //                 // dd($res);
+    //                 $ids[] = $res->id;
+    //             }
+    //             if(count($ids) > 0){
+    //                 DynamicDropdown::where("dropdown_name", $dropdownName)->whereNotIn('id', $ids)->where('is_deletable', 1)->where('status', 1)->update(['is_deleted'=>1]);
+    //             }
+    //         }
+    //     }
+    //     // exit;
+    //     if($res){
+    //         return redirect()->back()->with(['success' => config('constants.FLASH_REC_UPDATE_1')]);
+    //     }
+    //     return redirect()->back()->with(['error' => config('constants.FLASH_REC_UPDATE_0')]);
+
+
+
     }
 /* ***** End Dynamic Dropdowns Functions ***** */
 

@@ -1666,3 +1666,27 @@ function getLangForUpdateDisable(){
 //    return ['en', 'ar', 'hi'];
     return ['en'];
 }
+
+function translate($key, $file_name = 'dynamic_dropdown', $lang = null){
+    if($lang != null){
+        $local = strtolower($lang);
+    }
+
+    $lang_array = include(base_path('resources/lang/' . $local . '/'.$file_name.'.php'));
+    $processed_key = ucfirst(str_replace('_', ' ', Helpers::remove_invalid_charcaters($key)));
+    if (!array_key_exists(strtolower($key), $lang_array)) {
+        $lang_array[strtolower($key)] = $processed_key;
+        $str = "<?php return " . var_export($lang_array, true) . ";";
+        file_put_contents(base_path('resources/lang/' . $local . '/'.$file_name.'.php'), $str);
+        $result = $processed_key;
+    } else {
+        // $result = __('messages.' . $key);
+        $result = __(''.$file_name.'.' . strtolower($key));
+    }
+    return $result;
+}
+
+function remove_invalid_charcaters($str)
+{
+    return str_ireplace(['\'', '"', ',', ';', '<', '>', '?'], ' ', $str);
+}
