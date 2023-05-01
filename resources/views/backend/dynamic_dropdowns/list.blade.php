@@ -1,10 +1,40 @@
 @extends('layouts.master_backend_new')
 @section('content')
 
+<?php 
+dd(count($datalist["en"]["booking_cancel_reasons"]));
 
+for($i=0;$i>count($datalist["en"]["booking_cancel_reasons"]);$i++){
+        echo $datalist["en"]["booking_cancel_reasons"][$i];
+}
+exit;
+// dd($datalist["en"]["booking_cancel_reasons"][0]);
+foreach($datalist as $key => $val){
+
+  // dd($key, $val);
+  // dd($key[$val]);
+    foreach($key[$val] as $value){
+  //     // dd($value);
+    }
+      // for($i=0;$i>=count($key[$val]);$i++){
+      //   echo $key[$val][$i];
+      // }
+}
+
+// foreach($en as $key => $val)
+//         {
+//             for($i=0; $i< count($en[$key]); $i++){
+//                 $data["en"][$key][$i] = $en[$key][$i];
+//                 $data["ar"][$key][$i] = $ar[$key][$i];
+//             }
+//         }
+
+
+ ?>
 <section>
 
     {{Form::open(array('url'=>route('save-dynamic-dropdowns'), 'class' => ' row'))}}
+        <!-- @foreach($datalist as $key=>$val)  -->
         @foreach($datalist as $key=>$val)
             <div class="col-6">
                     <div class="card">
@@ -78,13 +108,13 @@
                                             <div class="row d-flex align-items-end">
                                                 <div class="col-md-4 col-12">
                                                     <div class="mb-1">
-                                                    {{Form::text($v->dropdown_name,$v->dropdown_value,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no"])}}
+                                                    <!-- {{Form::text($v->dropdown_name,$v->dropdown_value,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no"])}} -->
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4 col-12">
                                                     <div class="mb-1">
-                                                    {{Form::text($v->dropdown_name,$v->dropdown_value_ar,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no_ar"])}}
+                                                    <!-- {{Form::text($v->dropdown_name,$v->dropdown_value_ar,['class'=>"form-control col-md-12 col-xs-12", "id"=>"room_no_ar"])}} -->
                                                     </div>
                                                 </div>
 

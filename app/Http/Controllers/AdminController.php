@@ -1943,37 +1943,41 @@ class AdminController extends Controller
 /* ***** Start Dynamic Dropdowns Functions ***** */
     public function listDynamicDropdowns() {
 
-
         $en = File::getRequire(base_path().'/resources/lang/en/dynamic_dropdown.php');
         $ar = File::getRequire(base_path().'/resources/lang/ar/dynamic_dropdown.php');
-        // dd($en);
+        // dd($en, $ar);
         $data =[];
         // $i=0;
-        foreach($en as $key => $value)
-        {
-            echo "$key => $value<br>";
-            $data["en"][$key] = $value;
-            // $i++;
-        }
+        
 
-        foreach($ar as $key => $value)
+        foreach($en as $key => $val)
         {
-            // echo "$key => $value<br>";
-            $data["ar"][$key] = $value;
-            // $i++;
-        }
-        // dd($data);
-        // exit;
-        $dynamicDropdowns=DynamicDropdown::where('status', 1)->where('is_deleted', 0)->orderBy('dropdown_name','ASC')->orderBy('is_deletable','ASC')->get();
-        $datalist = [];
-        foreach ($dynamicDropdowns as $key => $value) {
-            if(isset($datalist[$value->dropdown_name])){
-                $datalist[$value->dropdown_name]['values'][] = $value;
-            } else {
-                $datalist[$value->dropdown_name] = ['dropdown_name'=>$value->dropdown_name, 'title'=>lang_trans('txt_dropdown_'.$value->dropdown_name), 'values'=>[$value]];
+            for($i=0; $i< count($en[$key]); $i++){
+                $data["en"][$key][$i] = $en[$key][$i];
+                $data["ar"][$key][$i] = $ar[$key][$i];
             }
         }
-        $this->data['datalist'] = $datalist;
+
+        // foreach($ar as $key => $value)
+        // {
+        //     // echo "$key => $value<br>";
+        //     $data["ar"][$key] = $value;
+        //     // $i++;
+        // }
+        // dd($en, $ar, $data);
+        // dd($data);
+        // exit;
+        // $dynamicDropdowns=DynamicDropdown::where('status', 1)->where('is_deleted', 0)->orderBy('dropdown_name','ASC')->orderBy('is_deletable','ASC')->get();
+        // $datalist = [];
+        // foreach ($dynamicDropdowns as $key => $value) {
+        //     if(isset($datalist[$value->dropdown_name])){
+        //         $datalist[$value->dropdown_name]['values'][] = $value;
+        //     } else {
+        //         $datalist[$value->dropdown_name] = ['dropdown_name'=>$value->dropdown_name, 'title'=>lang_trans('txt_dropdown_'.$value->dropdown_name), 'values'=>[$value]];
+        //     }
+        // }
+        // $this->data['datalist'] = $datalist;
+        $this->data['datalist'] = $data;
         // dd($this->data);
         return view('backend/dynamic_dropdowns/list',$this->data);
     }
@@ -1984,6 +1988,8 @@ class AdminController extends Controller
         if($this->core->checkWebPortal()==0){
             return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
         }
+
+        Helper::translate(key($request->lang[$key]), $request->lang[$key][$val], "dynamic_dropdown", (key($request->lang)));
     //    $res = null;
     //    foreach($request->all() as $dropdownName => $dropdownValues){
     //     // dd($dropdownValues);

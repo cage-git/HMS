@@ -1667,11 +1667,11 @@ function getLangForUpdateDisable(){
     return ['en'];
 }
 
-function translate($key, $file_name = 'dynamic_dropdown', $lang = null){
+function translate($key, $value, $file_name = 'dynamic_dropdown', $lang = null){
     if($lang != null){
         $local = strtolower($lang);
     }
-
+    dd($key, $value);
     $lang_array = include(base_path('resources/lang/' . $local . '/'.$file_name.'.php'));
     $processed_key = ucfirst(str_replace('_', ' ', Helpers::remove_invalid_charcaters($key)));
     if (!array_key_exists(strtolower($key), $lang_array)) {

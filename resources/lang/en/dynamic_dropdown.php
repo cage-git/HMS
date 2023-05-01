@@ -13,6 +13,13 @@ return [
     |
     */
 
-    'booking_cancel_reasons[0]' => 'test_english',
+    'booking_cancel_reasons' => [
+        "0" => 'test',
+        "1" => 'test1',
+    ],
+    'booking_reasons' => [
+        "0" => 'test',
+        "1" => 'test',
+    ],
 
 ];
