@@ -42,13 +42,13 @@
                                     <div class="demo-inline-spacing">
                                         <div class="form-check form-check-primary">
                                            
-                                            {{Form::radio('guest_type','new',true,['class'=>"form-check-input guest_type", 'id'=>'new_guest'])}}
-                                            <label class="form-check-label" for="customColorRadio1">{{lang_trans('txt_new_guest')}}</label>
+                                            <label class="form-check-label" for="new_guest">{{Form::radio('guest_type','new',true,['class'=>"form-check-input guest_type", 'id'=>'new_guest'])}}
+                                            {{lang_trans('txt_new_guest')}}</label>
                                         </div>
                                         <div class="form-check form-check-primary">
                                            
-                                            {{Form::radio('guest_type','new_company',false,['class'=>"form-check-input guest_type", 'id'=>'new_company'])}} 
-                                            <label class="form-check-label" for="customColorRadio2">{{lang_trans('txt_new_company')}}</label>
+                                            <label class="form-check-label" for="new_company">{{Form::radio('guest_type','new_company',false,['class'=>"form-check-input guest_type", 'id'=>'new_company'])}}
+                                            {{lang_trans('txt_new_company')}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -130,16 +130,16 @@
                                         {{Form::textarea('reason_visit_stay',null,['class'=>"form-control h34 col-md-6 col-xs-12", "id"=>"reason_visit_stay", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_reason_of_visit'),"rows"=>1])}}
                                     </div>
                                 </div>
-                                
-                                
+
+
                         </div>
                     @endif
-                        
+
                         <hr />
 
                         <div class="row" id="new_guest_section">
                                 <h4 class="card-title"> {{lang_trans('heading_guest_info')}}</h4>
-                                
+
                                 <input name="guest_type_category" id="guest_type_category" value="new" type="hidden" />
                                 <input name="selected_customer_id" id="selected_customer_id" value="" type="hidden" />
 
@@ -156,7 +156,7 @@
                                         {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_surname')])}}
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_email')}}</label>
@@ -253,7 +253,7 @@
                                 <!-- <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_name')}}</label>
-                                        
+
                                     </div>
                                 </div> -->
 
@@ -263,7 +263,7 @@
                                         {{Form::text('company_gst_num',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"company_gst_num", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_company_gst_num')])}}
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_company_email')}}</label>
@@ -356,7 +356,7 @@
                                         {{Form::text('check_out_date',null,['class'=>"form-control col-md-6 col-xs-12  flatpickr-basic", "id"=>"check_out_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off", "readonly"=>true])}}
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_duration_of_stay')}}</label>
@@ -398,8 +398,8 @@
                                         {{Form::number('roomtype_'.$k,rtrim($change_value[1], ')'),[ "data-original"=>rtrim($change_value[1], ')'),"class"=>"room_price calculate_total_amount form-control col-4","required"=>"required"])}}
                                     </h4>
                                 </div>
-                                
-                            @endforeach    
+
+                            @endforeach
                         </div> -->
 
 
@@ -430,8 +430,8 @@
                                                     <label>Search Room: </label>
                                                     <div class="col-xl-4 col-md-6 col-12">
                                                         <input type="text" class="form-control" onkeyup="search_from_table('table_search_<?php echo $k; ?>',$(this).val())">
-                                                    </div>    
-                                                </div>    
+                                                    </div>
+                                                </div>
                                                 <table class="table table-striped table-bordered table_search" id="table_search_<?php echo $k; ?>">
                                                 <!-- <table class="datatables-basic table "> -->
                                                     <thead>
@@ -458,14 +458,14 @@
 
                         <hr />
 
-                    
+
                         @if(!$quickCheckIn)
                         <div class="row  counter-repeater">
                                 <h4 class="card-title"> {{lang_trans('heading_person_info')}}</h4>
 
                                 <div data-repeater-list="counter">
                                             <div data-repeater-item>
-                                          
+
                                                 <div class="row d-flex align-items-end">
                                                     <div class="col-md-4 col-12">
                                                         <div class="mb-1">
@@ -520,7 +520,7 @@
                                                     </div>
                                                 </div>
                                                 <!-- <hr /> -->
-                                              
+
                                             </div>
                                         </div>
 
@@ -536,7 +536,7 @@
                                         <!-- <div class="row">
                                             <div class="col-12">
                                                 <div class="form-check form-check-inline">
-                                                
+
                                                 </div>
                                                 <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
                                                     <i data-feather="plus" class="me-25"></i>
@@ -588,7 +588,7 @@
   globalVar.companiesList = {!! json_encode($companies_list) !!};
   var route_search_customer = '{{ route("search-from-customer")}}';
   var lang = "<?php if(getSettings('site_language') == 'en'){ echo 'en'; }else{ echo 'ar'; }  ?>";
-  
+
   $(document).ready(function(){
     $('#new_company_section').hide();
   });
@@ -632,7 +632,7 @@
                 var mt_payment_type = $("#mt_payment_type").val();
                 // var mt_reason_of_visit = $("input[name=mt_reason_of_visit]").val();
                 var div_id = "";
-                
+
                 if(!gender){
                     error = "{{lang_trans('txt_gender')}}";
                     error_flag = true;
@@ -670,7 +670,7 @@
                     error_flag = true;
                     div_id = "mt_payment_type";
                 }
-           
+
                 if(error_flag == true){
                     Swal.fire({
                         title: error + " {{lang_trans('txt_require')}}",
@@ -679,13 +679,13 @@
                     }).then((result) => {
                         $("#"+div_id).focus();
                         // setTimeout(function() { $('#dob').focus() }, 3000);
-                        // return; 
+                        // return;
                     })
                     // $("#"+div_id).focus();
                     // setTimeout(function() { $('#dob').focus() }, 3000);
-                     return; 
+                     return;
                 }
-               
+
                 // console.log("done");
                 // return;
             }else{
@@ -694,13 +694,13 @@
 
                 var error = "";
                 var error_flag = false;
-                
+
                 var check_in_date = $("#check_in_date").val();
                 var check_out_date = $("#check_out_date").val();
                 var duration_of_stay = $("#duration_of_stay").val();
                 var adult = $("#adult").val();
                 var div_id = "";
-            
+
                 if(guest_type=="new_company"){
                     var company_address = $("#company_address").val();
                     var company_name = $("#company_name").val();
@@ -718,7 +718,7 @@
                         error_flag = true;
                         div_id = "company_address";
                     }
-                    
+
                 }else if(guest_type=="new"){
                     var idcard_no = $("#idcard_no").val();
                     var type_of_ids_selector = $("#type_of_ids_selector").val();
@@ -730,7 +730,7 @@
                     //     error = "{{lang_trans('txt_id_number')}}";
                     //     error_flag = true;
                     //     div_id = "idcard_select_div";
-                    // }else 
+                    // }else
                     if(!type_of_ids_selector){
                         error = "{{lang_trans('txt_type_id')}}";
                         error_flag = true;
@@ -753,9 +753,9 @@
                     //     div_id = "mobile";
                     }
                 }
-                
-                
-                
+
+
+
                 if(!check_in_date){
                     error = "{{lang_trans('txt_checkin')}}";
                     error_flag = true;
@@ -781,8 +781,8 @@
                     }).then((result) => {
                         $("#"+div_id).focus();
                     })
-            
-                     return; 
+
+                     return;
                 }
             }
 
@@ -849,7 +849,7 @@
 function search_from_table(table_name,val){
     console.log(table_name,val);
     $("#"+ table_name +" tr").each(function(index) {
-     
+
         if (index != 0) {
             $row = $(this);
             var id = $row.find("td:nth-child(3)").text();
@@ -862,6 +862,6 @@ function search_from_table(table_name,val){
     });
 }
 
-</script> 
+</script>
 
 @endsection
