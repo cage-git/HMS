@@ -2494,225 +2494,226 @@ Route::group(['prefix' => 'admin'], function() {
             dump($nd);
         }
     });
-	
+
 	Route::get('translate_language', ['uses' => 'LanguageController@translate_language'])->name('translate_language');
 
 	Route::group(['middleware'=>['auth','permission','userlogs']], function() {
-		Route::get('dashboard', ['uses' => 'AdminController@index'])->name('dashboard');
+        Route::get('dashboard', ['uses' => 'AdminController@index'])->name('dashboard');
 
-		Route::get('profile', ['uses' => 'AdminController@editLoggedUserProfile'])->name('profile');
-		Route::post('save-profile', ['uses' => 'AdminController@saveProfile'])->name('save-profile');
-		Route::get('add-user', ['uses' => 'AdminController@addUser'])->name('add-user');
-		Route::get('edit-user/{id}', ['uses' => 'AdminController@editUser'])->name('edit-user');
-		Route::post('save-user', ['uses' => 'AdminController@saveUser'])->name('save-user');
-		Route::get('list-user', ['uses' => 'AdminController@listUser'])->name('list-user');
-		Route::get('delete-user/{id}', ['uses' => 'AdminController@deleteUser'])->name('delete-user');
+        Route::get('profile', ['uses' => 'AdminController@editLoggedUserProfile'])->name('profile');
+        Route::post('save-profile', ['uses' => 'AdminController@saveProfile'])->name('save-profile');
+        Route::get('add-user', ['uses' => 'AdminController@addUser'])->name('add-user');
+        Route::get('edit-user/{id}', ['uses' => 'AdminController@editUser'])->name('edit-user');
+        Route::post('save-user', ['uses' => 'AdminController@saveUser'])->name('save-user');
+        Route::get('list-user', ['uses' => 'AdminController@listUser'])->name('list-user');
+        Route::get('delete-user/{id}', ['uses' => 'AdminController@deleteUser'])->name('delete-user');
 
-		Route::get('add-customer', ['uses' => 'CustomerController@addCustomer'])->name('add-customer');
-		Route::get('edit-customer/{id}', ['uses' => 'CustomerController@editCustomer'])->name('edit-customer');
-		Route::post('save-customer', ['uses' => 'CustomerController@saveCustomer'])->name('save-customer');
-		Route::get('list-customer', ['uses' => 'CustomerController@listCustomer'])->name('list-customer');
-		Route::get('delete-customer/{id}', ['uses' => 'CustomerController@deleteCustomer'])->name('delete-customer');
+        Route::get('add-customer', ['uses' => 'CustomerController@addCustomer'])->name('add-customer');
+        Route::get('edit-customer/{id}', ['uses' => 'CustomerController@editCustomer'])->name('edit-customer');
+        Route::post('save-customer', ['uses' => 'CustomerController@saveCustomer'])->name('save-customer');
+        Route::get('list-customer', ['uses' => 'CustomerController@listCustomer'])->name('list-customer');
+        Route::get('delete-customer/{id}', ['uses' => 'CustomerController@deleteCustomer'])->name('delete-customer');
 
-		Route::get('add-company', ['uses' => 'CompanyController@addCompany'])->name('add-company');
-		Route::get('edit-company/{id}', ['uses' => 'CompanyController@editCompany'])->name('edit-company');
-		Route::post('save-company', ['uses' => 'CompanyController@saveCompany'])->name('save-company');
-		Route::get('list-company', ['uses' => 'CompanyController@listCompany'])->name('list-company');
-		Route::get('delete-company/{id}', ['uses' => 'CompanyController@deleteCompany'])->name('delete-company');
+        Route::get('add-company', ['uses' => 'CompanyController@addCompany'])->name('add-company');
+        Route::get('edit-company/{id}', ['uses' => 'CompanyController@editCompany'])->name('edit-company');
+        Route::post('save-company', ['uses' => 'CompanyController@saveCompany'])->name('save-company');
+        Route::get('list-company', ['uses' => 'CompanyController@listCompany'])->name('list-company');
+        Route::get('delete-company/{id}', ['uses' => 'CompanyController@deleteCompany'])->name('delete-company');
 
-		Route::get('add-room', ['uses' => 'AdminController@addRoom'])->name('add-room');
-		Route::get('edit-room/{id}', ['uses' => 'AdminController@editRoom'])->name('edit-room');
-		Route::post('save-room', ['uses' => 'AdminController@saveRoom'])->name('save-room');
-		Route::get('list-room', ['uses' => 'AdminController@listRoom'])->name('list-room');
-		Route::get('delete-room/{id}', ['uses' => 'AdminController@deleteRoom'])->name('delete-room');
+        Route::get('add-room', ['uses' => 'AdminController@addRoom'])->name('add-room');
+        Route::get('edit-room/{id}', ['uses' => 'AdminController@editRoom'])->name('edit-room');
+        Route::post('save-room', ['uses' => 'AdminController@saveRoom'])->name('save-room');
+        Route::get('list-room', ['uses' => 'AdminController@listRoom'])->name('list-room');
+        Route::get('delete-room/{id}', ['uses' => 'AdminController@deleteRoom'])->name('delete-room');
 
-		Route::get('add-room-types', ['uses' => 'AdminController@addRoomType'])->name('add-room-types');
-		Route::get('edit-room-types/{id}', ['uses' => 'AdminController@editRoomType'])->name('edit-room-types');
-		Route::post('save-room-types', ['uses' => 'AdminController@saveRoomType'])->name('save-room-types');
-		Route::get('list-room-types', ['uses' => 'AdminController@listRoomType'])->name('list-room-types');
-		Route::get('delete-room-types/{id}', ['uses' => 'AdminController@deleteRoomType'])->name('delete-room-types');
+        Route::get('add-room-types', ['uses' => 'AdminController@addRoomType'])->name('add-room-types');
+        Route::get('edit-room-types/{id}', ['uses' => 'AdminController@editRoomType'])->name('edit-room-types');
+        Route::post('save-room-types', ['uses' => 'AdminController@saveRoomType'])->name('save-room-types');
+        Route::get('list-room-types', ['uses' => 'AdminController@listRoomType'])->name('list-room-types');
+        Route::get('delete-room-types/{id}', ['uses' => 'AdminController@deleteRoomType'])->name('delete-room-types');
 
-		Route::get('add-amenities', ['uses' => 'AdminController@addAmenities'])->name('add-amenities');
-		Route::get('edit-amenities/{id}', ['uses' => 'AdminController@editAmenities'])->name('edit-amenities');
-		Route::post('save-amenities', ['uses' => 'AdminController@saveAmenities'])->name('save-amenities');
-		Route::get('list-amenities', ['uses' => 'AdminController@listAmenities'])->name('list-amenities');
-		Route::get('delete-amenities/{id}', ['uses' => 'AdminController@deleteAmenities'])->name('delete-amenities');
+        Route::get('add-amenities', ['uses' => 'AdminController@addAmenities'])->name('add-amenities');
+        Route::get('edit-amenities/{id}', ['uses' => 'AdminController@editAmenities'])->name('edit-amenities');
+        Route::post('save-amenities', ['uses' => 'AdminController@saveAmenities'])->name('save-amenities');
+        Route::get('list-amenities', ['uses' => 'AdminController@listAmenities'])->name('list-amenities');
+        Route::get('delete-amenities/{id}', ['uses' => 'AdminController@deleteAmenities'])->name('delete-amenities');
 
 //		Route::get('quick-check-in', ['uses' => 'AdminController@roomReservation'])->name('quick-check-in');
-		Route::get('search-from-customer', ['uses' => 'CustomerController@searchFromCustomer'])->name('search-from-customer');
-		Route::get('search-from-company', ['uses' => 'CustomerController@searchFromCompany'])->name('search-from-company');
-		Route::get('check-in', ['uses' => 'AdminController@roomReservation'])->name('room-reservation');
-		Route::post('save-reservation', ['uses' => 'AdminController@saveReservation'])->name('save-reservation');
-		Route::get('check-out/{id}', ['uses' => 'AdminController@checkOut'])->name('check-out-room');
-		Route::post('check-out', ['uses' => 'AdminController@saveCheckOutData'])->name('check-out');
-		Route::get('list-check-ins', ['uses' => 'AdminController@listReservation'])->name('list-reservation');
-		Route::get('list-check-outs', ['uses' => 'AdminController@listCheckOuts'])->name('list-check-outs');
-		Route::get('edit-reservation_/{id}', ['uses' => 'AdminController@editReservation'])->name('edit-reservation_');
-		Route::get('view-reservation/{id}', ['uses' => 'AdminController@viewReservation'])->name('view-reservation');
-		Route::get('cancel-reservation/{id}', ['uses' => 'AdminController@cancelReservation'])->name('cancel-reservation');
-		Route::post('cancel-reservation-submit/{id}', ['uses' => 'AdminController@cancelReservationSubmit'])->name('cancel-reservation-submit');
-		Route::get('changeto-checkin-reservation/{id}', ['uses' => 'AdminController@changetoCheckinReservation'])->name('changeto-checkin-reservation');
-		Route::get('delete-reservation/{id}', ['uses' => 'AdminController@deleteReservation'])->name('delete-reservation');
-		Route::get('invoice/{id}/{type}/{inv_type?}', ['uses' => 'AdminController@invoice'])->name('invoice');
-		Route::post('advance-pay', ['uses' => 'AdminController@advancePay'])->name('advance-pay');
-		Route::post('extend-reservation', ['uses' => 'AdminController@extendDays'])->name('extend-reservation');
-		Route::get('swap-room/{id}', ['uses' => 'AdminController@swapRoom'])->name('swap-room');
-		Route::post('save-swap-room', ['uses' => 'AdminController@saveSwapRoom'])->name('save-swap-room');
-		Route::get('delete-mediafile/{id}', ['uses' => 'AdminController@deleteMediaFile'])->name('delete-mediafile');
-		Route::get('mark-as-paid/{id}', ['uses' => 'AdminController@markAsPaid'])->name('mark-as-paid');
+        Route::get('search-from-customer', ['uses' => 'CustomerController@searchFromCustomer'])->name('search-from-customer');
+        Route::get('search-from-company', ['uses' => 'CustomerController@searchFromCompany'])->name('search-from-company');
+        Route::get('check-in', ['uses' => 'AdminController@roomReservation'])->name('room-reservation');
+        Route::post('save-reservation', ['uses' => 'AdminController@saveReservation'])->name('save-reservation');
+        Route::get('check-out/{id}', ['uses' => 'AdminController@checkOut'])->name('check-out-room');
+        Route::post('check-out', ['uses' => 'AdminController@saveCheckOutData'])->name('check-out');
+        Route::get('list-check-ins', ['uses' => 'AdminController@listReservation'])->name('list-reservation');
+        Route::get('list-check-outs', ['uses' => 'AdminController@listCheckOuts'])->name('list-check-outs');
+        Route::get('edit-reservation_/{id}', ['uses' => 'AdminController@editReservation'])->name('edit-reservation_');
+        Route::get('view-reservation/{id}', ['uses' => 'AdminController@viewReservation'])->name('view-reservation');
+        Route::get('cancel-reservation/{id}', ['uses' => 'AdminController@cancelReservation'])->name('cancel-reservation');
+        Route::post('cancel-reservation-submit/{id}', ['uses' => 'AdminController@cancelReservationSubmit'])->name('cancel-reservation-submit');
+        Route::get('changeto-checkin-reservation/{id}', ['uses' => 'AdminController@changetoCheckinReservation'])->name('changeto-checkin-reservation');
+        Route::get('delete-reservation/{id}', ['uses' => 'AdminController@deleteReservation'])->name('delete-reservation');
+        Route::get('invoice/{id}/{type}/{inv_type?}', ['uses' => 'AdminController@invoice'])->name('invoice');
+        Route::post('advance-pay', ['uses' => 'AdminController@advancePay'])->name('advance-pay');
+        Route::post('extend-reservation', ['uses' => 'AdminController@extendDays'])->name('extend-reservation');
+        Route::get('swap-room/{id}', ['uses' => 'AdminController@swapRoom'])->name('swap-room');
+        Route::post('save-swap-room', ['uses' => 'AdminController@saveSwapRoom'])->name('save-swap-room');
+        Route::get('delete-mediafile/{id}', ['uses' => 'AdminController@deleteMediaFile'])->name('delete-mediafile');
+        Route::get('mark-as-paid/{id}', ['uses' => 'AdminController@markAsPaid'])->name('mark-as-paid');
 
-		Route::get('add-food-category', ['uses' => 'AdminController@addFoodCategory'])->name('add-food-category');
-		Route::get('edit-food-category/{id}', ['uses' => 'AdminController@editFoodCategory'])->name('edit-food-category');
-		Route::post('save-food-category', ['uses' => 'AdminController@saveFoodCategory'])->name('save-food-category');
-		Route::get('list-food-category', ['uses' => 'AdminController@listFoodCategory'])->name('list-food-category');
-		Route::get('delete-food-category/{id}', ['uses' => 'AdminController@deleteFoodCategory'])->name('delete-food-category');
+        Route::get('add-food-category', ['uses' => 'AdminController@addFoodCategory'])->name('add-food-category');
+        Route::get('edit-food-category/{id}', ['uses' => 'AdminController@editFoodCategory'])->name('edit-food-category');
+        Route::post('save-food-category', ['uses' => 'AdminController@saveFoodCategory'])->name('save-food-category');
+        Route::get('list-food-category', ['uses' => 'AdminController@listFoodCategory'])->name('list-food-category');
+        Route::get('delete-food-category/{id}', ['uses' => 'AdminController@deleteFoodCategory'])->name('delete-food-category');
 
-		Route::get('add-food-item', ['uses' => 'AdminController@addFoodItem'])->name('add-food-item');
-		Route::get('edit-food-item/{id}', ['uses' => 'AdminController@editFoodItem'])->name('edit-food-item');
-		Route::post('save-food-item', ['uses' => 'AdminController@saveFoodItem'])->name('save-food-item');
-		Route::get('list-food-item', ['uses' => 'AdminController@listFoodItem'])->name('list-food-item');
-		Route::get('delete-food-item/{id}', ['uses' => 'AdminController@deleteFoodItem'])->name('delete-food-item');
+        Route::get('add-food-item', ['uses' => 'AdminController@addFoodItem'])->name('add-food-item');
+        Route::get('edit-food-item/{id}', ['uses' => 'AdminController@editFoodItem'])->name('edit-food-item');
+        Route::post('save-food-item', ['uses' => 'AdminController@saveFoodItem'])->name('save-food-item');
+        Route::get('list-food-item', ['uses' => 'AdminController@listFoodItem'])->name('list-food-item');
+        Route::get('delete-food-item/{id}', ['uses' => 'AdminController@deleteFoodItem'])->name('delete-food-item');
 
-		Route::get('add-expense-category', ['uses' => 'AdminController@addExpenseCategory'])->name('add-expense-category');
-		Route::get('edit-expense-category/{id}', ['uses' => 'AdminController@editExpenseCategory'])->name('edit-expense-category');
-		Route::post('save-expense-category', ['uses' => 'AdminController@saveExpenseCategory'])->name('save-expense-category');
-		Route::get('list-expense-category', ['uses' => 'AdminController@listExpenseCategory'])->name('list-expense-category');
-		Route::get('delete-expense-category/{id}', ['uses' => 'AdminController@deleteExpenseCategory'])->name('delete-expense-category');
+        Route::get('add-expense-category', ['uses' => 'AdminController@addExpenseCategory'])->name('add-expense-category');
+        Route::get('edit-expense-category/{id}', ['uses' => 'AdminController@editExpenseCategory'])->name('edit-expense-category');
+        Route::post('save-expense-category', ['uses' => 'AdminController@saveExpenseCategory'])->name('save-expense-category');
+        Route::get('list-expense-category', ['uses' => 'AdminController@listExpenseCategory'])->name('list-expense-category');
+        Route::get('delete-expense-category/{id}', ['uses' => 'AdminController@deleteExpenseCategory'])->name('delete-expense-category');
 
-		Route::get('add-expense', ['uses' => 'AdminController@addExpense'])->name('add-expense');
-		Route::get('edit-expense/{id}', ['uses' => 'AdminController@editExpense'])->name('edit-expense');
-		Route::post('save-expense', ['uses' => 'AdminController@saveExpense'])->name('save-expense');
-		Route::get('list-expense', ['uses' => 'AdminController@listExpense'])->name('list-expense');
-		Route::get('delete-expense/{id}', ['uses' => 'AdminController@deleteExpense'])->name('delete-expense');
+        Route::get('add-expense', ['uses' => 'AdminController@addExpense'])->name('add-expense');
+        Route::get('edit-expense/{id}', ['uses' => 'AdminController@editExpense'])->name('edit-expense');
+        Route::post('save-expense', ['uses' => 'AdminController@saveExpense'])->name('save-expense');
+        Route::get('list-expense', ['uses' => 'AdminController@listExpense'])->name('list-expense');
+        Route::get('delete-expense/{id}', ['uses' => 'AdminController@deleteExpense'])->name('delete-expense');
 
-		Route::get('add-vendor-category', ['uses' => 'VendorController@addCategory'])->name('add-vendor-category');
-		Route::get('edit-vendor-category/{id}', ['uses' => 'VendorController@editCategory'])->name('edit-vendor-category');
-		Route::post('save-vendor-category', ['uses' => 'VendorController@saveCategory'])->name('save-vendor-category');
-		Route::get('list-vendor-category', ['uses' => 'VendorController@listCategory'])->name('list-vendor-category');
-		Route::get('delete-vendor-category/{id}', ['uses' => 'VendorController@deleteCategory'])->name('delete-vendor-category');
+        Route::get('add-vendor-category', ['uses' => 'VendorController@addCategory'])->name('add-vendor-category');
+        Route::get('edit-vendor-category/{id}', ['uses' => 'VendorController@editCategory'])->name('edit-vendor-category');
+        Route::post('save-vendor-category', ['uses' => 'VendorController@saveCategory'])->name('save-vendor-category');
+        Route::get('list-vendor-category', ['uses' => 'VendorController@listCategory'])->name('list-vendor-category');
+        Route::get('delete-vendor-category/{id}', ['uses' => 'VendorController@deleteCategory'])->name('delete-vendor-category');
 
-		Route::get('add-vendor', ['uses' => 'VendorController@add'])->name('add-vendor');
-		Route::get('edit-vendor/{id}', ['uses' => 'VendorController@edit'])->name('edit-vendor');
-		Route::post('save-vendor', ['uses' => 'VendorController@save'])->name('save-vendor');
-		Route::get('list-vendor', ['uses' => 'VendorController@index'])->name('list-vendor');
-		Route::get('delete-vendor/{id}', ['uses' => 'VendorController@delete'])->name('delete-vendor');
-		Route::get('view-vendor/{id}', ['uses' => 'VendorController@view'])->name('view-vendor');
+        Route::get('add-vendor', ['uses' => 'VendorController@add'])->name('add-vendor');
+        Route::get('edit-vendor/{id}', ['uses' => 'VendorController@edit'])->name('edit-vendor');
+        Route::post('save-vendor', ['uses' => 'VendorController@save'])->name('save-vendor');
+        Route::get('list-vendor', ['uses' => 'VendorController@index'])->name('list-vendor');
+        Route::get('delete-vendor/{id}', ['uses' => 'VendorController@delete'])->name('delete-vendor');
+        Route::get('view-vendor/{id}', ['uses' => 'VendorController@view'])->name('view-vendor');
 
-		Route::get('food-order/{reservation_id?}', ['uses' => 'AdminController@FoodOrder'])->name('food-order');
-		Route::get('food-order-table/{order_id}', ['uses' => 'AdminController@FoodOrderTable'])->name('food-order-table');
-		Route::get('food-order-final/{order_id}', ['uses' => 'AdminController@FoodOrderFinal'])->name('food-order-final');
-		Route::post('save-food-order', ['uses' => 'AdminController@saveFoodOrder'])->name('save-food-order');
+        Route::get('food-order/{reservation_id?}', ['uses' => 'AdminController@FoodOrder'])->name('food-order');
+        Route::get('food-order-table/{order_id}', ['uses' => 'AdminController@FoodOrderTable'])->name('food-order-table');
+        Route::get('food-order-final/{order_id}', ['uses' => 'AdminController@FoodOrderFinal'])->name('food-order-final');
+        Route::post('save-food-order', ['uses' => 'AdminController@saveFoodOrder'])->name('save-food-order');
 
-		Route::get('orders-list', ['uses' => 'AdminController@listOrders'])->name('orders-list');
-		Route::get('order-invoice/{id}', ['uses' => 'AdminController@orderInvoice'])->name('order-invoice');
-		Route::get('order-invoice-final/{order_id}', ['uses' => 'AdminController@orderInvoiceFinal'])->name('order-invoice-final');
-		Route::get('kitchen-invoice/{order_id}/{order_type}', ['uses' => 'AdminController@kitchenInvoice'])->name('kitchen-invoice');
-		Route::get('delete-order-item/{id}', ['uses' => 'AdminController@deleteOrderItem'])->name('delete-order-item');
+        Route::get('orders-list', ['uses' => 'AdminController@listOrders'])->name('orders-list');
+        Route::get('order-invoice/{id}', ['uses' => 'AdminController@orderInvoice'])->name('order-invoice');
+        Route::get('order-invoice-final/{order_id}', ['uses' => 'AdminController@orderInvoiceFinal'])->name('order-invoice-final');
+        Route::get('kitchen-invoice/{order_id}/{order_type}', ['uses' => 'AdminController@kitchenInvoice'])->name('kitchen-invoice');
+        Route::get('delete-order-item/{id}', ['uses' => 'AdminController@deleteOrderItem'])->name('delete-order-item');
 
-		Route::get('add-product', ['uses' => 'AdminController@addProduct'])->name('add-product');
-		Route::get('edit-product/{id}', ['uses' => 'AdminController@editProduct'])->name('edit-product');
-		Route::post('save-product', ['uses' => 'AdminController@saveProduct'])->name('save-product');
-		Route::get('list-product', ['uses' => 'AdminController@listProduct'])->name('list-product');
-		Route::get('delete-product/{id}', ['uses' => 'AdminController@deleteProduct'])->name('delete-product');
+        Route::get('add-product', ['uses' => 'AdminController@addProduct'])->name('add-product');
+        Route::get('edit-product/{id}', ['uses' => 'AdminController@editProduct'])->name('edit-product');
+        Route::post('save-product', ['uses' => 'AdminController@saveProduct'])->name('save-product');
+        Route::get('list-product', ['uses' => 'AdminController@listProduct'])->name('list-product');
+        Route::get('delete-product/{id}', ['uses' => 'AdminController@deleteProduct'])->name('delete-product');
 
-		Route::get('add-housekeeping-item', ['uses' => 'HousekeepingController@addItem'])->name('add-housekeeping-item');
-		Route::get('edit-housekeeping-item/{id}', ['uses' => 'HousekeepingController@editItem'])->name('edit-housekeeping-item');
-		Route::post('save-housekeeping-item', ['uses' => 'HousekeepingController@saveItem'])->name('save-housekeeping-item');
-		Route::get('list-housekeeping-item', ['uses' => 'HousekeepingController@listItem'])->name('list-housekeeping-item');
-		Route::get('delete-housekeeping-item/{id}', ['uses' => 'HousekeepingController@deleteItem'])->name('delete-housekeeping-item');
-		Route::get('view-housekeeping-item/{id}', ['uses' => 'HousekeepingController@viewItem'])->name('view-housekeeping-item');
-		Route::get('update-housekeeping-order-status/{order_id}/{status}', ['uses' => 'HousekeepingController@updateOrderStatus'])->name('update-housekeeping-order-status');
+        Route::get('add-housekeeping-item', ['uses' => 'HousekeepingController@addItem'])->name('add-housekeeping-item');
+        Route::get('edit-housekeeping-item/{id}', ['uses' => 'HousekeepingController@editItem'])->name('edit-housekeeping-item');
+        Route::post('save-housekeeping-item', ['uses' => 'HousekeepingController@saveItem'])->name('save-housekeeping-item');
+        Route::get('list-housekeeping-item', ['uses' => 'HousekeepingController@listItem'])->name('list-housekeeping-item');
+        Route::get('delete-housekeeping-item/{id}', ['uses' => 'HousekeepingController@deleteItem'])->name('delete-housekeeping-item');
+        Route::get('view-housekeeping-item/{id}', ['uses' => 'HousekeepingController@viewItem'])->name('view-housekeeping-item');
+        Route::get('update-housekeeping-order-status/{order_id}/{status}', ['uses' => 'HousekeepingController@updateOrderStatus'])->name('update-housekeeping-order-status');
 
-		Route::get('add-housekeeping-order/{room_id?}/{reservation_id?}', ['uses' => 'HousekeepingController@addOrder'])->name('add-housekeeping-order');
-		Route::get('edit-housekeeping-order/{id}', ['uses' => 'HousekeepingController@editOrder'])->name('edit-housekeeping-order');
-		Route::post('save-housekeeping-order', ['uses' => 'HousekeepingController@saveOrder'])->name('save-housekeeping-order');
-		Route::get('list-housekeeping-order', ['uses' => 'HousekeepingController@index'])->name('list-housekeeping-order');
-		Route::get('delete-housekeeping-order/{id}', ['uses' => 'HousekeepingController@deleteOrder'])->name('delete-housekeeping-order');
-		Route::get('view-housekeeping-order/{id}', ['uses' => 'HousekeepingController@viewOrder'])->name('view-housekeeping-order');
+        Route::get('add-housekeeping-order/{room_id?}/{reservation_id?}', ['uses' => 'HousekeepingController@addOrder'])->name('add-housekeeping-order');
+        Route::get('edit-housekeeping-order/{id}', ['uses' => 'HousekeepingController@editOrder'])->name('edit-housekeeping-order');
+        Route::post('save-housekeeping-order', ['uses' => 'HousekeepingController@saveOrder'])->name('save-housekeeping-order');
+        Route::get('list-housekeeping-order', ['uses' => 'HousekeepingController@index'])->name('list-housekeeping-order');
+        Route::get('delete-housekeeping-order/{id}', ['uses' => 'HousekeepingController@deleteOrder'])->name('delete-housekeeping-order');
+        Route::get('view-housekeeping-order/{id}', ['uses' => 'HousekeepingController@viewOrder'])->name('view-housekeeping-order');
 
-		Route::get('add-laundry-item', ['uses' => 'LaundryController@addItem'])->name('add-laundry-item');
-		Route::get('edit-laundry-item/{id}', ['uses' => 'LaundryController@editItem'])->name('edit-laundry-item');
-		Route::post('save-laundry-item', ['uses' => 'LaundryController@saveItem'])->name('save-laundry-item');
-		Route::get('list-laundry-item', ['uses' => 'LaundryController@listItem'])->name('list-laundry-item');
-		Route::get('delete-laundry-item/{id}', ['uses' => 'LaundryController@deleteItem'])->name('delete-laundry-item');
-		Route::get('view-laundry-item/{id}', ['uses' => 'LaundryController@viewItem'])->name('view-laundry-item');
-		Route::get('update-laundry-order-status/{order_id}/{status}', ['uses' => 'LaundryController@updateOrderStatus'])->name('update-laundry-order-status');
+        Route::get('add-laundry-item', ['uses' => 'LaundryController@addItem'])->name('add-laundry-item');
+        Route::get('edit-laundry-item/{id}', ['uses' => 'LaundryController@editItem'])->name('edit-laundry-item');
+        Route::post('save-laundry-item', ['uses' => 'LaundryController@saveItem'])->name('save-laundry-item');
+        Route::get('list-laundry-item', ['uses' => 'LaundryController@listItem'])->name('list-laundry-item');
+        Route::get('delete-laundry-item/{id}', ['uses' => 'LaundryController@deleteItem'])->name('delete-laundry-item');
+        Route::get('view-laundry-item/{id}', ['uses' => 'LaundryController@viewItem'])->name('view-laundry-item');
+        Route::get('update-laundry-order-status/{order_id}/{status}', ['uses' => 'LaundryController@updateOrderStatus'])->name('update-laundry-order-status');
 
-		Route::get('add-laundry-order', ['uses' => 'LaundryController@addOrder'])->name('add-laundry-order');
-		Route::get('edit-laundry-order/{id}', ['uses' => 'LaundryController@editOrder'])->name('edit-laundry-order');
-		Route::post('save-laundry-order', ['uses' => 'LaundryController@saveOrder'])->name('save-laundry-order');
-		Route::get('list-laundry-order', ['uses' => 'LaundryController@index'])->name('list-laundry-order');
-		Route::get('delete-laundry-order/{id}', ['uses' => 'LaundryController@deleteOrder'])->name('delete-laundry-order');
-		Route::get('view-laundry-order/{id}', ['uses' => 'LaundryController@viewOrder'])->name('view-laundry-order');
-		Route::get('invoice-laundry-order/{id}', ['uses' => 'LaundryController@invoice'])->name('invoice-laundry-order');
+        Route::get('add-laundry-order', ['uses' => 'LaundryController@addOrder'])->name('add-laundry-order');
+        Route::get('edit-laundry-order/{id}', ['uses' => 'LaundryController@editOrder'])->name('edit-laundry-order');
+        Route::post('save-laundry-order', ['uses' => 'LaundryController@saveOrder'])->name('save-laundry-order');
+        Route::get('list-laundry-order', ['uses' => 'LaundryController@index'])->name('list-laundry-order');
+        Route::get('delete-laundry-order/{id}', ['uses' => 'LaundryController@deleteOrder'])->name('delete-laundry-order');
+        Route::get('view-laundry-order/{id}', ['uses' => 'LaundryController@viewOrder'])->name('view-laundry-order');
+        Route::get('invoice-laundry-order/{id}', ['uses' => 'LaundryController@invoice'])->name('invoice-laundry-order');
 
-		Route::get('add-season', ['uses' => 'SeasonController@add'])->name('add-season');
-		Route::get('edit-season/{id}', ['uses' => 'SeasonController@edit'])->name('edit-season');
-		Route::post('save-season', ['uses' => 'SeasonController@save'])->name('save-season');
-		Route::get('list-season', ['uses' => 'SeasonController@index'])->name('list-season');
-		Route::get('delete-season/{id}', ['uses' => 'SeasonController@delete'])->name('delete-season');
+        Route::get('add-season', ['uses' => 'SeasonController@add'])->name('add-season');
+        Route::get('edit-season/{id}', ['uses' => 'SeasonController@edit'])->name('edit-season');
+        Route::post('save-season', ['uses' => 'SeasonController@save'])->name('save-season');
+        Route::get('list-season', ['uses' => 'SeasonController@index'])->name('list-season');
+        Route::get('delete-season/{id}', ['uses' => 'SeasonController@delete'])->name('delete-season');
 
-		Route::get('io-stock', ['uses' => 'AdminController@inOutStock'])->name('io-stock');
-		Route::post('save-stock', ['uses' => 'AdminController@saveStock'])->name('save-stock');
-		Route::get('stock-history', ['uses' => 'AdminController@stockHistory'])->name('stock-history');
-		Route::get('delete-stock-history/{id}', ['uses' => 'AdminController@deleteStockHistory'])->name('delete-stock-history');
+        Route::get('io-stock', ['uses' => 'AdminController@inOutStock'])->name('io-stock');
+        Route::post('save-stock', ['uses' => 'AdminController@saveStock'])->name('save-stock');
+        Route::get('stock-history', ['uses' => 'AdminController@stockHistory'])->name('stock-history');
+        Route::get('delete-stock-history/{id}', ['uses' => 'AdminController@deleteStockHistory'])->name('delete-stock-history');
 
-		Route::get('settings', 'AdminController@settingsForm')->name('settings');
-    	Route::post('/save-settings', 'AdminController@saveSettings')->name('save-settings');
+        Route::get('settings', 'AdminController@settingsForm')->name('settings');
+        Route::post('/save-settings', 'AdminController@saveSettings')->name('save-settings');
 
-		Route::get('sms-settings', 'AdminController@settingsSms')->name('sms-settings');
-    	Route::post('/save-settings', 'AdminController@saveSettings')->name('save-settings');
+        Route::get('sms-settings', 'AdminController@settingsSms')->name('sms-settings');
+        Route::post('/save-settings', 'AdminController@saveSettings')->name('save-settings');
 
-		Route::get('permissions-list', 'AdminController@listPermission')->name('permissions-list');
-    	Route::post('/save-permissions', 'AdminController@savePermission')->name('save-permissions');
+        Route::get('permissions-list', 'AdminController@listPermission')->name('permissions-list');
+        Route::post('/save-permissions', 'AdminController@savePermission')->name('save-permissions');
 
-    	Route::get('dynamic-dropdown-list', 'AdminController@listDynamicDropdowns')->name('dynamic-dropdown-list');
-    	Route::post('/save-dynamic-dropdowns', 'AdminController@saveDynamicDropdowns')->name('save-dynamic-dropdowns');
+        Route::get('dynamic-dropdown-list', 'AdminController@listDynamicDropdowns')->name('dynamic-dropdown-list');
+        Route::post('/save-dynamic-dropdowns', 'AdminController@saveDynamicDropdowns')->name('save-dynamic-dropdowns');
 
-    	Route::get('language-translations', 'LanguageController@index')->name('language-translations');
-    	Route::post('/save-language-translations', 'LanguageController@saveTranslations')->name('save-language-translations');
+        Route::get('language-translations', 'LanguageController@index')->name('language-translations');
+        Route::post('/save-language-translations', 'LanguageController@saveTranslations')->name('save-language-translations');
 
-    	Route::get('/reports', 'ReportController@index')->name('reports');
+        Route::get('/reports', 'ReportController@index')->name('reports');
 
-    	Route::post('/search-orders', 'ReportController@searchOrders')->name('search-orders');
-    	Route::post('/export-orders', 'ReportController@exportOrders')->name('export-orders');
+        Route::post('/search-orders', 'ReportController@searchOrders')->name('search-orders');
+        Route::post('/export-orders', 'ReportController@exportOrders')->name('export-orders');
 
-    	Route::post('/search-stocks', 'ReportController@searchStockHistory')->name('search-stocks');
-    	Route::post('/export-stocks', 'ReportController@exportStockHistory')->name('export-stocks');
+        Route::post('/search-stocks', 'ReportController@searchStockHistory')->name('search-stocks');
+        Route::post('/export-stocks', 'ReportController@exportStockHistory')->name('export-stocks');
 
-    	Route::post('/search-checkins', 'ReportController@searchCheckins')->name('search-checkins');
-    	Route::post('/export-checkins', 'ReportController@searchCheckins')->name('export-checkins');
+        Route::post('/search-checkins', 'ReportController@searchCheckins')->name('search-checkins');
+        Route::post('/export-checkins', 'ReportController@searchCheckins')->name('export-checkins');
 
-    	Route::any('/search-checkouts', 'ReportController@searchCheckouts')->name('search-checkouts');
-    	Route::post('/export-checkouts', 'ReportController@searchCheckouts')->name('export-checkouts');
+        Route::any('/search-checkouts', 'ReportController@searchCheckouts')->name('search-checkouts');
+        Route::post('/export-checkouts', 'ReportController@searchCheckouts')->name('export-checkouts');
 
-		Route::any('/search-bladi', 'ReportController@searchBladi')->name('search-bladi');
-    	Route::post('/export-bladi', 'ReportController@searchBladi')->name('export-bladi');
-    	Route::post('/search-expenses', 'ReportController@searchExpense')->name('search-expenses');
-    	Route::post('/export-expenses', 'ReportController@searchExpense')->name('export-expenses');
+        Route::any('/search-bladi', 'ReportController@searchBladi')->name('search-bladi');
+        Route::post('/export-bladi', 'ReportController@searchBladi')->name('export-bladi');
+        Route::post('/search-expenses', 'ReportController@searchExpense')->name('search-expenses');
+        Route::post('/export-expenses', 'ReportController@searchExpense')->name('export-expenses');
 
-    	Route::post('/search-customer', 'ReportController@searchCustomer')->name('search-customer');
-    	Route::post('/export-customer', 'ReportController@searchCustomer')->name('export-customer');
+        Route::post('/search-customer', 'ReportController@searchCustomer')->name('search-customer');
+        Route::post('/export-customer', 'ReportController@searchCustomer')->name('export-customer');
 
-    	Route::post('/search-company', 'ReportController@searchCompany')->name('search-company');
-    	Route::post('/export-company', 'ReportController@searchCompany')->name('export-company');
+        Route::post('/search-company', 'ReportController@searchCompany')->name('search-company');
+        Route::post('/export-company', 'ReportController@searchCompany')->name('export-company');
 
-    	Route::post('/search-payment-history', 'ReportController@searchPaymentHistory')->name('search-payment-history');
-    	Route::post('/export-payment-history', 'ReportController@searchPaymentHistory')->name('export-payment-history');
+        Route::post('/search-payment-history', 'ReportController@searchPaymentHistory')->name('search-payment-history');
+        Route::post('/export-payment-history', 'ReportController@searchPaymentHistory')->name('export-payment-history');
 
-    	Route::post('/search-laundry-order', 'ReportController@searchLaundryOrder')->name('search-laundry-order');
-    	Route::post('/export-laundry-order', 'ReportController@exportLaundryOrder')->name('export-laundry-order');
+        Route::post('/search-laundry-order', 'ReportController@searchLaundryOrder')->name('search-laundry-order');
+        Route::post('/export-laundry-order', 'ReportController@exportLaundryOrder')->name('export-laundry-order');
 
-    	//website pages
-    	Route::get('home-page', 'WebsitePagesController@homePage')->name('home-page');
-		Route::post('update-home-page', 'WebsitePagesController@updateHomePage')->name('update-home-page');
+        //website pages
+        Route::get('home-page', 'WebsitePagesController@homePage')->name('home-page');
+        Route::post('update-home-page', 'WebsitePagesController@updateHomePage')->name('update-home-page');
 
-		Route::get('contact-page', 'WebsitePagesController@contactPage')->name('contact-page');
-		Route::post('update-contact-data', 'WebsitePagesController@updateContactPage')->name('update-contact-page');
+        Route::get('contact-page', 'WebsitePagesController@contactPage')->name('contact-page');
+        Route::post('update-contact-data', 'WebsitePagesController@updateContactPage')->name('update-contact-page');
 
-		Route::get('about-page', 'WebsitePagesController@aboutPage')->name('about-page');
-		Route::post('update-about-data', 'WebsitePagesController@updateAboutPage')->name('update-about-page');
-
+        Route::get('about-page', 'WebsitePagesController@aboutPage')->name('about-page');
+        Route::post('update-about-data', 'WebsitePagesController@updateAboutPage')->name('update-about-page');
+    });
+    Route::group(['middleware'=>['auth','userlogs']], function() {
 		Route::get('change-setting/{val}', 'AdminController@changeSetting')->name('change-setting');
 	});
 });
