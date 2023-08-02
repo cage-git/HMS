@@ -11,18 +11,18 @@
         $heading=lang_trans('btn_update');
     }
     $lang = getSettings('site_language');
-    $RESERVATION_TYPE = getSettings('site_language') == 'ar'? config('constants.RESERVATION_TYPE_AR'): config('constants.RESERVATION_TYPE');  
+    $RESERVATION_TYPE = getSettings('site_language') == 'ar'? config('constants.RESERVATION_TYPE_AR'): config('constants.RESERVATION_TYPE');
     $PAYMENT_MODES= getSettings('site_language') == 'ar'? config('constants.PAYMENT_MODES_AR'): config('constants.PAYMENT_MODES');
     $GENDER= getSettings('site_language') == 'ar'? config('constants.GENDER_AR'): config('constants.GENDER');
 
   @endphp
-  
+
 <style>
     .hide_elem{
        display:none;
     }
 
-</style>    
+</style>
 
 
 <div class="col-md-12 col-12">
@@ -41,12 +41,12 @@
                                 <div class="col-xl-8 col-md-6 col-12">
                                     <div class="demo-inline-spacing">
                                         <div class="form-check form-check-primary">
-                                           
+
                                             <label class="form-check-label" for="new_guest">{{Form::radio('guest_type','new',true,['class'=>"form-check-input guest_type", 'id'=>'new_guest'])}}
                                             {{lang_trans('txt_new_guest')}}</label>
                                         </div>
                                         <div class="form-check form-check-primary">
-                                           
+
                                             <label class="form-check-label" for="new_company">{{Form::radio('guest_type','new_company',false,['class'=>"form-check-input guest_type", 'id'=>'new_company'])}}
                                             {{lang_trans('txt_new_company')}}</label>
                                         </div>
@@ -57,20 +57,20 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_reservation_type')}}</label>
                                         {{ Form::select('reservation_type',$RESERVATION_TYPE,null,['class'=>'form-select']) }}
-                                       
+
                                     </div>
                                 </div>
                         </div>
 
                         <hr />
-                        
+
                         <div class="row">
                                 <h4 class="card-title"> {{lang_trans('heading_search_from_customer')}}</h4>
-                                
+
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="season_start_date">{{lang_trans('txt_search_from_phone_idcard')}}</label>
-                                      
+
                                         <select name="customer_name" class="select2-data-ajax form-select" id="search_customer" ></select>
                                     </div>
                                 </div>
@@ -82,7 +82,7 @@
                         <div class="row">
 
                                 <h4 class="card-title"> {{lang_trans('heading_idcard_info')}}</h4>
-                                
+
                                 <div class="col-xl-4 col-md-6 col-12" id="idcard_select_div">
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_id_number">{{lang_trans('txt_id_number')}}</label>
@@ -106,7 +106,7 @@
                                         {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids', false, $lang),null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_type_id">{{lang_trans('txt_gender')}}</label>
@@ -604,7 +604,7 @@
 <!-- BEGIN: Page JS-->
   <script src="{{URL::asset('public/app-assets/vendors/js/forms/repeater/jquery.repeater.min.js')}}"></script>
   <script src="{{URL::asset('public/app-assets/js/scripts/forms/form-repeater.js')}}"></script>
-  <!-- <script src="{{URL::asset('public/custom/js/add_reservation.js')}}"></script> -->
+  <script src="{{URL::asset('public/custom/js/add_reservation.js')}}"></script>
   <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
   <script src="{{URL::asset('public/app-assets/js/scripts/forms/customer.js')}}"></script>
   <script src="{{URL::asset('public/app-assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
