@@ -594,6 +594,7 @@
   });
 </script>
  <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
+ <script type="text/javascript" src="{{URL::asset('public/js/page_js/room_reg_add_edit.js?v='.rand(1111,9999).'')}}"></script>
 
 @endsection
 
