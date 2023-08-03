@@ -12,7 +12,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{URL::asset('public/app-assets/images/ico/favicon.ico')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
-    <?php if(getSettings('site_language') == 'en'){   ?> 
+    <?php if(getSettings('site_language') == 'en'){   ?>
         <!-- ltr  -->
         <!-- BEGIN: Vendor CSS-->
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/vendors/css/vendors.min.css')}}">
@@ -65,9 +65,9 @@
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/form-validation.css')}}">
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
-        
+
         <!-- END: Page CSS-->
-    <?php }else if(getSettings('site_language') == 'ar'){   ?> 
+    <?php }else if(getSettings('site_language') == 'ar'){   ?>
         <!-- rtl -->
 
         <!-- BEGIN: Vendor CSS-->
@@ -105,14 +105,17 @@
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/form-validation.css')}}">
         <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
-        <!-- END: Page CSS-->
+
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css')}}">
+
+    <!-- END: Page CSS-->
     <?php } ?>
     <script type="text/javascript" src="{{URL::asset('public/js/init.js?v='.rand(1111,9999).'')}}"></script>
     <script type="text/javascript" src="{{URL::asset('public/assets/moment/min/moment.min.js?v='.rand(1111,9999).'')}}"></script>
 
     @yield('styles')
 
-    <?php if(getSettings('site_theme') == 'dark'){   ?> 
+    <?php if(getSettings('site_theme') == 'dark'){   ?>
         <style>
             .navbar-floating .header-navbar-shadow{
                 background: none;
@@ -124,17 +127,17 @@
                 color: #1b1b1c !important;
             }
         </style>
-    <?php } ?> 
+    <?php } ?>
 </head>
 <!-- END: Head-->
-    <body 
+    <body
     class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
 
 
 
 
-         @include('layouts.navbar_backend_new')  
-         @include('layouts.sidebar_backend_new') 
+         @include('layouts.navbar_backend_new')
+         @include('layouts.sidebar_backend_new')
 
             <!-- BEGIN: Content-->
             <div class="app-content content ">
@@ -144,7 +147,7 @@
                     <div class="content-header row">
                     </div>
                     <div class="content-body">
-            
+
                         @yield('content')
 
                     </div>
