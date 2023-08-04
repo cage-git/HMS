@@ -2089,6 +2089,10 @@ class AdminController extends Controller
 /* change setting for theme language and visibilty */
 
     public function changeSetting($val) {
+        dd("asd");
+        if($val == "ar" || $val == "en" ){
+            Setting::updateOrCreate(['name'=>"site_language"], ['value'=>$val, 'updated_at'=>date('Y-m-d h:i:s')]);
+        }
         if($this->core->checkWebPortal()==0){
             return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
         }
@@ -2097,9 +2101,6 @@ class AdminController extends Controller
             Setting::updateOrCreate(['name'=>"site_theme"], ['value'=>$val, 'updated_at'=>date('Y-m-d h:i:s')]);
         }
 
-        if($val == "ar" || $val == "en" ){
-            Setting::updateOrCreate(['name'=>"site_language"], ['value'=>$val, 'updated_at'=>date('Y-m-d h:i:s')]);
-        }
 
         return redirect()->back();
     }

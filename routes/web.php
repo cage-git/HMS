@@ -2485,6 +2485,7 @@ Route::group(['prefix' => 'admin'], function() {
 	Route::get('/', ['uses' => 'LoginController@adminLogin'])->name('login');
 	Route::post('do-login', ['uses' => 'LoginController@doLogin'])->name('do-login');
 	Route::get('logout', ['uses' => 'LoginController@logout'])->name('logout');
+    Route::get('change-setting/{val}', 'ChangeSettingController@changeSetting')->name('change-setting');
     Route::get('view_log_curl', function (){
         $data = \App\CurlRequest::get();
         foreach($data as $d){
@@ -2495,9 +2496,9 @@ Route::group(['prefix' => 'admin'], function() {
         }
     });
 
-	Route::get('translate_language', ['uses' => 'LanguageController@translate_language'])->name('translate_language');
+    Route::get('translate_language', ['uses' => 'LanguageController@translate_language'])->name('translate_language');
 
-	Route::group(['middleware'=>['auth','permission','userlogs']], function() {
+    Route::group(['middleware'=>['auth','permission','userlogs']], function() {
         Route::get('dashboard', ['uses' => 'AdminController@index'])->name('dashboard');
 
         Route::get('profile', ['uses' => 'AdminController@editLoggedUserProfile'])->name('profile');
@@ -2713,9 +2714,6 @@ Route::group(['prefix' => 'admin'], function() {
         Route::get('about-page', 'WebsitePagesController@aboutPage')->name('about-page');
         Route::post('update-about-data', 'WebsitePagesController@updateAboutPage')->name('update-about-page');
     });
-    Route::group(['middleware'=>['auth','userlogs']], function() {
-		Route::get('change-setting/{val}', 'AdminController@changeSetting')->name('change-setting');
-	});
 });
 
 //cron routes
