@@ -1,7 +1,8 @@
 <!-- BEGIN: Main Menu-->
 @php
     $permissionsArr = getRoutePermission();
-@endphp    
+
+@endphp   
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
@@ -37,16 +38,16 @@
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            @if($permissionsArr['dashboard'])<li class=" nav-item"><a class="d-flex align-items-center" href="{{route('dashboard')}}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_dashboard')}}</span></a></li>@endif
+            @if($permissionsArr['dashboard'])<li class=" nav-item {{ request()->url() === url('admin/dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('dashboard')}}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_dashboard')}}</span></a></li>@endif
 
-            @if($permissionsArr['room-reservation'])<li class=" nav-item"><a class="d-flex align-items-center" href="{{route('room-reservation')}}"><i data-feather='plus-square'></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_checkin_add')}}</span></a></li>@endif
+            @if($permissionsArr['room-reservation'])<li class=" nav-item {{ request()->url() === url('admin/check-in') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('room-reservation')}}"><i data-feather='plus-square'></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_checkin_add')}}</span></a></li>@endif
             
             @if($permissionsArr['room-reservation']  && ($permissionsArr['quick-check-in'] || $permissionsArr['room-reservation'] || $permissionsArr['list-reservation'] || $permissionsArr['list-check-outs']) )
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='dollar-sign'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_checkin')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['list-reservation'])<li><a class="d-flex align-items-center" href="{{route('list-reservation')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_checkin_all')}} </span></a></li>       
+                        @if($permissionsArr['list-reservation'])<li class="{{ request()->url() === url('admin/list-check-ins') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-reservation')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_checkin_all')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-check-outs'])<li><a class="d-flex align-items-center" href="{{route('list-check-outs')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_checkout_all')}} </span></a></li>       
+                        @if($permissionsArr['list-check-outs'])<li class="{{ request()->url() === url('admin/list-check-outs') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-check-outs')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_checkout_all')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -55,9 +56,9 @@
             @if($permissionsArr['add-housekeeping-item'] || $permissionsArr['list-housekeeping-item'] || $permissionsArr['add-housekeeping-order'] || $permissionsArr['list-housekeeping-order'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='wind'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_housekeeping')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['list-housekeeping-item'])<li><a class="d-flex align-items-center" href="{{route('list-housekeeping-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_item_all')}} </span></a></li>       
+                        @if($permissionsArr['list-housekeeping-item'])<li class="{{ request()->url() === url('admin/list-housekeeping-item') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-housekeeping-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_item_all')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-housekeeping-order'])<li><a class="d-flex align-items-center" href="{{route('list-housekeeping-order')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_order_all')}} </span></a></li>       
+                        @if($permissionsArr['list-housekeeping-order'])<li class="{{ request()->url() === url('admin/list-housekeeping-order') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-housekeeping-order')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_order_all')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -66,9 +67,9 @@
             @if($permissionsArr['add-laundry-item'] || $permissionsArr['list-laundry-item'] || $permissionsArr['add-laundry-order'] || $permissionsArr['list-laundry-order'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='droplet'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_laundry')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['list-laundry-item'])<li><a class="d-flex align-items-center" href="{{route('list-laundry-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_item_all')}} </span></a></li>       
+                        @if($permissionsArr['list-laundry-item'])<li class="{{ request()->url() === url('admin/list-laundry-item') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-laundry-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_item_all')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-laundry-order'])<li><a class="d-flex align-items-center" href="{{route('list-laundry-order')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_order_all')}} </span></a></li>       
+                        @if($permissionsArr['list-laundry-order'])<li class="{{ request()->url() === url('admin/list-laundry-order') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-laundry-order')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_order_all')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -78,15 +79,15 @@
             @if($permissionsArr['reports'] || $permissionsArr['stock-history'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='file'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_reports')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['reports'])<li><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'transactions'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_transactions_report')}} </span></a></li>       
+                        @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'transactions' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'transactions'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_transactions_report')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['reports'])<li><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'checkouts'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_checkout_report')}} </span></a></li>       
+                        @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'checkouts' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'checkouts'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_checkout_report')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['reports'])<li><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'bladi_report'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_bladi_report')}} </span></a></li>       
+                        @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'bladi_report' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'bladi_report'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_bladi_report')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['reports'])<li><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'expense'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a></li>       
+                        @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'expense' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'expense'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['reports'])<li><a class="d-flex align-items-center" href="{{route('stock-history')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_report')}} </span></a></li>       
+                        @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'stock-history' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('stock-history')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_report')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -95,9 +96,9 @@
             @if($permissionsArr['add-companys'] || $permissionsArr['list-companys'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_companys')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['add-companys'])<li><a class="d-flex align-items-center" href="{{route('add-company')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_company_add')}} </span></a></li>       
+                        @if($permissionsArr['add-companys'])<li class="{{ request()->url() === url('admin/add-company') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-company')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_company_add')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-companys'])<li><a class="d-flex align-items-center" href="{{route('list-company')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_company_all')}} </span></a></li>       
+                        @if($permissionsArr['list-companys'])<li class="{{ request()->url() === url('admin/list-company') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-company')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_company_all')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -106,9 +107,9 @@
             @if($permissionsArr['add-customer'] || $permissionsArr['list-customer'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_customers')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['add-customer'])<li><a class="d-flex align-items-center" href="{{route('add-customer')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_customer_add')}} </span></a></li>       
+                        @if($permissionsArr['add-customer'])<li class="{{ request()->url() === url('admin/add-customer') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-customer')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_customer_add')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-customer'])<li><a class="d-flex align-items-center" href="{{route('list-customer')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_customer_all')}} </span></a></li>       
+                        @if($permissionsArr['list-customer'])<li class="{{ request()->url() === url('admin/list-customer') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-customer')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_customer_all')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -117,9 +118,9 @@
             @if($permissionsArr['add-user'] || $permissionsArr['list-user'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_users')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['add-user'])<li><a class="d-flex align-items-center" href="{{route('add-user')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_user_add')}} </span></a></li>       
+                        @if($permissionsArr['add-user'])<li class="{{ request()->url() === url('admin/add-user') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-user')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_user_add')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-user'])<li><a class="d-flex align-items-center" href="{{route('list-user')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_user_all')}} </span></a></li>       
+                        @if($permissionsArr['list-user'])<li class="{{ request()->url() === url('admin/list-user') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-user')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_user_all')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -128,13 +129,13 @@
             @if($permissionsArr['add-food-category'] || $permissionsArr['list-food-category'] || $permissionsArr['add-food-item'] || $permissionsArr['list-food-item'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='coffee'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_fooditems')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['add-food-category']) <li><a class="d-flex align-items-center" href="{{route('add-food-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_foodcat_add')}}</span></a></li>
+                        @if($permissionsArr['add-food-category']) <li class="{{ request()->url() === url('admin/add-food-category') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-food-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_foodcat_add')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['list-food-category']) <li><a class="d-flex align-items-center" href="{{route('list-food-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_foodcat_all')}}</span></a></li>
+                        @if($permissionsArr['list-food-category']) <li class="{{ request()->url() === url('admin/list-food-category') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-food-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_foodcat_all')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['add-food-item']) <li><a class="d-flex align-items-center" href="{{route('add-food-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_fooditem_add')}} </span></a></li>       
+                        @if($permissionsArr['add-food-item']) <li class="{{ request()->url() === url('admin/add-food-item') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-food-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_fooditem_add')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-food-item']) <li><a class="d-flex align-items-center" href="{{route('list-food-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_fooditem_all')}} </span></a></li>       
+                        @if($permissionsArr['list-food-item']) <li class="{{ request()->url() === url('admin/list-food-item') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-food-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_fooditem_all')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -143,13 +144,13 @@
             @if($permissionsArr['add-product'] || $permissionsArr['list-product'] || $permissionsArr['io-stock'] || $permissionsArr['stock-history'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='shopping-cart'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_stocks')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['add-product']) <li><a class="d-flex align-items-center" href="{{route('add-product')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_product_add')}}</span></a></li>
+                        @if($permissionsArr['add-product']) <li class="{{ request()->url() === url('admin/add-product') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-product')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_product_add')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['list-product']) <li><a class="d-flex align-items-center" href="{{route('list-product')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_product_all')}}</span></a></li>
+                        @if($permissionsArr['list-product']) <li class="{{ request()->url() === url('admin/list-product') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-product')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_product_all')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['io-stock']) <li><a class="d-flex align-items-center" href="{{route('io-stock')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_add')}} </span></a></li>       
+                        @if($permissionsArr['io-stock']) <li class="{{ request()->url() === url('admin/io-stock') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('io-stock')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_add')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['stock-history']) <li><a class="d-flex align-items-center" href="{{route('stock-history')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_history')}} </span></a></li>       
+                        @if($permissionsArr['stock-history']) <li class="{{ request()->url() === url('admin/stock-history') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('stock-history')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_history')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -158,17 +159,17 @@
             @if($permissionsArr['add-room'] || $permissionsArr['list-room'] || $permissionsArr['add-room-types'] || $permissionsArr['list-room-types'] || $permissionsArr['add-amenities'] || $permissionsArr['list-amenities'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_rooms')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['add-room']) <li><a class="d-flex align-items-center" href="{{route('add-room')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_room_add')}} </span></a></li>       
+                        @if($permissionsArr['add-room']) <li class="{{ request()->url() === url('admin/add-room') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-room')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_room_add')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-room']) <li><a class="d-flex align-items-center" href="{{route('list-room')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_room_all')}} </span></a></li>       
+                        @if($permissionsArr['list-room']) <li class="{{ request()->url() === url('admin/list-room') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-room')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_room_all')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['add-room-types']) <li><a class="d-flex align-items-center" href="{{route('add-room-types')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_roomtype_add')}} </span></a></li>       
+                        @if($permissionsArr['add-room-types']) <li class="{{ request()->url() === url('admin/add-room-types') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-room-types')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_roomtype_add')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-room-types']) <li><a class="d-flex align-items-center" href="{{route('list-room-types')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_roomtype_all')}} </span></a></li>       
+                        @if($permissionsArr['list-room-types']) <li class="{{ request()->url() === url('admin/list-room-types') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-room-types')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_roomtype_all')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['add-amenities']) <li><a class="d-flex align-items-center" href="{{route('add-amenities')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_amenities_add')}} </span></a></li>       
+                        @if($permissionsArr['add-amenities']) <li class="{{ request()->url() === url('admin/add-amenities') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-amenities')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_amenities_add')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-amenities']) <li><a class="d-flex align-items-center" href="{{route('list-amenities')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_amenities_all')}} </span></a></li>       
+                        @if($permissionsArr['list-amenities']) <li class="{{ request()->url() === url('admin/list-amenities') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-amenities')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_amenities_all')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -177,13 +178,13 @@
             @if($permissionsArr['add-expense-category'] || $permissionsArr['list-expense-category'] || $permissionsArr['add-expense'] || $permissionsArr['list-expense'])
               <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='bar-chart-2'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_expense')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['add-expense-category']) <li><a class="d-flex align-items-center" href="{{route('add-expense-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expensecat_add')}}</span></a></li>
+                        @if($permissionsArr['add-expense-category']) <li class="{{ request()->url() === url('admin/add-expense-category') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-expense-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expensecat_add')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['list-expense-category']) <li><a class="d-flex align-items-center" href="{{route('list-expense-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expensecat_all')}}</span></a></li>
+                        @if($permissionsArr['list-expense-category']) <li class="{{ request()->url() === url('admin/list-expense-category') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-expense-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expensecat_all')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['add-expense']) <li><a class="d-flex align-items-center" href="{{route('add-expense')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_add')}} </span></a></li>       
+                        @if($permissionsArr['add-expense']) <li class="{{ request()->url() === url('admin/add-expense') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-expense')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_add')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-expense']) <li><a class="d-flex align-items-center" href="{{route('list-expense')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_all')}} </span></a></li>       
+                        @if($permissionsArr['list-expense']) <li class="{{ request()->url() === url('admin/list-expense') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-expense')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_all')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -192,22 +193,22 @@
             @if($permissionsArr['add-vendor-category'] || $permissionsArr['list-vendor-category'] || $permissionsArr['add-vendor'] || $permissionsArr['list-vendor'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_vendor')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['add-vendor-category'])<li><a class="d-flex align-items-center" href="{{route('add-vendor-category')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_vendorcat_add')}}</span></a></li>
+                        @if($permissionsArr['add-vendor-category'])<li class="{{ request()->url() === url('admin/add-vendor-category') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-vendor-category')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_vendorcat_add')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['list-vendor-category'])<li><a class="d-flex align-items-center" href="{{route('list-vendor-category')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_vendorcat_all')}}</span></a></li>
+                        @if($permissionsArr['list-vendor-category'])<li class="{{ request()->url() === url('admin/list-vendor-category') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-vendor-category')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_vendorcat_all')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['add-vendor'])<li><a class="d-flex align-items-center" href="{{route('add-vendor')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_vendor_add')}} </span></a></li>       
+                        @if($permissionsArr['add-vendor'])<li class="{{ request()->url() === url('admin/add-vendor') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-vendor')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_vendor_add')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['list-vendor'])<li><a class="d-flex align-items-center" href="{{route('list-vendor')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_vendor_all')}} </span></a></li>       
+                        @if($permissionsArr['list-vendor'])<li class="{{ request()->url() === url('admin/list-vendor') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-vendor')}}"><i data-feather='users'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_vendor_all')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
             @endif
 
             @if($permissionsArr['add-season'] || $permissionsArr['list-season'])
-                <li class=" nav-item"><a class="d-flex align-items-center" href="{{route('add-season')}}"><i data-feather='cloud'></i><span class="menu-title text-truncate" data-i18n="season">{{lang_trans('sidemenu_season_add')}}</span></a>
+                <li class=" nav-item {{ request()->url() === url('admin/add-season') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-season')}}"><i data-feather='cloud'></i><span class="menu-title text-truncate" data-i18n="season">{{lang_trans('sidemenu_season_add')}}</span></a>
                 </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="{{route('list-season')}}"><i data-feather='cloud'></i><span class="menu-title text-truncate" data-i18n="season">{{lang_trans('sidemenu_season_all')}}</span></a>
+                <li class=" nav-item {{ request()->url() === url('admin/list-season') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-season')}}"><i data-feather='cloud'></i><span class="menu-title text-truncate" data-i18n="season">{{lang_trans('sidemenu_season_all')}}</span></a>
                 </li>
             @endif
 
@@ -215,13 +216,13 @@
             @if($permissionsArr['settings'] || $permissionsArr['dynamic-dropdown-list'] || $permissionsArr['permissions-list'] || $permissionsArr['language-translations'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_settings')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['settings'])<li><a class="d-flex align-items-center" href="{{route('settings')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_general_settings')}}</span></a></li>
+                        @if($permissionsArr['settings'])<li class="{{ request()->url() === url('admin/settings') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('settings')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_general_settings')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['permissions-list'])<li><a class="d-flex align-items-center" href="{{route('permissions-list')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_permissions_settings')}}</span></a></li>
+                        @if($permissionsArr['permissions-list'])<li class="{{ request()->url() === url('admin/permissions-list') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('permissions-list')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_permissions_settings')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['language-translations'])<li><a class="d-flex align-items-center" href="{{route('language-translations')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_lang_settings')}} </span></a></li>       
+                        @if($permissionsArr['language-translations'])<li class="{{ request()->url() === url('admin/language-translations') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('language-translations')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_lang_settings')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['dynamic-dropdown-list'])<li><a class="d-flex align-items-center" href="{{route('dynamic-dropdown-list')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_dynamic_dropdowns')}} </span></a></li>       
+                        @if($permissionsArr['dynamic-dropdown-list'])<li class="{{ request()->url() === url('admin/dynamic-dropdown-list') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('dynamic-dropdown-list')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_dynamic_dropdowns')}} </span></a></li>       
                         @endif
                     </ul>
                 </li>
@@ -231,11 +232,11 @@
             @if($permissionsArr['home-page'] || $permissionsArr['about-page'] || $permissionsArr['contact-page'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_website')}}</span></a>
                     <ul class="menu-content">
-                        @if($permissionsArr['home-page'])<li><a class="d-flex align-items-center" href="{{route('home-page')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_home_page')}}</span></a></li>
+                        @if($permissionsArr['home-page'])<li class="{{ request()->url() === url('admin/home-page') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('home-page')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_home_page')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['about-page'])<li><a class="d-flex align-items-center" href="{{route('about-page')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_aboutus_page')}}</span></a></li>
+                        @if($permissionsArr['about-page'])<li class="{{ request()->url() === url('admin/about-page') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('about-page')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_aboutus_page')}}</span></a></li>
                         @endif
-                        @if($permissionsArr['contact-page'])<li><a class="d-flex align-items-center" href="{{route('contact-page')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_contactus_page')}} </span></a></li>       
+                        @if($permissionsArr['contact-page'])<li class="{{ request()->url() === url('admin/contact-page') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('contact-page')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_contactus_page')}} </span></a></li>       
                         @endif
                        
                     </ul>

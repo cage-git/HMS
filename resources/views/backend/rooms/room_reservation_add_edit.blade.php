@@ -566,7 +566,7 @@
                                 </div>
                                 <hr>
                                 <div class="col-xl-4 col-md-6 col-12">
-                                    <button class="btn btn-success btn-submit-form" type="submit" disabled>{{lang_trans('btn_submit')}}</button>
+                                    <button class="btn btn-success btn-submit-form" type="submit">{{lang_trans('btn_submit')}}</button>
                                 </div>
                         </div>
 

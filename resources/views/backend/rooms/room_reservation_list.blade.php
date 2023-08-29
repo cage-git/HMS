@@ -75,7 +75,7 @@ $totalAmount = 0;
                             <div class="mb-1">
                             <br>
                             <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
-                            <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                            <button type="reset" id="rst_btn" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
                             </div>
                         </div>
                        
@@ -274,7 +274,7 @@ $totalAmount = 0;
 <section>
   <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card p-2">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_checkout_list')}}</h4>
                 </div>
@@ -630,7 +630,7 @@ $totalAmount = 0;
 
 <div class="row">
         <div class=" col-12">
-            <div class="card">
+            <div class="card p-2">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_checkout_list')}}</h4>
                 </div>
@@ -795,7 +795,7 @@ $totalAmount = 0;
 
 <div class="row">
         <div class=" col-12">
-            <div class="card">
+            <div class="card p-2">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_bladi_list')}}</h4>
                 </div>
@@ -994,6 +994,28 @@ $totalAmount = 0;
     </div> -->
   @endif
 </div>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    var rstBtn = document.getElementById('rst_btn');
+    
+    if (rstBtn) {
+        rstBtn.addEventListener('click', function(event) {
+            event.preventDefault();            
+            //console.log('clicked');            
+            var form = rstBtn.closest('form');
+            var inputsAndSelects = form.querySelectorAll('input[type="text"], select');
+            
+            inputsAndSelects.forEach(function(element) {
+                element.value = '';
+            });
+            window.location.href = window.location.href;
+        });
+    }
+
+});
+
+
+</script>
 <script>
     globalVar.customerList = {!! json_encode($customer_list) !!};
 </script>

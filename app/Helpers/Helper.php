@@ -115,21 +115,23 @@ function getDynamicDropdownList($dropdownName, $hasKey = false, $lang=""){
     if($data){
         foreach ($data as $key => $value) {
             if($hasKey){
-                if($lang=="ar"){
-                    $list[$value->drop_down_key] = $value->dropdown_value_ar;
-                }else if($lang=="en"){
-                    $list[$value->drop_down_key] = $value->dropdown_value_en;
-                }else{
-                    $list[$value->drop_down_key] = $value->dropdown_value;
-                }
+                // if($lang=="ar"){
+                //     $list[$value->drop_down_key] = $value->dropdown_value_ar;
+                // }else if($lang=="en"){
+                //     $list[$value->drop_down_key] = $value->dropdown_value_en;
+                // }else{
+                //     $list[$value->drop_down_key] = $value->dropdown_value;
+                // }
+                  $list[$value->drop_down_key] = $value->dropdown_value;
             }else{
-                if($lang=="ar"){
-                    $list[$value->id] = $value->dropdown_value_ar;
-                }else if($lang=="en"){
-                    $list[$value->id] = $value->dropdown_value_en;
-                }else{
-                    $list[$value->id] = $value->dropdown_value;
-                }
+                // if($lang=="ar"){
+                //     $list[$value->id] = $value->dropdown_value_ar;
+                // }else if($lang=="en"){
+                //     $list[$value->id] = $value->dropdown_value_en;
+                // }else{
+                //     $list[$value->id] = $value->dropdown_value;
+                // }
+                 $list[$value->id] = $value->dropdown_value;
             }
         }
     }
