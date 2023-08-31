@@ -59,8 +59,8 @@
 
     <div class="row">
         <div class=" col-12">
-            <div class="card">
-                <div class="card-header border-bottom">
+            <div class="card p-2">
+                <div class="card-header border-bottom px-0">
                     <h4 class="card-title">{{lang_trans('heading_stock_history')}}</h4>
                 </div>
                 <table class="datatables-basic table">

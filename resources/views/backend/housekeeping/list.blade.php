@@ -7,15 +7,17 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
-
+.dtble_wdth table.dataTable>thead>tr>th:not(.sorting_disabled), .dtble_wdth table.dataTable>thead>tr>td:not(.sorting_disabled){
+  padding-right: 23px;
+}
 </style>
 
 <!-- Basic table -->
 <section id="basic-datatable">
   <div class="row">
-      <div class=" col-12">
-          <div class="card">
-              <div class="card-header border-bottom">
+      <div class=" col-12 dtble_wdth">
+          <div class="card p-2">
+              <div class="card-header px-0 border-bottom">
                   <h4 class="card-title">{{lang_trans('txt_order_list')}}</h4>
                   <a href="{{route('add-housekeeping-order')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_order_add')}} </button></a>
               </div>

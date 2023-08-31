@@ -8,7 +8,7 @@
     <div class="row">
         <div class=" col-12">
             <div class="card p-2">
-                <div class="card-header border-bottom">
+                <div class="card-header px-0 border-bottom">
                     <h4 class="card-title">{{lang_trans('txt_housekeeping_item')}}</h4>
                     <a href="{{route('add-housekeeping-item')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_item_add')}} </button></a>
                 </div>

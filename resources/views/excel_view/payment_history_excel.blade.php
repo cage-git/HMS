@@ -5,15 +5,15 @@
   $totalIncomeAmount = 0;
   $totalExpenseAmount = 0;
 @endphp
-<table class="table table-bordered">                            
+<table class="table table-bordered" width="100%">                            
   <thead>
     <tr>
-      <th>{{lang_trans('txt_sno')}}</th>
-      <th>{{lang_trans('txt_transaction_id')}}</th>
-      <th>{{lang_trans('txt_activity')}}</th>
-      <th>{{lang_trans('txt_payment_mode')}}</th>
-      <th>{{lang_trans('txt_date')}}</th>
-      <th>{{lang_trans('txt_total_amount')}}</th>
+      <th style="width:100px;"><strong>{{lang_trans('txt_sno')}}</strong></th>
+      <th style="width:80px;"><strong>{{lang_trans('txt_transaction_id')}}</strong></th>
+      <th style="width:100px;"><strong>{{lang_trans('txt_activity')}}</strong></th>
+      <th style="width:100px;"><strong>{{lang_trans('txt_payment_mode')}}</strong></th>
+      <th style="width:80px;"><strong>{{lang_trans('txt_date')}}</strong></th>
+      <th style="width:80px;"><strong>{{lang_trans('txt_total_amount')}}</strong></th>
     </tr>
   </thead>
   <tbody>
@@ -47,15 +47,15 @@
 @endphp
 <table class="table table-bordered">
     <tr>
-      <th>{{lang_trans('txt_total_income')}}</th>
+      <th><strong>{{lang_trans('txt_total_income')}}</strong></th>
       <th>{{numberFormat($totalIncomeAmount)}}</th>
     </tr>
     <tr>
-      <th>{{lang_trans('txt_total_expense')}}</th>
+      <th><strong>{{lang_trans('txt_total_expense')}}</strong></th>
       <th>{{numberFormat($totalExpenseAmount)}}</th>
     </tr>
     <tr>
-      <th>{{lang_trans('txt_total_netamount')}}</th>
+      <th><strong>{{lang_trans('txt_total_netamount')}}</strong></th>
       <th>{{numberFormat($totalNetAmoun)}}</th>
     </tr>
     <tr>
@@ -67,7 +67,7 @@
       <th></th>
     </tr>
     <tr>
-      <th>Amount In (Currency Symbol)</th>
+      <th><strong> Amount In (Currency Symbol)</strong></th>
       <th>{{getCurrencySymbol()}}</th>
     </tr>
 </table>

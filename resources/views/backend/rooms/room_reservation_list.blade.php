@@ -20,7 +20,17 @@ $totalAmount = 0;
     margin-bottom: 1px;
     margin:2px;
   }
-
+  .dtble_wdth table.dataTable>thead>tr>th:not(.sorting_disabled), table.dataTable>thead>tr>td:not(.sorting_disabled){
+    padding-right: 23px;
+  }
+  .dtble_wdth .modal .modal-header .btn-close, .dtble_wdth .modal .modal-header .btn-close:hover{
+    transform: translate(0px, 0px);
+  }
+  @media only screen and (max-width:575px){
+    .dtble_wdth .modal-body {
+      overflow-x: scroll;
+    }
+  }
 </style>
 <div class="">
   @if($list=='check_outs')
@@ -274,8 +284,8 @@ $totalAmount = 0;
 <section>
   <div class="row">
         <div class="col-12">
-            <div class="card p-2">
-                <div class="card-header border-bottom">
+            <div class="card p-2 dtble_wdth">
+                <div class="card-header px-0 border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_checkout_list')}}</h4>
                 </div>
                   @php

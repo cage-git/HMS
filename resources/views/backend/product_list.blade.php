@@ -5,8 +5,8 @@
 <section id="basic-datatable">
     <div class="row">
         <div class=" col-12">
-            <div class="card">
-                <div class="card-header border-bottom">
+            <div class="card p-2">
+                <div class="card-header px-0 border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_list_product')}}</h4>
                     <a href="{{route('add-product')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_product_add')}}</button></a>
                 </div>

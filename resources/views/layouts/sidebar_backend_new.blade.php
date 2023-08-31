@@ -3,7 +3,7 @@
     $permissionsArr = getRoutePermission();
 
 @endphp   
-<div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+<div id="sidbar_nav" class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item me-auto"><a class="navbar-brand" href="../../../html/ltr/vertical-menu-template/index.html"><span class="brand-logo">
@@ -32,7 +32,7 @@
                             </svg></span>
                         <h2 class="brand-text">{{getSettings('site_page_title')}}</h2>
                     </a></li>
-                <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
+                <li class="nav-item nav-toggle"><a id="tgl_cls" class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
             </ul>
         </div>
         <div class="shadow-bottom"></div>
@@ -646,3 +646,19 @@
         </div>
     </div>
     <!-- END: Main Menu-->
+    <script type="text/javascript">
+        var addClassButton = document.getElementById('tgl_cls');
+        var targetElement = document.getElementById('sidbar_nav');
+        addClassButton.addEventListener('click', function() {
+            targetElement.classList.toggle('closed_mnu');
+        });
+        var targetElement = document.getElementById('sidbar_nav');
+        targetElement.addEventListener('mouseenter', function() {
+            targetElement.classList.add('new_closed_mnu');
+        });
+        targetElement.addEventListener('mouseleave', function() {
+            // Remove the class when mouse leaves
+            targetElement.classList.remove('new_closed_mnu');
+        });
+
+    </script>

@@ -8,10 +8,12 @@
           $flag=1;
           $heading=lang_trans('btn_update');
           $housekeepingItems=$data_row->housekeeping_items;
+           $itemArray = explode(',', $housekeepingItems);
       }
       $roomId = (isset($room_id)) ? $room_id : null;
       $reservationId = (isset($reservation_id)) ? $reservation_id : null;
   @endphp
+
 
   <div class="col-md-12 col-12">
         <div class="card">
@@ -30,7 +32,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_housekeeping_item')}}</label>
-                                        {{ Form::select('items[]',$item_list,null,['class'=>'select2 form-select" id="select2-basic', 'id'=>'housekeeping_items', 'multiple'=>'multiple', 'required'=>true]) }}    
+                                        {{ Form::select('items[]',$item_list,$itemArray,['class'=>'select2 form-select" id="select2-basic', 'id'=>'housekeeping_items', 'multiple'=>'multiple', 'required'=>true]) }}    
                                     </div>
                                 </div>
 

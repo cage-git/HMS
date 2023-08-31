@@ -10,9 +10,9 @@ input[type='checkbox']:checked {
 <section id="basic-datatable">  
   <div class="row">
         <div class=" col-12">
-            <div class="card">
+            <div class="card p-2">
             {{Form::open(array('url'=>route('save-permissions')))}}
-                <div class="card-header border-bottom">
+                <div class="card-header px-0 border-bottom">
                     <h4 class="card-title">{{lang_trans('heading_list_permission')}}</h4>
                     <input type="submit" value="{{lang_trans('btn_update')}}" class="btn btn-primary"/>
                 </div>
