@@ -2693,11 +2693,13 @@ Route::group(['prefix' => 'admin'], function() {
         Route::post('/export-expenses', 'ReportController@searchExpense')->name('export-expenses');
 
         Route::post('/search-customer', 'ReportController@searchCustomer')->name('search-customer');
+        Route::get('/search-customer', 'ReportController@searchCustomer')->name('search-customer');
         Route::post('/export-customer', 'ReportController@searchCustomer')->name('export-customer');
 
         Route::post('/search-company', 'ReportController@searchCompany')->name('search-company');
         Route::post('/export-company', 'ReportController@searchCompany')->name('export-company');
 
+        Route::get('/search-payment-history', 'ReportController@searchPaymentHistory')->name('search-payment-history');
         Route::post('/search-payment-history', 'ReportController@searchPaymentHistory')->name('search-payment-history');
         Route::post('/export-payment-history', 'ReportController@searchPaymentHistory')->name('export-payment-history');
 
