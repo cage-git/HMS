@@ -158,5 +158,14 @@
         <div class="drag-target"></div>
         @include('layouts.footer_backend_new')
         @include('layouts.script_backend')
+        <script type="text/javascript">
+            document.querySelector('.nav-link-style').addEventListener('click', function(event) {
+               
+            });
+        document.querySelector('.cs_clik').addEventListener('click', function(event) {
+           var targetDiv = document.getElementById("sidbar_nav");
+           targetDiv.classList.remove("expanded");
+        });
+        </script>
     </body>
 </html>

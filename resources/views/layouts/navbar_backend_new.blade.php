@@ -4,8 +4,10 @@
 <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-xxl">
         <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">
-                <ul class="nav navbar-nav d-xl-none">
-                    <li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon" data-feather="menu"></i></a></li>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link m-0 cs_clik modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a>
+                    </li>
                 </ul>
               
             </div>
@@ -29,9 +31,9 @@
  
                 <li class="nav-item d-none d-lg-block">
                 @if(getSettings('site_theme') == 'light')
-                    <a class="nav-link nav-link-style" href="{{route('change-setting',['dark'])}}" ><i class="ficon" data-feather="moon"></i></a>
+                    <a class="nav-link nav-link-style" href="{{route('change-setting',['dark'])}}" data-theme="dark"><i class="ficon" data-feather="moon"></i></a>
                 @elseif(getSettings('site_theme') == 'dark')
-                    <a class="nav-link nav-link-style" href="{{route('change-setting',['light'])}}" ><i class="ficon" data-feather="sun"></i></a>
+                    <a class="nav-link nav-link-style" href="{{route('change-setting',['light'])}}" data-theme="light"><i class="ficon" data-feather="sun"></i></a>
                 @endif
                 </li>
            
