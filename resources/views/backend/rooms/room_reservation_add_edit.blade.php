@@ -21,7 +21,9 @@
     .hide_elem{
        display:none;
     }
-
+    .per_item_elem:first-child .align-items-end .delete_btn {
+        display: none;
+    } 
 </style>
 
 
@@ -460,11 +462,11 @@
 
 
                         @if(!$quickCheckIn)
-                        <div class="row  counter-repeater">
+                        <div class="row  item-repeater">
                                 <h4 class="card-title"> {{lang_trans('heading_person_info')}}</h4>
 
-                                <div data-repeater-list="counter">
-                                            <div data-repeater-item>
+                                <div data-repeater-list="item">
+                                            <div data-repeater-item class="per_item_elem">
 
                                                 <div class="row d-flex align-items-end">
                                                     <div class="col-md-4 col-12">
@@ -478,12 +480,6 @@
                                                             <label class="form-label" for="itemname"> {{lang_trans('txt_gender')}}</label>{{ Form::select('persons_info[gender][]',$GENDER,null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
                                                         </div>
                                                     </div>
-
-                                                    <!-- <div class="col-md-4 col-12">
-                                                        <div class="mb-1">
-                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_age')}}</label>{{Form::number('persons_info[age][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"person_age", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_age'),"min"=>10])}}
-                                                        </div>
-                                                    </div> -->
 
                                                     <div class="col-xl-4 col-md-6 col-12">
                                                         <div class="mb-1">
@@ -510,16 +506,17 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-1 col-9 mb-50">
-                                                        <div class="mb-1">
+                                                    <div class="col-md-1 col-9 mb-50 ">
+                                                        <div class="mb-1 delete_btn">
                                                             <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
                                                                 <i data-feather="x" class="me-25"></i>
                                                                 <span>Delete</span>
                                                             </button>
                                                         </div>
                                                     </div>
+                                                    <hr />
                                                 </div>
-                                                <!-- <hr /> -->
+                                                
 
                                             </div>
                                         </div>
@@ -530,20 +527,9 @@
                                                     <i data-feather="plus" class="me-25"></i>
                                                     <span>Add New</span>
                                                 </button>
+                                                
                                             </div>
                                         </div>
-
-                                        <!-- <div class="row">
-                                            <div class="col-12">
-                                                <div class="form-check form-check-inline">
-
-                                                </div>
-                                                <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
-                                                    <i data-feather="plus" class="me-25"></i>
-                                                    <span>Add New</span>
-                                                </button>
-                                            </div>
-                                        </div> -->
                         </div>
 
                         <hr />
