@@ -69,6 +69,18 @@ return [
       'Female'=>'أنثى',
       'Other'=>'أخرى',
     ],
+    'TYPE_ID'=>[
+      'Accommodation'=>'Accommodation',
+      'National identity'=>'National identity',
+      'visiting card'=>'visiting card',
+      'Travel permit'=>'Travel permit',
+    ],
+    'TYPE_ID_AR'=>[
+      '4'=>'إقامة',
+      '5'=>'هوية وطنية',
+      '7'=>'بطاقة زيارة',
+      '21'=>'جواز سفر',
+    ],
     'MT_GENDER'=>[
         'Male'=>'1',
         'Female'=>'2',

@@ -4,6 +4,7 @@
       $flag=0;
       $heading=lang_trans('btn_add');
       $housekeepingItems='';
+      $itemArray='';
       if(isset($data_row) && !empty($data_row)){
           $flag=1;
           $heading=lang_trans('btn_update');

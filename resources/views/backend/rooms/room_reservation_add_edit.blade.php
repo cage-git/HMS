@@ -14,7 +14,7 @@
     $RESERVATION_TYPE = getSettings('site_language') == 'ar'? config('constants.RESERVATION_TYPE_AR'): config('constants.RESERVATION_TYPE');
     $PAYMENT_MODES= getSettings('site_language') == 'ar'? config('constants.PAYMENT_MODES_AR'): config('constants.PAYMENT_MODES');
     $GENDER= getSettings('site_language') == 'ar'? config('constants.GENDER_AR'): config('constants.GENDER');
-
+    $TYPE_id= getSettings('site_language') == 'ar'? config('constants.TYPE_ID_AR'): config('constants.TYPE_ID');
   @endphp
 
 <style>
@@ -30,7 +30,7 @@
 <div class="col-md-12 col-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title"> {{lang_trans('heading_guest_type')}}</h4>
+                <h4 class="card-title">{{lang_trans('heading_guest_type')}}</h4>
             </div>
             <div class="card-body">
                 @if($flag==1)
@@ -105,7 +105,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_type_id">{{lang_trans('txt_type_id')}}</label>
-                                        {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids', false, $lang),null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                                        {{ Form::select('idcard_type',$TYPE_id,null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
                                     </div>
                                 </div>
 
@@ -496,7 +496,11 @@
 
                                                     <div class="col-md-4 col-12">
                                                         <div class="mb-1">
-                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_type_id')}}</label>{{ Form::select('persons_info[idcard_type][]',getDynamicDropdownList('type_of_ids', false, $lang),null,['class'=>'form-select col-md-6 col-xs-12',"id"=>"type_of_ids", 'placeholder'=>lang_trans('ph_select')]) }}
+                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_type_id')}}</label>
+                                                            {{-- {{ Form::select('persons_info[idcard_type][]',getDynamicDropdownList('type_of_ids', false, $lang),null,['class'=>'form-select col-md-6 col-xs-12',"id"=>"type_of_ids", 'placeholder'=>lang_trans('ph_select')]) }} --}}
+
+
+                                                            {{ Form::select('idcard_type',$TYPE_id,null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }} 
                                                         </div>
                                                     </div>
 
