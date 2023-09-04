@@ -69,8 +69,8 @@
 
     <div class="row">
         <div class=" col-12">
-            <div class="card">
-                <div class="card-header border-bottom">
+            <div class="card p-2">
+                <div class="card-header px-0 border-bottom">
                     <h4 class="card-title">{{lang_trans('txt_list_companys')}}</h4>
                     <a href="{{route('add-company')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_company_add')}} </button></a>
                 </div>

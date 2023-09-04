@@ -58,7 +58,7 @@
         <!-- END: Page CSS-->
 
         <!-- BEGIN: Custom CSS-->
-        <link rel="stylesheet" type="text/css" href="{{URL::asset('app-assets/style.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/style.css')}}">
         <!-- END: Custom CSS-->
         <!-- ltr ended -->
         <!-- BEGIN: Page CSS-->
