@@ -67,7 +67,13 @@
     <link rel="stylesheet" type="text/css" href="{{URL::asset('public/assets/css-rtl/style.css')}}">
     <!-- end rtl -->
     <?php } ?>
-
+<style type="text/css">
+    .alrt_msg{
+    position: absolute;
+    right: 40px;
+    top: 22px;
+    }
+</style>
 </head>
 <!-- END: Head-->
 
@@ -100,7 +106,7 @@
                         <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
                                 <h2 class="card-title fw-bold mb-1">{{lang_trans('welcome_to')}} {{getSettings('hotel_name')}}</h2>
-                                <p class="card-text mb-2">{{lang_trans('please_sign_in_to_your_account_and_start_the_adventure')}}</p>
+                                <p class="card-text mb-2 text-break">{{lang_trans('please_sign_in_to_your_account_and_start_the_adventure')}}</p>
                                 <!-- <form class="auth-login-form mt-2" action="index.html" method="POST"> -->
                                 {{ Form::open(array('url'=>route('do-login'),'id'=>"login-form", 'class'=>"auth-login-form mt-2")) }}
                                     <div class="mb-1">
@@ -147,6 +153,11 @@
                         </div>
                         <!-- /Login-->
                     </div>
+                    @if(session('error'))
+                        <div class="alert alert-danger p-1 m-0 alrt_msg" role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

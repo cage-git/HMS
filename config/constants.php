@@ -10,6 +10,7 @@ return [
     'FLASH_INVALID_EMAIL_ADDRESS'=>'Email address invalid!',
     'FLASH_EMAIL_VERIFY_1'=>'Your email address verified successfully ! ',
     'FLASH_EMAIL_VERIFY_0'=>'Your email address ##EMAIL## not verified.Try again! ',
+    'FLASH_INVALID_CREDENTIAL' => 'Invalid credentials. Please try again.',
     'FLASH_EMAIL_ADDRESS_EXIST'=>'Email address already exist.',
     'FLASH_MOBILE_NUMBER_EXIST'=>'Mobile number already exist.',
     'FLASH_ACC_CREATE_0'=>'Your account createtion failed.',
