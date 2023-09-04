@@ -2511,6 +2511,7 @@ Route::group(['prefix' => 'admin'], function() {
 
         Route::get('add-customer', ['uses' => 'CustomerController@addCustomer'])->name('add-customer');
         Route::get('edit-customer/{id}', ['uses' => 'CustomerController@editCustomer'])->name('edit-customer');
+        Route::get('save-customer', ['uses' => 'CustomerController@saveCustomer'])->name('save-customer');
         Route::post('save-customer', ['uses' => 'CustomerController@saveCustomer'])->name('save-customer');
         Route::get('list-customer', ['uses' => 'CustomerController@listCustomer'])->name('list-customer');
         Route::get('delete-customer/{id}', ['uses' => 'CustomerController@deleteCustomer'])->name('delete-customer');
