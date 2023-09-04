@@ -39,7 +39,7 @@
                             <a href="#">$48.9k</a>
                         </h3>
                         <button type="button" class="btn btn-primary">View Sales</button>
-                        <img src="../../../app-assets/images/illustration/badge.svg" class="congratulation-medal" alt="Medal Pic" />
+                        <img src="{{URL::asset('public/app-assets/images/illustration/badge.svg')}}" class="congratulation-medal" alt="Medal Pic" />
                     </div>
                 </div>
             </div>
