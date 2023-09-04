@@ -26,7 +26,17 @@ class CustomerController extends Controller
         return view('backend/customers/add_edit',$this->data);
     }
     public function saveCustomer(Request $request) {
-        // dd($request->all());
+    // ...
+
+        // Check if the email already exists
+        $existingEmail = Customer::where('email', $request->email)->where('id', '!=', $request->id)->first();
+        if ($existingEmail) {
+            return redirect()->back()->with(['error' => 'Email already exists in the database']);
+        }
+        $existingPhone = Customer::where('mobile', $request->mobile)->where('id', '!=', $request->id)->first();
+        if ($existingPhone) {
+            return redirect()->back()->with(['error' => 'Phone already exists in the database']);
+        }
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
@@ -40,14 +50,14 @@ class CustomerController extends Controller
         $request->merge(['password'=>Hash::make($request->mobile)]);
         $res = Customer::where('cat','=','user')->updateOrCreate(['id'=>$request->id],$request->except(['_token']));
         if($res){
-            // dd($res);
-            //sync user and customer
+            // sync user and customer
             $this->core->syncUserAndCustomer();
 
             return redirect()->route('list-customer')->with(['success' => $success]);
         }
         return redirect()->back()->with(['error' => $error]);
     }
+
     public function listCustomer() {
          $this->data['datalist']=Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC')->get();
          $this->data['customer_list']=getCustomerList('get');

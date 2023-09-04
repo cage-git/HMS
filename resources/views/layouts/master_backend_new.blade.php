@@ -244,11 +244,12 @@
         <script type="text/javascript">
         window.addEventListener('load', function () {
            var loader = document.querySelector('.loader-mask');
-            if (loader) {
-                setTimeout(function () {
-                loader.style.display = 'none'; 
-                }, 1500);
-            }
+            // if (loader) {
+            //     setTimeout(function () {
+            //     loader.style.display = 'none'; 
+            //     }, 1500);
+            // }
+            loader.style.display = 'none';
         });
         document.querySelector('.nav-link-style').addEventListener('click', function(event) {
                 event.preventDefault();
@@ -258,7 +259,10 @@
                 if (loader) {
                     loader.style.display = 'block';
                 }
-                window.location.href = currentHref;
+                setTimeout(function() {
+                    window.location.href = currentHref;
+                }, 2000);
+                // window.location.href = currentHref;
             });
 
             

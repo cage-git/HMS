@@ -9,7 +9,13 @@
       }
   @endphp
 
-
+<style type="text/css">
+    .alrt_msg{
+    position: absolute;
+    right: 40px;
+    top: 22px;
+    }
+</style>
 
 
   <div class="col-md-12 col-12">
@@ -113,6 +119,12 @@
                     <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
                 </form>
             </div>
+            @if(session('error'))
+                <div class="alert alert-danger p-1 m-0 alrt_msg">
+                    {{ session('error') }}
+                </div>
+            @endif
+
         </div>
     </div>
 
