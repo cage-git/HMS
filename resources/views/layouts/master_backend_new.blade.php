@@ -128,11 +128,94 @@
             }
         </style>
     <?php } ?>
+    <style>
+    /* Preloader
+-------------------------------------------------------*/
+
+.loader-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    z-index: 99999;
+}
+
+.loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 0;
+    color: #00c9d0;
+    display: inline-block;
+    margin: -25px 0 0 -25px;
+    text-indent: -9999em;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+}
+.lead{
+  font-size:13px;
+}
+.loader div {
+    background-color: #7367f0;
+    display: inline-block;
+    float: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    opacity: .5;
+    border-radius: 50%;
+    -webkit-animation: ballPulseDouble 2s ease-in-out infinite;
+    animation: ballPulseDouble 2s ease-in-out infinite;
+}
+
+.loader div:last-child {
+    -webkit-animation-delay: -1s;
+    animation-delay: -1s;
+}
+
+@-webkit-keyframes ballPulseDouble {
+    0%,
+    100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    50% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+@keyframes ballPulseDouble {
+    0%,
+    100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    50% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+    </style>
 </head>
 <!-- END: Head-->
     <body
     class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
-
+    <!-- Preloader -->
+    <div class="loader-mask">
+        <div class="loader">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+<!-- Preloader -->
 
 
 
@@ -159,9 +242,26 @@
         @include('layouts.footer_backend_new')
         @include('layouts.script_backend')
         <script type="text/javascript">
-            document.querySelector('.nav-link-style').addEventListener('click', function(event) {
-               
+        window.addEventListener('load', function () {
+           var loader = document.querySelector('.loader-mask');
+            if (loader) {
+                setTimeout(function () {
+                loader.style.display = 'none'; 
+                }, 1500);
+            }
+        });
+        document.querySelector('.nav-link-style').addEventListener('click', function(event) {
+                event.preventDefault();
+                var currentHref = this.getAttribute('href');
+                var loader = document.querySelector('.loader-mask');
+
+                if (loader) {
+                    loader.style.display = 'block';
+                }
+                window.location.href = currentHref;
             });
+
+            
         document.querySelector('.cs_clik').addEventListener('click', function(event) {
            var targetDiv = document.getElementById("sidbar_nav");
            targetDiv.classList.remove("expanded");

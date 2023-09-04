@@ -88,7 +88,7 @@
                               
                     <div class="card">
                           <div class="card-header">
-                              <h4 class="card-title mb-50">test {{lang_trans('heading_guest_info')}}</h4>
+                              <h4 class="card-title mb-50">{{lang_trans('heading_guest_info')}}</h4>
                           </div>
                           <!-- <hr/> -->
                           <div class="card-body">
