@@ -70,10 +70,10 @@ return [
       'Other'=>'أخرى',
     ],
     'TYPE_ID'=>[
-      'Accommodation'=>'Accommodation',
-      'National identity'=>'National identity',
-      'visiting card'=>'visiting card',
-      'Travel permit'=>'Travel permit',
+      '4'=>'Accommodation',
+      '5'=>'National identity',
+      '7'=>'visiting card',
+      '21'=>'Travel permit',
     ],
     'TYPE_ID_AR'=>[
       '4'=>'إقامة',
