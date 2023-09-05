@@ -138,8 +138,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #fff;
-    z-index: 99999;
+    background-color: #ffffffb5;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
 }
 
 .loader {
@@ -261,7 +262,7 @@
                 }
                 setTimeout(function() {
                     window.location.href = currentHref;
-                }, 2000);
+                });
                 // window.location.href = currentHref;
             });
 
