@@ -286,7 +286,7 @@ $totalAmount = 0;
         <div class="col-12">
             <div class="card p-2 dtble_wdth">
                 <div class="card-header px-0 border-bottom">
-                    <h4 class="card-title">{{lang_trans('heading_checkout_list')}}</h4>
+                    <h4 class="card-title">{{lang_trans('heading_checkin_list')}}</h4>
                 </div>
                   @php
                     $totalAmount = 0;
