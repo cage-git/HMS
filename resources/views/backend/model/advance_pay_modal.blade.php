@@ -2,7 +2,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="btn-close mx-0" data-bs-dismiss="modal"></button>
         <h4 class="modal-title">{{lang_trans('btn_advance_pay')}}</h4>
       </div>
       {{ Form::open(array('url'=>route('advance-pay'),'id'=>"advance-pay-form")) }}
@@ -32,7 +32,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">{{lang_trans('btn_cancel')}}</button>
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">{{lang_trans('btn_cancel')}}</button>
           <button type="submit" class="btn btn-success">{{lang_trans('btn_submit')}}</button>
         </div>
       {{ Form::close() }}

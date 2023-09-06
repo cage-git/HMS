@@ -369,7 +369,7 @@ $totalAmount = 0;
                                                               <span>{{lang_trans('sidemenu_housekeeping')}}</span>
                                                             </a>
                                                         @endif
-                                                        <button class="btn btn-sm btn-warning dropdown-item w-100" data-toggle="modal" data-target="#advance_pay_{{$val->id}}">
+                                                        <button class="btn btn-sm btn-warning dropdown-item w-100" data-bs-toggle="modal" data-bs-target="#advance_pay_{{$val->id}}">
                                                           <i data-feather='dollar-sign'></i>
                                                           <span>{{lang_trans('btn_advance_pay')}}</span>
                                                         </button>
