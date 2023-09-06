@@ -2705,6 +2705,7 @@ Route::group(['prefix' => 'admin'], function() {
         Route::post('/export-payment-history', 'ReportController@searchPaymentHistory')->name('export-payment-history');
 
         Route::post('/search-laundry-order', 'ReportController@searchLaundryOrder')->name('search-laundry-order');
+        Route::get('/search-laundry-order', 'ReportController@searchLaundryOrder')->name('search-laundry-order');
         Route::post('/export-laundry-order', 'ReportController@exportLaundryOrder')->name('export-laundry-order');
 
         //website pages
