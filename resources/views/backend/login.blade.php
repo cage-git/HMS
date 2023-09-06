@@ -90,13 +90,32 @@
             <div class="content-body">
                 <div class="auth-wrapper auth-cover">
                     <div class="auth-inner row m-0">
-                        <!-- Brand logo--><a class="brand-logo" href="{{url('/admin')}}">
-
-                            <h2 class="brand-text text-primary ms-1">{{getSettings('hotel_name')}}</h2>
-                        </a>
-                        <!-- /Brand logo-->
+                       
                         <!-- Left Text-->
-                        <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
+                        <div class="d-none d-lg-block col-lg-8 align-items-center p-4">
+                             <!-- Brand logo-->
+                        <div class="navbar-container d-flex">
+                            <a class="px-1" href="{{url('/admin')}}">
+                                <h2 class="brand-text text-primary ms-1">{{getSettings('hotel_name')}}</h2>
+                            </a>
+                            <ul class="nav navbar-nav align-items-center">
+                                <li class="nav-item dropdown dropdown-language"><a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @if(getSettings('site_language') == 'en')
+                                        <i class="flag-icon flag-icon-us"></i>
+                                        <span class="selected-language">English</span>
+                                    @elseif(getSettings('site_language') == 'ar')
+                                        <i class="flag-icon flag-icon-sa"></i>
+                                        <span class="selected-language">Saudi Arab</span>
+                                    @endif
+                                   </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag">
+                                        <a class="dropdown-item" href="{{route('change-setting',['en'])}}" data-language="en"><i class="flag-icon flag-icon-us"></i> English</a>
+                                        <a class="dropdown-item" href="{{route('change-setting',['ar'])}}" data-language="sa"><i class="flag-icon flag-icon-sa"></i> Saudi Arab</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /Brand logo-->
                             <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
                                 <img class="img-fluid" src="{{asset('public/images/login_bg.jpg')}}" alt="Login V2" />
                             </div>
