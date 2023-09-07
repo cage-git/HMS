@@ -215,38 +215,43 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header border-bottom">
-                    <h4 class="card-title">{{lang_trans('heading_person_info')}}</h4>
-                </div>
-                <table class="datatables-basic table table-responsive">
-                    <tr>
-                        <th>{{lang_trans('txt_sno')}}.</th>
-                        <th>{{lang_trans('txt_name')}}</th>
-                        <th>{{lang_trans('txt_gender')}}</th>
-                        <th>{{lang_trans('txt_age')}}</th>
-                        <th>{{lang_trans('txt_address')}}</th>
-                        <th>{{lang_trans('txt_idcard_type')}}</th>
-                        <th>{{lang_trans('txt_idcard_num')}}</th>
-                    </tr>
-                
-                    @if($data_row->persons)
-                              @foreach($data_row->persons as $k=>$val)
-                                <tr>
-                                  <td>{{$k+1}}</td>
-                                  <td>{{$val->name}}</td>
-                                  <td>{{$val->gender}}</td>
-                                  <td>{{$val->age}}</td>
-                                  <td>{{$val->address}}</td>
-                                  <td>{{@getDynamicDropdownById($val->idcard_type, 'dropdown_value')}}</td>
-                                  <td>{{$val->idcard_no}}</td>
-                                </tr>
-                              @endforeach
-                            @else
-                              <tr>
-                                  <td colspan="7">{{lang_trans('txt_no_record')}}</td>
-                              </tr>
-                            @endif
-                </table>
+              @if ($data_row->persons->isEmpty())
+                  <!-- blank if there is no person included -->
+                 @else
+                    <div class="card-header border-bottom">
+                        <h4 class="card-title">{{lang_trans('heading_person_info')}}</h4>
+                    </div>
+                    
+                    <table class="datatables-basic table table-responsive">
+                        <tr>
+                            <th>{{lang_trans('txt_sno')}}.</th>
+                            <th>{{lang_trans('txt_name')}}</th>
+                            <th>{{lang_trans('txt_gender')}}</th>
+                            <th>{{lang_trans('txt_age')}}</th>
+                            <th>{{lang_trans('txt_address')}}</th>
+                            <th>{{lang_trans('txt_idcard_type')}}</th>
+                            <th>{{lang_trans('txt_idcard_num')}}</th>
+                        </tr>
+                    
+                        @if($data_row->persons)
+                                  @foreach($data_row->persons as $k=>$val)
+                                    <tr>
+                                      <td>{{$k+1}}</td>
+                                      <td>{{$val->name}}</td>
+                                      <td>{{$val->gender}}</td>
+                                      <td>{{$val->age}}</td>
+                                      <td>{{$val->address}}</td>
+                                      <td>{{@getDynamicDropdownById($val->idcard_type, 'dropdown_value')}}</td>
+                                      <td>{{$val->idcard_no}}</td>
+                                    </tr>
+                                  @endforeach
+                                @else
+                                  <tr>
+                                      <td colspan="7">{{lang_trans('txt_no_record')}}</td>
+                                  </tr>
+                                @endif
+                    </table>
+                @endif
             </div>
         </div>
     </div>
@@ -260,30 +265,34 @@
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('txt_idcard_uploaded')}}</h4>
                 </div>
-                <table class="datatables-basic table table-responsive">
-                    <tr>
-                        <th>{{lang_trans('txt_sno')}}.</th>
-                        <th>{{lang_trans('txt_action')}}</th>
-                    </tr>
-                
-                    @if($data_row->id_cards)
-                      @foreach($data_row->id_cards as $k=>$val)
-                        @if($val->file!='')
+                 @if ($data_row->id_cards->isEmpty())
+                  <p class="p-2 m-0">Please upload any id card</p>
+                 @else 
+                    <table class="datatables-basic table table-responsive">
+                        <tr>
+                            <th>{{lang_trans('txt_sno')}}.</th>
+                            <th>{{lang_trans('txt_action')}}</th>
+                        </tr>
+                    
+                        @if($data_row->id_cards)
+                          @foreach($data_row->id_cards as $k=>$val)
+                            @if($val->file!='')
+                              <tr>
+                                <td>{{$k+1}}</td>
+                                <td>
+                                  <a href="{{checkFile($val->file,'uploads/id_cards/','blank_id.jpg')}}" data-toggle="lightbox"  data-title="{{lang_trans('txt_idcard')}}" data-footer="" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> </a>
+                                  <a href="{{checkFile($val->file,'uploads/id_cards/','blank_id.jpg')}}" class="btn btn-sm btn-success" download><i class="fa fa-download"></i> </a>
+                                </td>
+                              </tr>
+                            @endif
+                          @endforeach
+                        @else
                           <tr>
-                            <td>{{$k+1}}</td>
-                            <td>
-                              <a href="{{checkFile($val->file,'uploads/id_cards/','blank_id.jpg')}}" data-toggle="lightbox"  data-title="{{lang_trans('txt_idcard')}}" data-footer="" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> </a>
-                              <a href="{{checkFile($val->file,'uploads/id_cards/','blank_id.jpg')}}" class="btn btn-sm btn-success" download><i class="fa fa-download"></i> </a>
-                            </td>
+                              <td colspan="2">{{lang_trans('txt_no_file')}}</td>
                           </tr>
                         @endif
-                      @endforeach
-                    @else
-                      <tr>
-                          <td colspan="2">{{lang_trans('txt_no_file')}}</td>
-                      </tr>
-                    @endif
-                </table>
+                    </table>
+                @endif
             </div>
         </div>
     </div>
@@ -382,80 +391,85 @@
                               </tr>
                         </table>
                         <hr/>
+                 
                 <div class="card-header px-0 border-bottom">
                     <h4 class="card-title">{{lang_trans('txt_food_orders')}}</h4>
                 </div>
-                <table
-                 class="datatables-basic table table-responsive dataTable" >
-                  <thead>
-                      <th width="2%">{{lang_trans('txt_sno')}}.</th>
-                      <th width="20%">{{lang_trans('txt_item_details')}}</th>
-                      <th width="5%">{{lang_trans('txt_date')}}</th>
-                      <th width="5%">{{lang_trans('txt_item_qty')}}</th>
-                      <th width="5%">{{lang_trans('txt_item_price')}}</th>
-                      <th width="10%">{{lang_trans('txt_total_amount')}}</th>
-                  </thead>
-                  <tbody>
-                    @forelse($data_row->orders_items as $k=>$val)
-                      <tr>
-                        <td>{{$k+1}}</td>
-                        <td>{{$val->item_name}}</td>
-                        <td>{{dateConvert($val->created_at,'d-m-Y')}}</td>
-                        <td>{{$val->item_qty}}</td>
-                        <td>{{getCurrencySymbol()}} {{$val->item_price}}</td>
-                        <td>{{getCurrencySymbol()}} {{$val->item_qty*$val->item_price}}</td>
-                      </tr>
-                    @empty
-                      <tr>
-                        <td colspan="6">{{lang_trans('txt_no_orders')}}</td>
-                      </tr>
-                    @endforelse
-                  </tbody>
-                </table>
+                @if ($data_row->orders_items->isEmpty())
+                  <p class="py-1 m-0">No food items are ordered.</p>
+                @else 
+                    <table
+                     class="datatables-basic table table-responsive dataTable" >
+                      <thead>
+                          <th width="2%">{{lang_trans('txt_sno')}}.</th>
+                          <th width="20%">{{lang_trans('txt_item_details')}}</th>
+                          <th width="5%">{{lang_trans('txt_date')}}</th>
+                          <th width="5%">{{lang_trans('txt_item_qty')}}</th>
+                          <th width="5%">{{lang_trans('txt_item_price')}}</th>
+                          <th width="10%">{{lang_trans('txt_total_amount')}}</th>
+                      </thead>
+                      <tbody>
+                        @forelse($data_row->orders_items as $k=>$val)
+                          <tr>
+                            <td>{{$k+1}}</td>
+                            <td>{{$val->item_name}}</td>
+                            <td>{{dateConvert($val->created_at,'d-m-Y')}}</td>
+                            <td>{{$val->item_qty}}</td>
+                            <td>{{getCurrencySymbol()}} {{$val->item_price}}</td>
+                            <td>{{getCurrencySymbol()}} {{$val->item_qty*$val->item_price}}</td>
+                          </tr>
+                        @empty
+                          <tr>
+                            <td colspan="6">{{lang_trans('txt_no_orders')}}</td>
+                          </tr>
+                        @endforelse
+                      </tbody>
+                    </table>
 
-                <table class="table">
-                    <tr>
-                      <th  class="text-right child_table_left_col">{{lang_trans('txt_subtotal')}}</th>
-                      <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($totalOrdersAmount) }}</td>
-                    </tr>
-                    <tr>
-                      <th class="text-right child_table_left_col">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%)</th>
-                      <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($foodAmountGst) }}</td>
-                    </tr>
+                    <table class="table">
+                        <tr>
+                          <th  class="text-right child_table_left_col">{{lang_trans('txt_subtotal')}}</th>
+                          <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($totalOrdersAmount) }}</td>
+                        </tr>
+                        <tr>
+                          <th class="text-right child_table_left_col">{{lang_trans('txt_sgst')}} ({{$gstPercFood}}%)</th>
+                          <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($foodAmountGst) }}</td>
+                        </tr>
 
-                    <tr class="{{$cgstPercFood > 0 ? '' : 'hide_elem'}}">
-                      <th class="text-right child_table_left_col">{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%)</th>
-                      <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($foodAmountCGst) }}</td>
-                    </tr>
-                    <tr>
-                      <th class="text-right child_table_left_col">{{lang_trans('txt_discount')}}</th>
-                      <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($totalOrderAmountDiscount)}}</td>
-                    </tr>
-                    <tr class="">
-                      <th class="text-right child_table_left_col">{{lang_trans('txt_final_amount')}}</th>
-                      <td id="td_final_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($finalOrderAmount) }}</td>
-                    </tr>
-                </table>
+                        <tr class="{{$cgstPercFood > 0 ? '' : 'hide_elem'}}">
+                          <th class="text-right child_table_left_col">{{lang_trans('txt_cgst')}} ({{$cgstPercFood}}%)</th>
+                          <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($foodAmountCGst) }}</td>
+                        </tr>
+                        <tr>
+                          <th class="text-right child_table_left_col">{{lang_trans('txt_discount')}}</th>
+                          <td id="td_advance_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($totalOrderAmountDiscount)}}</td>
+                        </tr>
+                        <tr class="">
+                          <th class="text-right child_table_left_col">{{lang_trans('txt_final_amount')}}</th>
+                          <td id="td_final_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($finalOrderAmount) }}</td>
+                        </tr>
+                    </table>
 
-                <table class="table ">
-                    <tr class="">
-                      <th class="text-right child_table_left_col bg-default">
-                        {{ ($additionalAmountReason) ? $additionalAmountReason : lang_trans('txt_additional_amount_reason') }}
-                      </th>
-                      <td  class="text-right child_table_right_col">
-                        {{getCurrencySymbol()}} {{ numberFormat($additionalAmount) }}
-                      </td>
-                    </tr>
-                </table>
+                    <table class="table ">
+                        <tr class="">
+                          <th class="text-right child_table_left_col bg-default">
+                            {{ ($additionalAmountReason) ? $additionalAmountReason : lang_trans('txt_additional_amount_reason') }}
+                          </th>
+                          <td  class="text-right child_table_right_col">
+                            {{getCurrencySymbol()}} {{ numberFormat($additionalAmount) }}
+                          </td>
+                        </tr>
+                    </table>
 
-                <table class="table ">
-                      <tr class="">
-                        <th class="text-right child_table_left_col">{{lang_trans('txt_grand_total')}}</th>
-                        <!-- <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($finalRoomAmount+$finalOrderAmount+$additionalAmount) }}</td> -->
-                        <!-- change the logic of filnal price -->
-                        <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($finalAmount) }}</td>
-                      </tr>
-                </table>
+                    <table class="table ">
+                          <tr class="">
+                            <th class="text-right child_table_left_col">{{lang_trans('txt_grand_total')}}</th>
+                            <!-- <td width="15%" class="text-right">{{getCurrencySymbol()}} {{ numberFormat($finalRoomAmount+$finalOrderAmount+$additionalAmount) }}</td> -->
+                            <!-- change the logic of filnal price -->
+                            <td class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ numberFormat($finalAmount) }}</td>
+                          </tr>
+                    </table>
+                @endif             
             </div>
         </div>
 
