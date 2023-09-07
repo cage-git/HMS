@@ -5,7 +5,8 @@
         <button type="button" class="btn-close m-0" data-bs-dismiss="modal"></button>
         <h4 class="modal-title">{{lang_trans('btn_extend_reservation')}}</h4>
       </div>
-      {{ Form::open(array('url'=>route('extend-reservation'),'id'=>"extend-reservation-form")) }}
+      {{ Form::open(['url' => route('extend-reservation'), 'id' => 'extend-reservation-form', 'data-custom-attribute' => 'form_'. $val->id]) }}
+
       {{ Form::hidden('id', $val->id) }}
 
         <div class="modal-body">
@@ -40,12 +41,21 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-bs-dismiss="modal">{{lang_trans('btn_cancel')}}</button>
-          <button type="submit" class="btn btn-success">{{lang_trans('btn_submit')}}</button>
+          <button type="submit" class="btn extend-submit-button btn-success" data-id="submit_{{$val->id}}">{{lang_trans('btn_submit')}}</button>
         </div>
       {{ Form::close() }}
     </div>
   </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+  $('[data-id="submit_{{$val->id}}"]').click(function() {
+    //alert("d");
+    $(this).prop('disabled', true);
+    $('[data-custom-attribute="form_{{$val->id}}"]').submit();
+
+  });
+</script>
 <script>
     {{--$(document).on("change",".{{$val->id}}_days_type",function () {--}}
     {{--    if($(this).val() == 0){--}}
