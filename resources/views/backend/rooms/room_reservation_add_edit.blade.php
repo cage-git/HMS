@@ -87,7 +87,7 @@
 
                                 <div class="col-xl-4 col-md-6 col-12" id="idcard_select_div">
                                     <div class="mb-1">
-                                        <label class="form-label" for="txt_id_number">{{lang_trans('txt_id_number')}}</label>
+                                        <label class="form-label" for="txt_id_number">{{lang_trans('txt_id_number')}}</label><span class="required text-danger">*</span> 
                                         <select class="select2-data-ajax form-select" id="search_from_phone_idcard">
                                         </select>
                                     </div>
@@ -96,7 +96,7 @@
                                 <div class="col-xl-4 col-md-6 col-12"  id="idcard_input_div" style="display:none;">
                                     <div class="mb-1">
                                         <label class="form-label" for="txt_id_number">{{lang_trans('txt_id_number')}}</label>
-                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required">*</span> </label>
+                                            <label class="control-label"> {{lang_trans('txt_id_number')}} <span class="required text-danger">*</span> </label>
                                             {{Form::text('idcard_no',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"idcard_no", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_id_number')])}}
                                     </div>
                                 </div>
@@ -104,14 +104,14 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="txt_type_id">{{lang_trans('txt_type_id')}}</label>
+                                        <label class="form-label" for="txt_type_id">{{lang_trans('txt_type_id')}}</label><span class="required text-danger"> *</span>
                                         {{ Form::select('idcard_type',$TYPE_id,null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="txt_type_id">{{lang_trans('txt_gender')}}</label>
+                                        <label class="form-label" for="txt_type_id">{{lang_trans('txt_gender')}}</label><span class="required text-danger"> *</span>
                                         {{ Form::select('gender',$GENDER,null,['class'=>'form-select col-md-6 col-xs-12', "id"=>"gender",'placeholder'=>lang_trans('ph_select')]) }}
                                     </div>
                                 </div>
@@ -119,7 +119,7 @@
                                 @if(!$quickCheckIn)
                                     <div class="col-xl-4 col-md-6 col-12">
                                         <div class="mb-1">
-                                            <label class="form-label" for="txt_type_id">{{lang_trans('txt_dob')}}</label>
+                                            <label class="form-label" for="txt_type_id">{{lang_trans('txt_dob')}}</label><span class="required text-danger"> *</span>
                                             {{Form::date('dob',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"dob", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_dob')])}}
                                         </div>
                                     </div>
@@ -147,28 +147,28 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_firstname')}}</label>
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_firstname')}}</label><span class="required text-danger"> *</span>
                                         {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_firstname')])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_surname')}}</label>
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_surname')}}</label><span class="required text-danger"> *</span>
                                         {{Form::text('surname',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"surname", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_surname')])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_email')}}</label>
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_email')}}</label><span class="required text-danger"> *</span>
                                         {{Form::email('email',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"email", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_email')])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12" id="mobile_select_div" >
                                     <div class="mb-1" >
-                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_mobile_num')}}</label>
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_mobile_num')}}</label><span class="required text-danger"> *</span>
                                         <select class="select2-data-ajax form-select" id="search_customer_from_phone">
                                         </select>
                                     </div>
@@ -176,7 +176,7 @@
 
                                 <div class="col-xl-4 col-md-6 col-12"  id="mobile_input_div" style="display:none;">
                                     <div class="mb-1">
-                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_mobile_num')}}</label>
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_mobile_num')}}</label><span class="required text-danger"> *</span>
                                         {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_mobile_num')])}}
                                     </div>
                                 </div>
@@ -347,14 +347,14 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_checkin')}}</label>
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_checkin')}}</label><span class="required text-danger"> *</span>
                                         {{Form::text('check_in_date',null,['class'=>"form-control col-md-6 col-xs-12  flatpickr-basic", "id"=>"check_in_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off", "readonly"=>true])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_checkout')}}</label>
+                                        <label class="form-label" for="season_start_date">{{lang_trans('txt_checkout')}}</label><span class="required text-danger"> *</span>
                                         {{Form::text('check_out_date',null,['class'=>"form-control col-md-6 col-xs-12  flatpickr-basic", "id"=>"check_out_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off", "readonly"=>true])}}
                                     </div>
                                 </div>
@@ -477,7 +477,7 @@
 
                                                     <div class="col-md-4 col-12">
                                                         <div class="mb-1">
-                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_gender')}}</label>{{ Form::select('persons_info[gender][]',$GENDER,null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
+                                                            <label class="form-label" for="itemname"> {{lang_trans('txt_gender')}}</label><span class="required text-danger"> *</span>{{ Form::select('persons_info[gender][]',$GENDER,null,['class'=>'form-select col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
                                                         </div>
                                                     </div>
 
