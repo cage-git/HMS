@@ -3,7 +3,13 @@
 @php
   $allBookedRooms = getAllBookedRooms();
 @endphp
-
+<style type="text/css">
+  #alertContainer .alert {
+    position: absolute;
+    right: 50px;
+    bottom: 57px;
+}
+</style>
 
 {{ Form::open(array('url'=>route('save-swap-room'),'id'=>"swap-room-form", 'class'=>"form-horizontal form-label-left")) }}
 {{Form::hidden('id',$reservation_id,['id'=>'base_price'])}}
@@ -62,7 +68,7 @@
                             @endphp
 
                             <div class="form-check form-check-inline">
-                                  {{Form::radio('old_room',$radioBtnValue,false,['class'=>"form-check-input", "id"=>"old_room_".$roomId])}}
+                                  {{Form::radio('old_room',$radioBtnValue,false,['class'=>"form-check-input", "id"=>"old_room_".$roomId,"checked"=>"true"])}}
                                   <label class="form-check-label" for="inlineRadio1">{{$roomInfo->room_no}}</label>
                               </div>
                           @endforeach
@@ -167,8 +173,8 @@
                     @endphp
                     <div class="panel-group">
                       <div class="panel panel-default">
-                        <div class="panel-heading">
-                          <h4 class="row panel-title">
+                        <div class="panel-heading py-1">
+                          <h4 class="row m-0 panel-title">
                             <i class="fa fa-list"></i>
                             <a class="room_type_by_rooms col-xl-3 col-md-6 col-sm-12" data-roomtypeid="{{$roomType->id}}" data-toggle="collapse" 
                             href="#collapse{{$roomType->id}}"
@@ -205,7 +211,7 @@
                                       @endphp
                                       <tr>
                                         <td class="text-center" width="5%">{{$i}}</td>
-                                        <td class="text-center" width="15%">{{Form::radio('new_room',$radioBtnValue,false,['class'=>"form-check-input", "id"=>"new_room_".$room->id])}} </td>
+                                        <td class="text-center" width="15%">{{Form::radio('new_room',$radioBtnValue,false,['class'=>"form-check-input", "id"=>"new_room_".$room->id,"required"=>"true"])}} </td>
                                         <td>{{$room->room_no}}</td>
                                       </tr>
                                     @endif
@@ -225,7 +231,7 @@
                 <br />
                 <div class="col-xl-4 col-md-6 col-12">
                     <div class="mb-1">
-                      <button class="btn btn-success btn-submit-form" type="submit">{{lang_trans('btn_submit')}}</button>
+                      <button id="submitButton" class="btn btn-success btn-submit-form" type="submit">{{lang_trans('btn_submit')}}</button>
                     </div>
                   </div>
               </div>
@@ -234,7 +240,7 @@
           </div>
       </div>
   </div>
-
+<div id="alertContainer"></div>
 </section>
 
 
@@ -255,5 +261,21 @@
 
   {{ Form::close() }}
 <!-- </div> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#submitButton').click(function(e) {
+        e.preventDefault();
+        
+        if ($('input[name="new_room"]:checked').length === 0) {
+           var alertMessage = '<div class="alert p-1 m-0 alert-danger" role="alert">Please select room for swap.</div>';
+            $('#alertContainer').html(alertMessage);
+        } else {
+            $('#swap-room-form').submit();
+        }
+    });
+});
+</script>
+
 <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
 @endsection
