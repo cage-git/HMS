@@ -860,7 +860,9 @@ class AdminController extends Controller
         //     'type'=>'id_cards',
         // ];
         // $this->core->uploadAndUnlinkMediaFile($mediaData);
-
+        if (!isset($reservationData['additional_amount'])) {
+            $reservationData['addtional_amount'] = 0;
+        }
         $res = Reservation::updateOrCreate(['id'=>$request->id], $reservationData);
         if($res){
 
@@ -884,7 +886,9 @@ class AdminController extends Controller
             $orderInfo['cgst_perc'] = $cgstPerc;
             $orderInfo['gst_amount'] = $gstAmount;
             $orderInfo['cgst_amount'] = $cgstAmount;
-            $orderInfo['order_grand_total'] = $amountArr['total_food_final_amount'];
+            if (isset($amountArr['total_food_final_amount'])) {
+                $orderInfo['order_grand_total'] = $amountArr['total_food_final_amount'];
+            }
             $orderInfo['additional_order_amount'] = $amountArr['additional_order_amount'];
             $orderInfo['additional_order_amount_reason'] = $amountArr['additional_order_amount_reason'];
 
