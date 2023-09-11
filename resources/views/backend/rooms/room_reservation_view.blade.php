@@ -1,6 +1,7 @@
 @extends('layouts.master_backend_new')
 @section('content')
 @php
+  use Carbon\Carbon;
   $calculatedAmount = calcFinalAmount($data_row, 0);
   $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
   $advancePayment = $calculatedAmount['advancePayment'];
@@ -52,7 +53,8 @@
 
 
      $data_date = date('Y-m-d h:i:s', strtotime(str_replace('/','-', $data_row->check_out)));
-
+    $dateOfBirth = Carbon::parse($data_row->customer->dob);
+    $age = $dateOfBirth->age;
 @endphp
 
 <style>
@@ -120,7 +122,7 @@
                                 <dd class="col-sm-8 mb-1">{{$data_row->customer->mobile}}</dd>
 
                                 <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_age')}}:</dt>
-                                <dd class="col-sm-8 mb-1">{{$data_row->customer->age}} {{lang_trans('txt_years')}}</dd>
+                                <dd class="col-sm-8 mb-1">{{$age}} {{lang_trans('txt_years')}}</dd>
 
                             </dl>
                         </div>

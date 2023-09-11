@@ -1,6 +1,7 @@
 @extends('layouts.master_backend_new')
 @section('content')
 @php
+  use Carbon\Carbon;
   $userRole = Auth::user()->role_id;
   $settings = getSettings();
 
@@ -31,6 +32,8 @@
   $additionalAmountReason = $data_row->additional_amount_reason;
 
   $finalAmount = $finalRoomAmount+$finalOrderAmount+$additionalAmount;
+    $dateOfBirth = Carbon::parse($data_row->customer->dob);
+    $age = $dateOfBirth->age;
 @endphp
 
 <style>
@@ -120,8 +123,7 @@
                                           <dd class="col-sm-8 mb-1">{{$data_row->customer->mobile}}</dd>
 
                                           <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_age')}}:</dt>
-                                          <dd class="col-sm-8 mb-1">{{$data_row->customer->age}} {{lang_trans('txt_years')}}</dd>
-
+                                          <dd class="col-sm-8 mb-1">{{ $age }} {{lang_trans('txt_years')}}</dd>
                                       </dl>
                                   </div>
                               </div>
