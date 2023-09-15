@@ -36,7 +36,7 @@
                         <div class="row">
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_name')}}</label>
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_name')}}</label><span class="required text-danger">*</span>
                                         {{Form::text('name',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"cat_name", "required"=>"required"])}}
                                     </div>
                                 </div>

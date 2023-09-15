@@ -13,6 +13,17 @@
 
 
   <div class="col-md-12 col-12">
+    @if(session('success'))
+        <div class="alert p-2 alert-success">
+            {{ session('success') }}
+        </div>
+      @endif
+
+      @if(session('error'))
+        <div class="alert p-2 alert-danger">
+            {{ session('error') }}
+        </div>
+      @endif
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title"> {{$heading}} {{lang_trans('txt_room')}}</h4>
@@ -27,7 +38,7 @@
                         <div class="row">
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_room_type')}}</label>
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_room_type')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{ Form::select('room_type_id',$roomtypes_list,null,['class'=>'form-select','placeholder'=>lang_trans('ph_select')]) }}    
                                     </div>
@@ -35,7 +46,7 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_name')}}</label>
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_name')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{Form::text('room_name',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"room_name", "required"=>"required"])}}
                                     </div>
@@ -43,7 +54,7 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_room_num')}}</label>
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_room_num')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{Form::text('room_no',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"room_no", "required"=>"required"])}}
                                     </div>
@@ -52,7 +63,7 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_floor')}}</label>
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_floor')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{ Form::select('floor',getDynamicDropdownList('room_floor'),null,['class'=>'form-select','placeholder'=>lang_trans('ph_select')]) }}    
                                     </div>
@@ -60,7 +71,7 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_order_num')}}</label>
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_order_num')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{Form::number('order_num',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"order_num", "required"=>"required"])}}
                                     </div>
@@ -123,7 +134,7 @@
 
                         </div>
                     <button type="submit" class="btn btn-primary" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
-                    <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                    <button type="reset" class="btn reset_btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
                 </form>
             </div>
         </div>

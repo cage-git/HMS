@@ -11,7 +11,7 @@
                         <div class="row">
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="product_name">{{lang_trans('txt_product')}}</label>
+                                        <label class="form-label" for="product_name">{{lang_trans('txt_product')}}</label><span class="required text-danger">*</span>
                                      
                                         {{ Form::select('product_id',$product_list,null,['class'=>'form-select','placeholder'=>lang_trans('ph_select')]) }}
                                     </div>
@@ -19,7 +19,7 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="product_name">{{lang_trans('txt_stock')}}</label>
+                                        <label class="form-label" for="product_name">{{lang_trans('txt_stock')}}</label><span class="required text-danger">*</span>
                                      
                                         {{ Form::select('stock_is',['add'=>'Add','subtract'=>'Subtract'],1,['class'=>'form-select','id'=>'stock_is','placeholder'=>lang_trans('ph_select')]) }}
                                     </div>
@@ -27,7 +27,7 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="product_name">{{lang_trans('txt_qty')}}</label>
+                                        <label class="form-label" for="product_name">{{lang_trans('txt_qty')}}</label><span class="required text-danger">*</span>
                                        
                                         {{Form::number('qty',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"qty", "required"=>"required"])}}
                                     </div>
@@ -37,7 +37,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="product_name">{{lang_trans('txt_price')}}</label>
                                        
-                                        {{Form::text('price',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"price"])}}
+                                        {{Form::text('price',null,['class'=>"form-control price_val price_val col-md-7 col-xs-12", "id"=>"price"])}}
                                     </div>
                                 </div>
                         </div>

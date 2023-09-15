@@ -128,6 +128,9 @@
             }
         </style>
     <?php } ?>
+    <style type="text/css">
+  .tooltip-inner{color: #fff !important;}
+</style>
 </head>
 <!-- END: Head-->
     <body
@@ -170,6 +173,29 @@
            var targetDiv = document.getElementById("sidbar_nav");
            targetDiv.classList.remove("expanded");
         });
+          document.addEventListener('DOMContentLoaded', function() {
+                var rstBtns = document.querySelectorAll('.reset_btn');
+
+                rstBtns.forEach(function(rstBtn) {
+                    rstBtn.addEventListener('click', function(event) {
+                        event.preventDefault();                        
+                        var form = rstBtn.closest('form');
+                        var inputsAndSelects = form.querySelectorAll('input[type="text"], select,textarea,input[type="number"],input[type="email"],input[type="number"],input[type="date"]');
+                        
+                        inputsAndSelects.forEach(function(element) {
+                            element.value = '';
+                        });
+                    });
+                });
+            });
+           document.addEventListener('input', function (event) {
+                var priceInputs = document.querySelectorAll('.price_val');
+
+                priceInputs.forEach(function(priceInput) {
+                    var inputValue = priceInput.value.replace(/[^0-9]/g, '');
+                    priceInput.value = inputValue;
+                });
+            });
         </script>
     </body>
 </html>

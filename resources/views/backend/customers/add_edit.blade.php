@@ -33,7 +33,7 @@
                         <div class="row">
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_firstname')}}</label>
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_firstname')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{Form::text('name',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"name", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_firstname')])}}
                                     </div>
@@ -58,16 +58,16 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_mobile_num')}}</label>
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_mobile_num')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                        {{Form::text('mobile',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_mobile_num')])}}
+                                        {{Form::text('mobile',null,['class'=>"form-control price_val col-md-6 col-xs-12", "id"=>"mobile", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_mobile_num')])}}
                                     </div>
                                 </div>
 
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_address')}}</label>
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_address')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_address'),"rows"=>1])}}
                                     </div>
@@ -116,7 +116,7 @@
 
                         </div>
                     <button type="submit" class="btn btn-primary" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
-                    <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                    <button type="reset" class="btn reset_btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
                 </form>
             </div>
             @if(session('error'))

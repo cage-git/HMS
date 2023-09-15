@@ -14,6 +14,17 @@
 
     <!-- jQuery Validation -->
     <div class="col-md-12 col-12">
+      @if(session('success'))
+        <div class="alert p-2 alert-success">
+            {{ session('success') }}
+        </div>
+      @endif
+
+      @if(session('error'))
+        <div class="alert p-2 alert-danger">
+            {{ session('error') }}
+        </div>
+      @endif
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title"> {{$heading}} {{lang_trans('txt_room_type')}}</h4>
@@ -29,7 +40,7 @@
                     <div class="row">
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="type_title"> {{lang_trans('txt_title')}}</label>
+                                <label class="form-label" for="type_title"> {{lang_trans('txt_title')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                 {{Form::text('title',null,['class'=>"form-control", "id"=>"type_title", "required"=>"required"])}}
                             </div>
@@ -37,7 +48,7 @@
 
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="type_short_code"> {{lang_trans('txt_short_code')}}</label>
+                                <label class="form-label" for="type_short_code"> {{lang_trans('txt_short_code')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                 {{Form::text('short_code',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"type_short_code", "required"=>"required"])}}
                             </div>
@@ -45,7 +56,7 @@
 
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_adult_capacity')}}</label>
+                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_adult_capacity')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                 {{Form::number('adult_capacity',null,['class'=>"form-control", "id"=>"adult_capacity", "required"=>"required"])}}
                             </div>
@@ -54,7 +65,7 @@
 
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_kids_capacity')}}</label>
+                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_kids_capacity')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                 {{Form::number('kids_capacity',null,['class'=>"form-control", "id"=>"kids_capacity", "required"=>"required"])}}
                             </div>
@@ -62,15 +73,15 @@
 
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_base_price')}}</label>
+                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_base_price')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                {{Form::text('base_price',null,['class'=>"form-control", "id"=>"base_price", "required"=>"required"])}}
+                                {{Form::text('base_price',null,['class'=>"form-control price_val", "id"=>"base_price", "required"=>"required"])}}
                             </div>
                         </div>
 
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_order_num')}}</label>
+                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_order_num')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                 {{Form::number('order_num',null,['class'=>"form-control", "id"=>"order_num", "required"=>"required"])}}
                             </div>
@@ -100,7 +111,7 @@
 
                         <div class="row col-xl-12 col-md-12 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_amenities')}}</label>
+                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_amenities')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                 <div class="demo-inline-spacing">
                                   @if($amenities_list)
@@ -156,7 +167,7 @@
                     
                     </div>
                     <button type="submit" class="btn btn-primary" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
-                    <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                    <button type="reset" class="btn reset_btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
                 </form>
             </div>
         </div>

@@ -83,6 +83,9 @@ $(function () {
         'order_num': {
           required: true
         },
+        'floor':{
+          required: true
+        },
         // 'vendor_phone': {
         //   required: true
         // },
