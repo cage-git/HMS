@@ -8,9 +8,18 @@
           $heading=lang_trans('btn_update');
       }
   @endphp
-
-
   <div class="col-md-12 col-12">
+         @if(session('success'))
+            <div class="alert p-2 alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert p-2 alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title"> {{$heading}} {{lang_trans('txt_housekeeping_item')}}</h4>
@@ -22,6 +31,7 @@
                   @else
                       {{ Form::open(array('url'=>route('save-housekeeping-item'),'id'=>"housekeeping-item-form", 'class'=>"form-horizontal form-label-left")) }}
                   @endif
+
                         <div class="row">
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
@@ -47,7 +57,6 @@
             </div>
         </div>
     </div>
-
 <!-- 
 <div class="">
   <div class="row">
@@ -102,6 +111,7 @@
             $("#status_id").val(0);
         }
     }
+    
 </script>
 @endsection
 @section('scripts')

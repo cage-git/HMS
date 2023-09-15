@@ -3,6 +3,7 @@ var datetimePickerOptions = {
   minView: 2,
   autoclose: true,
   format: 'yyyy-mm-dd',
+  startDate:new Date(),
 };
 $(document).on('click', '[data-toggle="lightbox"]', function(event) {
     event.preventDefault();

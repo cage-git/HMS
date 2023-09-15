@@ -17,6 +17,17 @@
 
 
   <div class="col-md-12 col-12">
+    @if(session('success'))
+            <div class="alert p-2 alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert p-2 alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title"> {{$heading}} {{lang_trans('txt_laundry_item')}}</h4>
