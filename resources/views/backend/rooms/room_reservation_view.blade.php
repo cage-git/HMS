@@ -261,15 +261,15 @@
 </section>
 
 <section>
-    <div class="row">
+  @if ($data_row->id_cards->isEmpty())
+       <!-- hidden section if no id card information is there -->
+    @else
+    <div class="row"> 
         <div class="col-12">
             <div class="card">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">{{lang_trans('txt_idcard_uploaded')}}</h4>
-                </div>
-                 @if ($data_row->id_cards->isEmpty())
-                  <p class="p-2 m-0">Please upload any id card</p>
-                 @else 
+                </div>                 
                     <table class="datatables-basic table table-responsive">
                         <tr>
                             <th>{{lang_trans('txt_sno')}}.</th>
@@ -293,12 +293,12 @@
                               <td colspan="2">{{lang_trans('txt_no_file')}}</td>
                           </tr>
                         @endif
-                    </table>
-                @endif
+                    </table>               
             </div>
         </div>
+
     </div>
-    
+     @endif
 </section>
 
 
