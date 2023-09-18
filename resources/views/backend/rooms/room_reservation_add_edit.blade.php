@@ -15,6 +15,12 @@
     $PAYMENT_MODES= getSettings('site_language') == 'ar'? config('constants.PAYMENT_MODES_AR'): config('constants.PAYMENT_MODES');
     $GENDER= getSettings('site_language') == 'ar'? config('constants.GENDER_AR'): config('constants.GENDER');
     $TYPE_id= getSettings('site_language') == 'ar'? config('constants.TYPE_ID_AR'): config('constants.TYPE_ID');
+    $Room_type= getSettings('site_language') == 'ar'? config('constants.RENT_TYPE_AR'): config('constants.RENT_TYPE');
+    $Customer_type= getSettings('site_language') == 'ar'? config('constants.CUSTMR_TYPE_AR'): config('constants.CUSTMR_TYPE');
+    $MT_PAYMENT_TYPE= getSettings('site_language') == 'ar'? config('constants.MT_PAYMENT_TYPE_AR'): config('constants.MT_PAYMENT_TYPE_EN');
+
+    $MT_STAYREASON= getSettings('site_language') == 'ar'? config('constants.MT_STAYREASON_AR'): config('constants.MT_STAYREASON_EN');
+    
   @endphp
   
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -709,7 +715,8 @@
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-12">
                           <label class="control-label"> {{lang_trans('txt_age')}} </label>
-                          {{Form::number('persons_info[age][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"person_age", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_age'),"min"=>10])}}
+                          {{Form::date('persons_info[age][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"person_age", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_age'),"min"=>10])}}
+
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-12">
                           <label class="control-label"> {{lang_trans('txt_address')}} </label>
@@ -717,7 +724,8 @@
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-12">
                             <label class="control-label">{{lang_trans('txt_type_id')}} </label>
-                            {{ Form::select('persons_info[idcard_type][]',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"type_of_ids", 'placeholder'=>lang_trans('ph_select')]) }}
+                            {{ Form::select('persons_info[idcard_type][]',$TYPE_id,null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"type_of_ids", 'placeholder'=>lang_trans('ph_select')]) }}
+                            
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-12">
                           <label class="control-label">{{lang_trans('txt_id_number')}} </label>
@@ -796,7 +804,7 @@
                               </div>
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_room_rent_type')}} <span class="required">*</span></label>
-                                  {{ Form::select('mt_room_rent_type',getDynamicDropdownList('room_rent_type', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_room_rent_type", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
+                                  {{ Form::select('mt_room_rent_type',$Room_type,null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_room_rent_type", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
 {{--                              <div class="col-md-4 col-sm-4 col-xs-12">--}}
 {{--                                  <label class="control-label"> {{lang_trans('txt_gender')}} <span class="required">*</span></label>--}}
@@ -804,7 +812,7 @@
 {{--                              </div>--}}
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_customer_types')}} <span class="required">*</span></label>
-                                  {{ Form::select('mt_customer_types',getDynamicDropdownList('customer_types', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_customer_types", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
+                                  {{ Form::select('mt_customer_types',$Customer_type,null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_customer_types", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_room_type')}} <span class="required">*</span></label>
@@ -812,11 +820,11 @@
                               </div>
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_reason_of_visit')}} <span class="required">*</span></label>
-                                  {{ Form::select('mt_reason_of_visit',getDynamicDropdownList('reason_of_visit', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_reason_of_visit", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
+                                  {{ Form::select('mt_reason_of_visit',$MT_STAYREASON,null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_reason_of_visit", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
                               <div class="col-md-4 col-sm-4 col-xs-12">
                                   <label class="control-label"> {{lang_trans('txt_payment_type')}} <span class="required">*</span></label>
-                                  {{ Form::select('mt_payment_type',getDynamicDropdownList('payment_type', true),null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_payment_type", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
+                                  {{ Form::select('mt_payment_type',$MT_PAYMENT_TYPE,null,['class'=>'form-control col-md-6 col-xs-12',"id"=>"mt_payment_type", 'placeholder'=>lang_trans('ph_select'), 'required'=>'required']) }}
                               </div>
 
                           </div>
@@ -906,7 +914,6 @@
                 },
                 dataType: "json",
                 success:function(data){
-                    // alert( "success");
                     // console.log(data.customers[0], "success");
                     var data_customer = data.customers[0];
                     if(data_customer.cat=="user"){
