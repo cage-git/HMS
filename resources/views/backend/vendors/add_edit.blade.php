@@ -9,9 +9,19 @@
       }
   @endphp
 
-
     <!-- jQuery Validation -->
     <div class="col-md-12 col-12">
+        @if(session('success'))
+        <div class="alert p-2 alert-success">
+            {{ session('success') }}
+        </div>
+      @endif
+
+      @if(session('error'))
+        <div class="alert p-2 alert-danger">
+            {{ session('error') }}
+        </div>
+      @endif
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title"> {{$heading}} {{lang_trans('heading_vendor')}}</h4>
@@ -27,7 +37,7 @@
                     <div class="row">
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_category')}}</label>
+                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_category')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                 {{ Form::select('category_id',$category_list,null,['class'=>'form-select','placeholder'=>lang_trans('ph_select')]) }}    
                             </div>
@@ -36,7 +46,7 @@
 
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_name')}}</label>
+                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_name')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                 {{Form::text('vendor_name',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"vendor_name", "required"=>"required"])}}
                             </div>
@@ -45,7 +55,7 @@
 
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_email')}}</label>
+                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_email')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                 {{Form::text('vendor_email',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"vendor_email"])}}
                             </div>
@@ -56,7 +66,7 @@
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name"> {{lang_trans('txt_mobile_num')}}</label>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                {{Form::text('vendor_mobile',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"vendor_mobile"])}}
+                                {{Form::text('vendor_mobile',null,['class'=>"form-control price_val col-md-7 col-xs-12", "id"=>"vendor_mobile"])}}
                             </div>
                         </div>
 
@@ -64,7 +74,7 @@
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name"> {{lang_trans('txt_phone_num')}}</label>
-                                {{Form::text('vendor_phone',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"vendor_phone"])}}
+                                {{Form::text('vendor_phone',null,['class'=>"form-control price_val col-md-7 col-xs-12", "id"=>"vendor_phone"])}}
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                             </div>
                         </div>
@@ -80,7 +90,7 @@
 
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_country')}}</label>
+                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_country')}}</label><span class="required text-danger">*</span>
                                 {{ Form::select('vendor_country',getCountries(),null,['class'=>'select2 form-select','placeholder'=>lang_trans('ph_select')]) }} 
                                 <!-- {{Form::text('vendor_phone',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"vendor_"])}} -->
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
@@ -116,7 +126,7 @@
 
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
-                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_contact_person_name')}}</label>
+                                <label class="form-label" for="basic-default-name"> {{lang_trans('txt_contact_person_name')}}</label><span class="required text-danger">*</span>
                                 {{Form::text('contact_person_name',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"contact_person_name"])}}
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                             </div>
@@ -126,7 +136,7 @@
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="mb-1">
                                 <label class="form-label" for="basic-default-name"> {{lang_trans('txt_contact_person_mobile')}}</label>
-                                {{Form::text('contact_person_mobile',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"contact_person_mobile"])}}
+                                {{Form::text('contact_person_mobile',null,['class'=>"form-control col-md-7 price_val col-xs-12", "id"=>"contact_person_mobile"])}}
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                             </div>
                         </div>
@@ -143,7 +153,7 @@
 
                     </div>
                     <button type="submit" class="btn btn-primary" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
-                    <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                    <button type="reset" class="btn reset_btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
                 </form>
             </div>
         </div>

@@ -10,6 +10,11 @@
         $flag=1;
         $heading=lang_trans('btn_update');
     }
+    $lang = getSettings('site_language');
+    $RESERVATION_TYPE = getSettings('site_language') == 'ar'? config('constants.RESERVATION_TYPE_AR'): config('constants.RESERVATION_TYPE');
+    $PAYMENT_MODES= getSettings('site_language') == 'ar'? config('constants.PAYMENT_MODES_AR'): config('constants.PAYMENT_MODES');
+    $GENDER= getSettings('site_language') == 'ar'? config('constants.GENDER_AR'): config('constants.GENDER');
+    $TYPE_id= getSettings('site_language') == 'ar'? config('constants.TYPE_ID_AR'): config('constants.TYPE_ID');
   @endphp
   
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -142,17 +147,19 @@
                                 <!-- <div class="row"> -->
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         <label class="control-label">{{lang_trans('txt_type_id')}} <span id="type_id_card_req" class="required">*</span></label>
-                                        {{ Form::select('idcard_type',getDynamicDropdownList('type_of_ids'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+                                      {{ Form::select('idcard_type',$TYPE_id,null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select'), 'id'=>'type_of_ids_selector']) }}
+
+                                        
                                     </div>
 
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         <label class="control-label"> {{lang_trans('txt_gender')}} <span id="gender_req" class="required">*</span></label>
-                                        {{ Form::select('gender',config('constants.GENDER'),null,['class'=>'form-control col-md-6 col-xs-12', "id"=>"gender",'placeholder'=>lang_trans('ph_select')]) }}
+                                        {{ Form::select('gender',$GENDER,null,['class'=>'form-control col-md-6 col-xs-12', "id"=>"gender",'placeholder'=>lang_trans('ph_select')]) }}
                                     </div>
                                     @if(!$quickCheckIn)
                                         <div class="col-md-4 col-sm-4 col-xs-12">
-                                        <label class="control-label"> {{lang_trans('txt_dob')}} </label>
+                                        <label class="control-label"> {{lang_trans('txt_dob')}} </label><span class="required">*</span>
                                         {{Form::date('dob',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"dob", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_dob')])}}
                                         </div>
                                     @endif
@@ -741,7 +748,8 @@
                       <div class="row">
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_advance_payment')}}</label>
-                              {{Form::number('advance_payment',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"advance_payment", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_advance_payment'),"min"=>0])}}
+                              {{ Form::number('advance_payment', 0, ['class' => 'form-control col-md-7 col-xs-12', 'id' => 'advance_payment', 'placeholder' => lang_trans('ph_enter') . lang_trans('txt_advance_payment'), 'min' => 0]) }}
+
                           </div>
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label">{{lang_trans('txt_payment_mode')}}<span class="required">*</span></label>
@@ -1604,7 +1612,7 @@
             $("#dob").val('');
             $("#selected_customer_id").val('');
         }
-       $(document).on('keypress', '#add-reservation-form select2-container--open *.select2-search__field', function (event) {
+       $(document).on('keypress', '#add-reservation-form .select2-container--open .select2-search__field', function (event) {
             $(this).val($(this).val().replace(/[^\d].+/, ""));
             if ((event.which < 48 || event.which > 57)) {
               event.preventDefault();

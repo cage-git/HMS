@@ -18,7 +18,7 @@ $(function () {
   // select2
   select.each(function () {
     var $this = $(this);
-    $this.wrap('<div class="position-relative"></div>');
+    $this.wrap('<div class="position-relative d-flex flex-column"></div>');
     $this
       .select2({
         placeholder: 'Select value',
@@ -77,9 +77,11 @@ $(function () {
         'vendor_name': {
           required: true
         },
-        // 'vendor_email': {
-        //   required: true
-        // },
+        'vendor_email': {
+          required: true,
+          email: true,
+        regex: /^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
+        },
         // 'vendor_mobile': {
         //   required: true
         // },
@@ -104,10 +106,11 @@ $(function () {
         'contact_person_name': {
           required: true
         },
-        // 'contact_person_mobile': {
-        //   required: true
-        // },
         // 'contact_person_email': {
+        //   email: true,
+        // regex: /^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
+        // },
+        // 'contact_person_mobile': {
         //   required: true
         // },
         // 'basic-default-email': {

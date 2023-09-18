@@ -130,6 +130,9 @@
     <?php } ?>
     <style type="text/css">
   .tooltip-inner{color: #fff !important;}
+  label#vendor_country-error {
+    order: 3;
+}
 </style>
 </head>
 <!-- END: Head-->
@@ -180,10 +183,11 @@
                     rstBtn.addEventListener('click', function(event) {
                         event.preventDefault();                        
                         var form = rstBtn.closest('form');
-                        var inputsAndSelects = form.querySelectorAll('input[type="text"], select,textarea,input[type="number"],input[type="email"],input[type="number"],input[type="date"]');
+                        var inputsAndSelects = form.querySelectorAll('input[type="text"], select,textarea,input[type="number"],input[type="email"],input[type="number"],input[type="date"],input[type="checkbox"]');
                         
                         inputsAndSelects.forEach(function(element) {
                             element.value = '';
+                            element.checked = false;
                         });
                     });
                 });

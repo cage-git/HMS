@@ -54,7 +54,7 @@
 
                                 <div class="col-xl-3 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="product_name">{{lang_trans('txt_Measurement')}}</label>
+                                        <label class="form-label" for="product_name">{{lang_trans('txt_Measurement')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{ Form::select('measurement',getUnits(),null,['class'=>'form-select col-xl-4 col-md-6 col-12','placeholder'=>lang_trans('ph_select')]) }}    
                                     </div>

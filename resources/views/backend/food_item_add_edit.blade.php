@@ -44,7 +44,7 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_item_name')}}</label><span class="required text-danger">*</span><span class="required text-danger">*</span>
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_item_name')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{Form::text('name',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"item_name", "required"=>"required"])}}
                                     </div>
