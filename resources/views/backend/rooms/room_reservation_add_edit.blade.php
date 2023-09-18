@@ -908,13 +908,14 @@
                 success:function(data){
                     // alert( "success");
                     // console.log(data.customers[0], "success");
-                    var data_customer = data.customers[0]; 
+                    var data_customer = data.customers[0];
                     if(data_customer.cat=="user"){
                         $('#guest_type_category').val('existing');
                         $("#surname").val(data_customer.surname);
                         $("#name").val(data_customer.name);
                         $("#middle_name").val(data_customer.namiddle_nameme);
                         $("#email").val(data_customer.email);
+                        $("#type_of_ids_selector").val(data_customer.idcard_type);
                         $("#mobile").val(data_customer.mobile);
                         $("#address").val(data_customer.address);
                         $("#country").val(data_customer.country);
@@ -1612,11 +1613,14 @@
             $("#dob").val('');
             $("#selected_customer_id").val('');
         }
-       $(document).on('keypress', '#add-reservation-form .select2-container--open .select2-search__field', function (event) {
+       $(document).on('keypress', '.custom_search_val', function (event) {
             $(this).val($(this).val().replace(/[^\d].+/, ""));
             if ((event.which < 48 || event.which > 57)) {
               event.preventDefault();
             }
+        });
+       $(document).on('click', '#select2-search_idcard-container,#select2-search_phone-container', function () {
+           $('.select2-search__field').addClass('custom_search_val');
         });
     </script>
 @endsection

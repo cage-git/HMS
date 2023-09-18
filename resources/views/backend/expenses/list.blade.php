@@ -87,7 +87,7 @@
                         <td>{{$val->remark}}</td>
                         <td>
                           <a class="btn btn-sm btn-info" href="{{route('edit-expense',[$val->id])}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='edit'></i></a>
-                          <button id="confirm-text" class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-expense',[$val->id])}}" title="{{lang_trans('btn_delete')}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='trash'></i></button>
+                          <button id="confirm-text" class="btn btn-danger btn-sm delete_btn" data-url="{{route('delete-expense',[$val->id])}}" title="{{lang_trans('btn_delete')}}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i data-feather='trash-2'></i></button>
                         </td>
                       </tr>
                     @endforeach
