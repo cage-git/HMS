@@ -96,16 +96,16 @@
                              <!-- Brand logo-->
                         <div class="navbar-container d-flex">
                             <a class="px-1" href="{{url('/admin')}}">
-                                <h2 class="brand-text text-primary ms-1">{{getSettings('hotel_name')}}</h2>
+                                <h2 class="brand-text text-primary ms-1">{{lang_trans('ewa')}}</h2>
                             </a>
                             <ul class="nav navbar-nav align-items-center">
                                 <li class="nav-item dropdown dropdown-language"><a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @if(getSettings('site_language') == 'en')
+                                        <i class="flag-icon flag-icon-sa"></i>
+                                        <span class="selected-language">العربية</span>
+                                    @elseif(getSettings('site_language') == 'ar')
                                         <i class="flag-icon flag-icon-us"></i>
                                         <span class="selected-language">English</span>
-                                    @elseif(getSettings('site_language') == 'ar')
-                                        <i class="flag-icon flag-icon-sa"></i>
-                                        <span class="selected-language">Saudi Arab</span>
                                     @endif
                                    </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag">
@@ -117,14 +117,17 @@
                         </div>
                         <!-- /Brand logo-->
                             <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
-                                <img class="img-fluid" src="{{asset('public/images/login_bg.jpg')}}" alt="Login V2" />
+                                <img class="img-fluid" src="{{asset('public/images/login_bg.png')}}" alt="Login V2" />
                             </div>
                         </div>
                         <!-- /Left Text-->
                         <!-- Login-->
                         <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
-                                <h2 class="card-title fw-bold mb-1">{{lang_trans('welcome_to')}} {{getSettings('hotel_name')}}</h2>
+                                <a class="nav-brand" href="#">
+                                    <img class="img-fluid" src="{{asset('public/images/logo.png')}}" alt="Login V2",height= "150" , width="150" />
+                                </a>
+                                <h2 class="card-title fw-bold mb-1">{{lang_trans('welcome_to')}} {{lang_trans('ewa')}}</h2>
                                 <p class="card-text mb-2 text-break">{{lang_trans('please_sign_in_to_your_account_and_start_the_adventure')}}</p>
                                 <!-- <form class="auth-login-form mt-2" action="index.html" method="POST"> -->
                                 {{ Form::open(array('url'=>route('do-login'),'id'=>"login-form", 'class'=>"auth-login-form mt-2")) }}

@@ -16,16 +16,16 @@
             
                 <li class="nav-item dropdown dropdown-language"><a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     @if(getSettings('site_language') == 'en')
+                        <i class="flag-icon flag-icon-sa"></i>
+                        <span class="selected-language">العربية</span>
+                    @elseif(getSettings('site_language') == 'ar')
                         <i class="flag-icon flag-icon-us"></i>
                         <span class="selected-language">English</span>
-                    @elseif(getSettings('site_language') == 'ar')
-                        <i class="flag-icon flag-icon-sa"></i>
-                        <span class="selected-language">Saudi Arab</span>
                     @endif
                    </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag">
                         <a class="dropdown-item" href="{{route('change-setting',['en'])}}" data-language="en"><i class="flag-icon flag-icon-us"></i> English</a>
-                        <a class="dropdown-item" href="{{route('change-setting',['ar'])}}" data-language="sa"><i class="flag-icon flag-icon-sa"></i> Saudi Arab</a>
+                        <a class="dropdown-item" href="{{route('change-setting',['ar'])}}" data-language="sa"><i class="flag-icon flag-icon-sa"></i> العربية</a>
                     </div>
                 </li>
  
