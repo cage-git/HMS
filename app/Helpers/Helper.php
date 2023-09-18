@@ -1321,7 +1321,7 @@ function getDateWisePriceList($data){
     }
     return [$decodedData, $total];
 }
-function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
+function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true,$listing=false){
     $settings = getSettings();
     $totalAmount = 0;
     if($val->booked_rooms){
@@ -1357,6 +1357,9 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
     if($val->room_amount_with_cgst > 0){
         // $totalRoomAmountWithCGstAmount = $val->room_amount_with_cgst;
         $totalRoomAmountWithCGstAmount = $val->room_amount_with_cgst;
+    }elseif($listing){
+        // $totalRoomAmountWithCGstAmount =  $totalAmount + $gstCal['cgst'];
+        $totalRoomAmountWithCGstAmount =  $totalRoomAmountCGst;
     }else{
         // $totalRoomAmountWithCGstAmount =  $totalAmount + $gstCal['cgst'];
         $totalRoomAmountWithCGstAmount =  $totalAmount + $totalRoomAmountCGst;
@@ -1366,7 +1369,11 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true){
     $grandRoomTotal = $val->grand_room_total;
 
     // $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountCGst-$advancePayment-$totalRoomAmountDiscount;
-    $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountWithCGstAmount-$advancePayment-$totalRoomAmountDiscount;
+    if($listing){
+        $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountWithCGstAmount-$totalRoomAmountDiscount;
+    }else{
+        $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountWithCGstAmount-$advancePayment-$totalRoomAmountDiscount;
+    }
     // $totalRoomAmountDiscount += $totalRoomAmountGst;
 
     //start calculation of order amount

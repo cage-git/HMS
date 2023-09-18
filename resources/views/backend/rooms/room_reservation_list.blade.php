@@ -313,7 +313,7 @@ $totalAmount = 0;
                                 @php
 
                                   $dateDiff = dateIfInBetween($val->check_in, $val->check_out);
-                                  $calc = calcFinalAmount($val);
+                                  $calc = calcFinalAmount($val,0,true,true);
                                   $totalAmount = $totalAmount+$calc['finalRoomAmount']+$calc['finalOrderAmount']+$calc['additionalAmount'];
                                   $i++;
                                 @endphp
@@ -469,7 +469,8 @@ $totalAmount = 0;
                                 </td>
                                 <td>{{dateConvert($val->check_in,'d-m-Y H:i')}}</td>
                                 <td>{{dateConvert($val->check_out,'d-m-Y H:i')}}</td>
-                                <td>{{getCurrencySymbol()}} {{numberFormat($calc['finalRoomAmount']+$calc['finalOrderAmount']+$calc['additionalAmount'])}}</td>
+                                <td>{{getCurrencySymbol()}} {{numberFormat($calc['finalRoomAmount']+$calc['finalOrderAmount']+$calc['additionalAmount'])}}
+                                </td>
                                 <td>
 
                                     {{getCurrencySymbol()}}
@@ -1024,8 +1025,8 @@ $totalAmount = 0;
 
 });
 
-
 </script>
+
 <script>
     globalVar.customerList = {!! json_encode($customer_list) !!};
 </script>
