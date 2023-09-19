@@ -154,7 +154,7 @@
                       <dd class="col-sm-8 mb-1">{{ ($data_row->created_at_checkout!=null) ? dateConvert($data_row->created_at_checkout,'d-m-Y H:i') : 'NA'}}</dd>
 
                       <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_idcard_type')}}:</dt>
-                      <dd class="col-sm-8 mb-1">{{@getDynamicDropdownById($data_row->idcard_type, 'dropdown_value')}}</dd>
+                      <dd class="col-sm-8 mb-1">{{@getDynamicDropdownById($data_row->idcard_type, 'dropdown_value',true)}}</dd>
 
                       <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_inv_applicable')}}:</dt>
                       <dd class="col-sm-8 mb-1">{{($data_row->invoice_num!='') ? 'Yes' : 'No'}}</dd>

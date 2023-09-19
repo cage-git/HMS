@@ -97,10 +97,14 @@ function getSettings($clm=null){
     }
     return '';
 }
-function getDynamicDropdownById($id, $clm = 'all'){
+function getDynamicDropdownById($id, $clm = 'all', $lang=null){
     $data = DynamicDropdown::whereId($id)->first();
     if($data){
-        if($clm != 'all'){
+        if($lang && getSettings('site_language') =='en'){
+            return config('constants.TYPE_ID')[$id];
+        }elseif($lang && getSettings('site_language') =='ar'){
+            return config('constants.TYPE_ID_AR')[$id]; 
+        }elseif($clm != 'all'){
             return $data->{$clm};
         }
     }

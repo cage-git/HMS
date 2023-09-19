@@ -148,6 +148,8 @@ return [
         'Female'=>'2',
         'Other'=>'0',
     ],
+    'logo_Lang_EN'=>'Shelter system',
+    'logo_Lang_AR'=>'نظام إيواء',
     'RESERVATION_TYPE'=>[
         0 => 'Check-in',
         1 => 'Booking',

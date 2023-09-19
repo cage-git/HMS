@@ -1,6 +1,7 @@
 <!-- BEGIN: Main Menu-->
 @php
     $permissionsArr = getRoutePermission();
+    $logo_Lang= getSettings('site_language') == 'ar'? config('constants.logo_Lang_AR'): config('constants.logo_Lang_EN');
 
 @endphp   
 <div id="sidbar_nav" class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
@@ -30,7 +31,7 @@
                                     </g>
                                 </g>
                             </svg></span>
-                        <h2 class="brand-text">{{getSettings('site_page_title')}}</h2>
+                        <h2 class="brand-text">{{ $logo_Lang }}</h2>
                     </a></li>
                 <li class="nav-item nav-toggle d-xl-none"><a id="tgl_cls" class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
             </ul>
