@@ -709,11 +709,11 @@
                           <label class="control-label"> {{lang_trans('txt_name')}} </label>
                           {{Form::text('persons_info[name][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"person_name", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_name')])}}
                         </div>
-                        <div class="col-md-2 col-sm-2 col-xs-12">
+                        <div class="col-md-1 col-sm-2 col-xs-12">
                           <label class="control-label"> {{lang_trans('txt_gender')}} </label>
                           {{ Form::select('persons_info[gender][]',config('constants.GENDER'),null,['class'=>'form-control col-md-6 col-xs-12','placeholder'=>lang_trans('ph_select')]) }}
                         </div>
-                        <div class="col-md-1 col-sm-1 col-xs-12">
+                        <div class="col-md-2 col-sm-1 col-xs-12">
                           <label class="control-label"> {{lang_trans('txt_age')}} </label>
                           {{Form::date('persons_info[age][]',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"person_age", "placeholder"=>lang_trans('ph_enter').lang_trans('txt_age'),"min"=>10])}}
 
@@ -995,7 +995,7 @@
                     error = "{{lang_trans('txt_dob')}}";
                     error_flag = true;
                     div_id = "dob";
-                }else if(!advance_payment){
+                }else if(!advance_payment || advance_payment ==0){
                     error = "{{lang_trans('txt_advance_payment')}}";
                     error_flag = true;
                     div_id = "advance_payment";
@@ -1112,6 +1112,7 @@
                         error_flag = true;
                         div_id = "mobile";
                     }
+                    
                 }
                 
                 
@@ -1172,7 +1173,6 @@
                     })
                 },
                 error: function(error){
-                    alert(error.responseJSON.msg);
                     $('#custom-loader').css('display', 'none');
                 }
             });
@@ -1620,7 +1620,7 @@
             $("#dob").val('');
             $("#selected_customer_id").val('');
         }
-       $(document).on('keypress', '.custom_search_val', function (event) {
+       $(document).on('keypress', '.custom_search_val,#idcard_no', function (event) {
             $(this).val($(this).val().replace(/[^\d].+/, ""));
             if ((event.which < 48 || event.which > 57)) {
               event.preventDefault();

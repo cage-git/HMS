@@ -241,7 +241,7 @@
 
                                         <?php
                                         if($data_row->customer->cat == "user"){
-                                            echo $data_row->customer->surname.' '.$data_row->customer->name.' '.$data_row->customer->middle_name;
+                                            echo $data_row->customer->name.' '.$data_row->customer->surname.' '.$data_row->customer->middle_name;
                                         }else{
                                             echo 'N/A';
                                         }

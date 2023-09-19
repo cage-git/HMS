@@ -99,7 +99,7 @@
                     <div class="row">
                         <div class="col-xl-7 col-12">
                             <dl class="row mb-0">
-                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_fullname')}}:</dt>
+                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_name')}}:</dt>
                                 <dd class="col-sm-8 mb-1">{{$data_row->customer->name}}</dd>
 
                                 <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_email')}}:</dt>
@@ -115,8 +115,8 @@
                         <div class="col-xl-5 col-12">
                             <dl class="row mb-0">
 
-                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_father_name')}}:</dt>
-                                <dd class="col-sm-8 mb-1">{{$data_row->customer->father_name}}</dd>
+                                <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_surname')}}:</dt>
+                                <dd class="col-sm-8 mb-1">{{$data_row->customer->surname}}</dd>
 
                                 <dt class="col-sm-4 fw-bolder mb-1">{{lang_trans('txt_mobile_num')}}:</dt>
                                 <dd class="col-sm-8 mb-1">{{$data_row->customer->mobile}}</dd>
@@ -212,7 +212,6 @@
           </div>
       </div>
   </div>
-
   <section>
     <div class="row">
         <div class="col-12">
