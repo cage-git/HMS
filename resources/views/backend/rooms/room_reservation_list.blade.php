@@ -26,6 +26,9 @@ $totalAmount = 0;
   .dtble_wdth .modal .modal-header .btn-close, .dtble_wdth .modal .modal-header .btn-close:hover{
     transform: translate(0px, 0px);
   }
+  .modal .modal-header .btn-close:hover, .modal .modal-header .btn-close{
+    transform: translate(0px, 0px);
+  }
   @media only screen and (max-width:575px){
     .dtble_wdth .modal-body {
       overflow-x: scroll;

@@ -148,8 +148,8 @@ return [
         'Female'=>'2',
         'Other'=>'0',
     ],
-    'logo_Lang_EN'=>'Shelter system',
-    'logo_Lang_AR'=>'نظام إيواء',
+    'logo_Lang_EN'=>'EWA',
+    'logo_Lang_AR'=>'إيواء',
     'RESERVATION_TYPE'=>[
         0 => 'Check-in',
         1 => 'Booking',
@@ -255,8 +255,12 @@ return [
       'EXPENSE'=>'Expense',
       'OTHER'=>'Other'
     ],
-    'DISCOUNT_TYPES'=>[
+    'DISCOUNT_TYPES_AR'=>[
       'amt'=>'القيمة',
+      'perc'=>'%',
+    ],
+    'DISCOUNT_TYPES'=>[
+      'amt'=>'Value',
       'perc'=>'%',
     ],
     'WEEK_DAYS'=>[

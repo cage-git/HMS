@@ -34,6 +34,7 @@
   $finalAmount = $finalRoomAmount+$finalOrderAmount+$additionalAmount;
     $dateOfBirth = Carbon::parse($data_row->customer->dob);
     $age = $dateOfBirth->age;
+    $discount_lang= getSettings('site_language') == 'ar'? config('constants.DISCOUNT_TYPES_AR'): config('constants.DISCOUNT_TYPES');
 @endphp
 
 <style>
@@ -289,7 +290,7 @@
                                                                       {{Form::number('discount_amount',$roomAmountDiscount,['class'=>"form-control", 'style'=>"padding:0.3rem 1rem", "id"=>"discount", "placeholder"=>lang_trans('ph_any_discount'),"min"=>0])}}
                                                                   </div>
                                                                   <div class="col-md-6 col-sm-6 col-xs-12 p-left-0 p-right-0 remove_padding">
-                                                                      {{ Form::select('room_discount_in',config('constants.DISCOUNT_TYPES'),'amt',['class'=>'form-control', 'style'=>"padding:0.3rem 1rem", "id"=>"room_discount_in"]) }}
+                                                                      {{ Form::select('room_discount_in',$discount_lang,'amt',['class'=>'form-control', 'style'=>"padding:0.3rem 1rem", "id"=>"room_discount_in"]) }}
                                                                   </div>
                                                               </div>
                                                               <span class="error discount_room_err_msg"></span>
@@ -297,7 +298,7 @@
                                                       </tr>
                                                   
                                                     <tr class="{{$cgstPerc > 0 ? '' : 'hide_elem'}}">
-                                                        <th class="text-right child_table_left_col spacing"> {{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_room_amount_cgst]',null,['id'=>'total_room_amount_cgst'])}}
+                                                        <th class="text-right child_table_left_col spacing"> {{lang_trans('txt_cgst')}} ({{$cgstPerc}}%) {{Form::hidden('amount[total_room_amount_cgst]',$roomAmountCGst,['id'=>'total_room_amount_cgst'])}}
                                                         {{Form::hidden('amount[org_room_amount_cgst]',$roomAmountCGst,['id'=>'org_room_amount_cgst'])}}
                                                         </th>
                                                         <td id="td_total_room_amount_cgst" class="text-right child_table_right_col spacing">{{getCurrencySymbol()}} {{ $roomAmountCGst }}</td>
@@ -307,7 +308,7 @@
                                                         <td id="td_total_room_amount_with_cgst" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ $roomAmountWithCGstAmount }}</td>
                                                       </tr>
                                                       <tr>
-                                                        <th class="text-right child_table_left_col">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%) {{Form::hidden('amount[total_room_amount_gst]',null,['id'=>'total_room_amount_gst'])}}
+                                                        <th class="text-right child_table_left_col">{{lang_trans('txt_sgst')}} ({{$gstPerc}}%) {{Form::hidden('amount[total_room_amount_gst]',$roomAmountGst,['id'=>'total_room_amount_gst'])}}
                                                         {{Form::hidden('amount[org_room_amount_gst]',$roomAmountGst,['id'=>'org_room_amount_with_cgst'])}}
                                                         </th>
                                                         <td id="td_total_room_amount_gst" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ $roomAmountGst }}</td>
@@ -319,7 +320,7 @@
                                                     </tr>
 
                                                     <tr class="">
-                                                      <th class="text-right child_table_left_col">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[total_room_final_amount]',null,['id'=>'total_room_final_amount'])}}</th>
+                                                      <th class="text-right child_table_left_col">{{lang_trans('txt_total_amount')}} {{Form::hidden('amount[total_room_final_amount]',$finalRoomAmount,['id'=>'total_room_final_amount'])}}</th>
                                                       <td id="td_room_final_amount" class="text-right child_table_right_col">{{getCurrencySymbol()}} {{ $finalRoomAmount }}</td>
                                                     </tr>
                                                 </table>
@@ -1172,7 +1173,7 @@
   globalVar.isError = false;
   globalVar.startDate = moment("{{$data_row->check_in}}", "YYYY.MM.DD");
 </script>
- <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script>
+ <!-- <script type="text/javascript" src="{{URL::asset('public/js/page_js/page.js?v='.rand(1111,9999).'')}}"></script> -->
 @endsection
 
 
@@ -1185,4 +1186,40 @@
   <!-- <script src="{{URL::asset('public/app-assets/js/scripts/forms/customer.js')}}"></script> -->
   <!-- <script src="{{URL::asset('public/app-assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script> -->
   <!-- <script src="{{URL::asset('public/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js')}}"></script> -->
+  <script type="text/javascript">
+$(document).ready(function() {
+    $('#room_discount_in, #total_room_amount, #discount').on('input', function() {
+        makeDiscount();
+    });
+    var originalTotal = parseFloat($("#total_room_amount").val()) || 0;
+
+    function makeDiscount() {
+        var selected = $("#room_discount_in").val();
+        var discount = parseFloat($("#discount").val()) || 0;
+
+        if (discount > 100) {
+            alert("Discount cannot be greater than 100%");
+            $("#discount").val("");
+            return;
+        }
+        var discountedAmount = originalTotal;
+
+        if (selected == 'perc') {
+            discountedAmount = originalTotal - ((originalTotal * discount) / 100);
+        } else {
+            discountedAmount = originalTotal - discount;
+        }
+        var taxRateCGST = parseFloat($("#org_room_amount_cgst").val()) || 0;
+        var taxRateGST = parseFloat($("#org_room_amount_with_cgst").val()) || 0;
+        var cgst = originalTotal * (taxRateCGST / 100);
+        var gst = originalTotal * (taxRateGST / 100); 
+        var finalTotal = discountedAmount + cgst + gst;
+        $("#total_room_final_amount").val(finalTotal.toFixed(2)); 
+        $("#td_room_final_amount").text("﷼ " + finalTotal.toFixed(2)); 
+    }
+});
+
+  </script>
   @endsection
+
+  
