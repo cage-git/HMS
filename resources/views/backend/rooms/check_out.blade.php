@@ -5,7 +5,7 @@
   $userRole = Auth::user()->role_id;
   $settings = getSettings();
 
-  $calculatedAmount = calcFinalAmount($data_row, 1);
+  $calculatedAmount = calcFinalAmount($data_row, 1,true,true);
   $gstPerc = $calculatedAmount['totalRoomGstPerc'];
   $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
   $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];

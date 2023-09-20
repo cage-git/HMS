@@ -242,7 +242,7 @@
                                       <td>{{$val->gender}}</td>
                                       <td>{{$val->age}}</td>
                                       <td>{{$val->address}}</td>
-                                      <td>{{@getDynamicDropdownById($val->idcard_type, 'dropdown_value')}}</td>
+                                      <td>{{@getDynamicDropdownById($val->idcard_type, 'dropdown_value',true)}}</td>
                                       <td>{{$val->idcard_no}}</td>
                                     </tr>
                                   @endforeach

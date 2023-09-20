@@ -670,7 +670,7 @@ $totalAmount = 0;
                     @foreach($datalist as $k=>$val)
                       @if($val->is_checkout == 1)
                       @php
-                        $calc = calcFinalAmount($val);
+                        $calc = calcFinalAmount($val,1,true,true);
                         $totalAmount = $totalAmount+$calc['finalRoomAmount']+$calc['finalOrderAmount']+$calc['additionalAmount'];
                         $j++;
                                     @endphp

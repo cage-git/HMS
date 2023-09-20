@@ -1620,7 +1620,7 @@
             $("#dob").val('');
             $("#selected_customer_id").val('');
         }
-       $(document).on('keypress', '.custom_search_val,#idcard_no', function (event) {
+       $(document).on('keypress', '.custom_search_val,#idcard_no,#mobile', function (event) {
             $(this).val($(this).val().replace(/[^\d].+/, ""));
             if ((event.which < 48 || event.which > 57)) {
               event.preventDefault();
