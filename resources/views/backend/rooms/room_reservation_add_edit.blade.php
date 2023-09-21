@@ -1172,6 +1172,10 @@
                     $('#custom-loader').css('display', 'none');
                 }
             });
+             $(document).on('click', '.btn-submit-form', function(e){
+            
+              $(this).attr('disabled', 'disabled');
+            });
         })
 
         // var initSelection = function(elem, cb) {
