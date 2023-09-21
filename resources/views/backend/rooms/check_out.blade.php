@@ -1197,7 +1197,7 @@ $(document).ready(function() {
         var selected = $("#room_discount_in").val();
         var discount = parseFloat($("#discount").val()) || 0;
 
-        if (discount > 100) {
+        if (selected == 'perc' && discount > 100) {
             alert("Discount cannot be greater than 100%");
             $("#discount").val("");
             return;
@@ -1209,11 +1209,8 @@ $(document).ready(function() {
         } else {
             discountedAmount = originalTotal - discount;
         }
-        var taxRateCGST = parseFloat($("#org_room_amount_cgst").val()) || 0;
-        var taxRateGST = parseFloat($("#org_room_amount_with_cgst").val()) || 0;
-        var cgst = originalTotal * (taxRateCGST / 100);
-        var gst = originalTotal * (taxRateGST / 100); 
-        var finalTotal = discountedAmount + cgst + gst;
+
+        var finalTotal = discountedAmount;
         $("#total_room_final_amount").val(finalTotal.toFixed(2)); 
         $("#td_room_final_amount").text("﷼ " + finalTotal.toFixed(2)); 
     }
