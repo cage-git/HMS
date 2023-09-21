@@ -1192,7 +1192,7 @@ $(document).ready(function() {
         makeDiscount();
     });
     var originalTotal = parseFloat($("#total_room_amount").val()) || 0;
-
+    var prevFinalTotal = parseFloat($("#total_room_final_amount").val()) || 0;
     function makeDiscount() {
         var selected = $("#room_discount_in").val();
         var discount = parseFloat($("#discount").val()) || 0;
@@ -1211,10 +1211,15 @@ $(document).ready(function() {
         }
 
         var finalTotal = discountedAmount;
-        $("#total_room_final_amount").val(finalTotal.toFixed(2)); 
-        $("#td_room_final_amount").text("﷼ " + finalTotal.toFixed(2)); 
+        $("#total_room_final_amount").val(finalTotal.toFixed(2));
+        $("#td_room_final_amount").text("﷼ " + finalTotal.toFixed(2));
+        if (discount === 0 || isNaN(discount)) {
+            $("#total_room_final_amount").val(prevFinalTotal.toFixed(2));
+            $("#td_room_final_amount").text("﷼ " + prevFinalTotal.toFixed(2));
+        }
     }
 });
+
 
   </script>
   @endsection

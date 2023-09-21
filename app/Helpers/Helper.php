@@ -1375,14 +1375,8 @@ function calcFinalAmount($val, $isTotalWithGst = 0, $default_stay = true,$listin
     $additionalAmount = ($val->addtional_amount > 0 ) ? $val->addtional_amount : 0;
     $grandRoomTotal = $val->grand_room_total;
 
-    // $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountCGst-$advancePayment-$totalRoomAmountDiscount;
-    if($listing){
-        $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountWithCGstAmount-$totalRoomAmountDiscount;
-    }elseif($checkout){
-        $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountWithCGstAmount-$totalRoomAmountDiscount;
-    }else{
         $finalRoomAmount = $totalAmount+$totalRoomAmountGst+$totalRoomAmountWithCGstAmount-$advancePayment-$totalRoomAmountDiscount;
-    }
+   
     // $totalRoomAmountDiscount += $totalRoomAmountGst;
 
     //start calculation of order amount
