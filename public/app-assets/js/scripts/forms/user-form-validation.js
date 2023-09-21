@@ -87,7 +87,8 @@ $(function () {
           required: true
         },
         'conf_password': {
-          required: true
+          required: true,
+          equalTo: "#password"
         },
         'gender': {
           required: true

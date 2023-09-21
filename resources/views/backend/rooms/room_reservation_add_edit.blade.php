@@ -756,7 +756,7 @@
                       <div class="row">
                           <div class="col-md-4 col-sm-4 col-xs-12">
                               <label class="control-label"> {{lang_trans('txt_advance_payment')}}</label>
-                              {{ Form::number('advance_payment', 0, ['class' => 'form-control col-md-7 col-xs-12', 'id' => 'advance_payment', 'placeholder' => lang_trans('ph_enter') . lang_trans('txt_advance_payment'), 'min' => 0]) }}
+                              {{ Form::number('advance_payment', '0.00', ['class' => 'form-control col-md-7 col-xs-12', 'id' => 'advance_payment', 'placeholder' => lang_trans('ph_enter') . lang_trans('txt_advance_payment'), 'min' => 0]) }}
 
                           </div>
                           <div class="col-md-4 col-sm-4 col-xs-12">
@@ -995,10 +995,6 @@
                     error = "{{lang_trans('txt_dob')}}";
                     error_flag = true;
                     div_id = "dob";
-                }else if(!advance_payment || advance_payment ==0){
-                    error = "{{lang_trans('txt_advance_payment')}}";
-                    error_flag = true;
-                    div_id = "advance_payment";
                 }else if(!mt_nationality){
                     error = "{{lang_trans('txt_nationality')}}";
                     error_flag = true;
