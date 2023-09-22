@@ -36,7 +36,6 @@
     $age = $dateOfBirth->age;
     $discount_lang= getSettings('site_language') == 'ar'? config('constants.DISCOUNT_TYPES_AR'): config('constants.DISCOUNT_TYPES');
 @endphp
-
 <style>
  .remove_padding{
   padding-left: 0px;
@@ -1191,35 +1190,79 @@ $(document).ready(function() {
     $('#room_discount_in, #total_room_amount, #discount').on('input', function() {
         makeDiscount();
     });
-    var originalTotal = parseFloat($("#total_room_amount").val()) || 0;
+    var originalTotal  = parseFloat($("#total_room_amount").val())|| 0;
     var prevFinalTotal = parseFloat($("#total_room_final_amount").val()) || 0;
-    function makeDiscount() {
-        var selected = $("#room_discount_in").val();
+    var cgst           = parseFloat($("#total_room_amount_cgst").val()) || 0;
+    var orgCgst        = parseFloat($("#org_room_amount_cgst").val()) || 0;
+    var gstAmount      = parseFloat($("#total_room_amount_gst").val()) || 0;
+    var orgGstAmount   = parseFloat($("#org_room_amount_with_cgst").val()) || 0;
+    var gstTax         = <?php echo $gstPerc ?>;
+    var cgstTax         = <?php echo $cgstPerc ?>;
+    function makeDiscount(){
+        
+        //get value of discount & select
         var discount = parseFloat($("#discount").val()) || 0;
-
+        var selected = $("#room_discount_in").val();
+   
         if (selected == 'perc' && discount > 100) {
             alert("Discount cannot be greater than 100%");
             $("#discount").val("");
-            return;
+            return false;
         }
-        var discountedAmount = originalTotal;
 
         if (selected == 'perc') {
-            discountedAmount = originalTotal - ((originalTotal * discount) / 100);
-        } else {
-            discountedAmount = originalTotal - discount;
-        }
+         var discountedAmountafter = originalTotal * (discount/100);
+         var discountedAmount = originalTotal-discountedAmountafter;
+         var cal              = discountedAmount*(cgstTax/100);
 
-        var finalTotal = discountedAmount;
-        $("#total_room_final_amount").val(finalTotal.toFixed(2));
-        $("#td_room_final_amount").text("﷼ " + finalTotal.toFixed(2));
+         var finalTotal = discountedAmount+cal;
+
+         var txt_val = ((finalTotal*gstTax) / 100);
+
+         var finalTotalAmount = (finalTotal + (finalTotal*gstTax) / 100);       
+         
+        }else if(selected == 'amt'){
+        var discountedAmountafter = originalTotal - discount;
+        console.log(discountedAmountafter);
+         var cal              = discountedAmountafter*(cgstTax/100);
+
+         var finalTotal = discountedAmountafter+cal;
+         console.log(finalTotal,"d")
+
+         var txt_val = ((finalTotal*gstTax) / 100);
+
+         var finalTotalAmount = (finalTotal + (finalTotal*gstTax) / 100); 
+
+        }
+        $("#total_room_final_amount").val(finalTotalAmount)|| 0; 
+        $("#td_room_final_amount").text("﷼ " + finalTotalAmount)|| 0;
+ 
+
+        $("#total_room_amount_cgst").val(cal);         
+        $("#org_room_amount_cgst").val(cal);
+        $("#td_total_room_amount_cgst,#td_total_room_amount_with_cgst").text("﷼ "+cal);
+
+
+        $("#total_room_amount_gst").val(txt_val); 
+        $("#org_room_amount_with_cgst").val(txt_val);
+        $("#td_total_room_amount_gst").text(txt_val + "﷼ ");
+
+        
         if (discount === 0 || isNaN(discount)) {
             $("#total_room_final_amount").val(prevFinalTotal.toFixed(2));
             $("#td_room_final_amount").text("﷼ " + prevFinalTotal.toFixed(2));
+
+            $("#total_room_amount_cgst").val(cgst.toFixed(2));         
+            $("#org_room_amount_cgst").val(orgCgst.toFixed(2));
+            $("#td_total_room_amount_cgst,#td_total_room_amount_with_cgst").text( "﷼ "+cgst.toFixed(2));
+
+
+            $("#total_room_amount_gst").val(gstAmount.toFixed(2)); 
+            $("#org_room_amount_with_cgst").val(orgGstAmount.toFixed(2));
+            $("#td_total_room_amount_gst").text("﷼ "+txt_val.toFixed(2));
         }
     }
 });
-
 
   </script>
   @endsection
