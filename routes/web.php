@@ -2431,9 +2431,16 @@ Route::post('terms-conditions', 'HomeController@termsConditions')->name('terms-c
 Route::post('subscribe-notifivations', 'HomeController@subscribeNotifications')->name('subscribe-notifivations');
 Route::get('search-rooms', 'HomeController@searchRooms')->name('search-rooms');
 
-
+/// Super Admin
+Route::post('save-business','SuperAdminController@saveBusiness')->name('save-business');
+Route::get('add-business','SuperAdminController@addBusiness')->name('add-business');
+Route::get('add-package','SuperAdminController@addPackage')->name('add-package');
+Route::get('all-packages','SuperAdminController@allPackages')->name('all-packages');
+Route::get('all-business','SuperAdminController@allBusiness')->name('all-business');
 //user routes
 Route::group(['prefix' => 'user', 'middleware'=>['isCustomer']], function() {
+	
+
 	Route::get('dashboard', ['uses' => 'UserController@dashboard'])->name('user-dashboard');
 	Route::post('book-rooms', ['uses' => 'UserController@bookRooms'])->name('book-rooms');
 

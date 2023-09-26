@@ -21,6 +21,7 @@
             @if($permissionsArr['dashboard'])<li class=" nav-item {{ request()->url() === url('admin/dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('dashboard')}}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_dashboard')}}</span></a></li>@endif
 
             @if($permissionsArr['room-reservation'])<li class=" nav-item {{ request()->url() === url('admin/check-in') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('room-reservation')}}"><i data-feather='plus-square'></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_checkin_add')}}</span></a></li>@endif
+            <li class=" nav-item {{ request()->url() === url('admin/super-admin') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('all-business')}}"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Dashboards">Super Admin</span></a></li>
             
             @if($permissionsArr['room-reservation']  && ($permissionsArr['quick-check-in'] || $permissionsArr['room-reservation'] || $permissionsArr['list-reservation'] || $permissionsArr['list-check-outs']) )
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='dollar-sign'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_checkin')}}</span></a>

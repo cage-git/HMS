@@ -44,7 +44,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         @if($v->is_deletable == 1)
-                                                            <button type="button" class="btn btn-danger delete-dropdown"><i class="fa fa-minus"></i></button>
+                                                            <button type="button" class="btn btn-danger delete-dropdown"><i data-feather="minus"></i></button>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -65,7 +65,7 @@
                                             <tr>
                                                 <td></td>
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-success add-dropdown" data-tbody="{{$val['dropdown_name']}}"><i class="fa fa-plus"></i></button>
+                                                    <button type="button" class="btn btn-success add-dropdown" data-tbody="{{$val['dropdown_name']}}"><i data-feather="plus"></i></button>
                                                 </td>
                                             </tr>
                                             </tfoot>
