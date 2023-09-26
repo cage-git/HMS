@@ -7,7 +7,7 @@
 <section id="basic-datatable">
     <div class="row">
         <div class="col-12">
-            <div class="card p-2">
+            <div class="card p-2 list_usr_space">
                 <div class="card-header px-2 border-bottom">
                     <h4 class="card-title">{{lang_trans('txt_list_users')}}</h4>
                     <a href="{{route('add-user')}}"><button class="btn btn-primary" >{{lang_trans('sidemenu_user_add')}}</button></a>

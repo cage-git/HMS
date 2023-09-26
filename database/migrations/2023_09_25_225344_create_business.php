@@ -17,6 +17,7 @@ class CreateBusiness extends Migration
             $table->id();
             $table->string('business_name');
             $table->date('start_date');
+            $table->date('end_date');
             $table->string('mobile')->unique();
             $table->string('country');
             $table->string('business_logo'); 

@@ -139,6 +139,9 @@ $logo_Lang= getSettings('site_language') == 'ar'? config('constants.logo_Lang_AR
 .error{
     color:red !important;
 }
+.list_usr_space table.dataTable>thead>tr>th:not(.sorting_disabled){
+    padding-right: 20px;
+}
 </style>
 </head>
 <!-- END: Head-->

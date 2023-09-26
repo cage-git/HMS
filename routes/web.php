@@ -2434,9 +2434,15 @@ Route::get('search-rooms', 'HomeController@searchRooms')->name('search-rooms');
 /// Super Admin
 Route::post('save-business','SuperAdminController@saveBusiness')->name('save-business');
 Route::get('add-business','SuperAdminController@addBusiness')->name('add-business');
+Route::get('edit-business/{id}', ['uses' => 'SuperAdminController@editBusinessData'])->name('edit-business');
+Route::match(['post', 'put'], 'update-business/{id}', 'SuperAdminController@updateBusinessData')->name('update-business');
+
 Route::get('add-package','SuperAdminController@addPackage')->name('add-package');
 Route::get('all-packages','SuperAdminController@allPackages')->name('all-packages');
 Route::get('all-business','SuperAdminController@allBusiness')->name('all-business');
+Route::get('delete-business/{id}','SuperAdminController@deleteBusinessData')->name('delete-business');
+
+Route::get('all-business-data','SuperAdminController@allBusinessData')->name('all-business-data');
 //user routes
 Route::group(['prefix' => 'user', 'middleware'=>['isCustomer']], function() {
 	
@@ -2792,3 +2798,4 @@ Route::get('/clear', function() {
     text-align: center;
     border-radius: 4px;"><h1>Config & View cache cleared successfully.</h1></div>';
 });
+

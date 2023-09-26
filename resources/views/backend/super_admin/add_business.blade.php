@@ -55,10 +55,10 @@
 
             <div class="card-body">
                    @if($flag==1)
-                      {{ Form::model($data_row,array('url'=>route('save-business'),'id'=>"business-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
+                      {{ Form::model($data_row,array('url'=>route('save-business'),'id'=>"edit-business-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
                       {{Form::hidden('id',null)}}
                   @else
-                      {{ Form::open(array('url'=>route('save-business'),'id'=>"business-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
+                      {{ Form::open(array('url'=>route('save-business'),'id'=>"add-business-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
                   @endif 
                         <div class="row">
                                 <div class="col-xl-4 col-md-6 col-12">
@@ -72,6 +72,12 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="business_start_date">{{lang_trans('txt_start_date')}}</label>
                                         {{Form::text('start_date',$startDate,['class'=>"form-control flatpickr-basic", "id"=>"business_start_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off"])}}
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="business_end_date">{{lang_trans('txt_end_date')}}</label>
+                                        {{Form::text('end_date',$startDate,['class'=>"form-control flatpickr-basic", "id"=>"business_end_date", "placeholder"=>lang_trans('ph_date'), "autocomplete"=>"off"])}}
                                     </div>
                                 </div>
 
@@ -114,7 +120,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="business_password">Password</label>
-                                        {{Form::text('business_password',null,['class'=>"form-control ", "id"=>"business_password", "required"=>"required"])}}
+                                       {{ Form::password('business_password', ['class' => 'form-control', 'id' => 'business_password', 'required' => 'required']) }}
                                     </div>
                                 </div>
 
