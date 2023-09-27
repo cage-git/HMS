@@ -54,12 +54,7 @@
             </div>
 
             <div class="card-body">
-                   @if($flag==1)
-                      {{ Form::model($data_row,array('url'=>route('save-business'),'id'=>"edit-business-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
-                      {{Form::hidden('id',null)}}
-                  @else
                       {{ Form::open(array('url'=>route('save-business'),'id'=>"add-business-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
-                  @endif 
                         <div class="row">
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
@@ -84,7 +79,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="mobile_num">{{lang_trans('txt_mobile_num')}}</label>
-                                        {{Form::text('mobile_num',null,['class'=>"form-control", 'placeholder'=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                                        {{Form::text('mobile_num',null,['class'=>"form-control price_val", 'placeholder'=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
                                     </div>
                                 </div>
                                 
@@ -114,6 +109,12 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="business_username">User name</label>
                                         {{Form::text('business_username',null,['class'=>"form-control ", "id"=>"business_username", "required"=>"required"])}}
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="business_username">Email</label>
+                                        {{Form::email('business_email',null,['class'=>"form-control ", "id"=>"business_email", "required"=>"required"])}}
                                     </div>
                                 </div>
                                 

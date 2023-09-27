@@ -57,45 +57,66 @@
             <div class="col-xl-4 col-md-6 col-12">
                 <div class="mb-1">
                     <label class="form-label" for="package_name">{{lang_trans('name')}}</label>
-                    {{Form::text('package_name',null,['class'=>"form-control ", "id"=>"package_name", "required"=>"required"])}}
+                    {{Form::text('package_name',$data_row->name,['class'=>"form-control ", "id"=>"package_name", "required"=>"required"])}}
                 </div>
             </div>
 
             <div class="col-xl-4 col-md-6 col-12">
                 <div class="mb-1">
                     <label class="form-label" for="number_of_users">{{lang_trans('num_user')}}</label>
-                    {{Form::text('number_of_users',null,['class'=>"form-control ", "id"=>"number_of_users", "required"=>"required"])}}
+                    {{Form::text('number_of_users',$data_row->num_user,['class'=>"form-control ", "id"=>"number_of_users", "required"=>"required"])}}
                 </div>
             </div>
 
             <div class="col-xl-4 col-md-6 col-12">
                 <div class="mb-1">
                     <label class="form-label" for="number_of_hotels">{{lang_trans('num_hotels')}}</label>
-                     {{Form::text('number_of_hotels',null,['class'=>"form-control ", "id"=>"number_of_hotels", "required"=>"required"])}}
+                     {{Form::text('number_of_hotels',$data_row->num_hotels,['class'=>"form-control ", "id"=>"number_of_hotels", "required"=>"required"])}}
                 </div>
             </div>
             
             <div class="col-xl-4 col-md-6 col-12">
                 <div class="mb-1">
-                    <label class="form-label" for="number_of_invoices">{{lang_trans('num_invoices')}}</label>{{Form::text('number_of_invoices',null,['class'=>"form-control ", "id"=>"number_of_invoices", "required"=>"required"])}}
+                    <label class="form-label" for="number_of_invoices">{{lang_trans('num_invoices')}}</label>{{Form::text('number_of_invoices',$data_row->num_invoices,['class'=>"form-control ", "id"=>"number_of_invoices", "required"=>"required"])}}
                 </div>
             </div>
             <hr>
+            @php 
+            $service = $data_row->services;
+             $selectedServices = explode(',', $service);
+            @endphp
             <div class="col-xl-12 col-md-12 col-12 pb-2">
               <div class="form-check form-check-inline">
-                  <input class="form-check-input" name="services[]" type="checkbox" value="expenses">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="expenses"<?php 
+                  if (in_array('expenses', $selectedServices)) {
+				    echo "checked";
+				}
+             	 ?>
+                  >
                   <label class="form-check-label" for="services">Expenses</label>
               </div>
               <div class="form-check form-check-inline">
-                  <input class="form-check-input" name="services[]" type="checkbox" value="pos">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="pos" <?php 
+                  if (in_array('pos', $selectedServices)) {
+				    echo "checked";
+				}
+             	 ?>>
                   <label class="form-check-label" for="services">POS</label>
               </div>
               <div class="form-check form-check-inline">
-                  <input class="form-check-input" name="services[]" type="checkbox" value="website">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="website"<?php 
+                  if (in_array('website', $selectedServices)) {
+				    echo "checked";
+				}
+             	 ?>>
                   <label class="form-check-label" for="services">Web site</label>
               </div>
               <div class="form-check form-check-inline">
-                  <input class="form-check-input" name="services[]" type="checkbox" value="laundry">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="laundry"<?php 
+                  if (in_array('laundry', $selectedServices)) {
+				    echo "checked";
+				}
+             	 ?>>
                   <label class="form-check-label" for="services">Laundry</label>
               </div>
             </div>

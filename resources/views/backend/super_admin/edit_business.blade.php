@@ -82,7 +82,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="mobile_num">{{lang_trans('txt_mobile_num')}}</label>
-                                        {{ Form::text('mobile', $data_row->mobile, ['class' => 'form-control', 'placeholder' => lang_trans('ph_enter').lang_trans('txt_mobile_num')]) }}
+                                        {{ Form::text('mobile', $data_row->mobile, ['class' => 'form-control price_val', 'placeholder' => lang_trans('ph_enter').lang_trans('txt_mobile_num')]) }}
                                     </div>
                                 </div>
                                 
@@ -119,7 +119,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="business_password">Password</label>
-                                       {{ Form::text('password', null, ['class' => 'form-control', 'placeholder' => 'Enter new password']) }}
+                                       {{ Form::password('Password', ['class' => 'form-control', 'id' => 'business_password', 'required' => 'required']) }}
                                     </div>
                                 </div>
 

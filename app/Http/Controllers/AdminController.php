@@ -490,7 +490,6 @@ class AdminController extends Controller
                 $paymentHistoryData['transaction_id'] = getNextInvoiceNo('ph');
                 $dataPH = $this->core->updateOrCreatePH($where, $paymentHistoryData);
             }
-
             $mediaData = [
                 'tbl_id'=>$res->id,
                 'media_ids'=>$request->media_ids,
@@ -939,6 +938,7 @@ class AdminController extends Controller
                 $this->core->updateOrCreatePH($where, $paymentHistoryData);
 
                 if($cal['finalOrderAmount'] > 0){
+
                     $where = [
                         'purpose'=>'FOOD_ORDER_AMOUNT',
                         'tbl_id'=>$orderData->id,
@@ -1895,7 +1895,9 @@ class AdminController extends Controller
 /* ***** Start Permissions Functions ***** */
     public function listPermission() {
         $this->data['datalist']=Permission::where('status',1)->orderBy('permission_type','ASC')->get();
+         #echo "<pre>";   print_r($this->data);die;
         return view('backend/permissions/list',$this->data);
+
     }
     public function savePermission(Request $request) {
         if($this->core->checkWebPortal()==0){
@@ -1909,9 +1911,10 @@ class AdminController extends Controller
         $receptionist = $request->receptionist;
         $stokManager = $request->store_manager;
         $financialManager = $request->financial_manager;
+        $business = $request->new_business;
         foreach($ids as $key => $id){
             $superAdminP = 1; //not change superadmin, so set default 1
-            $adminP = $recP = $smP = $fmP = 0;
+            $adminP = $recP = $smP = $fmP = $bmP = 0;
             if(isset($superAdmin[$id])){
                 $superAdminP = 1;
             }
@@ -1927,7 +1930,10 @@ class AdminController extends Controller
             if(isset($financialManager[$id])){
                 $fmP = 1;
             }
-            $res = Permission::where('id',$id)->update(["super_admin"=>$superAdminP, 'admin'=>$adminP, 'receptionist'=>$recP, 'store_manager'=>$smP, 'financial_manager'=>$fmP ]);
+            if(isset($business[$id])){
+                $bmP = 1;
+            }
+            $res = Permission::where('id',$id)->update(["super_admin"=>$superAdminP, 'admin'=>$adminP, 'receptionist'=>$recP, 'store_manager'=>$smP, 'financial_manager'=>$fmP, 'business'=>$bmP ]);
         }
         if($res){
             return redirect()->back()->with(['success' => config('constants.FLASH_REC_UPDATE_1')]);
