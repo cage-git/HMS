@@ -15,7 +15,23 @@ class HousekeepingController extends Controller
         $this->middleware('auth');
     }
     function getHousekeepingOrder($rec = 'get', $id = ''){
+        if(Auth::user()->role_id == 8){
         $userId = Auth::user()->id;
+        $roleId = Auth::user()->role_id;
+        $records = null;
+        $query = HousekeepingOrder::whereStatus(1)->orderBy('order_status','ASC')->orderBy('created_at','DESC')->where('business_id',Auth::user()->business_id);
+        if($roleId == 7){
+            $query->where('housekeeper_id', $userId);
+        }
+        if($id > 0){
+            $records = $query->whereId($id)->first();
+        }
+        else if($rec == 'get'){
+            $records = $query->paginate(getPaginationNum());
+        }
+        return $records;
+        } else {
+            $userId = Auth::user()->id;
         $roleId = Auth::user()->role_id;
         $records = null;
         $query = HousekeepingOrder::whereStatus(1)->orderBy('order_status','ASC')->orderBy('created_at','DESC');
@@ -29,8 +45,10 @@ class HousekeepingController extends Controller
             $records = $query->paginate(getPaginationNum());
         }
         return $records;
+        }
     }
     public function index() {  
+
         $this->data['datalist']=$this->getHousekeepingOrder('get');
         // dd($this->data);
         return view('backend/housekeeping/list',$this->data);
@@ -53,10 +71,13 @@ class HousekeepingController extends Controller
         return view('backend/housekeeping/add_edit',$this->data);
     } 
     public function saveOrder(Request $request) {
+        if (Auth::check()) {
+        $BusinessUserId = Auth::user()->business_id;
+        }
         $splashMsg = getSplashMsg(['id'=>$request->id, 'type'=>'add_update']);
         $items = (count($request->items)) ? implode(',', $request->items) : '';
         $request->merge(['housekeeping_items'=>$items]);
-        $res = HousekeepingOrder::updateOrCreate(['id'=>$request->id],$request->except(['_token','items']));
+        $res = HousekeepingOrder::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','items']));
         
         if($res){
             return redirect()->back()->with(['success' => $splashMsg['success']]);
@@ -97,22 +118,31 @@ class HousekeepingController extends Controller
         return view('backend/housekeeping/item_add_edit',$this->data);
     } 
     public function saveItem(Request $request) {
+         if (Auth::check()) {
+        $BusinessUserId = Auth::user()->business_id;
+        }
         $splashMsg = getSplashMsg(['id'=>$request->id, 'type'=>'add_update']);
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
             } 
         }
-        $res = HousekeepingItem::updateOrCreate(['id'=>$request->id],$request->except(['_token']));
+        $res = HousekeepingItem::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token']));
         
         if($res){
             return redirect()->back()->with(['success' => $splashMsg['success']]);
         }
         return redirect()->back()->with(['error' => $splashMsg['error']]);
+        
     }
     public function listItem() {
-         $this->data['datalist']=HousekeepingItem::where('is_deleted', 0)->orderBy('name','ASC')->get();
+        if(Auth::user()->role_id == 8){
+         $this->data['datalist']=HousekeepingItem::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         return view('backend/housekeeping/item_list',$this->data);
+        }else {
+             $this->data['datalist']=HousekeepingItem::where('is_deleted', 0)->orderBy('name','ASC')->get();
+        return view('backend/housekeeping/item_list',$this->data);
+        }
     }
     public function deleteItem(Request $request) {
         if($this->core->checkWebPortal()==0){

@@ -26,16 +26,12 @@ class CustomerController extends Controller
         return view('backend/customers/add_edit',$this->data);
     }
     public function saveCustomer(Request $request) {
-    // ...
-
-        // Check if the email already exists
-        $existingEmail = Customer::where('email', $request->email)->where('id', '!=', $request->id)->first();
-        if ($existingEmail) {
-            return redirect()->back()->with(['error' => 'Email already exists in the database']);
+        if (Auth::check()) {
+        $BusinessUserId = Auth::user()->business_id;
         }
         $existingPhone = Customer::where('mobile', $request->mobile)->where('id', '!=', $request->id)->first();
         if ($existingPhone) {
-            return redirect()->back()->with(['error' => 'Phone already exists in the database']);
+            return redirect()->back()->with(['error' => 'Contact Number already exists']);
         }
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
@@ -48,7 +44,7 @@ class CustomerController extends Controller
             $error = config('constants.FLASH_REC_ADD_0');
         }
         $request->merge(['password'=>Hash::make($request->mobile)]);
-        $res = Customer::where('cat','=','user')->updateOrCreate(['id'=>$request->id],$request->except(['_token']));
+        $res = Customer::where('cat','=','user')->updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token']));
         if($res){
             // sync user and customer
             $this->core->syncUserAndCustomer();
@@ -59,12 +55,21 @@ class CustomerController extends Controller
     }
 
     public function listCustomer() {
-         $this->data['datalist']=Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC')->get();
+    if(Auth::user()->role_id == 8){
+         $this->data['datalist']=Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
          $this->data['customer_list']=getCustomerList('get');
          $this->data['search_data'] = ['customer_id'=>'','mobile_num'=>'','city'=>'','state'=>'','country'=>''];
         // dd($this->data);
 
         return view('backend/customers/list',$this->data);
+        }else{
+             $this->data['datalist']=Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC')->get();
+         $this->data['customer_list']=getCustomerList('get');
+         $this->data['search_data'] = ['customer_id'=>'','mobile_num'=>'','city'=>'','state'=>'','country'=>''];
+        // dd($this->data);
+
+        return view('backend/customers/list',$this->data);
+        }
     }
     public function deleteCustomer(Request $request) {
         if($this->core->checkWebPortal()==0){
@@ -76,6 +81,17 @@ class CustomerController extends Controller
         return redirect()->back()->with(['error' => config('constants.FLASH_REC_DELETE_0')]);
     }
     public function searchFromCustomer(Request $request) {
+        if(Auth::user()->role_id == 8){
+            $data=Customer::where('cat','=',$request->category)
+                ->where('is_deleted',0)
+                ->where('mobile',$request->search_from_phone_idcard)->where('business_id',Auth::user()->business_id)
+                ->orWhere('id_card_no', 'like', '%' . $request->search_from_phone_idcard . '%')->where('business_id',Auth::user()->business_id)
+                ->orWhere('mobile', 'like', '%' . $request->search_from_phone_idcard . '%')->where('business_id',Auth::user()->business_id)
+                ->orWhere('name', 'like', '%' . $request->search_from_phone_idcard . '%')
+                ->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
+
+        return response()->json(['customers'=> $data], 200);
+    }else{
         $data=Customer::where('cat','=',$request->category)
                 ->where('is_deleted',0)
                 ->where('mobile',$request->search_from_phone_idcard)
@@ -85,9 +101,22 @@ class CustomerController extends Controller
                 ->orderBy('name','ASC')->get();
 
         return response()->json(['customers'=> $data], 200);
+    }
+
    }
    public function searchFromCompany(Request $request) {
+     if(Auth::user()->role_id == 8){
     $data=Customer::where('cat','=',$request->category)
+            ->where('is_deleted',0)
+            ->where('mobile',$request->search_from_phone_idcard)
+            ->orWhere('id_card_no', 'like', '%' . $request->search_from_phone_idcard . '%')
+            ->orWhere('mobile', 'like', '%' . $request->search_from_phone_idcard . '%')
+            ->orWhere('name', 'like', '%' . $request->search_from_phone_idcard . '%')
+            ->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
+
+    return response()->json(['customers'=> $data], 200);
+    }else{
+        $data=Customer::where('cat','=',$request->category)
             ->where('is_deleted',0)
             ->where('mobile',$request->search_from_phone_idcard)
             ->orWhere('id_card_no', 'like', '%' . $request->search_from_phone_idcard . '%')
@@ -96,5 +125,6 @@ class CustomerController extends Controller
             ->orderBy('name','ASC')->get();
 
     return response()->json(['customers'=> $data], 200);
+    }
 }
 }

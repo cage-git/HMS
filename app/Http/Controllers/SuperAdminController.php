@@ -12,8 +12,11 @@ use Illuminate\Support\Arr;
 
 class SuperAdminController extends Controller
 {
-
-    
+   private $core;
+    public function __construct()
+    {
+        $this->core=app(\App\Http\Controllers\CoreController::class);
+    }
     public function addBusiness(){
          $this->data['roles']=$this->getRoleList();
            return view('backend/super_admin/add_business',$this->data);
@@ -66,22 +69,29 @@ class SuperAdminController extends Controller
     }
 
      public function saveBusiness(Request $request){
+       
             $data = $request->all();
-           Business::create([
+         $filename="";
+          if ($request->hasFile('business_logo')) {
+           $filename = $this->core->fileUpload($request->business_logo,'uploads/business_images');            
+          }
+         $newBusiness =  Business::create([
           'business_name' => $data['business_name'],
           'start_date' => $data['start_date'],
           'end_date' => $data['end_date'],
           'mobile' => $data['mobile_num'],
           'country' => $data['country'],
           'address' => $data['address'],
-          'business_logo' => $data['business_logo'],
+          'business_logo' => $filename,
           'package' => $data['package_name'],
           'name' => $data['name'],
         ]);
+           $newBusinessId = $newBusiness->id;
            $roleId = 8;
            $role = Role::where('id', $roleId)->first();
            User::create([
           'role_id' => $role->id,
+          'business_id'=> $newBusinessId,
           'name' => $data['business_username'],
           'email' => $data['business_email'],
           'password' => bcrypt($data['business_password']),

@@ -10,6 +10,7 @@ use App\Reservation;
 use App\Order,App\OrderItem,App\OrderHistory;
 use App\Product;
 use App\Customer;
+use Auth;
 use App\Expense,App\ExpenseCategory;
 use App\PaymentHistory;
 use App\Exports\CheckoutExport;
@@ -32,7 +33,40 @@ class ReportController extends Controller
     }
 
     public function index(Request $request) {
+        if(Auth::user()->role_id == 8){
         $startDate = getNextPrevDate('prev');
+        $searcData = ['date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
+
+        $this->data['report_of'] = $request->get('type');
+        $this->data['customer_list']=getCustomerList('get');
+
+        if($this->data['report_of'] == 'checkouts'){
+            $this->data['roomtypes_list']=getRoomTypesList();
+            $searcData['customer_id'] = '';
+            $searcData['room_type_id'] = '';
+        }
+        else if($this->data['report_of'] == 'bladi_report'){
+            $this->data['roomtypes_list']=getRoomTypesList();
+            $searcData['customer_id'] = '';
+            $searcData['room_type_id'] = '';
+            $searcData['checkout_years'] = Reservation::selectRaw('extract(year FROM check_out) AS year')
+                                        ->distinct()
+                                        ->orderBy('year', 'asc')->where('business_id',Auth::user()->business_id)
+                                        ->get();
+        }else if($this->data['report_of'] == 'expense'){
+            $this->data['category_list']=getExpenseCategoryList();
+            $searcData['category_id'] = '';
+        } else {
+            $this->data['report_of'] = 'transactions';
+            $this->data['roomtypes_list']=getRoomTypesList();
+            $this->data['datalist'] = PaymentHistory::where('business_id',Auth::user()->business_id)->get();
+        }
+
+        $this->data['search_data'] = $searcData;
+        // dd($this->data);
+        return view('backend/reports',$this->data);
+        }else{
+             $startDate = getNextPrevDate('prev');
         $searcData = ['date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
 
         $this->data['report_of'] = $request->get('type');
@@ -63,6 +97,7 @@ class ReportController extends Controller
         $this->data['search_data'] = $searcData;
         // dd($this->data);
         return view('backend/reports',$this->data);
+        }
     }
 
     public function searchCheckins(Request $request) {

@@ -15,8 +15,13 @@ class VendorController extends Controller
     }
 
     public function index() {  
-        $this->data['datalist']=Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->get();
+        if(Auth::user()->role_id == 8){
+        $this->data['datalist']=Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->where('business_id',Auth::user()->business_id)->get();
         return view('backend/vendors/list',$this->data);
+        }else{
+             $this->data['datalist']=Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->get();
+        return view('backend/vendors/list',$this->data);
+        }
     }
     public function add() {
         $this->data['category_list']=$this->getVendorCategoryList();
@@ -38,8 +43,11 @@ class VendorController extends Controller
         return view('backend/vendors/add_edit',$this->data);
     } 
     public function save(Request $request) {
+         if (Auth::check()) {
+        $BusinessUserId = Auth::user()->business_id;
+        }
         $splashMsg = getSplashMsg(['id'=>$request->id, 'type'=>'add_update']);
-        $res = Vendor::updateOrCreate(['id'=>$request->id],$request->except(['_token']));
+        $res = Vendor::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token']));
         
         if($res){
             return redirect()->back()->with(['success' => $splashMsg['success']]);
@@ -66,22 +74,31 @@ class VendorController extends Controller
         return view('backend/vendors/category_add_edit',$this->data);
     } 
     public function saveCategory(Request $request) {
+         if (Auth::check()) {
+        $BusinessUserId = Auth::user()->business_id;
+        }
         $splashMsg = getSplashMsg(['id'=>$request->id, 'type'=>'add_update']);
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
             } 
         }
-        $res = VendorCategory::updateOrCreate(['id'=>$request->id],$request->except(['_token']));
+        $res = VendorCategory::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token']));
         
         if($res){
             return redirect()->back()->with(['success' => $splashMsg['success']]);
         }
         return redirect()->back()->with(['error' => $splashMsg['error']]);
+        
     }
     public function listCategory() {
-         $this->data['datalist']=VendorCategory::where('is_deleted', 0)->orderBy('name','ASC')->get();
+        if(Auth::user()->role_id == 8){
+         $this->data['datalist']=VendorCategory::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         return view('backend/vendors/category_list',$this->data);
+        }else{
+             $this->data['datalist']=VendorCategory::where('is_deleted', 0)->orderBy('name','ASC')->get();
+        return view('backend/vendors/category_list',$this->data);
+        }
     }
     public function deleteCategory(Request $request) {
         if($this->core->checkWebPortal()==0){

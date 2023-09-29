@@ -2431,20 +2431,10 @@ Route::post('terms-conditions', 'HomeController@termsConditions')->name('terms-c
 Route::post('subscribe-notifivations', 'HomeController@subscribeNotifications')->name('subscribe-notifivations');
 Route::get('search-rooms', 'HomeController@searchRooms')->name('search-rooms');
 
-/// Super Admin
-Route::post('save-business','SuperAdminController@saveBusiness')->name('save-business');
-Route::get('add-business','SuperAdminController@addBusiness')->name('add-business');
-Route::get('edit-business/{id}', ['uses' => 'SuperAdminController@editBusinessData'])->name('edit-business');
-Route::match(['post', 'put'], 'update-business/{id}', 'SuperAdminController@updateBusinessData')->name('update-business');
 
-Route::get('add-package','SuperAdminController@addPackage')->name('add-package');
-Route::get('all-packages','SuperAdminController@allPackages')->name('all-packages');
-Route::get('all-business','SuperAdminController@allBusiness')->name('all-business');
-Route::get('delete-business/{id}','SuperAdminController@deleteBusinessData')->name('delete-business');
 
-Route::get('all-business-data','SuperAdminController@allBusinessData')->name('all-business-data');
 //user routes
-Route::group(['prefix' => 'user', 'middleware'=>['isCustomer']], function() {
+// Route::group(['prefix' => 'user', 'middleware'=>['isCustomer']], function() {
 	
 
 	Route::get('dashboard', ['uses' => 'UserController@dashboard'])->name('user-dashboard');
@@ -2455,7 +2445,7 @@ Route::group(['prefix' => 'user', 'middleware'=>['isCustomer']], function() {
 
 	Route::get('change-password', ['uses' => 'UserController@changePassword'])->name('change-password');
 	Route::post('update-password', ['uses' => 'UserController@updatePassword'])->name('update-password');
-});
+// });
 
 //admin routes
 Route::group(['prefix' => 'admin'], function() {
@@ -2495,6 +2485,7 @@ Route::group(['prefix' => 'admin'], function() {
 //
 //       dd($booked_room);
 //    });
+
 	Route::get('/', ['uses' => 'LoginController@adminLogin'])->name('login');
 	Route::post('do-login', ['uses' => 'LoginController@doLogin'])->name('do-login');
 	Route::get('logout', ['uses' => 'LoginController@logout'])->name('logout');
@@ -2553,7 +2544,7 @@ Route::group(['prefix' => 'admin'], function() {
         Route::get('list-amenities', ['uses' => 'AdminController@listAmenities'])->name('list-amenities');
         Route::get('delete-amenities/{id}', ['uses' => 'AdminController@deleteAmenities'])->name('delete-amenities');
 
-//		Route::get('quick-check-in', ['uses' => 'AdminController@roomReservation'])->name('quick-check-in');
+		//		Route::get('quick-check-in', ['uses' => 'AdminController@roomReservation'])->name('quick-check-in');
         Route::get('search-from-customer', ['uses' => 'CustomerController@searchFromCustomer'])->name('search-from-customer');
         Route::get('search-from-company', ['uses' => 'CustomerController@searchFromCompany'])->name('search-from-company');
         Route::get('check-in', ['uses' => 'AdminController@roomReservation'])->name('room-reservation');
@@ -2676,7 +2667,7 @@ Route::group(['prefix' => 'admin'], function() {
         Route::post('/save-settings', 'AdminController@saveSettings')->name('save-settings');
 
         Route::get('sms-settings', 'AdminController@settingsSms')->name('sms-settings');
-        Route::post('/save-settings', 'AdminController@saveSettings')->name('save-settings');
+        // Route::post('/save-settings', 'AdminController@saveSettings')->name('save-settings');
 
         Route::get('permissions-list', 'AdminController@listPermission')->name('permissions-list');
         Route::post('/save-permissions', 'AdminController@savePermission')->name('save-permissions');
@@ -2730,6 +2721,22 @@ Route::group(['prefix' => 'admin'], function() {
 
         Route::get('about-page', 'WebsitePagesController@aboutPage')->name('about-page');
         Route::post('update-about-data', 'WebsitePagesController@updateAboutPage')->name('update-about-page');
+        /// Super Admin
+		Route::post('save-business','SuperAdminController@saveBusiness')->name('save-business');
+		Route::get('add-business','SuperAdminController@addBusiness')->name('add-business');
+		Route::get('edit-business/{id}', ['uses' => 'SuperAdminController@editBusinessData'])->name('edit-business');
+		Route::match(['post', 'put'], 'update-business/{id}', 'SuperAdminController@updateBusinessData')->name('update-business');
+		Route::get('all-business','SuperAdminController@allBusiness')->name('all-business');
+		Route::get('delete-business/{id}','SuperAdminController@deleteBusinessData')->name('delete-business');
+
+		Route::get('all-business-data','SuperAdminController@allBusinessData')->name('all-business-data');
+		//package routes
+		Route::get('add-package','SuperAdminController@addPackage')->name('add-package');
+		Route::get('all-packages','SuperAdminController@allPackages')->name('all-packages');
+		Route::post('save-package','SuperAdminController@savePackage')->name('save-package');
+		Route::get('all-package-data','SuperAdminController@allPackageData')->name('all-package-data');
+		Route::get('delete-package/{id}','SuperAdminController@deletePackageData')->name('delete-package');
+		Route::get('edit-package/{id}', ['uses' => 'SuperAdminController@editPackageData'])->name('edit-package');
     });
 });
 

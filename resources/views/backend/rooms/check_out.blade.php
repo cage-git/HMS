@@ -1223,11 +1223,9 @@ $(document).ready(function() {
          
         }else if(selected == 'amt'){
         var discountedAmountafter = originalTotal - discount;
-        console.log(discountedAmountafter);
          var cal              = discountedAmountafter*(cgstTax/100);
 
          var finalTotal = discountedAmountafter+cal;
-         console.log(finalTotal,"d")
 
          var txt_val = ((finalTotal*gstTax) / 100);
 

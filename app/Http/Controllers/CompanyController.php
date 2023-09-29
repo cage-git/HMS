@@ -27,6 +27,9 @@ class CompanyController extends Controller
     }
     public function saveCompany(Request $request)
     {
+        if (Auth::check()) {
+        $BusinessUserId = Auth::user()->business_id;
+        }
         if ($request->id > 0) {
             if ($this->core->checkWebPortal() == 0) {
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
@@ -54,12 +57,13 @@ class CompanyController extends Controller
                 "city" => $request->city,
                 "gender" => 'Other',
                 // "age" => '50',
+                'business_id'=>$BusinessUserId,
                 "password" => Hash::make($request->mobile),
             ];
             $res = Customer::insert($customerData);
         } else {
             $request->merge(['password' => Hash::make($request->mobile)]);
-            $res = Customer::where('cat', '=', 'company')->updateOrCreate(['id' => $request->id], $request->except(['_token']));
+            $res = Customer::where('cat', '=', 'company')->updateOrCreate(['id' => $request->id,'business_id'=>$BusinessUserId], $request->except(['_token']));
         }
 
         if($res){
@@ -72,10 +76,17 @@ class CompanyController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listCompany() {
-         $this->data['datalist']=Customer::where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC')->get();
+        if(Auth::user()->role_id == 8){
+         $this->data['datalist']=Customer::where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
          $this->data['customer_list']=getCustomerList('get','company');
          $this->data['search_data'] = ['customer_id'=>'','mobile_num'=>'','city'=>'','state'=>'','country'=>''];
         return view('backend/companys/list',$this->data);
+        }else{
+            $this->data['datalist']=Customer::where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC')->get();
+         $this->data['customer_list']=getCustomerList('get','company');
+         $this->data['search_data'] = ['customer_id'=>'','mobile_num'=>'','city'=>'','state'=>'','country'=>''];
+        return view('backend/companys/list',$this->data);
+        }
     }
     public function deleteCompany(Request $request) {
         if($this->core->checkWebPortal()==0){

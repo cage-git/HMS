@@ -17,13 +17,23 @@ class LaundryController extends Controller
     }
 
     public function index() { 
+        if(Auth::user()->role_id == 8){
         $startDate = getNextPrevDate('prev'); 
+        $this->data['datalist']=LaundryOrder::whereStatus(1)->whereDate('order_date', '>=', $startDate." 00:00:00")->whereDate('order_date', '<=', DB::raw('CURDATE()'))->orderBy('order_status','ASC')->where('business_id',Auth::user()->business_id)->orderBy('order_num','DESC')->get();
+        $this->data['vendor_list'] = getVendorList();
+        $this->data['room_list'] = getRoomList(2);
+        $this->data['status_list']=getConstants('LIST_LAUNDRY_ORDER_STATUS');
+        $this->data['search_data'] = ['order_num'=>'','vendor_id'=>'','room_id'=>'','order_status'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
+        return view('backend/laundry/list',$this->data);
+        } else {
+            $startDate = getNextPrevDate('prev'); 
         $this->data['datalist']=LaundryOrder::whereStatus(1)->whereDate('order_date', '>=', $startDate." 00:00:00")->whereDate('order_date', '<=', DB::raw('CURDATE()'))->orderBy('order_status','ASC')->orderBy('order_num','DESC')->get();
         $this->data['vendor_list'] = getVendorList();
         $this->data['room_list'] = getRoomList(2);
         $this->data['status_list']=getConstants('LIST_LAUNDRY_ORDER_STATUS');
         $this->data['search_data'] = ['order_num'=>'','vendor_id'=>'','room_id'=>'','order_status'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
         return view('backend/laundry/list',$this->data);
+        }
     }
     public function addOrder() {
         $this->setDataForAddEditView();
@@ -59,6 +69,9 @@ class LaundryController extends Controller
         return view('backend/laundry/add_edit',$this->data);
     } 
     public function saveOrder(Request $request) {
+         if (Auth::check()) {
+        $BusinessUserId = Auth::user()->business_id;
+        }
         if(!$request->item){
             return redirect()->back()->with(['error' => config('constants.FLASH_FILL_REQUIRED_FIELD')]);
         }
@@ -98,7 +111,7 @@ class LaundryController extends Controller
         }
 
         $request->merge($mergeRequestArr);
-        $res = LaundryOrder::updateOrCreate(['id'=>$request->id],$request->except(['_token','item','guest_type','selected_customer_id','amount']));
+        $res = LaundryOrder::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','item','guest_type','selected_customer_id','amount']));
         
         if($res){
             $items = [];
@@ -243,22 +256,31 @@ class LaundryController extends Controller
         return view('backend/laundry/item_add_edit',$this->data);
     } 
     public function saveItem(Request $request) {
+        if (Auth::check()) {
+        $BusinessUserId = Auth::user()->business_id;
+        }
         $splashMsg = getSplashMsg(['id'=>$request->id, 'type'=>'add_update']);
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
             } 
         }
-        $res = LaundryItem::updateOrCreate(['id'=>$request->id],$request->except(['_token']));
+        $res = LaundryItem::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token']));
         
         if($res){
             return redirect()->back()->with(['success' => $splashMsg['success']]);
         }
         return redirect()->back()->with(['error' => $splashMsg['error']]);
+     
     }
     public function listItem() {
-         $this->data['datalist']=LaundryItem::where('is_deleted', 0)->orderBy('name','ASC')->get();
+        if(Auth::user()->role_id == 8){
+         $this->data['datalist']=LaundryItem::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         return view('backend/laundry/item_list',$this->data);
+        } else {
+             $this->data['datalist']=LaundryItem::where('is_deleted', 0)->orderBy('name','ASC')->get();
+        return view('backend/laundry/item_list',$this->data);
+        }
     }
     public function deleteItem(Request $request) {
         if($this->core->checkWebPortal()==0){

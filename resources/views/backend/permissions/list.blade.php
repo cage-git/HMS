@@ -29,6 +29,7 @@ input[type='checkbox']:checked {
                           <th class="text-center">{{lang_trans('txt_receptionist')}}</th>
                           <th class="text-center">{{lang_trans('txt_store_manager')}}</th>
                           <th class="text-center">{{lang_trans('txt_financial_manager')}}</th>
+                          <th class="text-center">{{lang_trans('txt_business')}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +48,7 @@ input[type='checkbox']:checked {
                             <td class="text-center" width="10%">{{ Form::checkbox('receptionist['.$val->id.']',null, ($val->receptionist==1) ? true: false, ['class'=>"form-check-input checkbox"] ) }}</td>
                             <td class="text-center" width="10%">{{ Form::checkbox('store_manager['.$val->id.']',null, ($val->store_manager==1) ? true: false, ['class'=>"form-check-input checkbox"] ) }}</td>
                             <td class="text-center" width="10%">{{ Form::checkbox('financial_manager['.$val->id.']',null, ($val->financial_manager==1) ? true: false, ['class'=>"form-check-input checkbox"] ) }}</td>
+                            <td class="text-center" width="10%">{{ Form::checkbox('new_business['.$val->id.']',null, ($val->business==1) ? true: false, ['class'=>"form-check-input checkbox"] ) }}</td>
                           </tr>
                         @endforeach
                     
