@@ -343,7 +343,8 @@ class AdminController extends Controller
     }
 
     public function saveReservation(Request $request) {
-        if (Auth::check()) {
+        $BusinessUserId="";
+        if(Auth::user()->role_id == 8){
         $BusinessUserId = Auth::user()->business_id;
         }
         if($request->id>0){
@@ -500,6 +501,7 @@ class AdminController extends Controller
             "company_name" => $request->company_name || '',
             "company_gst_num"=>$request->company_gst_num || '',
             "room_plan"=>$request->room_plan || '',
+            'business_id'=>$BusinessUserId,
         ];
         if(!$request->id){
             $reservationData["created_at_checkin"] = date('Y-m-d H:i:s');
@@ -518,6 +520,7 @@ class AdminController extends Controller
                     'purpose'=>'ROOM_ADVANCE',
                     'tbl_id'=>$res->id,
                     'tbl_name'=>'reservations',
+                    'business_id'=>$BusinessUserId,
                 ];
                 $paymentHistoryData = $where;
                 $paymentHistoryData['payment_date'] = date('Y-m-d H:i:s');
@@ -621,6 +624,10 @@ class AdminController extends Controller
         }
     }
     public function cancelReservationSubmit(Request $request){
+        $BusinessUserId="";
+        if(Auth::user()->role_id == 8){
+        $BusinessUserId = Auth::user()->business_id;
+        }
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
@@ -640,6 +647,7 @@ class AdminController extends Controller
                 'purpose'=>'REFUND',
                 'tbl_id'=>$data_row->id,
                 'tbl_name'=>'reservations',
+                'business_id'=>$BusinessUserId,
             ];
             $paymentHistoryData = $where;
             $paymentHistoryData['payment_date'] = date('Y-m-d H:i:s');
@@ -840,7 +848,10 @@ class AdminController extends Controller
         }
     }
     public function saveCheckOutData(Request $request) {
-
+        $BusinessUserId="";
+         if(Auth::user()->role_id == 8){
+        $BusinessUserId = Auth::user()->business_id;
+        }
         //NT EXPENSES TESTING
         $settings = getSettings();
         $reservationData = [];
@@ -877,6 +888,7 @@ class AdminController extends Controller
             "addtional_amount"=>$amountArr['additional_amount'],
             "additional_amount_reason"=>$request->additional_amount_reason,
             "grand_room_total"=>$request->total_grand_room_amount,
+
         ];
         $mobile = '';
         $name = '';
@@ -964,6 +976,7 @@ class AdminController extends Controller
                     'purpose'=>'ROOM_AMOUNT',
                     'tbl_id'=>$resData->id,
                     'tbl_name'=>'reservations',
+                    'business_id'=>$BusinessUserId,
                 ];
                 $paymentHistoryData['purpose'] = $where['purpose'];
                 $paymentHistoryData['tbl_id'] = $where['tbl_id'];
@@ -2130,10 +2143,18 @@ class AdminController extends Controller
         return Amenities::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
     }
     function getFoodCategoryList(){
-        return FoodCategory::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('name','id');
+        if(Auth::user()->role_id == 8){
+             return FoodCategory::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->pluck('name','id');
+         }else{
+             return FoodCategory::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('name','id');
+         }
     }
     function getExpenseCategoryList(){
-        return ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->pluck('name','id');
+        if(Auth::user()->role_id == 8){
+        return ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->pluck('name','id');
+        }else{
+             return ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->pluck('name','id');
+        }
     }
     function getProductList(){
         return Product::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('name','id');
@@ -2144,6 +2165,10 @@ class AdminController extends Controller
         return $this->data;
     }
     function addReservationRoom($reservationData, $request, $type = ''){
+        $BusinessUserId="";
+         if (Auth::check()) {
+        $BusinessUserId = Auth::user()->business_id;
+        }
         $roomData = [];
         if($request->room_num && count($request->room_num) > 0){
             if($type == 'custom'){
@@ -2181,6 +2206,7 @@ class AdminController extends Controller
                     'room_gst'=>$gst_tax,
                     'check_in' =>dateConvert($request->check_in_date, 'Y-m-d H:i'),
                     'check_out' =>dateConvert($request->check_out_date, 'Y-m-d H:i'),
+                    'business_id' =>$BusinessUserId,
                 ];
             }
             BookedRoom::insert($roomData);
@@ -2220,7 +2246,7 @@ class AdminController extends Controller
 /* change setting for theme language and visibilty */
 
     public function changeSetting($val) {
-        dd("asd");
+       // dd("asd");
         if($val == "ar" || $val == "en" ){
             Setting::updateOrCreate(['name'=>"site_language"], ['value'=>$val, 'updated_at'=>date('Y-m-d h:i:s')]);
         }

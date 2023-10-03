@@ -531,6 +531,19 @@ function getUnits(){
     return getDynamicDropdownList('measurement');
 }
 function getRoomList($listType = 1){
+    if(Auth::user()->role_id == 8){
+        if($listType==2){
+        $roomList = [];
+        $rooms = Room::whereStatus(1)->where('is_deleted', 0)->orderBy('room_name','ASC')->where('business_id',Auth::user()->business_id)->get();
+        if($rooms->count()){
+            foreach ($rooms as $key => $value) {
+                $roomList[$value->id] = $value->room_name.' (RoomNo.: '.$value->room_no.' | Type: '.ucfirst($value->room_type->is_type).')';
+            }
+        }
+        return $roomList;
+    }
+    return Room::select('id',DB::raw('CONCAT(room_no, " (", room_name,")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('room_no','ASC')->pluck('title','id');
+}else{
     if($listType==2){
         $roomList = [];
         $rooms = Room::whereStatus(1)->where('is_deleted', 0)->orderBy('room_name','ASC')->get();
@@ -542,6 +555,7 @@ function getRoomList($listType = 1){
         return $roomList;
     }
     return Room::select('id',DB::raw('CONCAT(room_no, " (", room_name,")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('room_no','ASC')->pluck('title','id');
+    }
 }
 function getRoomByNum($roomNum){
     return Room::where('room_no', $roomNum)->first();
@@ -623,8 +637,13 @@ function getHousekeeperList($type='pluck'){
     else return User::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->where('role_id', 7)->pluck('display_text','id');
 }
 function getVendorList($type='pluck'){
-    if($type == 'get') Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->get();
+     if(Auth::user()->role_id == 8){
+    if($type == 'get') Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->where('business_id',Auth::user()->business_id)->get();
+    else return Vendor::where('is_deleted', 0)->orderBy('vendor_name','ASC')->where('business_id',Auth::user()->business_id)->pluck('vendor_name','id');
+    }else{
+        if($type == 'get') Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->get();
     else return Vendor::where('is_deleted', 0)->orderBy('vendor_name','ASC')->pluck('vendor_name','id');
+    }
 }
 function getExpenseCategoryList(){
     return ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->pluck('name','id');

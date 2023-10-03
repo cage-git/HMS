@@ -43,6 +43,7 @@ class VendorController extends Controller
         return view('backend/vendors/add_edit',$this->data);
     } 
     public function save(Request $request) {
+        $BusinessUserId="";
          if (Auth::check()) {
         $BusinessUserId = Auth::user()->business_id;
         }
@@ -111,6 +112,10 @@ class VendorController extends Controller
     }
 
     function getVendorCategoryList(){
-        return VendorCategory::whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->pluck('name','id');
+        if(Auth::user()->role_id == 8){
+        return VendorCategory::whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->pluck('name','id');
+        }else{
+            return VendorCategory::whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->pluck('name','id');
+        }
     }
 }
