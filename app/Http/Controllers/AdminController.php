@@ -18,6 +18,7 @@ use App\PersonList;
 use App\DynamicDropdown;
 use App\MediaFile;
 use App\Permission;
+use App\BusinessPermission;
 use Session;
 use Illuminate\Support\Facades\File;
 
@@ -49,7 +50,11 @@ class AdminController extends Controller
             (SELECT COUNT(*) FROM reservations WHERE DATE(`check_in`) = CURDATE()) as today_check_ins,
             (SELECT COUNT(*) FROM reservations WHERE DATE(`check_out`) = CURDATE()) as today_check_outs"
             ));
-         $this->data['products']=Product::whereStatus(1)->whereIsDeleted(0)->orderBy('stock_qty','ASC')->paginate(50);
+        if(Auth::user()->role_id == 8){
+         $this->data['products']=Product::where('business_id',Auth::user()->business_id)->whereStatus(1)->whereIsDeleted(0)->orderBy('stock_qty','ASC')->paginate(50);
+          }else{
+            $this->data['products']=Product::whereStatus(1)->whereIsDeleted(0)->orderBy('stock_qty','ASC')->paginate(50);
+          }
          $orderIds = OrderHistory::where('is_book',1)->orderBy('id','DESC')->pluck('order_id');
          $this->data['orders']=Order::with('last_order_history')->whereIn('id',$orderIds)->orderBy('created_at','DESC')->get();
 
@@ -308,12 +313,11 @@ class AdminController extends Controller
         // $this->data['datalist']=Amenities::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
         if(Auth::user()->role_id == 8){
         $this->data['datalist']=Amenities::whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        return view('backend/rooms/amenities_list',$this->data);
         }else{
 
             $this->data['datalist']=Amenities::whereIsDeleted(0)->orderBy('name','ASC')->get();
+        }        
             return view('backend/rooms/amenities_list',$this->data);
-        }
     }
     public function deleteAmenities(Request $request) {
         if($this->core->checkWebPortal()==0){
@@ -1188,45 +1192,32 @@ class AdminController extends Controller
          return view('backend/rooms/invoice',$this->data);
     }
     public function listReservation() {
-         if(Auth::user()->role_id == 8){
+
         $startDate = getNextPrevDate('prev');
         $this->data['list'] = 'check_ins';
-        $this->data['datalist'] = Reservation::with('booked_rooms')->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(0)->orderBy('created_at','DESC')->where('business_id',Auth::user()->business_id)->get();
-        $this->data['roomtypes_list']=getRoomTypesList();
-        $this->data['customer_list']=getCustomerList('get', 'all');
-        $this->data['search_data'] = ['customer_id'=>'','room_type_id'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
-        return view('backend/rooms/room_reservation_list',$this->data);
+         if(Auth::user()->role_id == 8){
+            $this->data['datalist'] = Reservation::with('booked_rooms')->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(0)->orderBy('created_at','DESC')->where('business_id',Auth::user()->business_id)->get();
         }else{
-            $startDate = getNextPrevDate('prev');
-             $this->data['list'] = 'check_ins';
-        $this->data['datalist'] = Reservation::with('booked_rooms')->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(0)->orderBy('created_at','DESC')->get();
+            $this->data['datalist'] = Reservation::with('booked_rooms')->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(0)->orderBy('created_at','DESC')->get();        
+        }
         $this->data['roomtypes_list']=getRoomTypesList();
         $this->data['customer_list']=getCustomerList('get', 'all');
         $this->data['search_data'] = ['customer_id'=>'','room_type_id'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
         return view('backend/rooms/room_reservation_list',$this->data);
-        }
     }
     public function listCheckOuts() {
-        if(Auth::user()->role_id == 8){
         $startDate = getNextPrevDate('prev');
         $this->data['list'] = 'check_outs';
-        $this->data['datalist']=Reservation::with('booked_rooms')->whereDate('check_out', '>=', $startDate." 00:00:00")->whereDate('check_out', '<=', DB::raw('CURDATE()'))->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC')->where('business_id',Auth::user()->business_id)->get();
-        $this->data['roomtypes_list']=getRoomTypesList();
-        $this->data['customer_list']=getCustomerList('get', 'all');
-        $this->data['search_data'] = ['customer_id'=>'','room_type_id'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
-
-         return view('backend/rooms/room_reservation_list',$this->data);
+        if(Auth::user()->role_id == 8){
+            $this->data['datalist']=Reservation::with('booked_rooms')->whereDate('check_out', '>=', $startDate." 00:00:00")->whereDate('check_out', '<=', DB::raw('CURDATE()'))->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC')->where('business_id',Auth::user()->business_id)->get();
          }else{
-            $startDate = getNextPrevDate('prev');
-        $this->data['list'] = 'check_outs';
-        $this->data['datalist']=Reservation::with('booked_rooms')->whereDate('check_out', '>=', $startDate." 00:00:00")->whereDate('check_out', '<=', DB::raw('CURDATE()'))->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC')->get();
-        $this->data['roomtypes_list']=getRoomTypesList();
+             $this->data['datalist']=Reservation::with('booked_rooms')->whereDate('check_out', '>=', $startDate." 00:00:00")->whereDate('check_out', '<=', DB::raw('CURDATE()'))->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC')->get();
+         }
+          $this->data['roomtypes_list']=getRoomTypesList();
         $this->data['customer_list']=getCustomerList('get', 'all');
         $this->data['search_data'] = ['customer_id'=>'','room_type_id'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
 
          return view('backend/rooms/room_reservation_list',$this->data);
-
-         }
     }
     public function markAsPaid(Request $request){
         $this->data['data_row']=Reservation::whereId($request->id)->whereIsCheckout(1)->first();
@@ -1518,11 +1509,10 @@ class AdminController extends Controller
         if(Auth::user()->role_id == 8){
         //  $this->data['datalist']=FoodCategory::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
          $this->data['datalist']=FoodCategory::whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        return view('backend/food_category_list',$this->data);
         }else{
              $this->data['datalist']=FoodCategory::whereIsDeleted(0)->orderBy('name','ASC')->get();
-        return view('backend/food_category_list',$this->data);
         }
+        return view('backend/food_category_list',$this->data);
     }
     public function deleteFoodCategory(Request $request) {
         if($this->core->checkWebPortal()==0){
@@ -1570,11 +1560,10 @@ class AdminController extends Controller
         //  $this->data['datalist']=FoodItem::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
         if(Auth::user()->role_id == 8){
          $this->data['datalist']=FoodItem::whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        return view('backend/food_item_list',$this->data);
         }else{
             $this->data['datalist']=FoodItem::whereIsDeleted(0)->orderBy('name','ASC')->get();
-        return view('backend/food_item_list',$this->data);
         }
+        return view('backend/food_item_list',$this->data);
     }
     public function deleteFoodItem(Request $request) {
         if(FoodItem::whereId($request->id)->update(['is_deleted'=>1])){
@@ -1621,11 +1610,11 @@ class AdminController extends Controller
         //  $this->data['datalist']=ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->get();
         if(Auth::user()->role_id == 8){
          $this->data['datalist']=ExpenseCategory::orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        return view('backend/expenses/category_list',$this->data);
         }else {
              $this->data['datalist']=ExpenseCategory::orderBy('name','ASC')->get();
-        return view('backend/expenses/category_list',$this->data);
         }
+
+        return view('backend/expenses/category_list',$this->data);
     }
     public function deleteExpenseCategory(Request $request) {
         if($this->core->checkWebPortal()==0){
@@ -1699,19 +1688,16 @@ class AdminController extends Controller
         
     }
     public function listExpense() {
-        if(Auth::user()->role_id == 8){
         $startDate = getNextPrevDate('prev');
         $this->data['category_list']=$this->getExpenseCategoryList();
-         $this->data['datalist']=Expense::whereDate('datetime', '>=', $startDate." 00:00:00")->whereDate('datetime', '<=', DB::raw('CURDATE()'))->orderBy('datetime','DESC')->where('business_id',Auth::user()->business_id)->get();
-         $this->data['search_data'] = ['category_id'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
-        return view('backend/expenses/list',$this->data);
+        if(Auth::user()->role_id == 8){
+             $this->data['datalist']=Expense::whereDate('datetime', '>=', $startDate." 00:00:00")->whereDate('datetime', '<=', DB::raw('CURDATE()'))->orderBy('datetime','DESC')->where('business_id',Auth::user()->business_id)->get();
         }else {
-            $startDate = getNextPrevDate('prev');
-        $this->data['category_list']=$this->getExpenseCategoryList();
-         $this->data['datalist']=Expense::whereDate('datetime', '>=', $startDate." 00:00:00")->whereDate('datetime', '<=', DB::raw('CURDATE()'))->orderBy('datetime','DESC')->get();
+             $this->data['datalist']=Expense::whereDate('datetime', '>=', $startDate." 00:00:00")->whereDate('datetime', '<=', DB::raw('CURDATE()'))->orderBy('datetime','DESC')->get();
+        }
+
          $this->data['search_data'] = ['category_id'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
         return view('backend/expenses/list',$this->data);
-        }
     }
     public function deleteExpense(Request $request) {
         if(Expense::whereId($request->id)->delete()){
@@ -1754,11 +1740,10 @@ class AdminController extends Controller
         if(Auth::user()->role_id == 8){
         //  $this->data['datalist']=Product::whereStatus(1)->whereIsDeleted(0)->orderBy('stock_qty','ASC')->get();
          $this->data['datalist']=Product::whereIsDeleted(0)->orderBy('stock_qty','ASC')->where('business_id',Auth::user()->business_id)->get();
-        return view('backend/product_list',$this->data);
         }else{
-         $this->data['datalist']=Product::whereIsDeleted(0)->orderBy('stock_qty','ASC')->get();
-        return view('backend/product_list',$this->data);   
+         $this->data['datalist']=Product::whereIsDeleted(0)->orderBy('stock_qty','ASC')->get();   
         }
+        return view('backend/product_list',$this->data);
     }
     public function deleteProduct(Request $request) {
         if($this->core->checkWebPortal()==0){
@@ -1791,19 +1776,17 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => config('constants.FLASH_REC_ADD_0')]);
     }
     public function stockHistory() {
-        if(Auth::user()->role_id == 8){
-        $startDate = getNextPrevDate('prev');
-        $this->data['datalist']=StockHistory::whereDate('created_at', '>=', $startDate." 00:00:00")->whereDate('created_at', '<=', DB::raw('CURDATE()'))->orderBy('id','DESC')->where('business_id',Auth::user()->business_id)->get();
-        $this->data['products']=Product::where('is_deleted',0)->pluck('name','id');
-        $this->data['search_data'] = ['product_id'=>'','is_stock'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
-        return view('backend/stock_history',$this->data);
-        }else{
             $startDate = getNextPrevDate('prev');
-        $this->data['datalist']=StockHistory::whereDate('created_at', '>=', $startDate." 00:00:00")->whereDate('created_at', '<=', DB::raw('CURDATE()'))->orderBy('id','DESC')->get();
-        $this->data['products']=Product::where('is_deleted',0)->pluck('name','id');
-        $this->data['search_data'] = ['product_id'=>'','is_stock'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
-        return view('backend/stock_history',$this->data);
+        if(Auth::user()->role_id == 8){
+            $this->data['datalist']=StockHistory::whereDate('created_at', '>=', $startDate." 00:00:00")->whereDate('created_at', '<=', DB::raw('CURDATE()'))->orderBy('id','DESC')->where('business_id',Auth::user()->business_id)->get();
+            $this->data['products']=Product::where('business_id',Auth::user()->business_id)->where('is_deleted',0)->pluck('name','id');
+        }else{
+            $this->data['datalist']=StockHistory::whereDate('created_at', '>=', $startDate." 00:00:00")->whereDate('created_at', '<=', DB::raw('CURDATE()'))->orderBy('id','DESC')->get();
+            $this->data['products']=Product::where('is_deleted',0)->pluck('name','id');
+            
         }
+        $this->data['search_data'] = ['product_id'=>'','is_stock'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
+            return view('backend/stock_history',$this->data);
     }
 /* ***** End StockManage Functions ***** */
 
@@ -2021,9 +2004,13 @@ class AdminController extends Controller
 
 /* ***** Start Permissions Functions ***** */
     public function listPermission() {
-        $this->data['datalist']=Permission::where('status',1)->orderBy('permission_type','ASC')->get();
+        if(Auth::user()->role_id == 8){
+        $this->data['datalist']=BusinessPermission::where('business_id',Auth::user()->business_id)->where('status',1)->orderBy('permission_type','ASC')->get();
+        }else{
+           $this->data['datalist']=Permission::where('status',1)->orderBy('permission_type','ASC')->get();
+        }
          #echo "<pre>";   print_r($this->data);die;
-        return view('backend/permissions/list',$this->data);
+        return view('backend/permissions/list',$this->data); 
 
     }
     public function savePermission(Request $request) {
@@ -2064,6 +2051,49 @@ class AdminController extends Controller
                 $bmP = 1;
             }
             $res = Permission::where('id',$id)->update(["super_admin"=>$superAdminP, 'admin'=>$adminP, 'receptionist'=>$recP, 'store_manager'=>$smP, 'financial_manager'=>$fmP, 'business'=>$bmP ,'business_id'=>$BusinessUserId]);
+        }
+        if($res){
+            return redirect()->back()->with(['success' => config('constants.FLASH_REC_UPDATE_1')]);
+        }
+        return redirect()->back()->with(['error' => config('constants.FLASH_REC_UPDATE_0')]);
+    }
+    public function saveBusinessPermission(Request $request) {
+         if (Auth::check()) {
+        $BusinessUserId = Auth::user()->business_id;
+        }
+        if($this->core->checkWebPortal()==0){
+            return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
+        }
+        $requestExcept = ['_token'];
+        $res = null;
+        $ids = $request->ids;
+        $admin = $request->admin;
+        $receptionist = $request->receptionist;
+        $stokManager = $request->store_manager;
+        $financialManager = $request->financial_manager;
+        $business = $request->new_business;
+        foreach($ids as $key => $id){
+            $superAdminP = 1; //not change superadmin, so set default 1
+            $adminP = $recP = $smP = $fmP = $bmP = 0;
+            if(isset($superAdmin[$id])){
+                $superAdminP = 1;
+            }
+            if(isset($admin[$id])){
+                $adminP = 1;
+            }
+            if(isset($receptionist[$id])){
+                $recP = 1;
+            }
+            if(isset($stokManager[$id])){
+                $smP = 1;
+            }
+            if(isset($financialManager[$id])){
+                $fmP = 1;
+            }
+            if(isset($business[$id])){
+                $bmP = 1;
+            }
+            $res = BusinessPermission::where('id',$id)->update(["super_admin"=>$superAdminP, 'admin'=>$adminP, 'receptionist'=>$recP, 'store_manager'=>$smP, 'financial_manager'=>$fmP, 'business'=>$bmP ,'business_id'=>$BusinessUserId]);
         }
         if($res){
             return redirect()->back()->with(['success' => config('constants.FLASH_REC_UPDATE_1')]);
@@ -2134,7 +2164,7 @@ class AdminController extends Controller
 /* ***** Start Internal Functions ***** */
     function getRoleList(){
         if(Auth::user()->role_id == 8){
-        return Role::where('id', '!=', 1)->orderBy('role','ASC')->pluck('role','id');
+        return Role::where('id', '!=', 1)->where('id', '!=', 8)->orderBy('role','ASC')->pluck('role','id');
         }else{
             return Role::orderBy('role','ASC')->pluck('role','id');
         }
@@ -2157,12 +2187,21 @@ class AdminController extends Controller
         }
     }
     function getProductList(){
+        if(Auth::user()->role_id == 8){
+            return Product::where('business_id',Auth::user()->business_id)->whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('name','id');
+        }else{
         return Product::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('name','id');
+        }
     }
     function getRoomList(){
+
         $this->data['booked_rooms'] = getBookedRooms();
+        if(Auth::user()->role_id == 8){
+        $this->data['room_types'] = RoomType::where('business_id',Auth::user()->business_id)->with('rooms')->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
+        }else{
         $this->data['room_types'] = RoomType::with('rooms')->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
-        return $this->data;
+        }
+         return $this->data;
     }
     function addReservationRoom($reservationData, $request, $type = ''){
         $BusinessUserId="";

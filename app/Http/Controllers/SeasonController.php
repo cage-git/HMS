@@ -15,11 +15,10 @@ class SeasonController extends Controller
     public function index() {  
         if(Auth::user()->role_id == 8){
              $this->data['datalist']=Season::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        return view('backend/seasons/list',$this->data);
         }else {
              $this->data['datalist']=Season::where('is_deleted', 0)->orderBy('name','ASC')->get();
-            return view('backend/seasons/list',$this->data);
         }
+            return view('backend/seasons/list',$this->data);
     }
     public function add() {
         return view('backend/seasons/add_edit',$this->data);

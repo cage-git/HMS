@@ -2671,6 +2671,7 @@ Route::group(['prefix' => 'admin'], function() {
 
         Route::get('permissions-list', 'AdminController@listPermission')->name('permissions-list');
         Route::post('/save-permissions', 'AdminController@savePermission')->name('save-permissions');
+        Route::post('/save-business-permissions', 'AdminController@saveBusinessPermission')->name('save-business-permissions');
 
         Route::get('dynamic-dropdown-list', 'AdminController@listDynamicDropdowns')->name('dynamic-dropdown-list');
         Route::post('/save-dynamic-dropdowns', 'AdminController@saveDynamicDropdowns')->name('save-dynamic-dropdowns');

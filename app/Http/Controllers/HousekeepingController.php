@@ -15,7 +15,6 @@ class HousekeepingController extends Controller
         $this->middleware('auth');
     }
     function getHousekeepingOrder($rec = 'get', $id = ''){
-        if(Auth::user()->role_id == 8){
         $userId = Auth::user()->id;
         $roleId = Auth::user()->role_id;
         $records = null;
@@ -30,22 +29,6 @@ class HousekeepingController extends Controller
             $records = $query->paginate(getPaginationNum());
         }
         return $records;
-        } else {
-            $userId = Auth::user()->id;
-        $roleId = Auth::user()->role_id;
-        $records = null;
-        $query = HousekeepingOrder::whereStatus(1)->orderBy('order_status','ASC')->orderBy('created_at','DESC');
-        if($roleId == 7){
-            $query->where('housekeeper_id', $userId);
-        }
-        if($id > 0){
-            $records = $query->whereId($id)->first();
-        }
-        else if($rec == 'get'){
-            $records = $query->paginate(getPaginationNum());
-        }
-        return $records;
-        }
     }
     public function index() {  
 
@@ -138,11 +121,11 @@ class HousekeepingController extends Controller
     public function listItem() {
         if(Auth::user()->role_id == 8){
          $this->data['datalist']=HousekeepingItem::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        return view('backend/housekeeping/item_list',$this->data);
         }else {
              $this->data['datalist']=HousekeepingItem::where('is_deleted', 0)->orderBy('name','ASC')->get();
-        return view('backend/housekeeping/item_list',$this->data);
         }
+
+        return view('backend/housekeeping/item_list',$this->data);
     }
     public function deleteItem(Request $request) {
         if($this->core->checkWebPortal()==0){

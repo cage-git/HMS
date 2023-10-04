@@ -78,15 +78,12 @@ class CompanyController extends Controller
     public function listCompany() {
         if(Auth::user()->role_id == 8){
          $this->data['datalist']=Customer::where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-         $this->data['customer_list']=getCustomerList('get','company');
-         $this->data['search_data'] = ['customer_id'=>'','mobile_num'=>'','city'=>'','state'=>'','country'=>''];
-        return view('backend/companys/list',$this->data);
         }else{
             $this->data['datalist']=Customer::where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC')->get();
-         $this->data['customer_list']=getCustomerList('get','company');
+        }
+        $this->data['customer_list']=getCustomerList('get','company');
          $this->data['search_data'] = ['customer_id'=>'','mobile_num'=>'','city'=>'','state'=>'','country'=>''];
         return view('backend/companys/list',$this->data);
-        }
     }
     public function deleteCompany(Request $request) {
         if($this->core->checkWebPortal()==0){

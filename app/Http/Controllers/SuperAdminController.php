@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Business;
+use App\BusinessPermission;
 use App\Package,App\Role;
 use App\User;
 use Auth,DB,Hash;
@@ -54,6 +55,7 @@ class SuperAdminController extends Controller
         if(!$this->data['data_row']){
             return redirect()->back()->with(['error' => config('constants.FLASH_REC_NOT_FOUND')]);
         }
+        $this->data['user_data']=User::where('business_id',$request->id)->first();
         return view('backend/super_admin/edit_business',$this->data);
     }
     public function updateBusinessData(Request $request, $id)
@@ -68,8 +70,7 @@ class SuperAdminController extends Controller
         return redirect()->route('all-business')->with(['success' => 'Business record updated successfully']);
     }
 
-     public function saveBusiness(Request $request){
-       
+     public function saveBusiness(Request $request){       
             $data = $request->all();
          $filename="";
           if ($request->hasFile('business_logo')) {
@@ -96,6 +97,25 @@ class SuperAdminController extends Controller
           'email' => $data['business_email'],
           'password' => bcrypt($data['business_password']),
            ]);
+        $permissionData = DB::table('permissions')
+            ->select('parent_id','description','slug','category','admin', 'receptionist','store_manager','financial_manager','customer','housekeeper')
+            ->get();
+         foreach ($permissionData as $permission) {
+            $businessPermission = BusinessPermission::create([
+                'parent_id' => $permission->parent_id,
+                'business_id' => $newBusinessId, 
+                'description' => $permission->description,
+                'slug' => $permission->slug,
+                'category' => $permission->category,
+                'admin' => $permission->admin,
+                'receptionist' => $permission->receptionist,
+                'store_manager' => $permission->store_manager,
+                'financial_manager' => $permission->financial_manager,
+                'customer' => $permission->customer,
+                'housekeeper' => $permission->housekeeper,
+            ]);
+        }
+       
         return redirect()->route('all-business')->with('success', 'Business saved successfully');    
     }
     //// Packages    

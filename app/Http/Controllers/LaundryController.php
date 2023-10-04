@@ -17,23 +17,18 @@ class LaundryController extends Controller
     }
 
     public function index() { 
-        if(Auth::user()->role_id == 8){
         $startDate = getNextPrevDate('prev'); 
-        $this->data['datalist']=LaundryOrder::whereStatus(1)->whereDate('order_date', '>=', $startDate." 00:00:00")->whereDate('order_date', '<=', DB::raw('CURDATE()'))->orderBy('order_status','ASC')->where('business_id',Auth::user()->business_id)->orderBy('order_num','DESC')->get();
-        $this->data['vendor_list'] = getVendorList();
-        $this->data['room_list'] = getRoomList(2);
-        $this->data['status_list']=getConstants('LIST_LAUNDRY_ORDER_STATUS');
-        $this->data['search_data'] = ['order_num'=>'','vendor_id'=>'','room_id'=>'','order_status'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
-        return view('backend/laundry/list',$this->data);
-        } else {
-            $startDate = getNextPrevDate('prev'); 
-        $this->data['datalist']=LaundryOrder::whereStatus(1)->whereDate('order_date', '>=', $startDate." 00:00:00")->whereDate('order_date', '<=', DB::raw('CURDATE()'))->orderBy('order_status','ASC')->orderBy('order_num','DESC')->get();
-        $this->data['vendor_list'] = getVendorList();
-        $this->data['room_list'] = getRoomList(2);
-        $this->data['status_list']=getConstants('LIST_LAUNDRY_ORDER_STATUS');
-        $this->data['search_data'] = ['order_num'=>'','vendor_id'=>'','room_id'=>'','order_status'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
-        return view('backend/laundry/list',$this->data);
+        if(Auth::user()->role_id == 8){
+            $this->data['datalist']=LaundryOrder::whereStatus(1)->whereDate('order_date', '>=', $startDate." 00:00:00")->whereDate('order_date', '<=', DB::raw('CURDATE()'))->orderBy('order_status','ASC')->where('business_id',Auth::user()->business_id)->orderBy('order_num','DESC')->get();
+        } else { 
+            $this->data['datalist']=LaundryOrder::whereStatus(1)->whereDate('order_date', '>=', $startDate." 00:00:00")->whereDate('order_date', '<=', DB::raw('CURDATE()'))->orderBy('order_status','ASC')->orderBy('order_num','DESC')->get();          
+           
         }
+            $this->data['vendor_list'] = getVendorList();
+            $this->data['room_list'] = getRoomList(2);
+            $this->data['status_list']=getConstants('LIST_LAUNDRY_ORDER_STATUS');
+            $this->data['search_data'] = ['order_num'=>'','vendor_id'=>'','room_id'=>'','order_status'=>'','date_from'=>$startDate, 'date_to'=>date('Y-m-d')];
+         return view('backend/laundry/list',$this->data);
     }
     public function addOrder() {
         $this->setDataForAddEditView();
@@ -276,11 +271,10 @@ class LaundryController extends Controller
     public function listItem() {
         if(Auth::user()->role_id == 8){
          $this->data['datalist']=LaundryItem::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        return view('backend/laundry/item_list',$this->data);
         } else {
              $this->data['datalist']=LaundryItem::where('is_deleted', 0)->orderBy('name','ASC')->get();
+        }        
         return view('backend/laundry/item_list',$this->data);
-        }
     }
     public function deleteItem(Request $request) {
         if($this->core->checkWebPortal()==0){

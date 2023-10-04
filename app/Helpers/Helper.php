@@ -531,31 +531,21 @@ function getUnits(){
     return getDynamicDropdownList('measurement');
 }
 function getRoomList($listType = 1){
-    if(Auth::user()->role_id == 8){
-        if($listType==2){
-        $roomList = [];
-        $rooms = Room::whereStatus(1)->where('is_deleted', 0)->orderBy('room_name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        if($rooms->count()){
-            foreach ($rooms as $key => $value) {
-                $roomList[$value->id] = $value->room_name.' (RoomNo.: '.$value->room_no.' | Type: '.ucfirst($value->room_type->is_type).')';
+            if($listType==2){
+            $roomList = [];
+        if(Auth::user()->role_id == 8){
+            $rooms = Room::whereStatus(1)->where('is_deleted', 0)->orderBy('room_name','ASC')->where('business_id',Auth::user()->business_id)->get();
+            }else{
+                $rooms = Room::whereStatus(1)->where('is_deleted', 0)->orderBy('room_name','ASC')->get();
             }
-        }
-        return $roomList;
-    }
-    return Room::select('id',DB::raw('CONCAT(room_no, " (", room_name,")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('room_no','ASC')->pluck('title','id');
-}else{
-    if($listType==2){
-        $roomList = [];
-        $rooms = Room::whereStatus(1)->where('is_deleted', 0)->orderBy('room_name','ASC')->get();
-        if($rooms->count()){
-            foreach ($rooms as $key => $value) {
-                $roomList[$value->id] = $value->room_name.' (RoomNo.: '.$value->room_no.' | Type: '.ucfirst($value->room_type->is_type).')';
+            if($rooms->count()){
+                foreach ($rooms as $key => $value) {
+                    $roomList[$value->id] = $value->room_name.' (RoomNo.: '.$value->room_no.' | Type: '.ucfirst($value->room_type->is_type).')';
+                }
             }
+            return $roomList;
         }
-        return $roomList;
-    }
-    return Room::select('id',DB::raw('CONCAT(room_no, " (", room_name,")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('room_no','ASC')->pluck('title','id');
-    }
+        return Room::select('id',DB::raw('CONCAT(room_no, " (", room_name,")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('room_no','ASC')->pluck('title','id');
 }
 function getRoomByNum($roomNum){
     return Room::where('room_no', $roomNum)->first();
@@ -571,13 +561,24 @@ function getRoomTypesList($listType = 'original'){
     $gstPerc = $settings['gst'];
     $cgstPerc = $settings['cgst'];
 //    dd([$gstPerc, $cgstPerc]);
-    if($listType == 'custom'){
+     if(Auth::user()->role_id == 8){  
+        if($listType == 'custom'){
         // return RoomType::select('id','base_price',DB::raw('CONCAT(title, " (Price||", TRUNCATE((base_price + ( ((base_price/100) * '.$gstPerc.') + ((base_price/100) * '.$cgstPerc.') ) ) ,2),")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
-        return RoomType::select('id','base_price',DB::raw('CONCAT(title, " (Price||", TRUNCATE(  (  (base_price + ((base_price/100) * '.$cgstPerc.'))  + (  (base_price + ((base_price/100) * '.$cgstPerc.'))   * '.$gstPerc.'/100)  ) ,5),")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
+        return RoomType::select('id','base_price',DB::raw('CONCAT(title, " (Price||", TRUNCATE(  (  (base_price + ((base_price/100) * '.$cgstPerc.'))  + (  (base_price + ((base_price/100) * '.$cgstPerc.'))   * '.$gstPerc.'/100)  ) ,5),")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->where('business_id',Auth::user()->business_id)->pluck('title','id');
+        }
+    }else{
+     return RoomType::select('id','base_price',DB::raw('CONCAT(title, " (Price||", TRUNCATE(  (  (base_price + ((base_price/100) * '.$cgstPerc.'))  + (  (base_price + ((base_price/100) * '.$cgstPerc.'))   * '.$gstPerc.'/100)  ) ,5),")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
     }
-    if($listType == 'original'){
+    if(Auth::user()->role_id == 8){      
+        if($listType == 'original'){
+            return RoomType::whereStatus(1)->whereIsDeleted(0)->where('business_id',Auth::user()->business_id)->orderBy('order_num','ASC')->pluck('title','id');
+            }
+    }else{
+        if($listType == 'original'){
         return RoomType::whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
-    }
+    }    
+    
+  }
 }
 function getRoomTypesListWithRooms($listType = ''){
 
@@ -609,27 +610,27 @@ function getCustomerByUserId($userId){
 }
 function getCustomerList($type='pluck', $category='user'){
     if(Auth::user()->role_id == 8){
-    if($category == 'user'){
-        if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
-    }elseif($category == 'company'){
-        if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
-    }elseif($category == 'all'){
-        if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
-    }
+        if($category == 'user'){
+            if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
+            else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
+        }elseif($category == 'company'){
+            if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
+            else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
+        }elseif($category == 'all'){
+            if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
+            else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
+        }
     }else{
         if($category == 'user'){
-        if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->get();
-        else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
-    }elseif($category == 'company'){
-        if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->get();
-        else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
-    }elseif($category == 'all'){
-        if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->get();
-        else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
-    }
+            if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->get();
+            else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
+        }elseif($category == 'company'){
+            if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->get();
+            else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->where('cat', '=', $category)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
+        }elseif($category == 'all'){
+            if($type == 'get') return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereNotNull('name')->whereIsDeleted(0)->orderBy('name','ASC')->get();
+            else return Customer::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->pluck('display_text','id');
+        }
     }
 }
 function getHousekeeperList($type='pluck'){
@@ -646,7 +647,11 @@ function getVendorList($type='pluck'){
     }
 }
 function getExpenseCategoryList(){
-    return ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->pluck('name','id');
+    if(Auth::user()->role_id == 8){
+    return ExpenseCategory::where('business_id',Auth::user()->business_id)->whereStatus(1)->orderBy('name','ASC')->pluck('name','id');
+    }else{
+        return ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->pluck('name','id');
+    }
 }
 function getRoomsWithPrice($params = []){
     $totalNight = 0;

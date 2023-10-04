@@ -56,28 +56,28 @@
     	<div class="row">
             <div class="col-xl-4 col-md-6 col-12">
                 <div class="mb-1">
-                    <label class="form-label" for="package_name">{{lang_trans('name')}}</label>
+                    <label class="form-label" for="package_name">{{lang_trans('name')}}</label><span class="text-danger">*</span>
                     {{Form::text('package_name',$data_row->name,['class'=>"form-control ", "id"=>"package_name", "required"=>"required"])}}
                 </div>
             </div>
 
             <div class="col-xl-4 col-md-6 col-12">
                 <div class="mb-1">
-                    <label class="form-label" for="number_of_users">{{lang_trans('num_user')}}</label>
+                    <label class="form-label" for="number_of_users">{{lang_trans('num_user')}}</label><span class="text-danger">*</span>
                     {{Form::text('number_of_users',$data_row->num_user,['class'=>"form-control ", "id"=>"number_of_users", "required"=>"required"])}}
                 </div>
             </div>
 
             <div class="col-xl-4 col-md-6 col-12">
                 <div class="mb-1">
-                    <label class="form-label" for="number_of_hotels">{{lang_trans('num_hotels')}}</label>
+                    <label class="form-label" for="number_of_hotels">{{lang_trans('num_hotels')}}</label><span class="text-danger">*</span>
                      {{Form::text('number_of_hotels',$data_row->num_hotels,['class'=>"form-control ", "id"=>"number_of_hotels", "required"=>"required"])}}
                 </div>
             </div>
             
             <div class="col-xl-4 col-md-6 col-12">
                 <div class="mb-1">
-                    <label class="form-label" for="number_of_invoices">{{lang_trans('num_invoices')}}</label>{{Form::text('number_of_invoices',$data_row->num_invoices,['class'=>"form-control ", "id"=>"number_of_invoices", "required"=>"required"])}}
+                    <label class="form-label" for="number_of_invoices">{{lang_trans('num_invoices')}}</label><span class="text-danger">*</span>{{Form::text('number_of_invoices',$data_row->num_invoices,['class'=>"form-control ", "id"=>"number_of_invoices", "required"=>"required"])}}
                 </div>
             </div>
             <hr>
@@ -136,5 +136,6 @@
 @section('scripts')
 <!-- BEGIN: Page JS-->
   <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
+  <script src="{{URL::asset('public/app-assets/js/scripts/forms/package-add-validation.js')}}"></script>
 <!-- END: Page JS-->
 @endsection

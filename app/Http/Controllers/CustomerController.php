@@ -57,19 +57,14 @@ class CustomerController extends Controller
     public function listCustomer() {
     if(Auth::user()->role_id == 8){
          $this->data['datalist']=Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-         $this->data['customer_list']=getCustomerList('get');
-         $this->data['search_data'] = ['customer_id'=>'','mobile_num'=>'','city'=>'','state'=>'','country'=>''];
-        // dd($this->data);
-
-        return view('backend/customers/list',$this->data);
         }else{
              $this->data['datalist']=Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC')->get();
+        }
          $this->data['customer_list']=getCustomerList('get');
          $this->data['search_data'] = ['customer_id'=>'','mobile_num'=>'','city'=>'','state'=>'','country'=>''];
         // dd($this->data);
 
         return view('backend/customers/list',$this->data);
-        }
     }
     public function deleteCustomer(Request $request) {
         if($this->core->checkWebPortal()==0){
@@ -89,8 +84,6 @@ class CustomerController extends Controller
                 ->orWhere('mobile', 'like', '%' . $request->search_from_phone_idcard . '%')->where('business_id',Auth::user()->business_id)
                 ->orWhere('name', 'like', '%' . $request->search_from_phone_idcard . '%')
                 ->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-
-        return response()->json(['customers'=> $data], 200);
     }else{
         $data=Customer::where('cat','=',$request->category)
                 ->where('is_deleted',0)
@@ -99,9 +92,9 @@ class CustomerController extends Controller
                 ->orWhere('mobile', 'like', '%' . $request->search_from_phone_idcard . '%')
                 ->orWhere('name', 'like', '%' . $request->search_from_phone_idcard . '%')
                 ->orderBy('name','ASC')->get();
+    }   
 
         return response()->json(['customers'=> $data], 200);
-    }
 
    }
    public function searchFromCompany(Request $request) {
@@ -113,8 +106,6 @@ class CustomerController extends Controller
             ->orWhere('mobile', 'like', '%' . $request->search_from_phone_idcard . '%')
             ->orWhere('name', 'like', '%' . $request->search_from_phone_idcard . '%')
             ->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-
-    return response()->json(['customers'=> $data], 200);
     }else{
         $data=Customer::where('cat','=',$request->category)
             ->where('is_deleted',0)
@@ -123,8 +114,8 @@ class CustomerController extends Controller
             ->orWhere('mobile', 'like', '%' . $request->search_from_phone_idcard . '%')
             ->orWhere('name', 'like', '%' . $request->search_from_phone_idcard . '%')
             ->orderBy('name','ASC')->get();
+    }
 
     return response()->json(['customers'=> $data], 200);
-    }
 }
 }

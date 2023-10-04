@@ -19,6 +19,8 @@ $permissionsArr = getRoutePermission();
           </ul>
         </li>
       @endif
+      @if($permissionsArr['all-business'])
+            <li class=" nav-item {{ request()->url() === url('admin/all-business') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('all-business')}}"><i class="fa fa-user"></i><span class="menu-title text-truncate" data-i18n="Dashboards">All Business</span></a></li>@endif
 
           @if($permissionsArr['add-housekeeping-item'] || $permissionsArr['list-housekeeping-item'] || $permissionsArr['add-housekeeping-order'] || $permissionsArr['list-housekeeping-order'])
               <li><a><i class="fa fa-shower"></i>{{lang_trans('sidemenu_housekeeping')}}<span class="fa fa-chevron-down"></span></a>

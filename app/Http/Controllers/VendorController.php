@@ -17,11 +17,11 @@ class VendorController extends Controller
     public function index() {  
         if(Auth::user()->role_id == 8){
         $this->data['datalist']=Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        return view('backend/vendors/list',$this->data);
         }else{
              $this->data['datalist']=Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->get();
-        return view('backend/vendors/list',$this->data);
+       
         }
+         return view('backend/vendors/list',$this->data);
     }
     public function add() {
         $this->data['category_list']=$this->getVendorCategoryList();
@@ -94,12 +94,11 @@ class VendorController extends Controller
     }
     public function listCategory() {
         if(Auth::user()->role_id == 8){
-         $this->data['datalist']=VendorCategory::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
-        return view('backend/vendors/category_list',$this->data);
+            $this->data['datalist']=VendorCategory::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else{
              $this->data['datalist']=VendorCategory::where('is_deleted', 0)->orderBy('name','ASC')->get();
+        }      
         return view('backend/vendors/category_list',$this->data);
-        }
     }
     public function deleteCategory(Request $request) {
         if($this->core->checkWebPortal()==0){

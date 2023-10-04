@@ -58,7 +58,7 @@
                         <div class="row">
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="business_name">{{lang_trans('business_name')}}</label>
+                                        <label class="form-label" for="business_name">{{lang_trans('business_name')}}</label><span class="text-danger">*</span>
                                         {{Form::text('business_name',null,['class'=>"form-control ", "id"=>"business_name", "required"=>"required"])}}
                                     </div>
                                 </div>
@@ -85,13 +85,13 @@
                                 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="country">{{lang_trans('txt_country')}}</label>{{Form::text('country',null,['class'=>"form-control", 'placeholder'=>lang_trans('ph_enter').lang_trans('txt_country')])}}
+                                        <label class="form-label" for="country">{{lang_trans('txt_country')}}</label><span class="text-danger">*</span>{{Form::text('country',null,['class'=>"form-control", 'placeholder'=>lang_trans('ph_enter').lang_trans('txt_country')])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                         <label for="business_logo" class="form-label">Logo</label>
+                                         <label for="business_logo" class="form-label">Logo</label><span class="text-danger">*</span>
                                         <input class="form-control" name="business_logo" type="file" id="business_logo">
                                     </div>
                                 </div>
@@ -107,34 +107,34 @@
                                 <br>
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="business_username">User name</label>
+                                        <label class="form-label" for="business_username">User name</label><span class="text-danger">*</span>
                                         {{Form::text('business_username',null,['class'=>"form-control ", "id"=>"business_username", "required"=>"required"])}}
                                     </div>
                                 </div>
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="business_username">Email</label>
+                                        <label class="form-label" for="business_username">Email</label><span class="text-danger">*</span>
                                         {{Form::email('business_email',null,['class'=>"form-control ", "id"=>"business_email", "required"=>"required"])}}
                                     </div>
                                 </div>
                                 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="business_password">Password</label>
+                                        <label class="form-label" for="business_password">Password</label><span class="text-danger">*</span><span class="text-danger">*</span>
                                        {{ Form::password('business_password', ['class' => 'form-control', 'id' => 'business_password', 'required' => 'required']) }}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="package_name">{{lang_trans('package')}}</label>
+                                        <label class="form-label" for="package_name">{{lang_trans('package')}}</label><span class="text-danger">*</span>
                                         {{Form::text('package_name',null,['class'=>"form-control ", "id"=>"package_name", "required"=>"required"])}}
                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="name">Name</label>
+                                        <label class="form-label" for="name">Name</label><span class="text-danger">*</span>
                                         {{Form::text('name',null,['class'=>"form-control ", "id"=>"name", "required"=>"required"])}}
                                     </div>
                                 </div>
@@ -150,6 +150,7 @@
 
 @section('scripts')
 <!-- BEGIN: Page JS-->
-  <script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
+<script src="{{URL::asset('public/app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
+ <script src="{{URL::asset('public/app-assets/js/scripts/forms/business-add-validation.js')}}"></script>
 <!-- END: Page JS-->
 @endsection
