@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Business;
 use App\BusinessPermission;
+use App\BusinessSettings;
 use App\Package,App\Role;
 use App\User;
 use Auth,DB,Hash;
@@ -115,6 +116,26 @@ class SuperAdminController extends Controller
                 'housekeeper' => $permission->housekeeper,
             ]);
         }
+        $settingsData = DB::table('settings')
+            ->select('name','value')
+            ->get();
+            
+            foreach($settingsData as $settings){
+                if($settings->name=="site_logo"){
+                    $settings->value=$filename;
+                }elseif($settings->name=="hotel_email"){
+                    $settings->value=$data['business_email'];
+                }elseif($settings->name=="default_nationality"){
+                    $settings->value=$data['country'];
+                }
+
+                $businessSetting=BusinessSettings::create([
+                    'business_id'=>$newBusinessId,
+                    'name'=>$settings->name,
+                    'value'=>$settings->value,
+                ]);
+
+            }
        
         return redirect()->route('all-business')->with('success', 'Business saved successfully');    
     }

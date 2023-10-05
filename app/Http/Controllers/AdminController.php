@@ -19,6 +19,7 @@ use App\DynamicDropdown;
 use App\MediaFile;
 use App\Permission;
 use App\BusinessPermission;
+use App\BusinessSettings;
 use Session;
 use Illuminate\Support\Facades\File;
 
@@ -1964,10 +1965,17 @@ class AdminController extends Controller
         return view('backend/sms_settings',$this->data);
     }
     public function settingsForm() {
-        $this->data['data_row']=Setting::pluck('value','name');
+        if(Auth::user()->role_id == 8){
+
+            $this->data['data_row']=BusinessSettings::where('business_id',Auth::user()->business_id)->pluck('value','name');
+        }else{
+            $this->data['data_row']=Setting::pluck('value','name');
+        }
+         // echo'<pre>';print_r($this->data['data_row']);die;
         return view('backend/settings',$this->data);
     }
     public function saveSettings(Request $request) {
+
         if (Auth::check()) {
         $BusinessUserId = Auth::user()->business_id;
         }
@@ -1978,20 +1986,25 @@ class AdminController extends Controller
         $res = null;
 
         //save settings: sms api active or not
-        $value = ($request->sms_api_active && $request->sms_api_active == 'on') ? 1 : 0;
-        Setting::updateOrCreate(['name'=>'sms_api_active','business_id'=>$BusinessUserId], ['name'=>'sms_api_active', 'value'=>$value, 'updated_at'=>date('Y-m-d h:i:s')]);
+        $value = ($request->sms_api_active && $request->sms_api_active == 'on') ? 1 : 0;         
+             Setting::updateOrCreate(['name'=>'sms_api_active'], ['name'=>'sms_api_active', 'value'=>$value, 'updated_at'=>date('Y-m-d h:i:s')]);
+       
+       
 
         //update site logo
-        if($request->hasFile('site_logo')){
-            unlinkImg(getSettings('site_logo'),'uploads/logo/');
-            $filename=$this->core->fileUpload($request->site_logo,'uploads/logo');
-            Setting::updateOrCreate(['name'=>'site_logo','business_id'=>$BusinessUserId], ['name'=>'site_logo', 'value'=>$filename]);
-        }
-        foreach($request->all() as $key => $value){
-            if(!in_array($key, $requestExcept)){
-               $res = Setting::updateOrCreate(['name'=>$key,'business_id'=>$BusinessUserId], ['name'=>$key, 'value'=>$value, 'updated_at'=>date('Y-m-d h:i:s')]);
+            if($request->hasFile('site_logo')){
+                unlinkImg(getSettings('site_logo'),'uploads/logo/');
+                $filename=$this->core->fileUpload($request->site_logo,'uploads/logo');
+                Setting::updateOrCreate(['name'=>'site_logo'], ['name'=>'site_logo', 'value'=>$filename]);
             }
-        }
+             
+           foreach($request->all() as $key => $value){
+                if(!in_array($key, $requestExcept)){
+                   $res = Setting::updateOrCreate(['name'=>$key], ['name'=>$key, 'value'=>$value, 'updated_at'=>date('Y-m-d h:i:s')]);
+                }
+            } 
+       
+
         if($res){
            //set updated settings in session
            setSettings();
@@ -2006,11 +2019,11 @@ class AdminController extends Controller
     public function listPermission() {
         if(Auth::user()->role_id == 8){
         $this->data['datalist']=BusinessPermission::where('business_id',Auth::user()->business_id)->where('status',1)->orderBy('permission_type','ASC')->get();
+        return view('backend/permissions/business-list',$this->data);
         }else{
            $this->data['datalist']=Permission::where('status',1)->orderBy('permission_type','ASC')->get();
-        }
-         #echo "<pre>";   print_r($this->data);die;
-        return view('backend/permissions/list',$this->data); 
+        return view('backend/permissions/list',$this->data);
+        } 
 
     }
     public function savePermission(Request $request) {
@@ -2115,12 +2128,27 @@ class AdminController extends Controller
         $dynamicDropdowns=DynamicDropdown::where('status', 1)->where('is_deleted', 0)->orderBy('dropdown_name','ASC')->orderBy('is_deletable','ASC')->get();
         $datalist = [];
         foreach ($dynamicDropdowns as $key => $value) {
-            if(isset($datalist[$value->dropdown_name])){
-                $datalist[$value->dropdown_name]['values'][] = $value;
-            } else {
-                $datalist[$value->dropdown_name] = ['dropdown_name'=>$value->dropdown_name, 'title'=>lang_trans('txt_dropdown_'.$value->dropdown_name), 'values'=>[$value]];
+            
+           if(Auth::user()->role_id == 8 ){
+             if($value->dropdown_name=="housekeeping_status"||$value->dropdown_name=="measurement"||$value->dropdown_name=="room_floor"){
+                if(isset($datalist[$value->dropdown_name])){
+                    $datalist[$value->dropdown_name]['values'][] = $value;
+                } else {
+                    $datalist[$value->dropdown_name] = ['dropdown_name'=>$value->dropdown_name, 'title'=>lang_trans('txt_dropdown_'.$value->dropdown_name), 'values'=>[$value]];
+                }
             }
+           
+           }elseif(Auth::user()->role_id == 1){
+                if(isset($datalist[$value->dropdown_name])){
+                    $datalist[$value->dropdown_name]['values'][] = $value;
+                } else {
+                    $datalist[$value->dropdown_name] = ['dropdown_name'=>$value->dropdown_name, 'title'=>lang_trans('txt_dropdown_'.$value->dropdown_name), 'values'=>[$value]];
+                }
+           }
+            
         }
+
+        //die;
         $this->data['datalist'] = $datalist;
         return view('backend/dynamic_dropdowns/list',$this->data);
     }
