@@ -125,7 +125,7 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="business_password">Password</label><span class="text-danger">*</span>
-                                       {{ Form::password('Password', ['class' => 'form-control', 'id' => 'business_password', 'required' => 'required']) }}
+                                       {{ Form::password('Password', ['class' => 'form-control', 'id' => 'business_password']) }}
                                     </div>
                                 </div>
 

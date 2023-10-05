@@ -21,7 +21,7 @@
             @if($permissionsArr['dashboard'])<li class=" nav-item {{ request()->url() === url('admin/dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('dashboard')}}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_dashboard')}}</span></a></li>@endif
 
             @if($permissionsArr['room-reservation'])<li class=" nav-item {{ request()->url() === url('admin/check-in') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('room-reservation')}}"><i data-feather='plus-square'></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_checkin_add')}}</span></a></li>@endif
-            @if($permissionsArr['all-business'])
+            @if(Auth::user()->role_id == 1)
             <li class=" nav-item {{ request()->url() === url('admin/all-business') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('all-business')}}"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Dashboards">All Business</span></a></li>@endif
             
             @if($permissionsArr['room-reservation']  && ($permissionsArr['quick-check-in'] || $permissionsArr['room-reservation'] || $permissionsArr['list-reservation'] || $permissionsArr['list-check-outs']) )
@@ -202,8 +202,10 @@
                         @endif
                         @if($permissionsArr['permissions-list'])<li class="{{ request()->url() === url('admin/permissions-list') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('permissions-list')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_permissions_settings')}}</span></a></li>
                         @endif
+                    @if(Auth::user()->role_id == 1)
                         @if($permissionsArr['language-translations'])<li class="{{ request()->url() === url('admin/language-translations') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('language-translations')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_lang_settings')}} </span></a></li>       
                         @endif
+                    @endif
                         @if($permissionsArr['dynamic-dropdown-list'])<li class="{{ request()->url() === url('admin/dynamic-dropdown-list') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('dynamic-dropdown-list')}}"><i data-feather='menu'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_dynamic_dropdowns')}} </span></a></li>       
                         @endif
                     </ul>

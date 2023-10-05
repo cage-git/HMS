@@ -70,9 +70,7 @@ $(function () {
             required: true
           },
           'number_of_invoices': {
-            required: true,
-            minlength:10,
-            maxlength:10
+            required: true
           },
     
          

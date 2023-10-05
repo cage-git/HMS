@@ -45,6 +45,8 @@ return [
     'FLASH_EMAIL_SUBS_LIMIT'=>'Notification subscription per day allow only 20 users.',
     'FLASH_ROOM_BOOK_SUCCESS'=>'Thank you ! Your rooms booked successfully.',
     'FLASH_ORDER_ALREADY_COMPLETE'=>'This order is already completed.',
+    'FLASH_START_DATE'=>'Your subscription is not started yet!',
+    'FLASH_END_DATE'=>'Your subscription is expired Please renew it!',
 
     'SUPER_ADMIN_ID'=>1, //from user table for notification
     'OTP_LIMIT'=>'30',
