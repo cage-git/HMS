@@ -21,6 +21,7 @@ class SuperAdminController extends Controller
     }
     public function addBusiness(){
          $this->data['roles']=$this->getRoleList();
+         $this->data['packages']=DB::table('package')->orderBy('id','desc')->get();
            return view('backend/super_admin/add_business',$this->data);
     }
     public function allBusiness(Request $request){    
@@ -28,12 +29,19 @@ class SuperAdminController extends Controller
             return view('backend/super_admin/all_business', $this->data);
     }
     public function allBusinessData(Request $request){  
-         $query = DB::table('business')
-            ->orderBy('name', 'ASC');
-            $data = $query->get();
+          $data = DB::table('business')
+            ->orderBy('business.name', 'ASC')
+            ->leftJoin('package', 'business.package', '=', 'package.id')
+            ->select(
+                'business.*',
+                'package.name as package_name'
+            )
+            ->get();
             $jsonData = [
-            'data' => $data,
+                'data' => $data,
             ];
+
+        //echo "<pre>";print_r($dataPack);die;
         return response()->json($jsonData);      
     }
      public function deleteBusinessData(Request $request, $id)
@@ -57,6 +65,7 @@ class SuperAdminController extends Controller
             return redirect()->back()->with(['error' => config('constants.FLASH_REC_NOT_FOUND')]);
         }
         $this->data['user_data']=User::where('business_id',$request->id)->first();
+        $this->data['packages']=DB::table('package')->orderBy('id','desc')->get();
         return view('backend/super_admin/edit_business',$this->data);
     }
     public function updateBusinessData(Request $request, $id)
@@ -119,7 +128,7 @@ class SuperAdminController extends Controller
         $settingsData = DB::table('settings')
             ->select('name','value')
             ->get();
-            
+
             foreach($settingsData as $settings){
                 if($settings->name=="site_logo"){
                     $settings->value=$filename;
@@ -146,19 +155,33 @@ class SuperAdminController extends Controller
     public function allPackages(){
         return view('backend/super_admin/all_package');
     }
-    public function savePackage(Request $request){
-          $data = $request->all();
-          $arraytostring = implode(',',$request->input('services'));
-          $data['services'] = $arraytostring;
-             Package::create([
-            'name' => $data['package_name'],
-            'num_user' => $data['number_of_users'],
-            'num_hotels' => $data['number_of_hotels'],
-            'num_invoices' => $data['number_of_invoices'],
-            'services' => $data['services']
+    public function savePackage(Request $request)
+    {
+        $data = $request->all();
+        if ($request->has('hidden')) {
+            $package = Package::find($request->hidden);
+            $package->update([
+                'name' => $data['package_name'],
+                'num_user' => $data['number_of_users'],
+                'num_hotels' => $data['number_of_hotels'],
+                'num_invoices' => $data['number_of_invoices'],
+                'services' => implode(',', $request->input('services'))
             ]);
-        return redirect()->route('all-packages')->with('success', 'Package saved successfully');
-     }
+
+            return redirect()->route('all-packages')->with('success', 'Package updated successfully');
+        } else {
+            Package::create([
+                'name' => $data['package_name'],
+                'num_user' => $data['number_of_users'],
+                'num_hotels' => $data['number_of_hotels'],
+                'num_invoices' => $data['number_of_invoices'],
+                'services' => implode(',', $request->input('services'))
+            ]);
+
+            return redirect()->route('all-packages')->with('success', 'Package saved successfully');
+        }
+    }
+
      public function allPackageData(Request $request){  
          $query = DB::table('package')
             ->orderBy('name', 'ASC');
@@ -182,17 +205,6 @@ class SuperAdminController extends Controller
                 return response()->json(['message' => 'Error deleting Packages'], 500);
             }
     }
-    // public function updatePackageData(Request $request, $id)
-    // {
-    //     $business = Package::find($id);
-
-    //     if (!$business) {
-    //         return redirect()->back()->with(['error' => config('constants.FLASH_REC_NOT_FOUND')]);
-    //     }
-    //     $business->update($request->all());
-
-    //     return redirect()->route('all-packages')->with(['success' => 'Business record updated successfully']);
-    // }
     public function editPackageData(Request $request){
 
         $this->data['data_row']=Package::whereId($request->id)->first();

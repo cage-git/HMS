@@ -1246,16 +1246,73 @@ function getNextInvoiceNo($type=null){
         $data = genRandomValue(8, 'mix');
         return $data;
     }
-    if($type=='orders'){
-        $data = Order::whereNotNull('invoice_num')->orderBy('invoice_num','DESC')->first();
-        return ($data) ? $data->invoice_num + 1 : $initNum;
+    if ($type == 'orders') {
+        if (Auth::user()->role_id == 8 && Auth::user()->business_id) {
+            $data = Order::where('business_id', Auth::user()->business_id)
+                ->whereNotNull('invoice_num')
+                ->orderBy('invoice_num', 'DESC')
+                ->first();
+
+            if ($data) {
+                $newInvoiceNum = $data->invoice_num + 1;
+            } else {
+                $newInvoiceNum = 1;
+            }
+        } else {
+            $data = Order::whereNotNull('invoice_num')
+                ->orderBy('invoice_num', 'DESC')
+                ->first();
+
+            $newInvoiceNum = ($data) ? $data->invoice_num + 1 : $initNum;
+        }
+
+        return $newInvoiceNum;
     }
-    if($type=='laundry_order'){
-        $data = LaundryOrder::whereNotNull('order_num')->orderBy('order_num','DESC')->first();
-        return ($data) ? $data->order_num + 1 : $initNum;
+
+    if ($type == 'laundry_order') {
+        if (Auth::user()->role_id == 8) {
+            $data = LaundryOrder::where('business_id', Auth::user()->business_id)
+                ->whereNotNull('order_num')
+                ->orderBy('order_num', 'DESC')
+                ->first();
+
+            if ($data) {
+                $newOrderNum = $data->order_num + 1;
+            } else {
+                $newOrderNum = 1;
+            }
+        } else {
+            $data = LaundryOrder::whereNotNull('order_num')
+                ->orderBy('order_num', 'DESC')
+                ->first();
+
+            $newOrderNum = ($data) ? $data->order_num + 1 : $initNum;
+        }
+
+        return $newOrderNum;
     }
-    $data = Reservation::whereNotNull('invoice_num')->orderBy('invoice_num','DESC')->first();
-    return ($data) ? $data->invoice_num + 1 : $initNum;
+
+   if (Auth::user()->role_id == 8) {
+    $data = Reservation::where('business_id', Auth::user()->business_id)
+            ->whereNotNull('invoice_num')
+            ->orderBy('invoice_num', 'DESC')
+            ->first();
+        if ($data) {
+            $newInvoiceNum = $data->invoice_num + 1;
+
+        } else {
+            $newInvoiceNum = 1;
+        }
+    } else {
+        $data = Reservation::whereNotNull('invoice_num')
+            ->orderBy('invoice_num', 'DESC')
+            ->first();
+
+        $newInvoiceNum = ($data) ? $data->invoice_num + 1 : $initNum;
+    }
+
+    return $newInvoiceNum;
+
 }
 function getStatusBtn($status, $listType = 1){
     $statusList = config('constants.LIST_STATUS');

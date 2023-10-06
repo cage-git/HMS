@@ -54,6 +54,7 @@
         <form method="POST" action="{{ route('save-package') }}" id="package-form" class="form-horizontal form-label-left" enctype="multipart/form-data">
             @csrf
     	<div class="row">
+            <input type="hidden" name="hidden" value="<?php echo $data_row->id; ?>">
             <div class="col-xl-4 col-md-6 col-12">
                 <div class="mb-1">
                     <label class="form-label" for="package_name">{{lang_trans('name')}}</label><span class="text-danger">*</span>

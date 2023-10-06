@@ -90,7 +90,7 @@
                     {
                         "data": null, 
                         "render": function (data, type, row) {
-                        var subscription = row.package + ' <br> ' + row.start_date + ' - ' + row.end_date;
+                        var subscription = row.package_name + ' <br> ' + row.start_date + ' - ' + row.end_date;
                             return '<div class="text-center">' + subscription + '</div>';
                         },
                         "orderable": true

@@ -132,7 +132,12 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="package_name">{{lang_trans('package')}}</label><span class="text-danger">*</span>
-                                        {{Form::text('package',null,['class'=>"form-control ", "id"=>"package_name", "required"=>"required"])}}
+                                        <select name="package" id="package_name" class="form-control" required>
+                                         <option value="{{$data_row->package}}" selected>{{$data_row->package}}</option>
+                                         @foreach ($packages as $k => $v)
+                                         <option value="{{ $v->id }}">{{ $v->name }}</option>
+                                         @endforeach
+                                         </select>
                                     </div>
                                 </div>
 

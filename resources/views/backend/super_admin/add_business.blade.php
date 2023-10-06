@@ -120,7 +120,7 @@
                                 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="business_password">Password</label><span class="text-danger">*</span><span class="text-danger">*</span>
+                                        <label class="form-label" for="business_password">Password</label><span class="text-danger">*</span>
                                        {{ Form::password('business_password', ['class' => 'form-control', 'id' => 'business_password', 'required' => 'required']) }}
                                     </div>
                                 </div>
@@ -128,7 +128,12 @@
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="package_name">{{lang_trans('package')}}</label><span class="text-danger">*</span>
-                                        {{Form::text('package_name',null,['class'=>"form-control ", "id"=>"package_name", "required"=>"required"])}}
+                                        <select name="package_name" id="package_name" class="form-control" required> 
+                                         @foreach ($packages as $k => $v)
+                                         
+                                         <option value="{{ $v->id }}">{{ $v->name }}</option>
+                                         @endforeach
+                                         </select>
                                     </div>
                                 </div>
 
