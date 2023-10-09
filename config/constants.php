@@ -47,6 +47,9 @@ return [
     'FLASH_ORDER_ALREADY_COMPLETE'=>'This order is already completed.',
     'FLASH_START_DATE'=>'Your subscription is not started yet!',
     'FLASH_END_DATE'=>'Your subscription is expired Please renew it!',
+    'FLASH_EXTEND_USER_LIMIT'=>'Your have reached Max. number for creating users!! Please contact your adminstrator',
+    'FLASH_EXTEND_INVOICE_LIMIT'=>'Your have reached Max. number for creating invoices!! Please contact your adminstrator',
+    
 
     'SUPER_ADMIN_ID'=>1, //from user table for notification
     'OTP_LIMIT'=>'30',

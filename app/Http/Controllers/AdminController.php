@@ -19,7 +19,7 @@ use App\DynamicDropdown;
 use App\MediaFile;
 use App\Permission;
 use App\BusinessPermission;
-use App\BusinessSettings;
+// use App\Settings;
 use Session;
 use Illuminate\Support\Facades\File;
 
@@ -35,8 +35,8 @@ class AdminController extends Controller
     }
 
     public function index() {
-        // echo phpinfo();
-        // exit;
+
+        $business_id =  Auth::user()->business_id;
         $this->data['counts']=DB::select(DB::raw("SELECT
             (((SELECT COUNT(*) FROM (
                 SELECT 0  FROM `booked_rooms`
@@ -66,7 +66,7 @@ class AdminController extends Controller
          $sDate = date("Y-m-01", strtotime('2023-03-01'));
          $eDate = date("Y-m-t", strtotime('2023-04-01'));
          $params = ['start_date'=>$sDate, 'end_date'=>$eDate];
-         $this->data['events'] = json_encode(getCalendarEventsByDate($params));
+         $this->data['events'] = json_encode(getCalendarEventsByDate($params,$business_id));
         //  return response()->json($this->data);
         // dd($this->data);
 
@@ -105,28 +105,45 @@ class AdminController extends Controller
         return view('backend/users/user_add_edit',$this->data);
     }
     public function saveUser(Request $request) {
+        pakage_permission();
+         $res="";
          if (Auth::check()) {
-        $BusinessUserId = Auth::user()->business_id;
-        }
-        if($request->id>0){
-            if($this->core->checkWebPortal()==0){
+
+             $BusinessUserId = Auth::user()->business_id;
+             $Total_User_Count = DB::table('package')
+             ->select('num_user')
+             ->where('id',DB::table('business')->select('package')->where('id',Auth::user()->business_id)->value('package'))
+             ->value('num_user');
+             $User_Created=count(DB::table('users')->where('business_id',$BusinessUserId)->get());
+         }
+         if($request->id>0){
+             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
-            }
+             }
             $success = config('constants.FLASH_REC_UPDATE_1');
             $error = config('constants.FLASH_REC_UPDATE_0');
-        } else {
+         } else {
             $success = config('constants.FLASH_REC_ADD_1');
             $error = config('constants.FLASH_REC_ADD_0');
-        }
-        if($request->new_password){
+         }
+         if($request->new_password){
             $request->merge(['password'=>Hash::make($request->new_password)]);
-        }
-        $res = User::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','new_password','conf_password']));
-        if($res){
+         }
+         if(Auth::user()->role_id == 8){
+            //echo $User_Created." ".$Total_User_Count;die('here');
+            if($User_Created == $Total_User_Count+1){
+                return redirect()->back()->with(['error' => config('constants.FLASH_EXTEND_USER_LIMIT')]); 
+            }
+            $res = User::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','new_password','conf_password']));
+         }else{
+             $res = User::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','new_password','conf_password']));
+         }
+        
+         if($res){
             return redirect()->route('list-user')->with(['success' => $success]);
-        }
-        return redirect()->back()->with(['error' => $error]);
-     
+         }
+            return redirect()->back()->with(['error' => $error]);
+         
     }
     public function listUser() {
          if(Auth::user()->role_id == 8){
@@ -348,10 +365,12 @@ class AdminController extends Controller
     }
 
     public function saveReservation(Request $request) {
-        $BusinessUserId="";
+        $BusinessUserId=null;
+        $res="";
         if(Auth::user()->role_id == 8){
-        $BusinessUserId = Auth::user()->business_id;
+          $BusinessUserId = Auth::user()->business_id;
         }
+
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 if($request->ajax()){
@@ -512,7 +531,19 @@ class AdminController extends Controller
             $reservationData["created_at_checkin"] = date('Y-m-d H:i:s');
             $reservationData['invoice_num'] = getNextInvoiceNo();
         }
-        $res = Reservation::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$reservationData);
+        if(Auth::user()->role_id == 8){
+            $Total_User_Count = DB::table('package')
+             ->select('num_invoices')
+             ->where('id',DB::table('business')->select('package')->where('id',Auth::user()->business_id)->value('package'))
+             ->value('num_invoices');
+             $User_Created=count(DB::table('reservations')->where('business_id',$BusinessUserId)->get());
+          if($User_Created >= $Total_User_Count){
+             return response()->json(['limit_reached'=>1,'msg' => config('constants.FLASH_EXTEND_INVOICE_LIMIT')]);
+            }
+
+         $res = Reservation::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$reservationData);
+        }
+          $res = Reservation::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$reservationData);
         if($res){
             //add rooms
             if(!$request->id){
@@ -1967,11 +1998,11 @@ class AdminController extends Controller
     public function settingsForm() {
         if(Auth::user()->role_id == 8){
 
-            $this->data['data_row']=BusinessSettings::where('business_id',Auth::user()->business_id)->pluck('value','name');
-        }else{
-            $this->data['data_row']=Setting::pluck('value','name');
+            $this->data['data_row']=Setting::where('business_id',Auth::user()->business_id)->pluck('value','name');
+       }else{
+            $this->data['data_row']=Setting::where('business_id',null)->pluck('value','name');
         }
-         // echo'<pre>';print_r($this->data['data_row']);die;
+         
         return view('backend/settings',$this->data);
     }
     public function saveSettings(Request $request) {
@@ -1999,8 +2030,9 @@ class AdminController extends Controller
             }
              
            foreach($request->all() as $key => $value){
+
                 if(!in_array($key, $requestExcept)){
-                   $res = Setting::updateOrCreate(['name'=>$key], ['name'=>$key, 'value'=>$value, 'updated_at'=>date('Y-m-d h:i:s')]);
+                   $res = Setting::updateOrCreate(['name'=>$key,'business_id'=>Auth::user()->business_id], ['name'=>$key, 'value'=>$value, 'updated_at'=>date('Y-m-d h:i:s')]);
                 }
             } 
        

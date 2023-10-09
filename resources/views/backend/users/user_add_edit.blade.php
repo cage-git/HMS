@@ -12,7 +12,11 @@
   @endphp
 
 
-
+ @if(session('error'))
+    <div class="alert alert-danger p-1 m-0 mb-1 alrt_msg" role="alert">
+        {{ session('error') }}
+    </div>
+@endif
   <div class="col-md-12 col-12">
         <div class="card">
             <div class="card-header">

@@ -85,7 +85,7 @@
                                 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                        <label class="form-label" for="country">{{lang_trans('txt_country')}}</label><span class="text-danger">*</span>{{Form::text('country',null,['class'=>"form-control", 'placeholder'=>lang_trans('ph_enter').lang_trans('txt_country')])}}
+                                        <label class="form-label" for="country">{{lang_trans('txt_country')}}</label><span class="text-danger">*</span>{{ Form::select('country', getCountryList(), null, ['class' => 'form-control', 'placeholder' => lang_trans('ph_select') . lang_trans('txt_country')]) }}
                                     </div>
                                 </div>
 

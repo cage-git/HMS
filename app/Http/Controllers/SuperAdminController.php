@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Business;
 use App\BusinessPermission;
-use App\BusinessSettings;
+use App\Setting;
 use App\Package,App\Role;
 use App\User;
 use Auth,DB,Hash;
@@ -127,8 +127,9 @@ class SuperAdminController extends Controller
         }
         $settingsData = DB::table('settings')
             ->select('name','value')
-            ->get();
-
+            ->where('business_id',null)
+            ->get()
+            ->toArray();
             foreach($settingsData as $settings){
                 if($settings->name=="site_logo"){
                     $settings->value=$filename;
@@ -136,9 +137,13 @@ class SuperAdminController extends Controller
                     $settings->value=$data['business_email'];
                 }elseif($settings->name=="default_nationality"){
                     $settings->value=$data['country'];
+                }elseif($settings->name=="hotel_address"){
+                    $settings->value=$data['address'];
+                }elseif($settings->name=="hotel_mobile"){
+                    $settings->value=$data['mobile_num'];
                 }
 
-                $businessSetting=BusinessSettings::create([
+                $Setting=Setting::create([
                     'business_id'=>$newBusinessId,
                     'name'=>$settings->name,
                     'value'=>$settings->value,
@@ -216,4 +221,5 @@ class SuperAdminController extends Controller
     function getRoleList(){
         return Role::orderBy('role','ASC')->pluck('role','id');
     }
+    
 }

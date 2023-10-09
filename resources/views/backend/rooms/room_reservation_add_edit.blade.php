@@ -968,7 +968,7 @@
     
 
         $(document).on('submit', '#add-reservation-form', function(e){
-            e.preventDefault();
+            e.preventDefault()
             // checkError();
             var app_nt_enable = $("#app_nt_enable").val();
             if(app_nt_enable == "1"){
@@ -1155,6 +1155,14 @@
                 processData: false,
                 success:function(data){
                     $('#custom-loader').css('display', 'none');
+                    if(data.limit_reached){
+                        Swal.fire(data.msg);
+                        setTimeout(function(){
+                            location.reload(); 
+                        }, 3000);
+                        
+                        return false;
+                    }
                     Swal.fire({
                         title: data.msg,
                         showCancelButton: true,
