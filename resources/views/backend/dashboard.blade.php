@@ -483,7 +483,7 @@
                             <!-- /Calendar -->
                             <div class="body-content-overlay"></div>
                         </div>
-
+                    <input type="hidden" id="Business_id" value="<?php echo Auth::user()->business_id; ?>">
     </section>
     <!-- Dashboard Ecommerce ends -->
 
@@ -774,6 +774,7 @@
         </div>
     </div> 
 </div> -->
+
 {{-- require set var in js var --}}
   <script>
     globalVar.page = 'dashboard_page';

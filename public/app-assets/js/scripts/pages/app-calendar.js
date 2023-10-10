@@ -43,8 +43,12 @@ if(globalVar.page=='dashboard_page'){
     return { month: globalVar.cdate.getMonth()+1, year: globalVar.cdate.getFullYear() }
   }
   function getCalendarEvents(){
-      const dateObj = getDatesObj();
-      const post_data={month: dateObj.month, year: dateObj.year};
+      var business_id = $("#Business_id").val();
+      const dateObj   = getDatesObj();
+      const post_data = {month: dateObj.month, year: dateObj.year};
+      if(business_id){
+          post_data.business_id = business_id;
+      }
       globalFunc.ajaxCall('api/get-calendar-events', post_data, 'POST', globalFunc.before, globalFunc.successEvents, globalFunc.error, globalFunc.complete);
   }
   globalFunc.successEvents=function(data){

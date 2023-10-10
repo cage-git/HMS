@@ -19,10 +19,11 @@ class AjaxController extends Controller
         return response()->json($this->data['rooms']);
     }
     public function getCalendarEvents(Request $request){
+        $Business_Id = $request->business_id;
         $sDate = date("Y-m-01", strtotime($request->year.'-'.$request->month.'-01'));
         $eDate = date("Y-m-t", strtotime($request->year.'-'.$request->month.'-01'));
         $params = ['start_date'=>$sDate, 'end_date'=>$eDate];
-        $this->data['events'] = getCalendarEventsByDate($params);
+        $this->data['events'] = getCalendarEventsByDate($params,$Business_Id);
         return response()->json($this->data);
     }
     public function roomAddAndRemoveToCart(Request $request){

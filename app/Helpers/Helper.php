@@ -570,6 +570,7 @@ function getRoomTypesList($listType = 'original'){
         }
     }else{
      return RoomType::select('id','base_price',DB::raw('CONCAT(title, " (Price||", TRUNCATE(  (  (base_price + ((base_price/100) * '.$cgstPerc.'))  + (  (base_price + ((base_price/100) * '.$cgstPerc.'))   * '.$gstPerc.'/100)  ) ,5),")") AS title'))->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->pluck('title','id');
+
     }
     if(Auth::user()->role_id == 8){      
         if($listType == 'original'){
@@ -832,18 +833,34 @@ function getAllBookedRooms(){
     return $bookedRooms;
 }
 
-function getCalendarEventsByDate($params){
+function getCalendarEventsByDate($params,$business_id=null){
+
+    //echo $business_id;die;
     $datalist = [];
     $bookedRooms = [];
     $bookedDates = [];
     $paramsDatesRange = $dateRange = dateRange(dateConvert($params['start_date']), dateConvert($params['end_date']));
 
-    $bookedRoomsData = BookedRoom::where('booked_rooms.is_checkout', '=', 0)
-        ->join('reservations' , function($q){
-            $q->on('reservations.id', '=', 'booked_rooms.reservation_id');
-            $q->where('reservations.cancelled', '=', 0);
-        })
-        ->orderBy('booked_rooms.check_in','DESC')->get();
+    if($business_id){
+        $bookedRoomsData = BookedRoom::where('booked_rooms.business_id', $business_id)
+            ->where('booked_rooms.is_checkout', '=', 0)
+            ->join('reservations' , function($q){
+                $q->on('reservations.id', '=', 'booked_rooms.reservation_id');
+                $q->where('reservations.cancelled', '=', 0);
+            })
+            ->orderBy('booked_rooms.check_in','DESC')->get();
+        
+    }else{
+        $bookedRoomsData = BookedRoom::where('booked_rooms.is_checkout', '=', 0)
+            ->join('reservations' , function($q){
+                $q->on('reservations.id', '=', 'booked_rooms.reservation_id');
+                $q->where('reservations.cancelled', '=', 0);
+            })
+            ->orderBy('booked_rooms.check_in','DESC')->get();
+    }
+    // echo '<pre>';
+    // print_r($bookedRoomsData);
+    // die;
     if($bookedRoomsData && $bookedRoomsData->count()>0){
         foreach($bookedRoomsData as $k=>$v){
             $dateRange = dateRange(dateConvert($v->check_in), dateConvert($v->check_out));
@@ -882,7 +899,12 @@ function getCalendarEventsByDate($params){
         }
     }
 
-    $allRooms = Room::whereIsDeleted(0)->whereStatus(1)->get();
+    if($business_id){
+        $allRooms = Room::where('rooms.business_id', $business_id)->whereIsDeleted(0)->whereStatus(1)->get();
+    }else{
+          $allRooms = Room::whereIsDeleted(0)->whereStatus(1)->get();
+    }
+    
     foreach ($allRooms as $key => $room) {
         $dates = (isset($bookedDates[$room->id])) ? $bookedDates[$room->id] : [];
         foreach ($paramsDatesRange as $d) {
@@ -906,6 +928,8 @@ function getCalendarEventsByDate($params){
             //}
         }
     }
+    //echo '<pre>';
+    //print_r($datalist);die;
     //dd($params,$datalist, $allRooms);
     return $datalist;
 }
