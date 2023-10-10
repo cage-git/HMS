@@ -72,7 +72,7 @@ $logo_Lang= getSettings('site_language') == 'ar'? config('constants.logo_Lang_AR
 <style type="text/css">
     .alrt_msg{
     position: absolute;
-    right: 40px;
+    right: 150px;
     top: 22px;
     }
     .lang_pos{

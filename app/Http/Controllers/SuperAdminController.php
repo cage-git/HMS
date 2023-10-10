@@ -84,7 +84,7 @@ class SuperAdminController extends Controller
             $data = $request->all();
          $filename="";
           if ($request->hasFile('business_logo')) {
-           $filename = $this->core->fileUpload($request->business_logo,'uploads/business_images');            
+           $filename = $this->core->fileUpload($request->business_logo,'uploads/logo');            
           }
          $newBusiness =  Business::create([
           'business_name' => $data['business_name'],
@@ -135,14 +135,21 @@ class SuperAdminController extends Controller
                     $settings->value=$filename;
                 }elseif($settings->name=="hotel_email"){
                     $settings->value=$data['business_email'];
-                }elseif($settings->name=="default_nationality"){
+                }elseif($settings->name=="default_country"){
                     $settings->value=$data['country'];
-                }elseif($settings->name=="hotel_address"){
-                    $settings->value=$data['address'];
                 }elseif($settings->name=="hotel_mobile"){
                     $settings->value=$data['mobile_num'];
+                }elseif($settings->name=="hotel_address"){
+                    $settings->value=$data['address'];
+                }elseif($settings->name=="site_language"){
+                    $settings->value='en';
+                }else{
+                    if ($settings->name=="gst_num" || $settings->name=="gst" || $settings->name=="cgst" || $settings->name=="food_gst" || $settings->name=="food_cgst" ) {
+                        $settings->value=0;
+                    }else{
+                     $settings->value=null;
+                    }
                 }
-
                 $Setting=Setting::create([
                     'business_id'=>$newBusinessId,
                     'name'=>$settings->name,
@@ -162,6 +169,7 @@ class SuperAdminController extends Controller
     }
     public function savePackage(Request $request)
     {
+
         $data = $request->all();
         if ($request->has('hidden')) {
             $package = Package::find($request->hidden);
@@ -170,7 +178,7 @@ class SuperAdminController extends Controller
                 'num_user' => $data['number_of_users'],
                 'num_hotels' => $data['number_of_hotels'],
                 'num_invoices' => $data['number_of_invoices'],
-                'services' => implode(',', $request->input('services'))
+                'services' => !empty($request->input('services'))?implode(',', $request->input('services')):"",
             ]);
 
             return redirect()->route('all-packages')->with('success', 'Package updated successfully');
@@ -180,7 +188,7 @@ class SuperAdminController extends Controller
                 'num_user' => $data['number_of_users'],
                 'num_hotels' => $data['number_of_hotels'],
                 'num_invoices' => $data['number_of_invoices'],
-                'services' => implode(',', $request->input('services'))
+                'services' => !empty($request->input('services'))?implode(',', $request->input('services')):"",
             ]);
 
             return redirect()->route('all-packages')->with('success', 'Package saved successfully');
@@ -198,13 +206,18 @@ class SuperAdminController extends Controller
     }
     public function deletePackageData(Request $request, $id)
         {            
-            $business = Package::find($id);
+            $package = Package::find($id);
 
-            if (!$business) {
+            if (!$package) {
                 return response()->json(['message' => 'Packages not found'], 404);
             }
+            $businessWithPackage = Business::where('package', $package->id)->first();
+            if ($businessWithPackage) {
+               return response()->json(['message' => 'Cannot delete the package because it is associated with a business'], 200);
+            }
+
             try {
-                $business->delete();
+                $package->delete();
                 return response()->json(['message' => 'Packages deleted successfully']);
             } catch (\Exception $e) {
                 return response()->json(['message' => 'Error deleting Packages'], 500);
