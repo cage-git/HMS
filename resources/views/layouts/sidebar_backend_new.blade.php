@@ -61,7 +61,8 @@
                         @endif
                     </ul>
                     <?php  }else{ ?>
-                    <a class="d-flex align-items-center" href="#"><i data-feather='droplet'></i><span class="menu-title text-truncate" >{{lang_trans('sidemenu_laundry')}}</span></a>
+                        <a class="d-flex align-items-center upgrade-links" href="#"><i data-feather='droplet'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{ lang_trans('sidemenu_laundry') }}</span></a>
+
                 <?php } ?>
                 
                 </li>
@@ -82,7 +83,7 @@
                     <?php if(is_array($packagePermissionArray) && in_array('expenses', $packagePermissionArray) || Auth::user()->role_id==1){ ?>
                             <a class="d-flex align-items-center" href="{{route('reports', ['type'=>'expense'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a>
                             <?php }else {?>
-                                <a class="d-flex align-items-center" href="#"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a>
+                                <a class="d-flex align-items-center upgrade-links" href="#"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a>
                          <?php } ?>
                         </li>       
                         @endif
@@ -126,7 +127,12 @@
             @endif
 
             @if($permissionsArr['add-food-category'] || $permissionsArr['list-food-category'] || $permissionsArr['add-food-item'] || $permissionsArr['list-food-item'])
-              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='coffee'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_fooditems')}}</span></a>
+              <li class=" nav-item">
+                <?php 
+                if(is_array($packagePermissionArray) && in_array('pos', $packagePermissionArray) || Auth::user()->role_id==1){
+
+                    ?>
+                <a class="d-flex align-items-center" href="#"><i data-feather='coffee'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_fooditems')}}</span></a>
                     <ul class="menu-content">
                         @if($permissionsArr['add-food-category']) <li class="{{ request()->url() === url('admin/add-food-category') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-food-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_foodcat_add')}}</span></a></li>
                         @endif
@@ -137,6 +143,9 @@
                         @if($permissionsArr['list-food-item']) <li class="{{ request()->url() === url('admin/list-food-item') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-food-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_fooditem_all')}} </span></a></li>       
                         @endif
                     </ul>
+                <?php }else{ ?>
+                    <a class="d-flex align-items-center upgrade-links" href="#"><i data-feather='coffee'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_fooditems')}}</span></a>
+                <?php } ?>
                 </li>
             @endif
 
@@ -192,7 +201,7 @@
                         @endif
                     </ul>
                 <?php }else{ ?>
-                    <a class="d-flex align-items-center" href="#"><i data-feather='bar-chart-2'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_expense')}}</span></a>
+                    <a class="d-flex align-items-center upgrade-links" href="#"><i data-feather='bar-chart-2'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_expense')}}</span></a>
                 <?php } ?>
                 </li>
             @endif
@@ -255,7 +264,7 @@
                        
                     </ul>
                 <?php }else{ ?>
-                     <a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_website')}}</span></a>
+                     <a class="d-flex align-items-center upgrade-links" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_website')}}</span></a>
                 <?php } ?>
                 </li>
             @endif
@@ -663,6 +672,8 @@
         </div>
     </div>
     <!-- END: Main Menu-->
+
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
         var addClassButton = document.getElementById('tgl_cls');
         var targetElement = document.getElementById('sidbar_nav');
@@ -678,4 +689,21 @@
             targetElement.classList.remove('new_closed_mnu');
         });
 
-    </script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var upgradeLinks = document.querySelectorAll('.upgrade-links');
+
+        upgradeLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Access Denied',
+                    text: 'You do not have access to this feature. Upgrade your package to access it.',
+                    showCancelButton: false,
+                    showConfirmButton: true,
+                });
+            });
+        });
+    });
+</script>
+

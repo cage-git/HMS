@@ -80,6 +80,9 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="mobile_num">{{lang_trans('txt_mobile_num')}}</label>
                                         {{Form::text('mobile_num',null,['class'=>"form-control price_val", 'placeholder'=>lang_trans('ph_enter').lang_trans('txt_mobile_num')])}}
+                                        @error('mobile_num')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 
@@ -115,6 +118,9 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="business_username">Email</label><span class="text-danger">*</span>
                                         {{Form::email('business_email',null,['class'=>"form-control ", "id"=>"business_email", "required"=>"required"])}}
+                                        @error('business_email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 

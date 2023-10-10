@@ -805,7 +805,6 @@
 <script src="{{URL::asset('public/app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script>
 <script src="{{URL::asset('public/app-assets/js/scripts/pages/app-calendar-events.js')}}"></script>
 <script src="{{URL::asset('public/app-assets/js/scripts/pages/app-calendar.js')}}"></script>
-
 <script>
 //     $(document).ready(function() {
 //     $('#example').DataTable( {
@@ -822,4 +821,5 @@
 //     } );
 // } );
 </script>
+
 @endsection

@@ -11,6 +11,7 @@ use App\User;
 use Auth,DB,Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 
 class SuperAdminController extends Controller
 {
@@ -86,6 +87,15 @@ class SuperAdminController extends Controller
           if ($request->hasFile('business_logo')) {
            $filename = $this->core->fileUpload($request->business_logo,'uploads/logo');            
           }
+          $validator = Validator::make($data, [
+            'business_email' => 'required|email|unique:users,email',
+             'mobile_num' => 'required|unique:users,mobile',
+        ]);
+          if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+        }
          $newBusiness =  Business::create([
           'business_name' => $data['business_name'],
           'start_date' => $data['start_date'],
@@ -143,6 +153,10 @@ class SuperAdminController extends Controller
                     $settings->value=$data['address'];
                 }elseif($settings->name=="site_language"){
                     $settings->value='en';
+                }elseif($settings->name=="site_page_title"){
+                    $settings->value=$data['business_name'];
+                }elseif($settings->name=="hotel_name"){
+                    $settings->value=$data['business_name'];
                 }else{
                     if ($settings->name=="gst_num" || $settings->name=="gst" || $settings->name=="cgst" || $settings->name=="food_gst" || $settings->name=="food_cgst" ) {
                         $settings->value=0;

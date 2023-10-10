@@ -3,6 +3,7 @@
 @php
 $i = $j = 0;
 $totalAmount = 0;
+$packagePermissionArray = pakage_permission();
 @endphp
 <style>
     .w-100{
@@ -367,23 +368,59 @@ $totalAmount = 0;
                                                         <i class="btn btn-xs btn-danger dropdown-item w-100">{{lang_trans('reservation_is_cancelled')}}</i>
                                                     @else
                                                         @if(isPermission('add-housekeeping-order') && $val->booked_rooms->count())
+                                                        <?php 
+                                                          if(is_array($packagePermissionArray) && in_array('pos', $packagePermissionArray) || Auth::user()->role_id==1){
+                                                              ?>
                                                             <a class="btn btn-sm btn-success dropdown-item w-100" href="{{route('add-housekeeping-order',['room_id'=>$val->booked_rooms[0]->room_id, 'reservation_id'=>$val->id])}}" target="_blank">
                                                               <i data-feather='wind'></i> 
                                                               <span>{{lang_trans('sidemenu_housekeeping')}}</span>
                                                             </a>
+                                                          <?php } else {?>
+                                                               <a class="btn btn-sm btn-success dropdown-item upgrade-links w-100" href="#" target="_blank">
+                                                              <i data-feather='wind'></i> 
+                                                              <span>{{lang_trans('sidemenu_housekeeping')}}</span>
+                                                            </a>
+                                                          <?php } ?>
                                                         @endif
+                                                        <?php 
+                                                          if(is_array($packagePermissionArray) && in_array('pos', $packagePermissionArray) || Auth::user()->role_id==1){
+                                                              ?>
                                                         <button class="btn btn-sm btn-warning dropdown-item w-100" data-bs-toggle="modal" data-bs-target="#advance_pay_{{$val->id}}">
                                                           <i data-feather='dollar-sign'></i>
                                                           <span>{{lang_trans('btn_advance_pay')}}</span>
                                                         </button>
+                                                      <?php } else { ?>
+                                                          <button class="btn btn-sm btn-warning dropdown-item upgrade-links w-100" data-bs-toggle="modal" data-bs-target="#">
+                                                          <i data-feather='dollar-sign'></i>
+                                                          <span>{{lang_trans('btn_advance_pay')}}</span>
+                                                        </button>
+                                                      <?php } ?>
+                                                      <?php 
+                                                          if(is_array($packagePermissionArray) && in_array('pos', $packagePermissionArray) || Auth::user()->role_id==1){
+                                                              ?>
                                                         <a class="btn btn-sm btn-info dropdown-item w-100" href="{{route('advance-slip',[base64_encode($val->id)])}}" target="_blank">
                                                           <i data-feather='file-text'></i>
                                                           <span>{{lang_trans('btn_advance_slip')}}</span>
                                                         </a>
+                                                      <?php } else { ?>
+                                                        <a class="btn btn-sm btn-info dropdown-item w-100 upgrade-links" href="#" target="_blank">
+                                                          <i data-feather='file-text'></i>
+                                                          <span>{{lang_trans('btn_advance_slip')}}</span>
+                                                        </a>
+                                                      <?php } ?>
+                                                      <?php 
+                                                          if(is_array($packagePermissionArray) && in_array('pos', $packagePermissionArray) || Auth::user()->role_id==1){
+                                                              ?>
                                                         <a class="btn btn-sm btn-warning dropdown-item w-100" href="{{route('food-order',[$val->id])}}">
                                                           <i data-feather='file-text'></i>
                                                           <span>{{lang_trans('btn_food_order')}}</span>
                                                         </a>
+                                                      <?php }else{ ?>
+                                                           <a class="btn btn-sm btn-warning dropdown-item upgrade-links w-100" href="#">
+                                                          <i data-feather='file-text'></i>
+                                                          <span>{{lang_trans('btn_food_order')}}</span>
+                                                        </a>
+                                                      <?php } ?>
                                                         <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('view-reservation',[$val->id])}}">
                                                           <i data-feather='eye'></i>
                                                           <span>{{lang_trans('btn_view')}}</span></a>
@@ -401,10 +438,19 @@ $totalAmount = 0;
                                                         
                                                         {{lang_trans('btn_extend_reservation')}}</button>
                                                         @if($dateDiff)
+                                                        <?php 
+                                                          if(is_array($packagePermissionArray) && in_array('pos', $packagePermissionArray) || Auth::user()->role_id==1){
+                                                              ?>
                                                             <a class="btn btn-sm btn-success dropdown-item w-100" href="{{route('swap-room',[$val->id])}}">
                                                               <i data-feather='arrow-up'></i>
                                                               <span>{{lang_trans('btn_swap_room')}}</span>
                                                             </a>
+                                                          <?php }else{ ?>
+                                                              <a class="btn btn-sm btn-success dropdown-item upgrade-links w-100" href="#">
+                                                              <i data-feather='arrow-up'></i>
+                                                              <span>{{lang_trans('btn_swap_room')}}</span>
+                                                            </a>
+                                                          <?php }?>
                                                         @endif
                                                     @endif
                                                     <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('invoice',[$val->id,1,'inv_type'=>($val->cancelled == 1) ? 'cnl' : 'org'])}}" target="_blank"><i data-feather='file-text'></i>

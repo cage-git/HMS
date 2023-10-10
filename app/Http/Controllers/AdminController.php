@@ -539,10 +539,10 @@ class AdminController extends Controller
           if($User_Created >= $Total_User_Count){
              return response()->json(['limit_reached'=>1,'msg' => config('constants.FLASH_EXTEND_INVOICE_LIMIT')]);
             }
-
          $res = Reservation::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$reservationData);
+        }else {
+          $res = Reservation::updateOrCreate(['id'=>$request->id],$reservationData);
         }
-          $res = Reservation::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$reservationData);
         if($res){
             //add rooms
             if(!$request->id){
@@ -2026,7 +2026,7 @@ class AdminController extends Controller
             if($request->hasFile('site_logo')){
                 unlinkImg(getSettings('site_logo'),'uploads/logo/');
                 $filename=$this->core->fileUpload($request->site_logo,'uploads/logo');
-               Setting::updateOrCreate(['name'=>'site_logo'], ['name'=>'site_logo', 'value'=>$filename]);
+               Setting::updateOrCreate(['name'=>'site_logo','business_id'=>Auth::user()->business_id], ['name'=>'site_logo', 'value'=>$filename]);
             }
            foreach($request->all() as $key => $value){
 
