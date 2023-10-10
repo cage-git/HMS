@@ -19,6 +19,8 @@ use Salla\ZATCA\Tags\InvoiceTaxAmount;
 use Salla\ZATCA\Tags\InvoiceTotalAmount;
 use Salla\ZATCA\Tags\Seller;
 use Salla\ZATCA\Tags\TaxNumber;
+use App\Business;
+use App\Package;
 function getPaginationNum($num = 10){
     return $num;
 }
