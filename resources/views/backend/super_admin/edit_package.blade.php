@@ -16,7 +16,7 @@
       $weekDays = getWeekDaysList(['type'=>1, 'is_name'=>'full']);
   @endphp 
 <div class="col-md-12 col-12">
-	<section>
+    <section>
         <div class="row">
             <div class="col-12">
                 <div class="card p-0">
@@ -53,7 +53,7 @@
     <div class="card-body">
         <form method="POST" action="{{ route('save-package') }}" id="package-form" class="form-horizontal form-label-left" enctype="multipart/form-data">
             @csrf
-    	<div class="row">
+        <div class="row">
             <input type="hidden" name="hidden" value="<?php echo $data_row->id; ?>">
             <div class="col-xl-4 col-md-6 col-12">
                 <div class="mb-1">
@@ -90,40 +90,103 @@
               <div class="form-check form-check-inline">
                   <input class="form-check-input" name="services[]" type="checkbox" value="expenses"<?php 
                   if (in_array('expenses', $selectedServices)) {
-				    echo "checked";
-				}
-             	 ?>
+                    echo "checked";
+                }
+                 ?>
                   >
                   <label class="form-check-label" for="services">Expenses</label>
               </div>
               <div class="form-check form-check-inline">
                   <input class="form-check-input" name="services[]" type="checkbox" value="pos" <?php 
                   if (in_array('pos', $selectedServices)) {
-				    echo "checked";
-				}
-             	 ?>>
+                    echo "checked";
+                }
+                 ?>>
                   <label class="form-check-label" for="services">POS</label>
               </div>
               <div class="form-check form-check-inline">
                   <input class="form-check-input" name="services[]" type="checkbox" value="website"<?php 
                   if (in_array('website', $selectedServices)) {
-				    echo "checked";
-				}
-             	 ?>>
+                    echo "checked";
+                }
+                 ?>>
                   <label class="form-check-label" for="services">Web site</label>
               </div>
               <div class="form-check form-check-inline">
                   <input class="form-check-input" name="services[]" type="checkbox" value="laundry"<?php 
                   if (in_array('laundry', $selectedServices)) {
-				    echo "checked";
-				}
-             	 ?>>
+                    echo "checked";
+                }
+                 ?>>
                   <label class="form-check-label" for="services">Laundry</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="housekeeping"<?php 
+                  if (in_array('housekeeping', $selectedServices)) {
+                    echo "checked";
+                }
+                 ?>>
+                  <label class="form-check-label" for="services">Housekeeping</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="reports"<?php 
+                  if (in_array('reports', $selectedServices)) {
+                    echo "checked";
+                }
+                 ?>>
+                  <label class="form-check-label" for="services">Reports</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="companies"<?php 
+                  if (in_array('companies', $selectedServices)) {
+                    echo "checked";
+                }
+                 ?>>
+                  <label class="form-check-label" for="services">Companies</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="food_item"<?php 
+                  if (in_array('food_item', $selectedServices)) {
+                    echo "checked";
+                }
+                 ?>>
+                  <label class="form-check-label" for="services">Food Item</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="stocks"<?php 
+                  if (in_array('stocks', $selectedServices)) {
+                    echo "checked";
+                }
+                 ?>>
+                  <label class="form-check-label" for="services">Stocks</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="vendors"<?php 
+                  if (in_array('vendors', $selectedServices)) {
+                    echo "checked";
+                }
+                 ?>>
+                  <label class="form-check-label" for="services">Vendors</label>
+              </div>
+
+              <div class="form-check pt-1 form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="season"<?php 
+                  if (in_array('season', $selectedServices)) {
+                    echo "checked";
+                }
+                 ?>>
+                  <label class="form-check-label" for="services">Season</label>
               </div>
             </div>
             <div class="col-xl-5 col-md-5 col-5 pb-2">
-            	<button type="submit" class="btn btn-info" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
-            </div>            
+                <button type="submit" class="btn btn-info" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
+            </div>           
 
         </form>
         </div>

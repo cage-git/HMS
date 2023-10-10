@@ -2,8 +2,9 @@
 @php
     $permissionsArr = getRoutePermission();
     $logo_Lang= getSettings('site_language') == 'ar'? config('constants.logo_Lang_AR'): config('constants.logo_Lang_EN');
-
+    $packagePermissionArray = pakage_permission();;
 @endphp   
+<?php #print_r($packagePermissionArray);die;?>
 <div id="sidbar_nav" class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
             <ul class="nav navbar-nav flex-row">
@@ -47,19 +48,29 @@
             @endif
             
             @if($permissionsArr['add-laundry-item'] || $permissionsArr['list-laundry-item'] || $permissionsArr['add-laundry-order'] || $permissionsArr['list-laundry-order'])
-              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='droplet'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_laundry')}}</span></a>
+              <li class=" nav-item">
+                <?php 
+                if(is_array($packagePermissionArray) && in_array('laundry', $packagePermissionArray) || Auth::user()->role_id==1){
+
+                    ?>
+                   <a class="d-flex align-items-center" href="#"><i data-feather='droplet'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_laundry')}}</span></a>
                     <ul class="menu-content">
                         @if($permissionsArr['list-laundry-item'])<li class="{{ request()->url() === url('admin/list-laundry-item') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-laundry-item')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_item_all')}} </span></a></li>       
                         @endif
                         @if($permissionsArr['list-laundry-order'])<li class="{{ request()->url() === url('admin/list-laundry-order') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-laundry-order')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_order_all')}} </span></a></li>       
                         @endif
                     </ul>
+                    <?php  }else{ ?>
+                    <a class="d-flex align-items-center" href="#"><i data-feather='droplet'></i><span class="menu-title text-truncate" >{{lang_trans('sidemenu_laundry')}}</span></a>
+                <?php } ?>
+                
                 </li>
             @endif
 
 
             @if($permissionsArr['reports'] || $permissionsArr['stock-history'])
-              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='file'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_reports')}}</span></a>
+              <li class=" nav-item">
+                <a class="d-flex align-items-center" href="#"><i data-feather='file'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_reports')}}</span></a>
                     <ul class="menu-content">
                         @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'transactions' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'transactions'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_transactions_report')}} </span></a></li>       
                         @endif
@@ -67,11 +78,17 @@
                         @endif
                         @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'bladi_report' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'bladi_report'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_bladi_report')}} </span></a></li>       
                         @endif
-                        @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'expense' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'expense'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a></li>       
+                        @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'expense' ? 'active' : '' }}">
+                    <?php if(is_array($packagePermissionArray) && in_array('expenses', $packagePermissionArray) || Auth::user()->role_id==1){ ?>
+                            <a class="d-flex align-items-center" href="{{route('reports', ['type'=>'expense'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a>
+                            <?php }else {?>
+                                <a class="d-flex align-items-center" href="#"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a>
+                         <?php } ?>
+                        </li>       
                         @endif
                         @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'stock-history' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('stock-history')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_stock_report')}} </span></a></li>       
                         @endif
-                    </ul>
+                    </ul>               
                 </li>
             @endif
             
@@ -158,7 +175,12 @@
             @endif
 
             @if($permissionsArr['add-expense-category'] || $permissionsArr['list-expense-category'] || $permissionsArr['add-expense'] || $permissionsArr['list-expense'])
-              <li class="nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='bar-chart-2'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_expense')}}</span></a>
+              <li class="nav-item">
+            <?php 
+                if(is_array($packagePermissionArray) && in_array('expenses', $packagePermissionArray) || Auth::user()->role_id==1){
+
+                    ?>
+                <a class="d-flex align-items-center" href="#"><i data-feather='bar-chart-2'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_expense')}}</span></a>
                     <ul class="menu-content">
                         @if($permissionsArr['add-expense-category']) <li class="{{ request()->url() === url('admin/add-expense-category') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-expense-category')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expensecat_add')}}</span></a></li>
                         @endif
@@ -169,6 +191,9 @@
                         @if($permissionsArr['list-expense']) <li class="{{ request()->url() === url('admin/list-expense') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('list-expense')}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_all')}} </span></a></li>       
                         @endif
                     </ul>
+                <?php }else{ ?>
+                    <a class="d-flex align-items-center" href="#"><i data-feather='bar-chart-2'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_expense')}}</span></a>
+                <?php } ?>
                 </li>
             @endif
 
@@ -214,7 +239,12 @@
 
 
             @if($permissionsArr['home-page'] || $permissionsArr['about-page'] || $permissionsArr['contact-page'])
-              <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_website')}}</span></a>
+              <li class=" nav-item">
+                <?php 
+                if(is_array($packagePermissionArray) && in_array('website', $packagePermissionArray) || Auth::user()->role_id==1){
+
+                    ?>
+                <a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_website')}}</span></a>
                     <ul class="menu-content">
                         @if($permissionsArr['home-page'])<li class="{{ request()->url() === url('admin/home-page') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('home-page')}}"><i data-feather="menu"></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_home_page')}}</span></a></li>
                         @endif
@@ -224,6 +254,9 @@
                         @endif
                        
                     </ul>
+                <?php }else{ ?>
+                     <a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_website')}}</span></a>
+                <?php } ?>
                 </li>
             @endif
 

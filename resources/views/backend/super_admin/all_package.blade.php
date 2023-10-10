@@ -119,6 +119,13 @@
                         url: "{{ route('delete-package', ['id' => ':id']) }}".replace(':id', id),
                         type: 'get',
                         success: function (response) {
+                        if (response.message === 'Cannot delete the package because it is associated with a business') {
+                                Swal.fire(
+                                    'Error!',
+                                    response.message,
+                                    'error'
+                                );
+                            } else {
                             Swal.fire(
                                 'Deleted!',
                                 'Your record has been deleted.',
@@ -126,6 +133,7 @@
                             ).then(() => {
                                 window.location.reload();
                             });
+                         }
                         },
                         error: function (xhr, status, error) {
                             Swal.fire(

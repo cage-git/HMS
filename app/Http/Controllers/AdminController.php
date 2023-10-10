@@ -105,7 +105,6 @@ class AdminController extends Controller
         return view('backend/users/user_add_edit',$this->data);
     }
     public function saveUser(Request $request) {
-        pakage_permission();
          $res="";
          if (Auth::check()) {
 
@@ -1225,6 +1224,7 @@ class AdminController extends Controller
     }
     public function listReservation() {
 
+
         $startDate = getNextPrevDate('prev');
         $this->data['list'] = 'check_ins';
          if(Auth::user()->role_id == 8){
@@ -2026,9 +2026,8 @@ class AdminController extends Controller
             if($request->hasFile('site_logo')){
                 unlinkImg(getSettings('site_logo'),'uploads/logo/');
                 $filename=$this->core->fileUpload($request->site_logo,'uploads/logo');
-                Setting::updateOrCreate(['name'=>'site_logo'], ['name'=>'site_logo', 'value'=>$filename]);
+               Setting::updateOrCreate(['name'=>'site_logo'], ['name'=>'site_logo', 'value'=>$filename]);
             }
-             
            foreach($request->all() as $key => $value){
 
                 if(!in_array($key, $requestExcept)){

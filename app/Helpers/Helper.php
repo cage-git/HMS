@@ -1010,7 +1010,7 @@ function getFormatedPermissionsList($permissions){
     }
     return $permissionArr;
 }
-function getPermissions($type){
+function getPermissions($type){ 
     $permissionArr = [];
     if($type=='menu'){
         $cacheKey = getCacheKey('menuPermissionListCache');
@@ -1030,6 +1030,25 @@ function getPermissions($type){
             $permissionArr = getFormatedPermissionsList($permissions);
             Cache::put($cacheKey, $permissionArr, config('constants.CACHING_TIME'));
         }
+    }else if($type=='package'){
+        $business_id    = Auth::user()->business_id;
+        $data="";
+        $data_array=[];
+        if($business_id){
+            $auth_business  = Business::where('id', $business_id)->first();
+            $package_id     = $auth_business->package;
+            $auth_package   = Package::where('id', $package_id)->first();
+            
+            if($auth_package->services){
+               $data=$auth_package->services; 
+            }  
+            if(!empty($data)){
+            $data_array=(explode(',',$data));
+            }
+         return $data_array;
+        }else{
+            return false;
+        }
     }
     return $permissionArr;
 }
@@ -1038,6 +1057,9 @@ function getMenuPermission(){
 }
 function getRoutePermission(){
     return getPermissions('route');
+}
+function pakage_permission(){
+    return getPermissions('package');     
 }
 function isPermission($route){
     $permissionArr = getRoutePermission();
@@ -1788,7 +1810,7 @@ function translate($key, $value, $file_name = 'dynamic_dropdown', $lang = null){
     if($lang != null){
         $local = strtolower($lang);
     }
-    dd($key, $value);
+    //dd($key, $value);
     $lang_array = include(base_path('resources/lang/' . $local . '/'.$file_name.'.php'));
     $processed_key = ucfirst(str_replace('_', ' ', Helpers::remove_invalid_charcaters($key)));
     if (!array_key_exists(strtolower($key), $lang_array)) {

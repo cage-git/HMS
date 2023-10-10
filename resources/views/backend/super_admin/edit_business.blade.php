@@ -1,6 +1,7 @@
 @extends('layouts.master_backend_new')
 @section('content')
  @php 
+  use App\Package;
       $flag=0;
       $heading=lang_trans('btn_add');
       $startDate = date('Y-m-d');
@@ -14,6 +15,7 @@
           $selectedWeekDays = splitText($data_row->days);
       }
       $weekDays = getWeekDaysList(['type'=>1, 'is_name'=>'full']);
+    $package_data = Package::find($data_row->package);
   @endphp 
           
   <div class="col-md-12 col-12">
@@ -130,15 +132,17 @@
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="package_name">{{lang_trans('package')}}</label><span class="text-danger">*</span>
-                                        <select name="package" id="package_name" class="form-control" required>
-                                         <option value="{{$data_row->package}}" selected>{{$data_row->package}}</option>
-                                         @foreach ($packages as $k => $v)
-                                         <option value="{{ $v->id }}">{{ $v->name }}</option>
-                                         @endforeach
-                                         </select>
-                                    </div>
+                                     <div class="mb-1">
+                                     <label class="form-label" for="package_name">{{lang_trans('package')}}</label><span class="text-danger">*</span>
+                                     <select name="package" id="package_name" class="form-control" required>
+                                     <option value="{{$data_row->package}}" selected>{{$package_data->name}}</option>
+                                     @foreach ($packages as $k => $v)
+                                     @if($v->name != $package_data->name)
+                                     <option value="{{ $v->id }}">{{ $v->name }}</option>
+                                     @endif
+                                     @endforeach
+                                     </select>
+                                     </div>
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">

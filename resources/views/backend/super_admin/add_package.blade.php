@@ -83,6 +83,30 @@
             <hr>
             <div class="col-xl-12 col-md-12 col-12 pb-2">
               <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="housekeeping">
+                  <label class="form-check-label" for="housekeeping">HouseKeeping</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="laundry">
+                  <label class="form-check-label" for="services">Laundry</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="reports">
+                  <label class="form-check-label" for="reports">Reports</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="companies">
+                  <label class="form-check-label" for="companies">Companies</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="food_item">
+                  <label class="form-check-label" for="food_item">Food Item</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="stocks">
+                  <label class="form-check-label" for="stocks">Stocks</label>
+              </div>
+              <div class="form-check form-check-inline">
                   <input class="form-check-input" name="services[]" type="checkbox" value="expenses">
                   <label class="form-check-label" for="services">Expenses</label>
               </div>
@@ -95,8 +119,12 @@
                   <label class="form-check-label" for="services">Web site</label>
               </div>
               <div class="form-check form-check-inline">
-                  <input class="form-check-input" name="services[]" type="checkbox" value="laundry">
-                  <label class="form-check-label" for="services">Laundry</label>
+                  <input class="form-check-input" name="services[]" type="checkbox" value="vendors">
+                  <label class="form-check-label" for="vendors">Vendors</label>
+              </div>
+              <div class="form-check form-check-inline pt-1">
+                  <input class="form-check-input" name="services[]" type="checkbox" value="season">
+                  <label class="form-check-label" for="season">Season</label>
               </div>
             </div>
             <div class="col-xl-5 col-md-5 col-5 pb-2">
