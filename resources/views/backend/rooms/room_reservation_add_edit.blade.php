@@ -1155,12 +1155,16 @@
                 processData: false,
                 success:function(data){
                     $('#custom-loader').css('display', 'none');
-                    if(data.limit_reached){
-                        Swal.fire(data.msg);
-                        setTimeout(function(){
-                            location.reload(); 
-                        }, 3000);
-                        
+                    if (data.limit_reached) {
+                        Swal.fire({
+                            text: data.msg,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+
                         return false;
                     }
                     Swal.fire({
