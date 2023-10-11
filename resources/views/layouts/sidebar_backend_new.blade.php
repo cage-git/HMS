@@ -2,7 +2,7 @@
 @php
     $permissionsArr = getRoutePermission();
     $logo_Lang= getSettings('site_language') == 'ar'? config('constants.logo_Lang_AR'): config('constants.logo_Lang_EN');
-    $packagePermissionArray = pakage_permission();;
+    $packagePermissionArray = pakage_permission();
 @endphp   
 <?php #print_r($packagePermissionArray);die;?>
 <div id="sidbar_nav" class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">

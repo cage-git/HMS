@@ -55,7 +55,7 @@ class CustomerController extends Controller
     }
 
     public function listCustomer() {
-    if(Auth::user()->role_id == 8){
+    $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
          $this->data['datalist']=Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else{
              $this->data['datalist']=Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC')->get();
@@ -76,7 +76,7 @@ class CustomerController extends Controller
         return redirect()->back()->with(['error' => config('constants.FLASH_REC_DELETE_0')]);
     }
     public function searchFromCustomer(Request $request) {
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
             $data=Customer::where('cat','=',$request->category)
                 ->where('is_deleted',0)
                 ->where('mobile',$request->search_from_phone_idcard)->where('business_id',Auth::user()->business_id)
@@ -98,7 +98,7 @@ class CustomerController extends Controller
 
    }
    public function searchFromCompany(Request $request) {
-     if(Auth::user()->role_id == 8){
+     $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
     $data=Customer::where('cat','=',$request->category)
             ->where('is_deleted',0)
             ->where('mobile',$request->search_from_phone_idcard)

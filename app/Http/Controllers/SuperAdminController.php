@@ -157,6 +157,8 @@ class SuperAdminController extends Controller
                     $settings->value=$data['business_name'];
                 }elseif($settings->name=="hotel_name"){
                     $settings->value=$data['business_name'];
+                }elseif($settings->name=="site_theme"){
+                    $settings->value='light';
                 }else{
                     if ($settings->name=="gst_num" || $settings->name=="gst" || $settings->name=="cgst" || $settings->name=="food_gst" || $settings->name=="food_cgst" ) {
                         $settings->value=0;

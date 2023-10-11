@@ -15,7 +15,8 @@ class VendorController extends Controller
     }
 
     public function index() {  
-        if(Auth::user()->role_id == 8){
+         $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
         $this->data['datalist']=Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else{
              $this->data['datalist']=Vendor::with('category', 'country')->where('is_deleted', 0)->orderBy('vendor_name','ASC')->get();
@@ -93,7 +94,8 @@ class VendorController extends Controller
         
     }
     public function listCategory() {
-        if(Auth::user()->role_id == 8){
+         $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $this->data['datalist']=VendorCategory::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else{
              $this->data['datalist']=VendorCategory::where('is_deleted', 0)->orderBy('name','ASC')->get();
@@ -111,7 +113,8 @@ class VendorController extends Controller
     }
 
     function getVendorCategoryList(){
-        if(Auth::user()->role_id == 8){
+         $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
         return VendorCategory::whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->pluck('name','id');
         }else{
             return VendorCategory::whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->pluck('name','id');

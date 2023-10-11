@@ -51,7 +51,8 @@ class AdminController extends Controller
             (SELECT COUNT(*) FROM reservations WHERE DATE(`check_in`) = CURDATE()) as today_check_ins,
             (SELECT COUNT(*) FROM reservations WHERE DATE(`check_out`) = CURDATE()) as today_check_outs"
             ));
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
          $this->data['products']=Product::where('business_id',Auth::user()->business_id)->whereStatus(1)->whereIsDeleted(0)->orderBy('stock_qty','ASC')->paginate(50);
           }else{
             $this->data['products']=Product::whereStatus(1)->whereIsDeleted(0)->orderBy('stock_qty','ASC')->paginate(50);
@@ -98,7 +99,13 @@ class AdminController extends Controller
     }
     public function editUser(Request $request){
         $this->data['roles']=$this->getRoleList();
-        $this->data['data_row']=User::whereId($request->id)->first();
+        $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
+            $this->data['data_row']=User::where('business_id',Auth::user()->business_id)->whereId($request->id)->first();
+        }else{
+            $this->data['data_row']=User::whereId($request->id)->first();
+
+        }
         if(!$this->data['data_row']){
             return redirect()->back()->with(['error' => config('constants.FLASH_REC_NOT_FOUND')]);
         }
@@ -128,7 +135,8 @@ class AdminController extends Controller
          if($request->new_password){
             $request->merge(['password'=>Hash::make($request->new_password)]);
          }
-         if(Auth::user()->role_id == 8){
+         $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             //echo $User_Created." ".$Total_User_Count;die('here');
             if($User_Created == $Total_User_Count+1){
                 return redirect()->back()->with(['error' => config('constants.FLASH_EXTEND_USER_LIMIT')]); 
@@ -145,7 +153,8 @@ class AdminController extends Controller
          
     }
     public function listUser() {
-         if(Auth::user()->role_id == 8){
+         $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $this->data['datalist']=User::orderBy('name','ASC')->where('role_id', '!=', '6')->where('business_id',Auth::user()->business_id)->get();}else{
             $this->data['datalist']=User::orderBy('name','ASC')->where('role_id', '!=', '6')->get();
          }
@@ -209,7 +218,8 @@ class AdminController extends Controller
     }
     public function listRoom() {
         //  $this->data['datalist']=Room::whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
          $this->data['datalist']=Room::whereIsDeleted(0)->orderBy('order_num','ASC')->where('business_id',Auth::user()->business_id)->get();
         return view('backend/rooms/room_list',$this->data);
         } else {
@@ -274,7 +284,8 @@ class AdminController extends Controller
     }
     public function listRoomType() {
         //  $this->data['datalist']=RoomType::whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
          $this->data['datalist']=RoomType::whereIsDeleted(0)->orderBy('order_num','ASC')->where('business_id',Auth::user()->business_id)->get();
         return view('backend/rooms/room_types_list',$this->data);
      }else {
@@ -328,7 +339,8 @@ class AdminController extends Controller
     }
     public function listAmenities() {
         // $this->data['datalist']=Amenities::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
         $this->data['datalist']=Amenities::whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else{
 
@@ -530,7 +542,8 @@ class AdminController extends Controller
             $reservationData["created_at_checkin"] = date('Y-m-d H:i:s');
             $reservationData['invoice_num'] = getNextInvoiceNo();
         }
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $Total_User_Count = DB::table('package')
              ->select('num_invoices')
              ->where('id',DB::table('business')->select('package')->where('id',Auth::user()->business_id)->value('package'))
@@ -1227,7 +1240,8 @@ class AdminController extends Controller
 
         $startDate = getNextPrevDate('prev');
         $this->data['list'] = 'check_ins';
-         if(Auth::user()->role_id == 8){
+         $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $this->data['datalist'] = Reservation::with('booked_rooms')->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(0)->orderBy('created_at','DESC')->where('business_id',Auth::user()->business_id)->get();
         }else{
             $this->data['datalist'] = Reservation::with('booked_rooms')->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(0)->orderBy('created_at','DESC')->get();        
@@ -1240,7 +1254,8 @@ class AdminController extends Controller
     public function listCheckOuts() {
         $startDate = getNextPrevDate('prev');
         $this->data['list'] = 'check_outs';
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $this->data['datalist']=Reservation::with('booked_rooms')->whereDate('check_out', '>=', $startDate." 00:00:00")->whereDate('check_out', '<=', DB::raw('CURDATE()'))->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC')->where('business_id',Auth::user()->business_id)->get();
          }else{
              $this->data['datalist']=Reservation::with('booked_rooms')->whereDate('check_out', '>=', $startDate." 00:00:00")->whereDate('check_out', '<=', DB::raw('CURDATE()'))->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC')->get();
@@ -1538,7 +1553,8 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listFoodCategory() {
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
         //  $this->data['datalist']=FoodCategory::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
          $this->data['datalist']=FoodCategory::whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else{
@@ -1589,8 +1605,9 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listFoodItem() {
-        //  $this->data['datalist']=FoodItem::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
-        if(Auth::user()->role_id == 8){
+        //  $this->data['datalist']=FoodItem::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();        
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
          $this->data['datalist']=FoodItem::whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else{
             $this->data['datalist']=FoodItem::whereIsDeleted(0)->orderBy('name','ASC')->get();
@@ -1640,7 +1657,8 @@ class AdminController extends Controller
     }
     public function listExpenseCategory() {
         //  $this->data['datalist']=ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->get();
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
          $this->data['datalist']=ExpenseCategory::orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else {
              $this->data['datalist']=ExpenseCategory::orderBy('name','ASC')->get();
@@ -1722,7 +1740,8 @@ class AdminController extends Controller
     public function listExpense() {
         $startDate = getNextPrevDate('prev');
         $this->data['category_list']=$this->getExpenseCategoryList();
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
              $this->data['datalist']=Expense::whereDate('datetime', '>=', $startDate." 00:00:00")->whereDate('datetime', '<=', DB::raw('CURDATE()'))->orderBy('datetime','DESC')->where('business_id',Auth::user()->business_id)->get();
         }else {
              $this->data['datalist']=Expense::whereDate('datetime', '>=', $startDate." 00:00:00")->whereDate('datetime', '<=', DB::raw('CURDATE()'))->orderBy('datetime','DESC')->get();
@@ -1769,7 +1788,9 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listProduct() {
-        if(Auth::user()->role_id == 8){
+        $business_roles = [8, 2, 3, 4, 5, 6, 7];
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId, $business_roles)){
         //  $this->data['datalist']=Product::whereStatus(1)->whereIsDeleted(0)->orderBy('stock_qty','ASC')->get();
          $this->data['datalist']=Product::whereIsDeleted(0)->orderBy('stock_qty','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else{
@@ -1809,7 +1830,8 @@ class AdminController extends Controller
     }
     public function stockHistory() {
             $startDate = getNextPrevDate('prev');
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $this->data['datalist']=StockHistory::whereDate('created_at', '>=', $startDate." 00:00:00")->whereDate('created_at', '<=', DB::raw('CURDATE()'))->orderBy('id','DESC')->where('business_id',Auth::user()->business_id)->get();
             $this->data['products']=Product::where('business_id',Auth::user()->business_id)->where('is_deleted',0)->pluck('name','id');
         }else{
@@ -1996,8 +2018,8 @@ class AdminController extends Controller
         return view('backend/sms_settings',$this->data);
     }
     public function settingsForm() {
-        if(Auth::user()->role_id == 8){
-
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $this->data['data_row']=Setting::where('business_id',Auth::user()->business_id)->pluck('value','name');
        }else{
             $this->data['data_row']=Setting::where('business_id',null)->pluck('value','name');
@@ -2048,7 +2070,8 @@ class AdminController extends Controller
 
 /* ***** Start Permissions Functions ***** */
     public function listPermission() {
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
         $this->data['datalist']=BusinessPermission::where('business_id',Auth::user()->business_id)->where('status',1)->orderBy('permission_type','ASC')->get();
         return view('backend/permissions/business-list',$this->data);
         }else{
@@ -2160,7 +2183,8 @@ class AdminController extends Controller
         $datalist = [];
         foreach ($dynamicDropdowns as $key => $value) {
             
-           if(Auth::user()->role_id == 8 ){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
              if($value->dropdown_name=="housekeeping_status"||$value->dropdown_name=="measurement"||$value->dropdown_name=="room_floor"){
                 if(isset($datalist[$value->dropdown_name])){
                     $datalist[$value->dropdown_name]['values'][] = $value;
@@ -2222,7 +2246,8 @@ class AdminController extends Controller
 
 /* ***** Start Internal Functions ***** */
     function getRoleList(){
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
         return Role::where('id', '!=', 1)->where('id', '!=', 8)->orderBy('role','ASC')->pluck('role','id');
         }else{
             return Role::orderBy('role','ASC')->pluck('role','id');
@@ -2232,21 +2257,24 @@ class AdminController extends Controller
         return Amenities::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
     }
     function getFoodCategoryList(){
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
              return FoodCategory::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->pluck('name','id');
          }else{
              return FoodCategory::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('name','id');
          }
     }
     function getExpenseCategoryList(){
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
         return ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->pluck('name','id');
         }else{
              return ExpenseCategory::whereStatus(1)->orderBy('name','ASC')->pluck('name','id');
         }
     }
     function getProductList(){
-        if(Auth::user()->role_id == 8){
+       $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             return Product::where('business_id',Auth::user()->business_id)->whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('name','id');
         }else{
         return Product::whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->pluck('name','id');
@@ -2255,7 +2283,8 @@ class AdminController extends Controller
     function getRoomList(){
 
         $this->data['booked_rooms'] = getBookedRooms();
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
         $this->data['room_types'] = RoomType::where('business_id',Auth::user()->business_id)->with('rooms')->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
         }else{
         $this->data['room_types'] = RoomType::with('rooms')->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();

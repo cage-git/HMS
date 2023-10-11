@@ -76,7 +76,7 @@ class CompanyController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function listCompany() {
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
          $this->data['datalist']=Customer::where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else{
             $this->data['datalist']=Customer::where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC')->get();

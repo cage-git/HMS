@@ -13,7 +13,8 @@ class SeasonController extends Controller
     }
 
     public function index() {  
-        if(Auth::user()->role_id == 8){
+         $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
              $this->data['datalist']=Season::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else {
              $this->data['datalist']=Season::where('is_deleted', 0)->orderBy('name','ASC')->get();

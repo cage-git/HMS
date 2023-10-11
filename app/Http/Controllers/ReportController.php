@@ -39,7 +39,7 @@ class ReportController extends Controller
 
             $this->data['report_of'] = $request->get('type');
             $this->data['customer_list']=getCustomerList('get');
-            if(Auth::user()->role_id == 8){
+            $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
 
             if($this->data['report_of'] == 'checkouts'){
                 $this->data['roomtypes_list']=getRoomTypesList();
@@ -100,7 +100,7 @@ class ReportController extends Controller
         // dd($request->all());
         
         $this->data['list'] = 'check_outs';
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
         $query = Reservation::
         leftjoin('customers as c', 'c.id', '=', 'reservations.customer_id')->
         select('reservations.*')->
@@ -147,7 +147,7 @@ class ReportController extends Controller
     public function searchBladi(Request $request) {
     //  Code for bladi report and only search from years and month
              $this->data['list'] = 'bladi';
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
             $query = Reservation::where('business_id',Auth::user()->business_id)->whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC');
         }else{
              $query = Reservation::whereStatus(1)->whereIsDeleted(0)->whereIsCheckout(1)->orderBy('created_at','DESC');
@@ -179,7 +179,7 @@ class ReportController extends Controller
             if($request->payment_status != null && ($request->payment_status == 0 || $request->payment_status == 1)){
                 $query->where('payment_status', $request->payment_status);
             }
-             if(Auth::user()->role_id == 8){
+             $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
             $this->data['datalist']=$query->where('business_id',Auth::user()->business_id)->get();
             }else{
                  $this->data['datalist']=$query->get();
@@ -213,7 +213,7 @@ class ReportController extends Controller
 
     public function searchStockHistory(Request $request) {
         // dd($request->all());
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
             $query = StockHistory::where('business_id',Auth::user()->business_id)->orderBy('id','DESC');
             }else{
                 $query = StockHistory::orderBy('id','DESC');
@@ -230,7 +230,7 @@ class ReportController extends Controller
             if($request->is_stock){
                 $query->where('stock_is', $request->is_stock);
             }
-            if(Auth::user()->role_id == 8){
+            $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
             $this->data['datalist']=$query->where('business_id',Auth::user()->business_id)->get();
             $this->data['products']=Product::where('business_id',Auth::user()->business_id)->where('is_deleted',0)->pluck('name','id');
             }else{
@@ -250,7 +250,8 @@ class ReportController extends Controller
         
     }
     public function searchExpense(Request $request) {
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $query = Expense::where('business_id',Auth::user()->business_id)->orderBy('datetime','DESC');
         }else{
              $query = Expense::orderBy('datetime','DESC');
@@ -264,7 +265,8 @@ class ReportController extends Controller
             if($request->date_to){
                 $query->whereDate('datetime', '<=', dateConvert($request->date_to,'Y-m-d'));
             }
-        if(Auth::user()->role_id == 8){
+         $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $this->data['datalist']=$query->where('business_id',Auth::user()->business_id)->get();
             $this->data['category_list']=ExpenseCategory::where('business_id',Auth::user()->business_id)->whereStatus(1)->orderBy('name','ASC')->pluck('name','id');
         }else{
@@ -307,7 +309,8 @@ class ReportController extends Controller
         }
     }
     public function searchCustomer(Request $request) {
-        if(Auth::user()->role_id == 8){
+         $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $query = Customer::where('business_id',Auth::user()->business_id)->where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC');
             }else{
                 $query = Customer::where('cat','=','user')->where('is_deleted',0)->orderBy('name','ASC');
@@ -328,7 +331,8 @@ class ReportController extends Controller
             if($request->country){
                 $query->where('country', $request->country);
             }
-            if(Auth::user()->role_id == 8){
+             $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
                 $this->data['datalist']=$query->where('business_id',Auth::user()->business_id)->get();
                 
             }else{
@@ -347,7 +351,8 @@ class ReportController extends Controller
         
     }
     public function searchCompany(Request $request) {
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
         $query = Customer::where('business_id',Auth::user()->business_id)->where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC');
         }else{
              $query = Customer::where('cat','=','company')->where('is_deleted',0)->orderBy('name','ASC');
@@ -368,7 +373,8 @@ class ReportController extends Controller
         if($request->country){
             $query->where('country', $request->country);
         }
-        if(Auth::user()->role_id == 8){
+         $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
         // dd($request->customer_name, $query->get());
         $this->data['datalist']=$query->where('business_id',Auth::user()->business_id)->get();
       }else{
@@ -392,7 +398,8 @@ class ReportController extends Controller
    public function searchPaymentHistory(Request $request) {
         // dd($request->all());
         // $query = PaymentHistory::orderBy('created_at','DESC');
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
 
         $query = PaymentHistory::leftjoin('customers as c', 'c.id', '=', 'payment_history.customer_id')->with('reservation')->orderBy('payment_history.created_at','DESC')->where('payment_history.business_id', Auth::user()->business_id);
         }else{
@@ -436,7 +443,8 @@ class ReportController extends Controller
     public function searchLaundryOrder(Request $request) {
 
         // dd($request->all());
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $query=LaundryOrder::orderBy('created_at','DESC')->where('business_id',Auth::user()->business_id);
          }else {
             $query=LaundryOrder::orderBy('created_at','DESC');

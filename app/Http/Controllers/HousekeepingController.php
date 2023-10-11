@@ -119,7 +119,7 @@ class HousekeepingController extends Controller
         
     }
     public function listItem() {
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
          $this->data['datalist']=HousekeepingItem::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         }else {
              $this->data['datalist']=HousekeepingItem::where('is_deleted', 0)->orderBy('name','ASC')->get();
