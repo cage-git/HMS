@@ -28,8 +28,6 @@ class ChangeSettingController extends Controller
             }
         }
         
-
-        $userRoleId = Auth::user()->role_id; 
         if(in_array($userRoleId,config("business_roles.business_roles"))){
             if($val == "dark" || $val == "light" ){
                 Setting::updateOrCreate(['name'=>"site_theme",'business_id'=>Auth::user()->business_id], ['value'=>$val, 'updated_at'=>date('Y-m-d h:i:s')]);

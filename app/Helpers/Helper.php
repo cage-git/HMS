@@ -79,7 +79,16 @@ function getCustomerInfo($customerId){
     return Customer::where('id', $customerId)->first();
 }
 function setSettings(){
-    $settings = Setting::pluck('value','name');
+    if (Auth::check()) {
+        $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
+          $settings = Setting::where('business_id',Auth::user()->business_id)->pluck('value','name');
+        }else{
+            $settings = Setting::where('business_id',null)->pluck('value','name');
+        }
+    }else{
+         $settings = Setting::pluck('value','name');
+    }
     Session::put('settings', $settings);
     return $settings;
 }
