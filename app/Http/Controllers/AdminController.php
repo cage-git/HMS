@@ -154,9 +154,11 @@ class AdminController extends Controller
     }
     public function listUser() {
          $userRoleId = Auth::user()->role_id;
+         $currentUser = Auth::user()->id;
         if(in_array($userRoleId,config("business_roles.business_roles"))){
-            $this->data['datalist']=User::orderBy('name','ASC')->where('role_id', '!=', '6')->where('business_id',Auth::user()->business_id)->get();}else{
-            $this->data['datalist']=User::orderBy('name','ASC')->where('role_id', '!=', '6')->get();
+            $this->data['datalist']=User::orderBy('name','ASC')->where('role_id', '!=', '6')->where('business_id',Auth::user()->business_id)->where('id', '!=', $currentUser)->get();
+        }else{
+            $this->data['datalist']=User::orderBy('name','ASC')->where('id', '!=', $currentUser)->where('role_id', '!=', '6')->get();
          }
 
         return view('backend/users/user_list',$this->data);

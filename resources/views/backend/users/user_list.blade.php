@@ -28,10 +28,11 @@
                         </tr>
                     </thead>
                     <tbody>
+                      @php $sr = 1; @endphp
                       @foreach($datalist as $k=>$val)
                         @if($val->email != 'admin@divllo.com')
                           <tr>
-                            <td>{{$k}}</td>
+                            <td>{{$sr}}</td>
                             <td>{{$val->name}}</td>
                             <td>{{$val->user_role->role}}</td>
                             <td>{{$val->email}}</td>
@@ -49,6 +50,7 @@
                               @endisPermission
                             </td>
                           </tr>
+                          @php $sr++; @endphp
                         @endif
                       @endforeach
                     </tbody>
