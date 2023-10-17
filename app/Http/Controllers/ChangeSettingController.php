@@ -17,7 +17,12 @@ class ChangeSettingController extends Controller
     }
 
     public function changeSetting($val) {
-        $userRoleId = Auth::user()->role_id; 
+        $userLoggedIn = Auth::user();
+        if($userLoggedIn){
+            $userRoleId = Auth::user()->role_id; 
+        }else{
+            $userRoleId= 0;
+        }
         if(in_array($userRoleId,config("business_roles.business_roles"))){
             if($val == "ar" || $val == "en" ){
             Setting::updateOrCreate(['name'=>"site_language",'business_id'=>Auth::user()->business_id], ['value'=>$val, 'updated_at'=>date('Y-m-d h:i:s')]);
@@ -38,7 +43,7 @@ class ChangeSettingController extends Controller
             }
         }
 
-
+        
         return redirect()->back();
     }
 
