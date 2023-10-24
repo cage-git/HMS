@@ -19,7 +19,7 @@ use App\DynamicDropdown;
 use App\MediaFile;
 use App\Permission;
 use App\BusinessPermission;
-// use App\Settings;
+use Illuminate\Validation\Rule;
 use Session;
 use Illuminate\Support\Facades\File;
 
@@ -120,9 +120,14 @@ class AdminController extends Controller
              ->select('num_user')
              ->where('id',DB::table('business')->select('package')->where('id',Auth::user()->business_id)->value('package'))
              ->value('num_user');
-             $User_Created=count(DB::table('users')->where('business_id',$BusinessUserId)->get());
+               $User_Created=0;
+            $isUpdate = $request->filled('id');
+
+              if (!$isUpdate) {
+                $User_Created = count(DB::table('users')->where('business_id', $BusinessUserId)->get());
+            }
          }
-         if($request->id>0){
+        if ($isUpdate) {
              if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
              }
@@ -141,6 +146,18 @@ class AdminController extends Controller
             if($User_Created == $Total_User_Count+1){
                 return redirect()->back()->with(['error' => config('constants.FLASH_EXTEND_USER_LIMIT')]); 
             }
+            $this->validate($request, [
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('users')->ignore($request->id),
+                ],
+                'mobile' => [
+                    'required',
+                    Rule::unique('users')
+                        ->ignore($request->id),
+                ],
+            ]);
             $res = User::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','new_password','conf_password']));
          }else{
              $res = User::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','new_password','conf_password']));
@@ -1853,7 +1870,12 @@ class AdminController extends Controller
         return view('backend/orders_list',$this->data);
     }
     public function foodOrder() {
-        $this->data['categories_list']=FoodCategory::with('food_items')->whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
+        $userRoleId=Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){ 
+            $this->data['categories_list']=FoodCategory::with('food_items')->whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
+        }else{
+             $this->data['categories_list']=FoodCategory::with('food_items')->whereStatus(1)->whereIsDeleted(0)->orderBy('name','ASC')->get();
+        }
         return view('backend/food_order_page',$this->data);
     }
     public function foodOrderTable(Request $request) {

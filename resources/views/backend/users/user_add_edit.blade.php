@@ -17,6 +17,15 @@
         {{ session('error') }}
     </div>
 @endif
+@if($errors->any())
+        <div class="alert alert-danger p-1 m-0 mb-1 alrt_msg" role="alert">
+            <ul class="list-unstyled m-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
   <div class="col-md-12 col-12">
         <div class="card">
             <div class="card-header">
@@ -118,7 +127,6 @@
             </div>
         </div>
     </div>
-
 
 <!--   
 <div class="">
