@@ -14,5 +14,6 @@ class Package extends Model
         'num_hotels',
         'num_invoices',
         'services',
+        'nt_enable',
     ];
 }

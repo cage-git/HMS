@@ -126,6 +126,11 @@
                   <input class="form-check-input" name="services[]" type="checkbox" value="season">
                   <label class="form-check-label" for="season">Season</label>
               </div>
+              <hr>
+              <div class="form-check form-check-inline pt-1">
+                  <input class="form-check-input" name="nt_enable" type="checkbox" value="1">
+                  <label class="form-check-label" for="nt_enable">NTMP</label>
+              </div>
             </div>
             <div class="col-xl-5 col-md-5 col-5 pb-2">
             	<button type="submit" class="btn btn-info" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>

@@ -21,6 +21,7 @@ use App\Permission;
 use App\BusinessPermission;
 use Illuminate\Validation\Rule;
 use Session;
+use App\Package;
 use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
@@ -380,6 +381,8 @@ class AdminController extends Controller
 
 /* ***** Start RoomReservation Functions ***** */
     public function roomReservation() {
+        $package = Package::where('nt_enable', 1)->first();
+         $this->data['package'] = $package;
         $this->data['roomtypes_list']=getRoomTypesList('custom');
         $this->data['customer_list']=getCustomerList('get');
         $this->data['companies_list']=getCustomerList('get', 'company');

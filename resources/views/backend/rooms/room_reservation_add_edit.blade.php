@@ -775,10 +775,8 @@
           </div>
       </div>
 
-
-
      {{--  @if(env('APP_NT_ENABLE')) --}} 
-      @if(config('app.nt_enable'))
+      @if(isset($package) && $package->nt_enable ==1)
             <input id="app_nt_enable" value="1" type="hidden"> 
           <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">

@@ -187,6 +187,7 @@ class SuperAdminController extends Controller
     {
 
         $data = $request->all();
+        $ntEnableValue = $request->input('nt_enable') ? 1 : 0;
         if ($request->has('hidden')) {
             $package = Package::find($request->hidden);
             $package->update([
@@ -195,6 +196,7 @@ class SuperAdminController extends Controller
                 'num_hotels' => $data['number_of_hotels'],
                 'num_invoices' => $data['number_of_invoices'],
                 'services' => !empty($request->input('services'))?implode(',', $request->input('services')):"",
+                'nt_enable' => $ntEnableValue,
             ]);
 
             return redirect()->route('all-packages')->with('success', 'Package updated successfully');
@@ -205,6 +207,7 @@ class SuperAdminController extends Controller
                 'num_hotels' => $data['number_of_hotels'],
                 'num_invoices' => $data['number_of_invoices'],
                 'services' => !empty($request->input('services'))?implode(',', $request->input('services')):"",
+                'nt_enable' => $ntEnableValue,
             ]);
 
             return redirect()->route('all-packages')->with('success', 'Package saved successfully');

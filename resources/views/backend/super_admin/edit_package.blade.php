@@ -183,6 +183,11 @@
                  ?>>
                   <label class="form-check-label" for="services">Season</label>
               </div>
+              <hr>
+              <div class="form-check form-check-inline pt-1">
+                  {{ Form::checkbox('nt_enable', 1, $data_row->nt_enable == 1, ['class' => 'form-check-input', 'id' => 'nt_enable']) }}
+                  <label class="form-check-label" for="nt_enable">NTMP</label>
+              </div>
             </div>
             <div class="col-xl-5 col-md-5 col-5 pb-2">
                 <button type="submit" class="btn btn-info" name="submit" value="Submit">{{lang_trans('btn_submit')}}</button>
