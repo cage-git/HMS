@@ -1871,3 +1871,17 @@ function remove_invalid_charcaters($str)
 {
     return str_ireplace(['\'', '"', ',', ';', '<', '>', '?'], ' ', $str);
 }
+
+function ntmp_enable()
+{
+    $businessId = Auth::user()->business_id;
+    $ntmp_enable = DB::table('package')
+             ->select('nt_enable')
+             ->where('id',DB::table('business')->select('package')->where('id',Auth::user()->business_id)->value('package'))
+             ->value('num_user');
+             
+        $package = Package::where('nt_enable', $ntmp_enable)->first();
+
+         return $package;
+
+}

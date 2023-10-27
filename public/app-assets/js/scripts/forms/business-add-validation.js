@@ -77,9 +77,6 @@ $(function () {
           'country': {
             required: true
           },
-          'business_logo': {
-            required: true
-          },
           'email': {
             required: true
           },

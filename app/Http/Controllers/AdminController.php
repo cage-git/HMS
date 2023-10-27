@@ -381,8 +381,7 @@ class AdminController extends Controller
 
 /* ***** Start RoomReservation Functions ***** */
     public function roomReservation() {
-        $package = Package::where('nt_enable', 1)->first();
-         $this->data['package'] = $package;
+        $this->data['package'] = ntmp_enable();
         $this->data['roomtypes_list']=getRoomTypesList('custom');
         $this->data['customer_list']=getCustomerList('get');
         $this->data['companies_list']=getCustomerList('get', 'company');
@@ -398,6 +397,7 @@ class AdminController extends Controller
     }
 
     public function saveReservation(Request $request) {
+        $ntmp_package = ntmp_enable();
         $BusinessUserId=null;
         $res="";
         if(Auth::user()->role_id == 8){
@@ -420,8 +420,8 @@ class AdminController extends Controller
             $error = config('constants.FLASH_REC_ADD_0');
         }
         // if(env('APP_NT_ENABLE') == true){
-        if(config('app.nt_enable') == true){
-
+        //if(config('app.nt_enable') == true){
+        if(isset($ntmp_package) && $ntmp_package->nt_enable ==1){
             if(
                 !$request->mt_nationality
                 || !$request->mt_room_rent_type
@@ -640,7 +640,8 @@ class AdminController extends Controller
             }
 
 
-            if(config('app.nt_enable') == true){
+           // if(config('app.nt_enable') == true){
+            if(isset($ntmp_package) && $ntmp_package->nt_enable ==1){
                 $settings = getSettings();
                 if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
                     if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
@@ -694,6 +695,7 @@ class AdminController extends Controller
         }
     }
     public function cancelReservationSubmit(Request $request){
+         $ntmp_package= ntmp_enable();
         $BusinessUserId="";
         if(Auth::user()->role_id == 8){
         $BusinessUserId = Auth::user()->business_id;
@@ -730,7 +732,8 @@ class AdminController extends Controller
             $paymentHistoryData['payment_of'] = 'dr';
             $paymentHistoryData['transaction_id'] = getNextInvoiceNo('ph');
             $this->core->updateOrCreatePH($where, $paymentHistoryData);
-            if(env('APP_NT_ENABLE') == true){
+           // if(env('APP_NT_ENABLE') == true){
+             if(isset($ntmp_package) && $ntmp_package->nt_enable ==1){
                 $settings = getSettings();
                 if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
                     if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
@@ -799,6 +802,7 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function cancelReservation(Request $request){
+        $ntmp_package = ntmp_enable();
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
@@ -810,7 +814,8 @@ class AdminController extends Controller
             $success = config('constants.FLASH_REC_ADD_1');
             $error = config('constants.FLASH_REC_ADD_0');
         }
-        if(env('APP_NT_ENABLE') == true) {
+       // if(env('APP_NT_ENABLE') == true) {
+        if(isset($ntmp_package) && $ntmp_package->nt_enable ==1){
             $res = Reservation::findOrFail($request->id);
             if($res){
                 $this->data['data_row']=Reservation::with('orders_items','orders_info', 'booked_rooms')->whereId($request->id)->whereIsCheckout(0)->first();
@@ -844,6 +849,7 @@ class AdminController extends Controller
         return redirect()->back()->with(['error' => $error]);
     }
     public function changetoCheckinReservation(Request $request){
+       $ntmp_package = ntmp_enable();
         if($request->id>0){
             if($this->core->checkWebPortal()==0){
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
@@ -856,7 +862,8 @@ class AdminController extends Controller
         }
         $res = Reservation::where(['id'=>$request->id])->update(['reservation_type'=>0]);
         if($res){
-            if(env('APP_NT_ENABLE') == true){
+            //if(env('APP_NT_ENABLE') == true){
+           if(isset($ntmp_package) && $ntmp_package->nt_enable ==1){
                 $settings = getSettings();
                 if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
                     if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
@@ -918,6 +925,7 @@ class AdminController extends Controller
         }
     }
     public function saveCheckOutData(Request $request) {
+        $ntmp_package = ntmp_enable();
         $BusinessUserId="";
          if(Auth::user()->role_id == 8){
         $BusinessUserId = Auth::user()->business_id;
@@ -1140,8 +1148,8 @@ class AdminController extends Controller
 //                    }
 //                }
 //            }
-
-            if(env('APP_NT_ENABLE') == true){
+            //if(env('APP_NT_ENABLE') == true){
+           if(isset($ntmp_package) && $ntmp_package->nt_enable ==1){
                 $settings = getSettings();
                 if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
                     if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
@@ -1158,7 +1166,8 @@ class AdminController extends Controller
                                 'x-Gateway-APIKey: '.$settings['ntmp_api_key'].'',
                                 'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
                             ];
-                            if(env('APP_NT_ENABLE_EXPENSE') == true){
+                            //if(env('APP_NT_ENABLE_EXPENSE') == true){
+                           if(isset($ntmp_package) && $ntmp_package->nt_enable ==1){
                                 $url2 = getNtmpUrl($settings['ntmp_type'], 'BookingExpenseDetails');
                                 $get_percentage_tax = ($request['amount']['order_amount_gst']/$request['amount']['order_amount']) * 100;
                                 $get_percentage_discount = ($request['discount_order_amount']/$request['amount']['order_amount']) * 100;
@@ -1334,6 +1343,7 @@ class AdminController extends Controller
 
 
     public function extendDays(Request $request) {
+         $ntmp_package = ntmp_enable();
         $resData = Reservation::findOrFail($request->id);
         if($resData){
             if($request->days_type == 0){
@@ -1355,7 +1365,8 @@ class AdminController extends Controller
             $res = true;
             if($res){
                 BookedRoom::where(['reservation_id'=>$request->id, 'is_checkout'=>0])->update($postData);
-                if(env('APP_NT_ENABLE') == true){
+                //if(env('APP_NT_ENABLE') == true){
+                if(isset($ntmp_package) && $ntmp_package->nt_enable ==1){
                     $settings = getSettings();
                     if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
                         if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
@@ -1422,8 +1433,7 @@ class AdminController extends Controller
         return view('backend/rooms/room_swap',$this->data);
     }
     public function saveSwapRoom(Request $request) {
-
-
+        $ntmp_package = ntmp_enable();
         if(!$request->new_room || !$request->old_room){
             return redirect()->back()->with(['error' => config('constants.FLASH_ALL_FIELD_REQUIRED')]);
         }
@@ -1472,7 +1482,8 @@ class AdminController extends Controller
         $res = BookedRoom::insert($newRoomData);
         $res = true;
 
-        if(env('APP_NT_ENABLE') == true){
+        //if(env('APP_NT_ENABLE') == true){
+         if(isset($ntmp_package) && $ntmp_package->nt_enable ==1){
             $settings = getSettings();
             if(isset($settings['ntmp_status']) && isset($settings['ntmp_api_key'])){
                 if($settings['ntmp_status'] == 'true' && $settings['ntmp_api_key'] != NULL)
@@ -2047,11 +2058,12 @@ class AdminController extends Controller
     public function settingsForm() {
         $userRoleId = Auth::user()->role_id;
         if(in_array($userRoleId,config("business_roles.business_roles"))){
+             $ntmp_package = ntmp_enable();
+             $this->data['package']= $ntmp_package;
             $this->data['data_row']=Setting::where('business_id',Auth::user()->business_id)->pluck('value','name');
        }else{
             $this->data['data_row']=Setting::where('business_id',null)->pluck('value','name');
         }
-         
         return view('backend/settings',$this->data);
     }
     public function saveSettings(Request $request) {

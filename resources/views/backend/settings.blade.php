@@ -79,15 +79,24 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-4 col-md-6 col-12">
+                               {{-- <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_phone')}}</label>
                                         {{Form::text('hotel_phone',@$data_row['hotel_phone'],['class'=>"form-control col-md-7 col-xs-12"])}}
                                     </div>
                                 </div>
 
-                              @if(config('app.nt_enable')==true)
-
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_phone')}}</label>
+                                        {{Form::text('hotel_phone',@$data_row['hotel_phone'],['class'=>"form-control col-md-7 col-xs-12"])}}
+                                    </div>
+                                </div>  --}}                            
+                        </div>
+                        
+                        <div class="row ntmp_configuration">
+                             @if(isset($package) && $package->nt_enable ==1)
+                             <hr>
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_api_key')}}</label>
@@ -109,12 +118,12 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-4 col-md-6 col-12">
+                         {{--  <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_type')}}</label>
                                         {{ Form::select('ntmp_type',getNtmpList(),@$data_row['ntmp_type'] ,['class'=>'form-control']) }}
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
@@ -122,19 +131,9 @@
                                         {{ Form::select('ntmp_status', ['true'=>'true', 'false'=>'false'], @$data_row['ntmp_status'], ['class'=>'form-control']) }}
                                     </div>
                                 </div>
+                            @endif
 
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_phone')}}</label>
-                                        {{Form::text('hotel_phone',@$data_row['hotel_phone'],['class'=>"form-control col-md-7 col-xs-12"])}}
-                                    </div>
-                                </div>
-
-                              @endif
-
-                                
                         </div>
-                        <hr>
             </div>
         </div>
         </div>

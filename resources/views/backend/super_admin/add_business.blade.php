@@ -94,7 +94,7 @@
 
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">
-                                         <label for="business_logo" class="form-label">Logo</label><span class="text-danger">*</span>
+                                         <label for="business_logo" class="form-label">Logo</label>
                                         <input class="form-control" name="business_logo" type="file" id="business_logo">
                                     </div>
                                 </div>
