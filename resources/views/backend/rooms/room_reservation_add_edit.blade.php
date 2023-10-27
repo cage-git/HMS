@@ -764,7 +764,8 @@
                               {{Form::select('payment_mode',config('constants.PAYMENT_MODES'),1,['class'=>"form-control", 'required'=>true])}}
                           </div>
                       </div>
-                      @if(!env('APP_NT_ENABLE'))
+                     {{-- @if(!config('app.nt_enable')) --}}
+                     @if(isset($package) && $package->nt_enable == 0)
                           <div class="ln_solid"></div>
                           <div class="col-md-12 col-sm-12 col-xs-12 text-right">
                               <button class="btn btn-success btn-submit-form" type="submit" disabled>{{lang_trans('btn_submit')}}</button>
