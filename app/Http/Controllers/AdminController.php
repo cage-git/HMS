@@ -2179,8 +2179,8 @@ class AdminController extends Controller
         $financialManager = $request->financial_manager;
         $business = $request->new_business;
         foreach($ids as $key => $id){
-            $superAdminP = 1; //not change superadmin, so set default 1
-            $adminP = $recP = $smP = $fmP = $bmP = 0;
+            $superAdminP = $bmP = 1; //not change superadmin, so set default 1
+            $adminP = $recP = $smP = $fmP = 0;
             if(isset($superAdmin[$id])){
                 $superAdminP = 1;
             }

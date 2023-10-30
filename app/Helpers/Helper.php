@@ -20,6 +20,7 @@ use Salla\ZATCA\Tags\InvoiceTotalAmount;
 use Salla\ZATCA\Tags\Seller;
 use Salla\ZATCA\Tags\TaxNumber;
 use App\Business;
+use App\BusinessPermission;
 use App\Package;
 function getPaginationNum($num = 10){
     return $num;
@@ -1058,7 +1059,13 @@ function getPermissions($type){
         if (Cache::has($cacheKey)){
             $permissionArr = Cache::get($cacheKey);
         } else {
-            $permissions = Permission::where('permission_type','menu')->get();
+            $userRoleId = Auth::user()->role_id; 
+            if(in_array($userRoleId,config("business_roles.business_roles"))){
+                $permissions = BusinessPermission::where('business_id',Auth::user()->business_id)->where('permission_type','menu')->get();
+            }else{
+                $permissions = Permission::where('permission_type','menu')->get();
+            }
+
             $permissionArr = getFormatedPermissionsList($permissions);
             Cache::put($cacheKey, $permissionArr, config('constants.CACHING_TIME'));
         }

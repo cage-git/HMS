@@ -19,6 +19,8 @@ class BusinessPermission extends Model
         'store_manager',
         'financial_manager',
         'customer',
-        'housekeeper'
+        'housekeeper',
+        'business',
+        'permission_type'
     ];
 }

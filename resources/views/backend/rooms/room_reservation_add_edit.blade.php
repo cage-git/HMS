@@ -20,6 +20,8 @@
     $MT_PAYMENT_TYPE= getSettings('site_language') == 'ar'? config('constants.MT_PAYMENT_TYPE_AR'): config('constants.MT_PAYMENT_TYPE_EN');
 
     $MT_STAYREASON= getSettings('site_language') == 'ar'? config('constants.MT_STAYREASON_AR'): config('constants.MT_STAYREASON_EN');
+    $packagePermissions = getPermissions('menu');
+    $ntmp_permission = $packagePermissions["ntmp-setting"];  
     
   @endphp
   
@@ -765,7 +767,7 @@
                           </div>
                       </div>
                      {{-- @if(!config('app.nt_enable')) --}}
-                     @if(isset($package) && $package->nt_enable == 0)
+                     @if(isset($package) && $package->nt_enable == 0 || Auth::user()->business_id == NULL || $ntmp_permission == 0)
                           <div class="ln_solid"></div>
                           <div class="col-md-12 col-sm-12 col-xs-12 text-right">
                               <button class="btn btn-success btn-submit-form" type="submit" disabled>{{lang_trans('btn_submit')}}</button>
@@ -775,9 +777,8 @@
               </div>
           </div>
       </div>
-
      {{--  @if(env('APP_NT_ENABLE')) --}} 
-      @if(isset($package) && $package->nt_enable ==1)
+      @if(isset($package) && $package->nt_enable ==1 && $ntmp_permission == 1)
             <input id="app_nt_enable" value="1" type="hidden"> 
           <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">

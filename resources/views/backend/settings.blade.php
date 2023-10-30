@@ -1,10 +1,9 @@
 @extends('layouts.master_backend_new')
 @section('content')
-
-
-
-
-
+@php
+    $packagePermissions = getPermissions('menu');
+    $ntmp_permission = $packagePermissions["ntmp-setting"];  
+@endphp
 <section>
   {{ Form::open(array('url'=>route('save-settings'),'id'=>"update-setting-form", 'class'=>"form-horizontal form-label-left", "files"=>true)) }}
   <div class="row">
@@ -95,7 +94,8 @@
                         </div>
                         
                         <div class="row ntmp_configuration">
-                             @if(isset($package) && $package->nt_enable ==1)
+                             @if(isset($package) && $package->nt_enable ==1 && $ntmp_permission == 1)
+
                              <hr>
                                 <div class="col-xl-4 col-md-6 col-12">
                                     <div class="mb-1">

@@ -89,7 +89,8 @@ class SuperAdminController extends Controller
           }
           $validator = Validator::make($data, [
             'business_email' => 'required|email|unique:users,email',
-             'mobile_num' => 'required|unique:users,mobile',
+             'mobile_num'    => 'required|unique:users,mobile',
+             'mobile_num'    => 'required|unique:business,mobile',
         ]);
           if ($validator->fails()) {
                 return redirect()->back()
@@ -118,22 +119,26 @@ class SuperAdminController extends Controller
           'password' => bcrypt($data['business_password']),
            ]);
         $permissionData = DB::table('permissions')
-            ->select('parent_id','description','slug','category','admin', 'receptionist','store_manager','financial_manager','customer','housekeeper')
+            ->select('parent_id','description','slug','category','admin', 'receptionist','store_manager','financial_manager','customer','housekeeper','business','permission_type')
             ->get();
+            //echo "<pre>";print_r($permissionData);die;
          foreach ($permissionData as $permission) {
             $businessPermission = BusinessPermission::create([
-                'parent_id' => $permission->parent_id,
-                'business_id' => $newBusinessId, 
-                'description' => $permission->description,
-                'slug' => $permission->slug,
-                'category' => $permission->category,
-                'admin' => $permission->admin,
-                'receptionist' => $permission->receptionist,
-                'store_manager' => $permission->store_manager,
+                'parent_id'         => $permission->parent_id,
+                'business_id'       => $newBusinessId, 
+                'description'       => $permission->description,
+                'slug'              => $permission->slug,
+                'category'          => $permission->category,
+                'admin'             => $permission->admin,
+                'receptionist'      => $permission->receptionist,
+                'store_manager'     => $permission->store_manager,
                 'financial_manager' => $permission->financial_manager,
-                'customer' => $permission->customer,
-                'housekeeper' => $permission->housekeeper,
+                'customer'          => $permission->customer,
+                'housekeeper'       => $permission->housekeeper,
+                'business'          => $permission->business,
+                'permission_type'   => $permission->permission_type,
             ]);
+            
         }
         $settingsData = DB::table('settings')
             ->select('name','value')
