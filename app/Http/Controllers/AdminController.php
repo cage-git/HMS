@@ -2199,7 +2199,7 @@ class AdminController extends Controller
             if(isset($business[$id])){
                 $bmP = 1;
             }
-            $res = BusinessPermission::where('id',$id)->update(["super_admin"=>$superAdminP, 'admin'=>$adminP, 'receptionist'=>$recP, 'store_manager'=>$smP, 'financial_manager'=>$fmP, 'business'=>$bmP ,'business_id'=>$BusinessUserId]);
+            $res = BusinessPermission::where('id',$id)->where('business_id',$BusinessUserId)->update(["super_admin"=>$superAdminP, 'admin'=>$adminP, 'receptionist'=>$recP, 'store_manager'=>$smP, 'financial_manager'=>$fmP, 'business'=>$bmP ,'business_id'=>$BusinessUserId]);
         }
         if($res){
             return redirect()->back()->with(['success' => config('constants.FLASH_REC_UPDATE_1')]);

@@ -1053,14 +1053,14 @@ function getFormatedPermissionsList($permissions){
     return $permissionArr;
 }
 function getPermissions($type){ 
+    $userRoleId = Auth::user()->role_id;
     $permissionArr = [];
     if($type=='menu'){
         $cacheKey = getCacheKey('menuPermissionListCache');
         if (Cache::has($cacheKey)){
             $permissionArr = Cache::get($cacheKey);
         } else {
-            $userRoleId = Auth::user()->role_id; 
-            if(in_array($userRoleId,config("business_roles.business_roles"))){
+            if(Auth::user()->business_id !== null && in_array($userRoleId,config("business_roles.business_roles"))){
                 $permissions = BusinessPermission::where('business_id',Auth::user()->business_id)->where('permission_type','menu')->get();
             }else{
                 $permissions = Permission::where('permission_type','menu')->get();
@@ -1073,8 +1073,12 @@ function getPermissions($type){
         $cacheKey = getCacheKey('routePermissionListCache');
         if (Cache::has($cacheKey)){
             $permissionArr = Cache::get($cacheKey);
-        } else {
-            $permissions = Permission::where('permission_type','route')->get();
+        } else { 
+            if(Auth::user()->business_id !== null && in_array($userRoleId,config("business_roles.business_roles"))){
+                $permissions = BusinessPermission::where('business_id',Auth::user()->business_id)->where('permission_type','route')->get();
+            }else{
+                $permissions = Permission::where('permission_type','route')->get();
+            }
             $permissionArr = getFormatedPermissionsList($permissions);
             Cache::put($cacheKey, $permissionArr, config('constants.CACHING_TIME'));
         }
