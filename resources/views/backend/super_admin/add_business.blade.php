@@ -135,8 +135,8 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="package_name">{{lang_trans('package')}}</label><span class="text-danger">*</span>
                                         <select name="package_name" id="package_name" class="form-control" required> 
+                                        <option value="">Select a package</option>
                                          @foreach ($packages as $k => $v)
-                                         
                                          <option value="{{ $v->id }}">{{ $v->name }}</option>
                                          @endforeach
                                          </select>

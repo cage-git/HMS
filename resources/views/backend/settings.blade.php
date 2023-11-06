@@ -12,133 +12,136 @@
                 <h4 class="card-title">{{lang_trans('heading_site_settings')}}</h4>
                 <button class="btn btn-primary" type="submit">{{lang_trans('btn_submit')}}</button>
             </div>
-            <div class="card-body">
-                 
-                        <div class="row">
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_site_page_title')}}</label>
-                                        {{Form::text('site_page_title',@$data_row['site_page_title'],['class'=>"form-control col-md-7 col-xs-12", "required"=>true])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_site_lang')}}</label>
-                                        {{Form::select('site_language',getLangages(),@$data_row['site_language'],['class'=>"form-control col-md-7 col-xs-12", "required"=>true])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_name')}}</label>
-                                        {{Form::text('hotel_name',@$data_row['hotel_name'],['class'=>"form-control col-md-7 col-xs-12", "required"=>true])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_tagline')}}</label>
-                                        {{Form::text('hotel_tagline',@$data_row['hotel_tagline'],['class'=>"form-control col-md-7 col-xs-12"])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_email')}}</label>
-                                        {{Form::email('hotel_email',@$data_row['hotel_email'],['class'=>"form-control col-md-7 col-xs-12"])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_phone')}}</label>
-                                        {{Form::text('hotel_phone',@$data_row['hotel_phone'],['class'=>"form-control col-md-7 col-xs-12"])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_mobile')}}</label>
-                                        {{Form::text('hotel_mobile',@$data_row['hotel_mobile'],['class'=>"form-control col-md-7 col-xs-12"])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_website')}}</label>
-                                        {{Form::text('hotel_website',@$data_row['hotel_website'],['class'=>"form-control col-md-7 col-xs-12"])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_address')}}</label>
-                                        {{Form::textarea('hotel_address',@$data_row['hotel_address'],['class'=>"form-control col-md-7 col-xs-12",'rows'=>1])}}
-                                    </div>
-                                </div>
-
-                               {{-- <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_phone')}}</label>
-                                        {{Form::text('hotel_phone',@$data_row['hotel_phone'],['class'=>"form-control col-md-7 col-xs-12"])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_phone')}}</label>
-                                        {{Form::text('hotel_phone',@$data_row['hotel_phone'],['class'=>"form-control col-md-7 col-xs-12"])}}
-                                    </div>
-                                </div>  --}}                            
+            <div class="card-body">                 
+                <div class="row">
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_site_page_title')}}</label>
+                                {{Form::text('site_page_title',@$data_row['site_page_title'],['class'=>"form-control col-md-7 col-xs-12", "required"=>true])}}
+                            </div>
                         </div>
-                        
-                        <div class="row ntmp_configuration">
-                             @if(isset($package) && $package->nt_enable ==1 && $ntmp_permission == 1)
 
-                             <hr>
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_api_key')}}</label>
-                                        {{Form::text('ntmp_api_key',@$data_row['ntmp_api_key'],['class'=>"form-control col-md-7 col-xs-12",'rows'=>1])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_user_id')}}</label>
-                                         {{Form::text('ntmp_user_id',@$data_row['ntmp_user_id'],['class'=>"form-control col-md-7 col-xs-12",'rows'=>1])}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_password')}}</label>
-                                        {{Form::input('password', 'ntmp_password',@$data_row['ntmp_password'],['class'=>"form-control col-md-7 col-xs-12"])}}
-                                    </div>
-                                </div>
-
-                         {{--  <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_type')}}</label>
-                                        {{ Form::select('ntmp_type',getNtmpList(),@$data_row['ntmp_type'] ,['class'=>'form-control']) }}
-                                    </div>
-                                </div> --}}
-
-                                <div class="col-xl-4 col-md-6 col-12">
-                                    <div class="mb-1">
-                                        <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_status')}}</label>
-                                        {{ Form::select('ntmp_status', ['true'=>'true', 'false'=>'false'], @$data_row['ntmp_status'], ['class'=>'form-control']) }}
-                                    </div>
-                                </div>
-                            @endif
-
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_site_lang')}}</label>
+                                {{Form::select('site_language',getLangages(),@$data_row['site_language'],['class'=>"form-control col-md-7 col-xs-12", "required"=>true])}}
+                            </div>
                         </div>
+
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_name')}}</label>
+                                {{Form::text('hotel_name',@$data_row['hotel_name'],['class'=>"form-control col-md-7 col-xs-12", "required"=>true])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_tagline')}}</label>
+                                {{Form::text('hotel_tagline',@$data_row['hotel_tagline'],['class'=>"form-control col-md-7 col-xs-12"])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_email')}}</label>
+                                {{Form::email('hotel_email',@$data_row['hotel_email'],['class'=>"form-control col-md-7 col-xs-12"])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_phone')}}</label>
+                                {{Form::text('hotel_phone',@$data_row['hotel_phone'],['class'=>"form-control col-md-7 col-xs-12"])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_mobile')}}</label>
+                                {{Form::text('hotel_mobile',@$data_row['hotel_mobile'],['class'=>"form-control col-md-7 col-xs-12"])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_website')}}</label>
+                                {{Form::text('hotel_website',@$data_row['hotel_website'],['class'=>"form-control col-md-7 col-xs-12"])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_address')}}</label>
+                                {{Form::textarea('hotel_address',@$data_row['hotel_address'],['class'=>"form-control col-md-7 col-xs-12",'rows'=>1])}}
+                            </div>
+                        </div>
+
+                       {{-- <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_phone')}}</label>
+                                {{Form::text('hotel_phone',@$data_row['hotel_phone'],['class'=>"form-control col-md-7 col-xs-12"])}}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-default-name">{{lang_trans('txt_hotel_phone')}}</label>
+                                {{Form::text('hotel_phone',@$data_row['hotel_phone'],['class'=>"form-control col-md-7 col-xs-12"])}}
+                            </div>
+                        </div>  --}}                            
+                </div>
             </div>
         </div>
         </div>
 
+        @if(isset($package) && $package->nt_enable ==1 && $ntmp_permission == 1 || Auth::user()->business_id == NULL)
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">NTMP Settings</h4>
+                </div>
+                <div class="card-body">                     
+                    <div class="row">
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_api_key')}}</label>
+                                    {{Form::text('ntmp_api_key',@$data_row['ntmp_api_key'],['class'=>"form-control col-md-7 col-xs-12",'rows'=>1])}}
+                                </div>
+                            </div>
 
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_user_id')}}</label>
+                                     {{Form::text('ntmp_user_id',@$data_row['ntmp_user_id'],['class'=>"form-control col-md-7 col-xs-12",'rows'=>1])}}
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_password')}}</label>
+                                    {{Form::input('password', 'ntmp_password',@$data_row['ntmp_password'],['class'=>"form-control col-md-7 col-xs-12"])}}
+                                </div>
+                            </div>
+
+                     {{--  <div class="col-xl-4 col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_type')}}</label>
+                                    {{ Form::select('ntmp_type',getNtmpList(),@$data_row['ntmp_type'] ,['class'=>'form-control']) }}
+                                </div>
+                            </div> --}}
+
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-default-name">{{lang_trans('ntmp_status')}}</label>
+                                    {{ Form::select('ntmp_status', ['true'=>'true', 'false'=>'false'], @$data_row['ntmp_status'], ['class'=>'form-control']) }}
+                                </div>
+                            </div>                                                 
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
         <div class="row">
         <div class="card">
             <div class="card-header">

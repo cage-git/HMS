@@ -1887,12 +1887,18 @@ function ntmp_enable()
 {
     $businessId = Auth::user()->business_id;
     $ntmp_enable = DB::table('package')
-             ->select('nt_enable')
-             ->where('id',DB::table('business')->select('package')->where('id',Auth::user()->business_id)->value('package'))
-             ->value('num_user');
-             
+                    ->join('business', 'business.package', '=', 'package.id')
+                    ->where('business.id', Auth::user()->business_id)
+                    ->value('package.nt_enable');             
         $package = Package::where('nt_enable', $ntmp_enable)->first();
-
          return $package;
-
+}
+function ntmp_enable_expense(){
+    $businessId = Auth::user()->business_id;
+    $ntmp_enable_expense = DB::table('settings')
+                            ->where('business_id', Auth::user()->business_id)
+                            ->where('name', 'ntmp_status')
+                            ->where('value', 'true')
+                            ->first();
+        return $ntmp_enable_expense;
 }

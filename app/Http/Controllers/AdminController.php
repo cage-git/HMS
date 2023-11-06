@@ -925,7 +925,8 @@ class AdminController extends Controller
         }
     }
     public function saveCheckOutData(Request $request) {
-        $ntmp_package = ntmp_enable();
+        $ntmp_package         = ntmp_enable();
+         $ntmp_enable_expense = ntmp_enable_expense();
         $BusinessUserId="";
          if(Auth::user()->role_id == 8){
         $BusinessUserId = Auth::user()->business_id;
@@ -1167,7 +1168,7 @@ class AdminController extends Controller
                                 'Authorization: Basic '.base64_encode($settings['ntmp_user_id'].':'.$settings['ntmp_password']).''
                             ];
                             //if(env('APP_NT_ENABLE_EXPENSE') == true){
-                           if(isset($ntmp_package) && $ntmp_package->nt_enable ==1){
+                           if(isset($ntmp_enable_expense) && $ntmp_enable_expense->value == true){
                                 $url2 = getNtmpUrl($settings['ntmp_type'], 'BookingExpenseDetails');
                                 $get_percentage_tax = ($request['amount']['order_amount_gst']/$request['amount']['order_amount']) * 100;
                                 $get_percentage_discount = ($request['discount_order_amount']/$request['amount']['order_amount']) * 100;
