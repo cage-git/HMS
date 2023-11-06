@@ -2562,34 +2562,36 @@ Route::group(['prefix' => 'admin'], function() {
         Route::get('invoice/{id}/{type}/{inv_type?}', ['uses' => 'AdminController@invoice'])->name('invoice');
         Route::post('advance-pay', ['uses' => 'AdminController@advancePay'])->name('advance-pay');
         Route::post('extend-reservation', ['uses' => 'AdminController@extendDays'])->name('extend-reservation');
-        Route::get('swap-room/{id}', ['uses' => 'AdminController@swapRoom'])->name('swap-room');
-        Route::post('save-swap-room', ['uses' => 'AdminController@saveSwapRoom'])->name('save-swap-room');
+        Route::get('swap-room/{id}', ['uses' => 'AdminController@swapRoom'])->name('swap-room')->middleware('PackagePermission:pos');
+        Route::post('save-swap-room', ['uses' => 'AdminController@saveSwapRoom'])->name('save-swap-room')->middleware('PackagePermission:pos');
         Route::get('delete-mediafile/{id}', ['uses' => 'AdminController@deleteMediaFile'])->name('delete-mediafile');
         Route::get('mark-as-paid/{id}', ['uses' => 'AdminController@markAsPaid'])->name('mark-as-paid');
 
-        Route::get('add-food-category', ['uses' => 'AdminController@addFoodCategory'])->name('add-food-category');
-        Route::get('edit-food-category/{id}', ['uses' => 'AdminController@editFoodCategory'])->name('edit-food-category');
-        Route::post('save-food-category', ['uses' => 'AdminController@saveFoodCategory'])->name('save-food-category');
-        Route::get('list-food-category', ['uses' => 'AdminController@listFoodCategory'])->name('list-food-category');
-        Route::get('delete-food-category/{id}', ['uses' => 'AdminController@deleteFoodCategory'])->name('delete-food-category');
+        Route::get('add-food-category', ['uses' => 'AdminController@addFoodCategory'])->name('add-food-category')->middleware('PackagePermission:pos');
+        Route::get('edit-food-category/{id}', ['uses' => 'AdminController@editFoodCategory'])->name('edit-food-category')->middleware('PackagePermission:pos');
+        Route::post('save-food-category', ['uses' => 'AdminController@saveFoodCategory'])->name('save-food-category')->middleware('PackagePermission:pos');
+        Route::get('list-food-category', ['uses' => 'AdminController@listFoodCategory'])->name('list-food-category')->middleware('PackagePermission:pos');
+        Route::get('delete-food-category/{id}', ['uses' => 'AdminController@deleteFoodCategory'])->name('delete-food-category')->middleware('PackagePermission:pos');
 
-        Route::get('add-food-item', ['uses' => 'AdminController@addFoodItem'])->name('add-food-item');
-        Route::get('edit-food-item/{id}', ['uses' => 'AdminController@editFoodItem'])->name('edit-food-item');
-        Route::post('save-food-item', ['uses' => 'AdminController@saveFoodItem'])->name('save-food-item');
-        Route::get('list-food-item', ['uses' => 'AdminController@listFoodItem'])->name('list-food-item');
-        Route::get('delete-food-item/{id}', ['uses' => 'AdminController@deleteFoodItem'])->name('delete-food-item');
+        Route::get('add-food-item', ['uses' => 'AdminController@addFoodItem'])->name('add-food-item')->middleware('PackagePermission:pos');
+        Route::get('edit-food-item/{id}', ['uses' => 'AdminController@editFoodItem'])->name('edit-food-item')->middleware('PackagePermission:pos');
+        Route::post('save-food-item', ['uses' => 'AdminController@saveFoodItem'])->name('save-food-item')->middleware('PackagePermission:pos');
+        Route::get('list-food-item', ['uses' => 'AdminController@listFoodItem'])->name('list-food-item')->middleware('PackagePermission:pos');
+        Route::get('delete-food-item/{id}', ['uses' => 'AdminController@deleteFoodItem'])->name('delete-food-item')->middleware('PackagePermission:pos');
 
-        Route::get('add-expense-category', ['uses' => 'AdminController@addExpenseCategory'])->name('add-expense-category');
-        Route::get('edit-expense-category/{id}', ['uses' => 'AdminController@editExpenseCategory'])->name('edit-expense-category');
-        Route::post('save-expense-category', ['uses' => 'AdminController@saveExpenseCategory'])->name('save-expense-category');
-        Route::get('list-expense-category', ['uses' => 'AdminController@listExpenseCategory'])->name('list-expense-category');
-        Route::get('delete-expense-category/{id}', ['uses' => 'AdminController@deleteExpenseCategory'])->name('delete-expense-category');
+        Route::get('add-expense-category', ['uses' => 'AdminController@addExpenseCategory'])->name('add-expense-category')->middleware('PackagePermission:expenses');
+        Route::get('edit-expense-category/{id}', ['uses' => 'AdminController@editExpenseCategory'])->name('edit-expense-category')->middleware('PackagePermission:expenses');
 
-        Route::get('add-expense', ['uses' => 'AdminController@addExpense'])->name('add-expense');
-        Route::get('edit-expense/{id}', ['uses' => 'AdminController@editExpense'])->name('edit-expense');
-        Route::post('save-expense', ['uses' => 'AdminController@saveExpense'])->name('save-expense');
-        Route::get('list-expense', ['uses' => 'AdminController@listExpense'])->name('list-expense');
-        Route::get('delete-expense/{id}', ['uses' => 'AdminController@deleteExpense'])->name('delete-expense');
+        Route::post('save-expense-category', ['uses' => 'AdminController@saveExpenseCategory'])->name('save-expense-category')->middleware('PackagePermission:expenses');
+
+        Route::get('list-expense-category', ['uses' => 'AdminController@listExpenseCategory'])->name('list-expense-category')->middleware('PackagePermission:expenses');
+        Route::get('delete-expense-category/{id}', ['uses' => 'AdminController@deleteExpenseCategory'])->name('delete-expense-category')->middleware('PackagePermission:expenses');
+
+        Route::get('add-expense', ['uses' => 'AdminController@addExpense'])->name('add-expense')->middleware('PackagePermission:expenses');
+        Route::get('edit-expense/{id}', ['uses' => 'AdminController@editExpense'])->name('edit-expense')->middleware('PackagePermission:expenses');
+        Route::post('save-expense', ['uses' => 'AdminController@saveExpense'])->name('save-expense')->middleware('PackagePermission:expenses');
+        Route::get('list-expense', ['uses' => 'AdminController@listExpense'])->name('list-expense')->middleware('PackagePermission:expenses');
+        Route::get('delete-expense/{id}', ['uses' => 'AdminController@deleteExpense'])->name('delete-expense')->middleware('PackagePermission:expenses');
 
         Route::get('add-vendor-category', ['uses' => 'VendorController@addCategory'])->name('add-vendor-category');
         Route::get('edit-vendor-category/{id}', ['uses' => 'VendorController@editCategory'])->name('edit-vendor-category');
@@ -2604,16 +2606,16 @@ Route::group(['prefix' => 'admin'], function() {
         Route::get('delete-vendor/{id}', ['uses' => 'VendorController@delete'])->name('delete-vendor');
         Route::get('view-vendor/{id}', ['uses' => 'VendorController@view'])->name('view-vendor');
 
-        Route::get('food-order/{reservation_id?}', ['uses' => 'AdminController@FoodOrder'])->name('food-order');
-        Route::get('food-order-table/{order_id}', ['uses' => 'AdminController@FoodOrderTable'])->name('food-order-table');
-        Route::get('food-order-final/{order_id}', ['uses' => 'AdminController@FoodOrderFinal'])->name('food-order-final');
-        Route::post('save-food-order', ['uses' => 'AdminController@saveFoodOrder'])->name('save-food-order');
+        Route::get('food-order/{reservation_id?}', ['uses' => 'AdminController@FoodOrder'])->name('food-order')->middleware('PackagePermission:pos');
+        Route::get('food-order-table/{order_id}', ['uses' => 'AdminController@FoodOrderTable'])->name('food-order-table')->middleware('PackagePermission:pos');
+        Route::get('food-order-final/{order_id}', ['uses' => 'AdminController@FoodOrderFinal'])->name('food-order-final')->middleware('PackagePermission:pos');
+        Route::post('save-food-order', ['uses' => 'AdminController@saveFoodOrder'])->name('save-food-order')->middleware('PackagePermission:pos');
 
-        Route::get('orders-list', ['uses' => 'AdminController@listOrders'])->name('orders-list');
-        Route::get('order-invoice/{id}', ['uses' => 'AdminController@orderInvoice'])->name('order-invoice');
-        Route::get('order-invoice-final/{order_id}', ['uses' => 'AdminController@orderInvoiceFinal'])->name('order-invoice-final');
-        Route::get('kitchen-invoice/{order_id}/{order_type}', ['uses' => 'AdminController@kitchenInvoice'])->name('kitchen-invoice');
-        Route::get('delete-order-item/{id}', ['uses' => 'AdminController@deleteOrderItem'])->name('delete-order-item');
+        Route::get('orders-list', ['uses' => 'AdminController@listOrders'])->name('orders-list')->middleware('PackagePermission:pos');
+        Route::get('order-invoice/{id}', ['uses' => 'AdminController@orderInvoice'])->name('order-invoice')->middleware('PackagePermission:pos');
+        Route::get('order-invoice-final/{order_id}', ['uses' => 'AdminController@orderInvoiceFinal'])->name('order-invoice-final')->middleware('PackagePermission:pos');
+        Route::get('kitchen-invoice/{order_id}/{order_type}', ['uses' => 'AdminController@kitchenInvoice'])->name('kitchen-invoice')->middleware('PackagePermission:pos');
+        Route::get('delete-order-item/{id}', ['uses' => 'AdminController@deleteOrderItem'])->name('delete-order-item')->middleware('PackagePermission:pos');
 
         Route::get('add-product', ['uses' => 'AdminController@addProduct'])->name('add-product');
         Route::get('edit-product/{id}', ['uses' => 'AdminController@editProduct'])->name('edit-product');
@@ -2636,21 +2638,21 @@ Route::group(['prefix' => 'admin'], function() {
         Route::get('delete-housekeeping-order/{id}', ['uses' => 'HousekeepingController@deleteOrder'])->name('delete-housekeeping-order');
         Route::get('view-housekeeping-order/{id}', ['uses' => 'HousekeepingController@viewOrder'])->name('view-housekeeping-order');
 
-        Route::get('add-laundry-item', ['uses' => 'LaundryController@addItem'])->name('add-laundry-item');
-        Route::get('edit-laundry-item/{id}', ['uses' => 'LaundryController@editItem'])->name('edit-laundry-item');
-        Route::post('save-laundry-item', ['uses' => 'LaundryController@saveItem'])->name('save-laundry-item');
-        Route::get('list-laundry-item', ['uses' => 'LaundryController@listItem'])->name('list-laundry-item');
-        Route::get('delete-laundry-item/{id}', ['uses' => 'LaundryController@deleteItem'])->name('delete-laundry-item');
-        Route::get('view-laundry-item/{id}', ['uses' => 'LaundryController@viewItem'])->name('view-laundry-item');
-        Route::get('update-laundry-order-status/{order_id}/{status}', ['uses' => 'LaundryController@updateOrderStatus'])->name('update-laundry-order-status');
+        Route::get('add-laundry-item', ['uses' => 'LaundryController@addItem'])->name('add-laundry-item')->middleware('PackagePermission:laundry');
+        Route::get('edit-laundry-item/{id}', ['uses' => 'LaundryController@editItem'])->name('edit-laundry-item')->middleware('PackagePermission:laundry');
+        Route::post('save-laundry-item', ['uses' => 'LaundryController@saveItem'])->name('save-laundry-item')->middleware('PackagePermission:laundry');
+        Route::get('list-laundry-item', ['uses' => 'LaundryController@listItem'])->name('list-laundry-item')->middleware('PackagePermission:laundry');
+        Route::get('delete-laundry-item/{id}', ['uses' => 'LaundryController@deleteItem'])->name('delete-laundry-item')->middleware('PackagePermission:laundry');
+        Route::get('view-laundry-item/{id}', ['uses' => 'LaundryController@viewItem'])->name('view-laundry-item')->middleware('PackagePermission:laundry');
+        Route::get('update-laundry-order-status/{order_id}/{status}', ['uses' => 'LaundryController@updateOrderStatus'])->name('update-laundry-order-status')->middleware('PackagePermission:laundry');
 
-        Route::get('add-laundry-order', ['uses' => 'LaundryController@addOrder'])->name('add-laundry-order');
-        Route::get('edit-laundry-order/{id}', ['uses' => 'LaundryController@editOrder'])->name('edit-laundry-order');
-        Route::post('save-laundry-order', ['uses' => 'LaundryController@saveOrder'])->name('save-laundry-order');
-        Route::get('list-laundry-order', ['uses' => 'LaundryController@index'])->name('list-laundry-order');
-        Route::get('delete-laundry-order/{id}', ['uses' => 'LaundryController@deleteOrder'])->name('delete-laundry-order');
-        Route::get('view-laundry-order/{id}', ['uses' => 'LaundryController@viewOrder'])->name('view-laundry-order');
-        Route::get('invoice-laundry-order/{id}', ['uses' => 'LaundryController@invoice'])->name('invoice-laundry-order');
+        Route::get('add-laundry-order', ['uses' => 'LaundryController@addOrder'])->name('add-laundry-order')->middleware('PackagePermission:pos');
+        Route::get('edit-laundry-order/{id}', ['uses' => 'LaundryController@editOrder'])->name('edit-laundry-order')->middleware('PackagePermission:pos');
+        Route::post('save-laundry-order', ['uses' => 'LaundryController@saveOrder'])->name('save-laundry-order')->middleware('PackagePermission:pos');
+        Route::get('list-laundry-order', ['uses' => 'LaundryController@index'])->name('list-laundry-order')->middleware('PackagePermission:laundry');
+        Route::get('delete-laundry-order/{id}', ['uses' => 'LaundryController@deleteOrder'])->name('delete-laundry-order')->middleware('PackagePermission:laundry');
+        Route::get('view-laundry-order/{id}', ['uses' => 'LaundryController@viewOrder'])->name('view-laundry-order')->middleware('PackagePermission:laundry');
+        Route::get('invoice-laundry-order/{id}', ['uses' => 'LaundryController@invoice'])->name('invoice-laundry-order')->middleware('PackagePermission:laundry');
 
         Route::get('add-season', ['uses' => 'SeasonController@add'])->name('add-season');
         Route::get('edit-season/{id}', ['uses' => 'SeasonController@edit'])->name('edit-season');
@@ -2695,8 +2697,8 @@ Route::group(['prefix' => 'admin'], function() {
 
         Route::any('/search-bladi', 'ReportController@searchBladi')->name('search-bladi');
         Route::post('/export-bladi', 'ReportController@searchBladi')->name('export-bladi');
-        Route::post('/search-expenses', 'ReportController@searchExpense')->name('search-expenses');
-        Route::post('/export-expenses', 'ReportController@searchExpense')->name('export-expenses');
+        Route::post('/search-expenses', 'ReportController@searchExpense')->name('search-expenses')->middleware('PackagePermission:expenses');
+        Route::post('/export-expenses', 'ReportController@searchExpense')->name('export-expenses')->middleware('PackagePermission:expenses');
 
         Route::post('/search-customer', 'ReportController@searchCustomer')->name('search-customer');
         Route::get('/search-customer', 'ReportController@searchCustomer')->name('search-customer');
@@ -2709,19 +2711,19 @@ Route::group(['prefix' => 'admin'], function() {
         Route::post('/search-payment-history', 'ReportController@searchPaymentHistory')->name('search-payment-history');
         Route::post('/export-payment-history', 'ReportController@searchPaymentHistory')->name('export-payment-history');
 
-        Route::post('/search-laundry-order', 'ReportController@searchLaundryOrder')->name('search-laundry-order');
-        Route::get('/search-laundry-order', 'ReportController@searchLaundryOrder')->name('search-laundry-order');
-        Route::post('/export-laundry-order', 'ReportController@exportLaundryOrder')->name('export-laundry-order');
+        Route::post('/search-laundry-order', 'ReportController@searchLaundryOrder')->name('search-laundry-order')->middleware('PackagePermission:laundry');
+        Route::get('/search-laundry-order', 'ReportController@searchLaundryOrder')->name('search-laundry-order')->middleware('PackagePermission:laundry');
+        Route::post('/export-laundry-order', 'ReportController@exportLaundryOrder')->name('export-laundry-order')->middleware('PackagePermission:laundry');
 
         //website pages
-        Route::get('home-page', 'WebsitePagesController@homePage')->name('home-page');
-        Route::post('update-home-page', 'WebsitePagesController@updateHomePage')->name('update-home-page');
+        Route::get('home-page', 'WebsitePagesController@homePage')->name('home-page')->middleware('PackagePermission:website');
+        Route::post('update-home-page', 'WebsitePagesController@updateHomePage')->name('update-home-page')->middleware('PackagePermission:website');
 
-        Route::get('contact-page', 'WebsitePagesController@contactPage')->name('contact-page');
-        Route::post('update-contact-data', 'WebsitePagesController@updateContactPage')->name('update-contact-page');
+        Route::get('contact-page', 'WebsitePagesController@contactPage')->name('contact-page')->middleware('PackagePermission:website');
+        Route::post('update-contact-data', 'WebsitePagesController@updateContactPage')->name('update-contact-page')->middleware('PackagePermission:website');
 
-        Route::get('about-page', 'WebsitePagesController@aboutPage')->name('about-page');
-        Route::post('update-about-data', 'WebsitePagesController@updateAboutPage')->name('update-about-page');
+        Route::get('about-page', 'WebsitePagesController@aboutPage')->name('about-page')->middleware('PackagePermission:website');
+        Route::post('update-about-data', 'WebsitePagesController@updateAboutPage')->name('update-about-page')->middleware('PackagePermission:website');
         /// Super Admin
 		Route::post('save-business','SuperAdminController@saveBusiness')->name('save-business');
 		Route::get('add-business','SuperAdminController@addBusiness')->name('add-business');
