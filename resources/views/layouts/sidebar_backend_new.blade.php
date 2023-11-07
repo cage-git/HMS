@@ -20,11 +20,11 @@
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
             @if($permissionsArr['dashboard'])<li class=" nav-item {{ request()->url() === url('admin/dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('dashboard')}}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_dashboard')}}</span></a></li>@endif
-
-            @if($permissionsArr['room-reservation'])<li class=" nav-item {{ request()->url() === url('admin/check-in') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('room-reservation')}}"><i data-feather='plus-square'></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_checkin_add')}}</span></a></li>@endif
+            @unless(Auth::user()->role_id === 1)
+            @if($permissionsArr['room-reservation'])<li class=" nav-item {{ request()->url() === url('admin/check-in') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('room-reservation')}}"><i data-feather='plus-square'></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_checkin_add')}}</span></a></li>@endif @endunless
             @if(Auth::user()->role_id == 1)
             <li class=" nav-item {{ request()->url() === url('admin/all-business') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('all-business')}}"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Dashboards">All Business</span></a></li>@endif
-            
+            @unless(Auth::user()->role_id === 1)
             @if($permissionsArr['room-reservation']  && ($permissionsArr['quick-check-in'] || $permissionsArr['room-reservation'] || $permissionsArr['list-reservation'] || $permissionsArr['list-check-outs']) )
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='dollar-sign'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_checkin')}}</span></a>
                     <ul class="menu-content">
@@ -35,7 +35,6 @@
                     </ul>
                 </li>
             @endif
-
             @if($permissionsArr['add-housekeeping-item'] || $permissionsArr['list-housekeeping-item'] || $permissionsArr['add-housekeeping-order'] || $permissionsArr['list-housekeeping-order'])
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='wind'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_housekeeping')}}</span></a>
                     <ul class="menu-content">
@@ -50,7 +49,7 @@
             @if($permissionsArr['add-laundry-item'] || $permissionsArr['list-laundry-item'] || $permissionsArr['add-laundry-order'] || $permissionsArr['list-laundry-order'])
               <li class=" nav-item">
                 <?php 
-                if(is_array($packagePermissionArray) && in_array('laundry', $packagePermissionArray) || Auth::user()->role_id==1){
+                if(is_array($packagePermissionArray) && in_array('laundry', $packagePermissionArray) || Auth::user()->business_id==null){
 
                     ?>
                    <a class="d-flex align-items-center" href="#"><i data-feather='droplet'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_laundry')}}</span></a>
@@ -80,10 +79,10 @@
                         @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'bladi_report' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('reports', ['type'=>'bladi_report'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_bladi_report')}} </span></a></li>       
                         @endif
                         @if($permissionsArr['reports'])<li class="{{ request()->url() === url('admin/reports') && request()->has('type') && request()->get('type') === 'expense' ? 'active' : '' }}">
-                    <?php if(is_array($packagePermissionArray) && in_array('expenses', $packagePermissionArray) || Auth::user()->role_id==1){ ?>
+                    <?php if(is_array($packagePermissionArray) && in_array('expenses', $packagePermissionArray) || Auth::user()->business_id==null){ ?>
                             <a class="d-flex align-items-center" href="{{route('reports', ['type'=>'expense'])}}"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a>
-                            <?php }else {?>
-                                <a class="d-flex align-items-center upgrade-links" href="#"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a>
+                            <?php } else { ?>
+                             <a class="d-flex align-items-center upgrade-links" href="#"><i data-feather='align-justify'></i><span class="menu-item text-truncate" data-i18n="Second Level">{{lang_trans('sidemenu_expense_report')}} </span></a>
                          <?php } ?>
                         </li>       
                         @endif
@@ -129,7 +128,7 @@
             @if($permissionsArr['add-food-category'] || $permissionsArr['list-food-category'] || $permissionsArr['add-food-item'] || $permissionsArr['list-food-item'])
               <li class=" nav-item">
                 <?php 
-                if(is_array($packagePermissionArray) && in_array('pos', $packagePermissionArray) || Auth::user()->role_id==1){
+                if(is_array($packagePermissionArray) && in_array('pos', $packagePermissionArray) || Auth::user()->business_id==null){
 
                     ?>
                 <a class="d-flex align-items-center" href="#"><i data-feather='coffee'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_fooditems')}}</span></a>
@@ -186,7 +185,7 @@
             @if($permissionsArr['add-expense-category'] || $permissionsArr['list-expense-category'] || $permissionsArr['add-expense'] || $permissionsArr['list-expense'])
               <li class="nav-item">
             <?php 
-                if(is_array($packagePermissionArray) && in_array('expenses', $packagePermissionArray) || Auth::user()->role_id==1){
+                if(is_array($packagePermissionArray) && in_array('expenses', $packagePermissionArray) || Auth::user()->business_id==null){
 
                     ?>
                 <a class="d-flex align-items-center" href="#"><i data-feather='bar-chart-2'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_expense')}}</span></a>
@@ -220,7 +219,7 @@
                     </ul>
                 </li>
             @endif
-
+            @endunless
             @if($permissionsArr['add-season'] || $permissionsArr['list-season'])
                 <li class=" nav-item {{ request()->url() === url('admin/add-season') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('add-season')}}"><i data-feather='cloud'></i><span class="menu-title text-truncate" data-i18n="season">{{lang_trans('sidemenu_season_add')}}</span></a>
                 </li>
@@ -250,7 +249,7 @@
             @if($permissionsArr['home-page'] || $permissionsArr['about-page'] || $permissionsArr['contact-page'])
               <li class=" nav-item">
                 <?php 
-                if(is_array($packagePermissionArray) && in_array('website', $packagePermissionArray) || Auth::user()->role_id==1){
+                if(is_array($packagePermissionArray) && in_array('website', $packagePermissionArray) || Auth::user()->business_id==null){
 
                     ?>
                 <a class="d-flex align-items-center" href="#"><i data-feather='settings'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_website')}}</span></a>

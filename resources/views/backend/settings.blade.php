@@ -95,7 +95,7 @@
         </div>
         </div>
 
-        @if(isset($package) && $package->nt_enable ==1 && $ntmp_permission == 1 || Auth::user()->business_id == NULL)
+        @if(isset($package) && $package->nt_enable ==1 && $ntmp_permission == 1)
         <div class="row">
             <div class="card">
                 <div class="card-header">
