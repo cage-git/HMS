@@ -7,10 +7,12 @@ $permissionsArr = getRoutePermission();
       @if($permissionsArr['dashboard']) <li><a href="{{route('dashboard')}}"><i class="fa fa-home"></i> {{lang_trans('sidemenu_dashboard')}} </a></li> @endif
 
 {{--      @if($permissionsArr['room-reservation'] && $permissionsArr['quick-check-in']) <li><a href="{{route('quick-check-in', ['step'=>1])}}"><i class="fa fa-check-square-o"></i> {{lang_trans('sidemenu_quick_checkin')}} </a></li> @endif--}}
+@unless(Auth::user()->role_id === 1)
       @if($permissionsArr['room-reservation']) <li><a href="{{route('room-reservation')}}"><i class="fa fa-check-square-o"></i> {{lang_trans('sidemenu_checkin_add')}} </a></li> @endif
 
       @if($permissionsArr['room-reservation']  && ($permissionsArr['quick-check-in'] || $permissionsArr['room-reservation'] || $permissionsArr['list-reservation'] || $permissionsArr['list-check-outs']) )
         <li><a><i class="fa fa-money"></i>{{lang_trans('sidemenu_checkin')}} <span class="fa fa-chevron-down"></span></a>
+
           <ul class="nav child_menu">
 {{--            @if($permissionsArr['quick-check-in']==1) <li><a href="{{route('quick-check-in')}}">{{lang_trans('sidemenu_quick_checkin')}} </a></li> @endif--}}
 {{--            @if($permissionsArr['add-check-in']==1) <li><a href="{{route('room-reservation')}}">{{lang_trans('sidemenu_checkin_add')}} </a></li> @endif--}}
@@ -19,9 +21,10 @@ $permissionsArr = getRoutePermission();
           </ul>
         </li>
       @endif
+      @endunless
       @if($permissionsArr['all-business'])
             <li class=" nav-item {{ request()->url() === url('admin/all-business') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('all-business')}}"><i class="fa fa-user"></i><span class="menu-title text-truncate" data-i18n="Dashboards">All Business</span></a></li>@endif
-
+          @unless(Auth::user()->role_id === 1)
           @if($permissionsArr['add-housekeeping-item'] || $permissionsArr['list-housekeeping-item'] || $permissionsArr['add-housekeeping-order'] || $permissionsArr['list-housekeeping-order'])
               <li><a><i class="fa fa-shower"></i>{{lang_trans('sidemenu_housekeeping')}}<span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
@@ -138,7 +141,7 @@ $permissionsArr = getRoutePermission();
                   </ul>
               </li>
           @endif
-
+          @endunless
           @if($permissionsArr['add-season'] || $permissionsArr['list-season'])
               <li><a><i class="fa fa-skyatlas"></i>{{lang_trans('sidemenu_seasons')}}<span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
