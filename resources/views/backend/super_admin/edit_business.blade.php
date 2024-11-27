@@ -132,14 +132,16 @@
                                 </div>
 
                                 <div class="col-xl-4 col-md-6 col-12">
+                                     <?php# echo $package_data;die; ?>
                                      <div class="mb-1">
                                      <label class="form-label" for="package_name">{{lang_trans('package')}}</label><span class="text-danger">*</span>
                                      <select name="package" id="package_name" class="form-control" required>
-                                     <option value="{{$data_row->package}}" selected>{{$package_data->name}}</option>
+                                     <option value="{{$data_row->package}}" selected>{{$package_data->name  ?? 'Select a Package' }}</option>
                                      @foreach ($packages as $k => $v)
-                                     @if($v->name != $package_data->name)
+                                     @if(!is_null($package_data) && $v->name != $package_data->name)
                                      <option value="{{ $v->id }}">{{ $v->name }}</option>
                                      @endif
+                                     <option value="{{ $v->id }}">{{ $v->name }}</option>
                                      @endforeach
                                      </select>
                                      </div>

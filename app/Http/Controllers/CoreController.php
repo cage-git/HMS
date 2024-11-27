@@ -83,11 +83,12 @@ class CoreController extends Controller {
             $error_msg = curl_error($curl);
         }
         curl_close($curl);
+        $responseObject = json_decode($response);
 
-        if (isset($error_msg) || json_decode($response)->errorCode[0] != "0") {
-            return ['status'=>false, 'response'=>$response, 'error_msg' =>$error_msg];
-        }else{
-            return ['status'=>true, 'response'=>$response];
+         if (isset($error_msg) || (isset($responseObject) && property_exists($responseObject, 'errorCode') && $responseObject->errorCode[0] != "0")) {
+            return ['status' => false, 'response' => $response, 'error_msg' => $error_msg];
+        } else {
+            return ['status' => true, 'response' => $response];
         }
         //return $response;
     }

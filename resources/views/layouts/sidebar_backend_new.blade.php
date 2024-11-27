@@ -24,6 +24,8 @@
             @if($permissionsArr['room-reservation'])<li class=" nav-item {{ request()->url() === url('admin/check-in') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('room-reservation')}}"><i data-feather='plus-square'></i><span class="menu-title text-truncate" data-i18n="Dashboards">{{lang_trans('sidemenu_checkin_add')}}</span></a></li>@endif @endunless
             @if(Auth::user()->role_id == 1)
             <li class=" nav-item {{ request()->url() === url('admin/all-business') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{route('all-business')}}"><i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Dashboards">All Business</span></a></li>@endif
+           
+            <li class=" nav-item"><a class="d-flex align-items-center" href="{{route('add-hotels')}}"><i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="Dashboards">Hotels</span></a></li>
             @unless(Auth::user()->role_id === 1)
             @if($permissionsArr['room-reservation']  && ($permissionsArr['quick-check-in'] || $permissionsArr['room-reservation'] || $permissionsArr['list-reservation'] || $permissionsArr['list-check-outs']) )
               <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='dollar-sign'></i><span class="menu-title text-truncate" data-i18n="Menu Levels">{{lang_trans('sidemenu_checkin')}}</span></a>

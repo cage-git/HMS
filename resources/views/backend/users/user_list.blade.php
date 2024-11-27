@@ -2,7 +2,6 @@
 @section('content')
 
 
-
 <!-- Basic table -->
 <section id="basic-datatable">
     <div class="row">

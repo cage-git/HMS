@@ -134,6 +134,11 @@ return [
             'rule-name' => 'custom-message',
         ],
     ],
+    'custom' => [
+        'mobile_num' => [
+            'unique' => 'This mobile number has already been taken',
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------

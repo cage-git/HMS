@@ -3,6 +3,7 @@
 
 {{--    $quickCheckIn = (Request::route()->action['as'] == 'quick-check-in') ? true : false;--}}
 @php
+    use Illuminate\Support\Facades\DB;
     $quickCheckIn = false;
     $flag=0;
     $heading=lang_trans('btn_add');
@@ -21,8 +22,13 @@
 
     $MT_STAYREASON= getSettings('site_language') == 'ar'? config('constants.MT_STAYREASON_AR'): config('constants.MT_STAYREASON_EN');
     $packagePermissions = getPermissions('menu');
-    $ntmp_permission = $packagePermissions["ntmp-setting"];  
-    
+    $ntmp_permission = $packagePermissions["ntmp-setting"]; 
+    $user = Auth::user(); 
+    $hotels = DB::table('hotel')
+                ->where([
+                ['status', 1],
+                ['business_id', $user->business_id]
+            ])->get()->toArray(); 
   @endphp
   
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -77,6 +83,10 @@
                         <label class="control-label"> {{lang_trans('txt_reservation_type')}} <span class="required">*</span></label>
                         {{ Form::select('reservation_type',config('constants.RESERVATION_TYPE'),null,['class'=>'form-control']) }}
                     </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label"> Hotel </label>
+                        {{ Form::select('hotel',collect($hotels)->pluck('name','id'),null,['class'=>'form-control col-md-6 col-xs-12', "id"=>"hotel",'placeholder'=>lang_trans('ph_select')]) }}
+                      </div>
                 </div>
               </div>
           </div>
@@ -605,6 +615,7 @@
                           <label class="control-label"> {{lang_trans('txt_kids')}} </label>
                           {{Form::number('kids',0,['class'=>"form-control col-md-7 col-xs-12", "id"=>"kids", "required"=>"required","placeholder"=>lang_trans('ph_enter').lang_trans('txt_kids'),"min"=>0])}}
                       </div>
+                     
 {{--                      <div class="col-md-4 col-sm-4 col-xs-12">--}}
 {{--                          <label class="control-label"> {{lang_trans('txt_purpose_of_the_visiting')}} <span class="required">*</span></label>--}}
 {{--                          {{Form::text('purpose_of_the_visiting',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"purpose_of_the_visiting", "placeholder"=>lang_trans('txt_purpose_of_the_visiting')])}}--}}
@@ -1641,5 +1652,23 @@
        $(document).on('click', '#select2-search_idcard-container,#select2-search_phone-container', function () {
            $('.select2-search__field').addClass('custom_search_val');
         });
+
+    //    $(document).on('change','#hotel',function(event){
+    //         let a = $('#hotel').val();
+    //         $.ajax{
+    //             type:'POST',
+    //             url: '/api/get-room-num-list',
+    //             data: {
+    //                 hotel_id  : a
+    //             },
+    //             dataType: "json",
+    //             success: function(data){
+    //                 console.log("jjjjj");
+    //             },
+    //             error: function(error){
+    //                 console.log("error", error);
+    //             }
+    //         }
+    //    })
     </script>
 @endsection

@@ -50,7 +50,7 @@
                             <div class="mb-1">
                                 <label class="form-label" for="type_short_code"> {{lang_trans('txt_short_code')}}</label><span class="required text-danger">*</span>
                                 <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
-                                {{Form::text('short_code',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"type_short_code", "required"=>"required"])}}
+                                {{Form::text('short_code',null,['class'=>"form-control col-md-7 col-xs-12 price_val", "id"=>"type_short_code", "required"=>"required"])}}
                             </div>
                         </div>
 

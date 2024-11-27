@@ -143,7 +143,6 @@ class AdminController extends Controller
          }
          $userRoleId = Auth::user()->role_id;
         if(in_array($userRoleId,config("business_roles.business_roles"))){
-            //echo $User_Created." ".$Total_User_Count;die('here');
             if($User_Created == $Total_User_Count+1){
                 return redirect()->back()->with(['error' => config('constants.FLASH_EXTEND_USER_LIMIT')]); 
             }
@@ -159,7 +158,7 @@ class AdminController extends Controller
                         ->ignore($request->id),
                 ],
             ]);
-            $res = User::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','new_password','conf_password']));
+            $res = User::updateOrCreate(['id'=>$request->id,'hotel_id'=>$request->hotel,'business_id'=>$BusinessUserId],$request->except(['_token','new_password','conf_password']));
          }else{
              $res = User::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','new_password','conf_password']));
          }
@@ -219,7 +218,7 @@ class AdminController extends Controller
             $success = config('constants.FLASH_REC_ADD_1');
             $error = config('constants.FLASH_REC_ADD_0');
         }
-        $res = Room::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','amenities_ids']));
+        $res = Room::updateOrCreate(['id'=>$request->id,'hotel_id'=>$request->hotel,'business_id'=>$BusinessUserId],$request->except(['_token','amenities_ids']));
 
         if($res){
             $mediaData = [
@@ -559,6 +558,7 @@ class AdminController extends Controller
             "company_gst_num"=>$request->company_gst_num || '',
             "room_plan"=>$request->room_plan || '',
             'business_id'=>$BusinessUserId,
+            'hotel_id' =>$request->hotel,
         ];
         if(!$request->id){
             $reservationData["created_at_checkin"] = date('Y-m-d H:i:s');
@@ -912,7 +912,7 @@ class AdminController extends Controller
         }
         return redirect()->back()->with(['error' => $error]);
     }
-    public function viewReservation(Request $request) {
+    public function viewReservation(Request $request) {       
         $this->data['data_row']=Reservation::with('orders_items','persons', 'booked_rooms')->whereId($request->id)->first();
         return view('backend/rooms/room_reservation_view',$this->data);
     }
@@ -1631,7 +1631,7 @@ class AdminController extends Controller
             $success = config('constants.FLASH_REC_ADD_1');
             $error = config('constants.FLASH_REC_ADD_0');
         }
-        $res = FoodItem::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token']));
+        $res = FoodItem::updateOrCreate(['id'=>$request->id,'hotel_id'=>$request->hotel,'business_id'=>$BusinessUserId],$request->except(['_token']));
 
         if($res){
             return redirect()->back()->with(['success' => $success]);
@@ -1998,6 +1998,7 @@ class AdminController extends Controller
                         'order_id'=>$lastOrderId,
                         'order_history_id'=>$orderHistoryResId,
                         'reservation_id'=>$request->reservation_id,
+                        'business_id'=>$BusinessUserId,
                         'item_name'=>$exp[2],
                         'item_price'=>$exp[3],
                         'item_qty'=>$val,
@@ -2008,7 +2009,7 @@ class AdminController extends Controller
                         'order_gst_perc'=>$request->gst_perc,
                     ];
                 }
-                $res = OrderItem::insert($orderArr);
+                 $res = OrderItem::insert($orderArr);
                 if($res){
                     if($request->reservation_id>0) {
                         return redirect()->route('kitchen-invoice',['order_id'=>$lastOrderId,'order_type'=>'room-order'])->with(['success' => 'Orders Successfully submitted']);
@@ -2042,7 +2043,12 @@ class AdminController extends Controller
         $id = $request->segment(3);
         $type = $request->segment(4);
         if($type=='room-order'){
-            $this->data['data_row']=Order::whereId($id)->first();
+            $userRoleId = Auth::user()->role_id;
+                 if(in_array($userRoleId,config("business_roles.business_roles"))){
+             $this->data['data_row']=Order::where('business_id',Auth::user()->business_id)->whereId($id)->first();
+            }else{
+                 $this->data['data_row']=Order::whereId($id)->first();
+            }
         } else {
             $this->data['data_row']=OrderHistory::with('order')->whereId($id)->first();
         }
@@ -2427,6 +2433,19 @@ class AdminController extends Controller
 
 
         return redirect()->back();
+    }
+
+    public function fetchRoom(Request $request){
+        $rooms = DB::table('rooms')->where([
+            ['business_id',$request->business_id],
+            ['hotel_id',$request->hotel_id]
+        ])->get();
+        
+        if(!empty($rooms)){
+            return response()->json(['rooms'=>$rooms],200);
+        }else {
+            return response()->json(['message' => 'No rooms found'], 404);
+        }
     }
 
 }

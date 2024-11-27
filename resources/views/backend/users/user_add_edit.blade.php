@@ -9,8 +9,13 @@
           $heading=lang_trans('btn_update');
           $hide = true;
       }
+      $user = Auth::user();
+      $hotels = DB::table('hotel')
+                ->where([
+                ['status', 1],
+                ['business_id', $user->business_id]
+            ])->get()->toArray();
   @endphp
-
 
  @if(session('error'))
     <div class="alert alert-danger p-1 m-0 mb-1 alrt_msg" role="alert">
@@ -107,6 +112,14 @@
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_address')}}</label><span class="required text-danger">*</span>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{Form::textarea('address',null,['class'=>"form-control col-md-6 col-xs-12", "id"=>"address", "placeholder"=>lang_trans('ph_enter')." ".lang_trans('txt_address'),"rows"=>1])}}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">Hotel</label><span class="required text-danger">*</span>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{ Form::select('hotel',collect($hotels)->pluck('name','id'),null,['class'=>'form-select','placeholder'=>lang_trans('ph_select')]) }}    
                                     </div>
                                 </div>
 

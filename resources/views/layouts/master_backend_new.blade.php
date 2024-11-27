@@ -14,7 +14,7 @@ $logo_Lang= getSettings('site_language') == 'ar'? config('constants.logo_Lang_AR
     <link rel="apple-touch-icon" href="{{asset('public/images/logo.png')}}">
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('public/images/logo.png')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
-
+<link rel="stylesheet" type="text/css" href="{{URL::asset('public/app-assets/css/bootstrap-extended.css')}}">
     <?php if(getSettings('site_language') == 'en'){   ?>
         <!-- ltr  -->
         <!-- BEGIN: Vendor CSS-->
@@ -141,6 +141,9 @@ $logo_Lang= getSettings('site_language') == 'ar'? config('constants.logo_Lang_AR
 }
 .list_usr_space table.dataTable>thead>tr>th:not(.sorting_disabled){
     padding-right: 20px;
+}
+.package-datatable td{
+    word-break: break-all;
 }
 </style>
 </head>

@@ -7,6 +7,12 @@
           $flag=1;
           $heading=lang_trans('btn_update');
       }
+      $user = Auth::user();
+      $hotels = DB::table('hotel')
+                ->where([
+                ['status', 1],
+                ['business_id', $user->business_id]
+            ])->get()->toArray();
   @endphp
 
 
@@ -64,6 +70,14 @@
                                         <label class="form-label" for="basic-default-name">{{lang_trans('txt_desc')}}</label>
                                         <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
                                         {{Form::textarea('description',null,['class'=>"form-control col-md-7 col-xs-12", "id"=>"description", "rows"=>1])}}
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-default-name">Hotel</label><span class="required text-danger">*</span>
+                                        <!-- <input type="text" class="form-control" id="basic-default-name" name="basic-default-name" placeholder="John Doe" /> -->
+                                        {{ Form::select('hotel',collect($hotels)->pluck('name','id'),null,['class'=>'form-select','placeholder'=>lang_trans('ph_select')]) }}    
                                     </div>
                                 </div>
 

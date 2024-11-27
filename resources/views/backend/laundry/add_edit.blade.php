@@ -118,7 +118,7 @@
                         </div>
                       </div>
 
-                        <div class="row">  
+                        <div class="row p-2">  
                             <div class="col-xl-3 col-md-6 col-12">
                                 <div class="mb-1">
                                     <label class="form-label" for="category">{{lang_trans('txt_rcv_date')}}</label>
@@ -196,7 +196,7 @@
 
 
 
-                      <div class="row" id="new_guest_section">  
+                      <div class="row p-2" id="new_guest_section">  
                         <div class="card-header">
                             <h4 class="card-title">{{lang_trans('heading_guest_info')}}</h4>
                         </div>
@@ -318,7 +318,7 @@
                         <div class="row">
                            <div class="col-md-12 col-sm-12 col-xs-12">
                                       <div class="x_panel">
-                                          <div class="x_title">
+                                          <div class="x_title px-2">
                                               <h2>{{lang_trans('txt_laundry_item')}}</h2>
                                               <div class="clearfix"></div>
                                           </div>
@@ -390,8 +390,10 @@
                                   </div>
                               </div>
                               <hr /> 
-                              <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
+                              <div class="card-body">
+                                <button type="submit" class="btn btn-primary">{{lang_trans('btn_submit')}}</button>
                               <button type="reset" class="btn btn-outline-secondary waves-effect">{{lang_trans('btn_reset')}}</button>
+                              </div>
                           </div>
 
                          <!-- end -->

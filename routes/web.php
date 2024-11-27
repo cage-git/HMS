@@ -2566,6 +2566,7 @@ Route::group(['prefix' => 'admin'], function() {
         Route::post('save-swap-room', ['uses' => 'AdminController@saveSwapRoom'])->name('save-swap-room')->middleware('PackagePermission:pos');
         Route::get('delete-mediafile/{id}', ['uses' => 'AdminController@deleteMediaFile'])->name('delete-mediafile');
         Route::get('mark-as-paid/{id}', ['uses' => 'AdminController@markAsPaid'])->name('mark-as-paid');
+        
 
         Route::get('add-food-category', ['uses' => 'AdminController@addFoodCategory'])->name('add-food-category')->middleware('PackagePermission:pos');
         Route::get('edit-food-category/{id}', ['uses' => 'AdminController@editFoodCategory'])->name('edit-food-category')->middleware('PackagePermission:pos');
@@ -2740,8 +2741,20 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::get('all-package-data','SuperAdminController@allPackageData')->name('all-package-data');
 		Route::get('delete-package/{id}','SuperAdminController@deletePackageData')->name('delete-package');
 		Route::get('edit-package/{id}', ['uses' => 'SuperAdminController@editPackageData'])->name('edit-package');
+		
+		
     });
 });
+//Hotels Route
+Route::get('add-hotels','HotelController@addHotel')->name('add-hotels');
+Route::get('all-hotels','HotelController@allHotel')->name('all-hotels');
+Route::post('save-hotel','HotelController@saveHotel')->name('save-hotel');
+Route::get('all-hotel-data','HotelController@allHotelData')->name('all-hotel-data');
+Route::get('edit-hotel/{id}', ['uses' => 'HotelController@editHotel'])->name('edit-hotel');
+Route::match(['post', 'put'], 'update-hotel/{id}', 'HotelController@updateHotelData')->name('update-hotel');
+Route::get('deactivate-hotel/{id}','HotelController@deactivateHotel')->name('deactivate-hotel');
+
+// Route::get('fetch-room',['uses' => 'AdminController@fetchRoom'])->name('fetch-room');
 
 //cron routes
 Route::get('check-product-expiry', 'CronController@checkProductExpiry')->name('check-product-expiry');

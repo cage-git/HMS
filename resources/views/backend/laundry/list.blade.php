@@ -113,7 +113,9 @@
                           @endphp
                           <tr>
                             <td>{{$k+1}}</td>
-                            <td>{{$val->vendor_info->vendor_name}}</td>
+                            @if ($val->vendor_info)
+                              <td>{{$val->vendor_info->vendor_name}}</td>
+                            @endif
                             <td>{{$val->order_num}}</td>
                             <td>{{dateConvert($val->order_date, 'Y-m-d')}}</td>
                             <td>{{ ($val->room_info) ? $val->room_info->room_no.' | '.$val->room_info->room_name : '' }}</td>
@@ -229,7 +231,7 @@
                       <th>{{lang_trans('txt_action')}}</th>
                     </tr>
                   </thead>
-                  <tbody>
+                {{--  <tbody>
                     @foreach($datalist as $k=>$val)
                       @php
                         $btnText = isset($status_list[$val->order_status+1]) ? $status_list[$val->order_status+1] : null;
@@ -269,7 +271,7 @@
                         </td>
                       </tr>
                     @endforeach
-                  </tbody>
+                  </tbody> --}}
                 </table>
               </div>
           </div>

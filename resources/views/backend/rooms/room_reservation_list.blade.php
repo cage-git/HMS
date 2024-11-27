@@ -339,16 +339,12 @@ $packagePermissionArray = pakage_permission();
                                 <td>{{$i}}</td>
 
                                 <td>
-                                    <!-- <div class="btn-group"> -->
-                                        <!-- <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Action
-                                        </button> -->
-                                        <!-- <div class="dropdown-menu"> -->
+                                    
                                         <div class="dropdown">
                                             <button type="button" class="btn btn-sm  dropdown-toggle hide-arrow py-0" data-bs-toggle="dropdown">
                                                 <i data-feather="more-vertical"></i>
                                             </button>
-                                            <div class="dropdown-menu dropdown-menu-end">
+                                            <div class="dropdown-menu dropdown-menu-end" style="z-index:9999 ;">
                                               
                                                 @if($val->reservation_type == 1)
                                                     @if($val->cancelled == 1)
@@ -433,8 +429,7 @@ $packagePermissionArray = pakage_permission();
                                                         @endif
 
                                                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#extend_reservation_{{$val->id}}" >
-                                                        <!-- class="btn btn-sm btn-info dropdown-item w-100" 
-                                                        data-toggle="modal" data-target="#extend_reservation_{{$val->id}}" -->
+                                                        
                                                         
                                                         {{lang_trans('btn_extend_reservation')}}</button>
                                                         @if($dateDiff)
@@ -459,41 +454,7 @@ $packagePermissionArray = pakage_permission();
                                             </div>
                                         </div>
 
-                                            <!-- @if($val->reservation_type == 1)
-                                                @if($val->cancelled == 1)
-                                                    <i class="btn btn-xs btn-danger dropdown-item w-100">{{lang_trans('booking_is_cancelled')}}</i>
-                                                @else
-                                                    @if($val->reservation_type == 1)
-                                                        <a class="btn btn-sm btn-danger dropdown-item w-100" href="{{route('cancel-reservation',[$val->id])}}">{{lang_trans('btn_cancel_booking')}}</a>
-                                                    @endif
-                                                    <a class="btn btn-sm btn-info dropdown-item w-100" href="{{route('changeto-checkin-reservation',[$val->id])}}">{{lang_trans('btn_check_in')}}</a>
-                                                @endif
-                                                <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('invoice',[$val->id,1,'inv_type'=>($val->cancelled == 1) ? 'cnl' : 'org'])}}" target="_blank">{{lang_trans('btn_invoice_room_org')}}</a>
-                                            @else
-                                                @if($val->cancelled == 1)
-                                                    <i class="btn btn-xs btn-danger dropdown-item w-100">{{lang_trans('reservation_is_cancelled')}}</i>
-                                                @else
-                                                    @if(isPermission('add-housekeeping-order') && $val->booked_rooms->count())
-                                                        <a class="btn btn-sm btn-success dropdown-item w-100" href="{{route('add-housekeeping-order',['room_id'=>$val->booked_rooms[0]->room_id, 'reservation_id'=>$val->id])}}" target="_blank">{{lang_trans('sidemenu_housekeeping')}}</a>
-                                                    @endif
-                                                    <button class="btn btn-sm btn-warning dropdown-item w-100" data-toggle="modal" data-target="#advance_pay_{{$val->id}}">{{lang_trans('btn_advance_pay')}}</button>
-                                                    <a class="btn btn-sm btn-info dropdown-item w-100" href="{{route('advance-slip',[base64_encode($val->id)])}}" target="_blank">{{lang_trans('btn_advance_slip')}}</a>
-                                                    <a class="btn btn-sm btn-warning dropdown-item w-100" href="{{route('food-order',[$val->id])}}">{{lang_trans('btn_food_order')}}</a>
-                                                    <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('view-reservation',[$val->id])}}">{{lang_trans('btn_view')}}</a>
-                                                    <a class="btn btn-sm btn-danger dropdown-item w-100" href="{{route('check-out-room',[$val->id])}}">{{lang_trans('btn_checkout')}}</a>
-                                                    @if($val->reservation_type == 1)
-                                                        <a class="btn btn-sm btn-danger dropdown-item w-100" href="{{route('cancel-reservation',[$val->id])}}">{{lang_trans('btn_cancel_reservation')}}</a>
-                                                    @endif
-
-                                                    <button class="btn btn-sm btn-info dropdown-item w-100" data-toggle="modal" data-target="#extend_reservation_{{$val->id}}">{{lang_trans('btn_extend_reservation')}}</button>
-                                                    @if($dateDiff)
-                                                        <a class="btn btn-sm btn-success dropdown-item w-100" href="{{route('swap-room',[$val->id])}}">{{lang_trans('btn_swap_room')}}</a>
-                                                    @endif
-                                                @endif
-                                                <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('invoice',[$val->id,1,'inv_type'=>($val->cancelled == 1) ? 'cnl' : 'org'])}}" target="_blank">{{lang_trans('btn_invoice_room_org')}}</a>
-                                            @endif -->
-                                        <!-- </div> -->
-                                    <!-- </div> -->
+                                            
                                     @if($val->reservation_type != 1 && $val->cancelled != 1)
                                         @include('backend/model/extend_reservation_modal',['val'=>$val, 'dueAmount'=>$dueAmount])
                                         @include('backend/model/advance_pay_modal',['val'=>$val, 'dueAmount'=>$dueAmount])
@@ -508,13 +469,13 @@ $packagePermissionArray = pakage_permission();
                                 </td>
                                 <td>{{($val->customer) ? $val->customer->name : 'NA'}}</td>
                                 <td>{{($val->customer) ? $val->customer->mobile : 'NA'}}</td>
-                                <!-- <td>{{($val->customer) ? $val->customer->email : 'NA'}}</td> -->
+                                
                                 <td>
-                                  <!-- <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#booked_room_{{$val->id}}">{{lang_trans('btn_view')}}</button> -->
+                                 
                                   <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" id="onshowbtn" data-bs-target="#booked_room_{{$val->id}}">
                                       {{lang_trans('btn_view')}}
                                   </button>
-                                  @include('backend/model/booked_rooms_modal',['val'=>$val])
+                                @include('backend/model/booked_rooms_modal',['val'=>$val])
                                 </td>
                                 <td>{{dateConvert($val->check_in,'d-m-Y H:i')}}</td>
                                 <td>{{dateConvert($val->check_out,'d-m-Y H:i')}}</td>
@@ -544,145 +505,7 @@ $packagePermissionArray = pakage_permission();
 </section>
 
 
-    <!-- <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>{{lang_trans('heading_checkin_list')}}</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <br/>
-                    <table id="datatable" class="table table-striped table-bordered">
-                    <thead>
-                      <tr>
-                        <th>{{lang_trans('txt_sno')}}</th>
-                        <th>{{lang_trans('txt_action')}}</th>
-                        <th>{{lang_trans('txt_reservation_type')}}</th>
-                        <th>{{lang_trans('txt_guest_name')}}</th>
-                        <th>{{lang_trans('txt_mobile_num')}}</th>
-                        <th>{{lang_trans('txt_email')}}</th>
-                        <th>{{lang_trans('txt_room')}}</th>
-                        <th>{{lang_trans('txt_checkin')}}</th>
-                        <th>{{lang_trans('txt_checkout')}}</th>
-                        <th>{{lang_trans('txt_total_amount')}}</th>
-                        <th>{{lang_trans('txt_due_amount')}}</th>
-                        
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach($datalist as $k=>$val)
-                        @if($val->is_checkout==0)
-                          @php
-
-                            $dateDiff = dateIfInBetween($val->check_in, $val->check_out);
-                            $calc = calcFinalAmount($val);
-                            $totalAmount = $totalAmount+$calc['finalRoomAmount']+$calc['finalOrderAmount']+$calc['additionalAmount'];
-                            $i++;
-                          @endphp
-                          @php
-                              $calculatedAmount = calcFinalAmount($val, 1);
-                              $additionalAmount = $calculatedAmount['additionalAmount'];
-                              $additionalAmountReason = $val->additional_amount_reason;
-                              $roomAmountDiscount = $calculatedAmount['totalRoomAmountDiscount'];
-                              $gstPerc = $calculatedAmount['totalRoomGstPerc'];
-                              $cgstPerc = $calculatedAmount['totalRoomCGstPerc'];
-                              $roomAmountGst = $calculatedAmount['totalRoomAmountGst'];
-                              $roomAmountCGst = $calculatedAmount['totalRoomAmountCGst'];
-                              $totalRoomAmount = $calculatedAmount['subtotalRoomAmount'];
-                              $subTotalRoomAmount = (($totalRoomAmount+$roomAmountGst+$roomAmountCGst) - $roomAmountDiscount)+$additionalAmount;
-                              $advancePayment = $calculatedAmount['advancePayment'];
-                              $dueAmount = $subTotalRoomAmount-$advancePayment;
-                          @endphp
-                          <tr @if($val->reservation_type == 1) style="background: lightgoldenrodyellow" @endif>
-                          <td>{{$i}}</td>
-
-                          <td>
-                              <div class="btn-group">
-                                  <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      Action
-                                  </button>
-                                  <div class="dropdown-menu">
-                                      @if($val->reservation_type == 1)
-                                          @if($val->cancelled == 1)
-                                              <i class="btn btn-xs btn-danger dropdown-item w-100">{{lang_trans('booking_is_cancelled')}}</i>
-                                          @else
-                                              @if($val->reservation_type == 1)
-                                                  <a class="btn btn-sm btn-danger dropdown-item w-100" href="{{route('cancel-reservation',[$val->id])}}">{{lang_trans('btn_cancel_booking')}}</a>
-                                              @endif
-                                              <a class="btn btn-sm btn-info dropdown-item w-100" href="{{route('changeto-checkin-reservation',[$val->id])}}">{{lang_trans('btn_check_in')}}</a>
-                                          @endif
-                                          <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('invoice',[$val->id,1,'inv_type'=>($val->cancelled == 1) ? 'cnl' : 'org'])}}" target="_blank">{{lang_trans('btn_invoice_room_org')}}</a>
-                                      @else
-                                          @if($val->cancelled == 1)
-                                              <i class="btn btn-xs btn-danger dropdown-item w-100">{{lang_trans('reservation_is_cancelled')}}</i>
-                                          @else
-                                              @if(isPermission('add-housekeeping-order') && $val->booked_rooms->count())
-                                                  <a class="btn btn-sm btn-success dropdown-item w-100" href="{{route('add-housekeeping-order',['room_id'=>$val->booked_rooms[0]->room_id, 'reservation_id'=>$val->id])}}" target="_blank">{{lang_trans('sidemenu_housekeeping')}}</a>
-                                              @endif
-                                              <button class="btn btn-sm btn-warning dropdown-item w-100" data-toggle="modal" data-target="#advance_pay_{{$val->id}}">{{lang_trans('btn_advance_pay')}}</button>
-                                              <a class="btn btn-sm btn-info dropdown-item w-100" href="{{route('advance-slip',[base64_encode($val->id)])}}" target="_blank">{{lang_trans('btn_advance_slip')}}</a>
-                                              <a class="btn btn-sm btn-warning dropdown-item w-100" href="{{route('food-order',[$val->id])}}">{{lang_trans('btn_food_order')}}</a>
-                                              <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('view-reservation',[$val->id])}}">{{lang_trans('btn_view')}}</a>
-                                              <a class="btn btn-sm btn-danger dropdown-item w-100" href="{{route('check-out-room',[$val->id])}}">{{lang_trans('btn_checkout')}}</a>
-                                              @if($val->reservation_type == 1)
-                                                  <a class="btn btn-sm btn-danger dropdown-item w-100" href="{{route('cancel-reservation',[$val->id])}}">{{lang_trans('btn_cancel_reservation')}}</a>
-                                              @endif
-
-                                              <button class="btn btn-sm btn-info dropdown-item w-100" data-toggle="modal" data-target="#extend_reservation_{{$val->id}}">{{lang_trans('btn_extend_reservation')}}</button>
-                                              @if($dateDiff)
-                                                  <a class="btn btn-sm btn-success dropdown-item w-100" href="{{route('swap-room',[$val->id])}}">{{lang_trans('btn_swap_room')}}</a>
-                                              @endif
-                                          @endif
-                                          <a class="btn btn-sm btn-primary dropdown-item w-100" href="{{route('invoice',[$val->id,1,'inv_type'=>($val->cancelled == 1) ? 'cnl' : 'org'])}}" target="_blank">{{lang_trans('btn_invoice_room_org')}}</a>
-                                      @endif
-                                  </div>
-                              </div>
-                              @if($val->reservation_type != 1 && $val->cancelled != 1)
-                                  @include('backend/model/extend_reservation_modal',['val'=>$val, 'dueAmount'=>$dueAmount])
-                                  @include('backend/model/advance_pay_modal',['val'=>$val, 'dueAmount'=>$dueAmount])
-                              @endif
-
-            </td>
-
-                          <td>
-                              @if($val->reservation_type == 1)
-                                  Booking
-                              @else
-                                  Check-in
-                              @endif
-                          </td>
-                          <td>{{($val->customer) ? $val->customer->name : 'NA'}}</td>
-                          <td>{{($val->customer) ? $val->customer->mobile : 'NA'}}</td>
-                          <td>{{($val->customer) ? $val->customer->email : 'NA'}}</td>
-                          <td>
-                            <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#booked_room_{{$val->id}}">{{lang_trans('btn_view')}}</button>
-                            @include('backend/model/booked_rooms_modal',['val'=>$val])
-                          </td>
-                          <td>{{dateConvert($val->check_in,'d-m-Y H:i')}}</td>
-                          <td>{{dateConvert($val->check_out,'d-m-Y H:i')}}</td>
-                          <td>{{getCurrencySymbol()}} {{numberFormat($calc['finalRoomAmount']+$calc['finalOrderAmount']+$calc['additionalAmount'])}}</td>
-                          <td>
-
-                              {{getCurrencySymbol()}}
-                              {{($dueAmount) ? number_format((float)$dueAmount, 2, '.', '') : 0}}
-                          </td>
-                          
-          </tr>
-          @endif
-        @endforeach
-      </tbody>
-    </table>
-    <table class="table table-striped table-bordered">
-        <tr>
-          <th class="text-right" width="70%">{{lang_trans('txt_grand_total')}}</th>
-          <th width="30%"><b>{{getCurrencySymbol()}} {{numberFormat($totalAmount)}}</b></th>
-        </tr>
-    </table>
-  </div>
-</div>
-</div>
-    </div> -->
+    
 
 @elseif($list=='check_outs')
 

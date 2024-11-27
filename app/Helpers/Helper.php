@@ -597,20 +597,37 @@ function getRoomTypesList($listType = 'original'){
   }
 }
 function getRoomTypesListWithRooms($listType = ''){
-
-    if($listType == 'custom'){
-        $settings = getSettings();
-        $gstPerc = $settings['gst'];
-        $cgstPerc = $settings['cgst'];
-        return RoomType::
-            select(
-                'id',
-                'base_price',
-                DB::raw('CONCAT(title, " (Price||", TRUNCATE(  (  (base_price + ((base_price/100) * '.$cgstPerc.'))  + (  (base_price + ((base_price/100) * '.$cgstPerc.'))   * '.$gstPerc.'/100)  ) ,5),")") AS title')
-                // DB::raw('CONCAT(title, " (Price||", TRUNCATE((base_price + ( ((base_price/100) * '.$gstPerc.') + ((base_price/100) * '.$cgstPerc.') ) ) ,2),")") AS title')
-        )->
-            with('rooms')
-            ->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
+    $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){ 
+            if($listType == 'custom'){
+                $settings = getSettings();
+                $gstPerc = $settings['gst'];
+                $cgstPerc = $settings['cgst'];
+                return RoomType::
+                    select(
+                        'id',
+                        'base_price',
+                        DB::raw('CONCAT(title, " (Price||", TRUNCATE(  (  (base_price + ((base_price/100) * '.$cgstPerc.'))  + (  (base_price + ((base_price/100) * '.$cgstPerc.'))   * '.$gstPerc.'/100)  ) ,5),")") AS title')
+                        // DB::raw('CONCAT(title, " (Price||", TRUNCATE((base_price + ( ((base_price/100) * '.$gstPerc.') + ((base_price/100) * '.$cgstPerc.') ) ) ,2),")") AS title')
+                )->
+                    with('rooms')
+                    ->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->where('business_id',Auth::user()->business_id)->get();
+            }
+    }else{ 
+            if($listType == 'custom'){
+                $settings = getSettings();
+                $gstPerc = $settings['gst'];
+                $cgstPerc = $settings['cgst'];
+                return RoomType::
+                    select(
+                        'id',
+                        'base_price',
+                        DB::raw('CONCAT(title, " (Price||", TRUNCATE(  (  (base_price + ((base_price/100) * '.$cgstPerc.'))  + (  (base_price + ((base_price/100) * '.$cgstPerc.'))   * '.$gstPerc.'/100)  ) ,5),")") AS title')
+                        // DB::raw('CONCAT(title, " (Price||", TRUNCATE((base_price + ( ((base_price/100) * '.$gstPerc.') + ((base_price/100) * '.$cgstPerc.') ) ) ,2),")") AS title')
+                )->
+                    with('rooms')
+                    ->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
+            }
     }
 
     return RoomType::with('rooms')->whereStatus(1)->whereIsDeleted(0)->orderBy('order_num','ASC')->get();
@@ -651,8 +668,14 @@ function getCustomerList($type='pluck', $category='user'){
     }
 }
 function getHousekeeperList($type='pluck'){
-    if($type == 'get') return User::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereNotNull('name')->whereIsDeleted(0)->where('role_id', 7)->orderBy('name','ASC')->get();
-    else return User::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->where('role_id', 7)->pluck('display_text','id');
+     $userRoleId=Auth::user()->role_id;
+    if(in_array($userRoleId,config("business_roles.business_roles"))){ 
+        if($type == 'get') return User::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereNotNull('name')->whereIsDeleted(0)->where('role_id', 7)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
+        else return User::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->where('role_id', 7)->where('business_id',Auth::user()->business_id)->pluck('display_text','id');
+    }else{
+         if($type == 'get') return User::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereNotNull('name')->whereIsDeleted(0)->where('role_id', 7)->orderBy('name','ASC')->get();
+        else return User::select('id',DB::raw('CONCAT(name, " (", mobile,")") AS display_text'))->whereIsDeleted(0)->orderBy('name','ASC')->where('role_id', 7)->pluck('display_text','id');
+    }
 }
 function getVendorList($type='pluck'){
      $userRoleId = Auth::user()->role_id;
@@ -1090,7 +1113,6 @@ function getPermissions($type){
             $auth_business  = Business::where('id', $business_id)->first();
             $package_id     = $auth_business->package;
             $auth_package   = Package::where('id', $package_id)->first();
-            
             if($auth_package->services){
                $data=$auth_package->services; 
             }  
@@ -1345,7 +1367,8 @@ function getNextInvoiceNo($type=null){
     }
 
     if ($type == 'laundry_order') {
-        $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
+        $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $data = LaundryOrder::where('business_id', Auth::user()->business_id)
                 ->whereNotNull('order_num')
                 ->orderBy('order_num', 'DESC')
@@ -1367,7 +1390,8 @@ function getNextInvoiceNo($type=null){
         return $newOrderNum;
     }
 
-   $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
+   $userRoleId = Auth::user()->role_id; 
+   if(in_array($userRoleId,config("business_roles.business_roles"))){
     $data = Reservation::where('business_id', Auth::user()->business_id)
             ->whereNotNull('invoice_num')
             ->orderBy('invoice_num', 'DESC')

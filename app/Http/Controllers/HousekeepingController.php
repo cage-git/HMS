@@ -110,7 +110,7 @@ class HousekeepingController extends Controller
                 return redirect()->back()->with(['info' => config('constants.FLASH_NOT_ALLOW_FOR_DEMO')]);
             } 
         }
-        $res = HousekeepingItem::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token']));
+        $res = HousekeepingItem::updateOrCreate(['id'=>$request->id,'hotel_id'=>$request->hotel,'business_id'=>$BusinessUserId],$request->except(['_token']));
         
         if($res){
             return redirect()->back()->with(['success' => $splashMsg['success']]);
@@ -138,7 +138,12 @@ class HousekeepingController extends Controller
     }
 
     function getHousekeepingItemList(){
-        return HousekeepingItem::select('name AS text')->whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->pluck('text','text');
+        $userRoleId=Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){ 
+            return HousekeepingItem::select('name AS text')->whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->pluck('text','text');
+        }else{
+            return HousekeepingItem::select('name AS text')->whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->pluck('text','text');
+        }
     }
     function setDataForAddEditView(){
         $this->data['housekeeper_list'] = getHousekeeperList();

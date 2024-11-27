@@ -10,8 +10,12 @@ class AjaxController extends Controller
 {
     public $data=[];
     public function getRoomNumList(Request $request){
+        
         $this->data['booked_rooms'] = getBookedRooms(['checkin_date'=>$request->checkin_date, 'checkout_date'=>$request->checkout_date]);
-        $this->data['rooms'] = Room::whereStatus(1)->whereIsDeleted(0)->where('room_type_id',$request->room_type_id)->orderBy('room_no','ASC')->get();
+        $this->data['rooms'] = Room::whereStatus(1)->whereIsDeleted(0)->where([
+            ['room_type_id',$request->room_type_id],
+            ['hotel_id',$request->hotel_id]
+            ])->orderBy('room_no','ASC')->get();
         return response($this->data);
     }
     public function getRoomDetails(Request $request){

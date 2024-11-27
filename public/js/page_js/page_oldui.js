@@ -450,7 +450,7 @@ if(globalVar.page=='room_reservation_add'){
         globalVar.roomTypeSelector = $(this).parents('.panel-heading').siblings('.panel-collapse').find('.rooms_list');
         globalVar.roomTypeSelector.html('');
         $('#room_num').html('');
-        const post_data = {room_type_id:$(this).data('roomtypeid'), checkin_date: globalVar.checkInDate, checkout_date: globalVar.checkOutDate};
+        const post_data = {room_type_id:$(this).data('roomtypeid'), hotel_id:$("#hotel").val(), checkin_date: globalVar.checkInDate, checkout_date: globalVar.checkOutDate};
         globalFunc.ajaxCall('api/get-room-num-list', post_data, 'POST', globalFunc.before, globalFunc.listOfRooms, globalFunc.error, globalFunc.complete);
     // }
   });

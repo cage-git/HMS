@@ -166,7 +166,7 @@
                                 <td width="12%">
                               
                                   <div class="input-group">
-                                      <input name="item_qty[{{$value->id}}]" type="number" class="touchspin" value="0" />
+                                      <input name="item_qty[{{$value->id}}]" type="number" class="touchspin" value="1" />
                                   </div>
 
                                   {{Form::hidden('items['.$value->id.']',$val->id.'~'.$val->name.'~'.$value->name.'~'.$value->price,['data-price'=>$value->price,'class'=>"form-control col-md-6 col-xs-12 item_qty","min"=>0])}}

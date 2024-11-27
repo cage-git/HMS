@@ -209,8 +209,9 @@ $logo_Lang= getSettings('site_language') == 'ar'? config('constants.logo_Lang_AR
 
     <!-- BEGIN: Page JS-->
     <script src="{{URL::asset('public/app-assets/js/scripts/pages/auth-login.js')}}"></script>
+    
     <!-- END: Page JS-->
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(window).on('load', function() {
             if (feather) {

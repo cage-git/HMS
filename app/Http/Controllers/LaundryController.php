@@ -18,7 +18,8 @@ class LaundryController extends Controller
 
     public function index() { 
         $startDate = getNextPrevDate('prev'); 
-        if(Auth::user()->role_id == 8){
+       $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $this->data['datalist']=LaundryOrder::whereStatus(1)->whereDate('order_date', '>=', $startDate." 00:00:00")->whereDate('order_date', '<=', DB::raw('CURDATE()'))->orderBy('order_status','ASC')->where('business_id',Auth::user()->business_id)->orderBy('order_num','DESC')->get();
         } else { 
             $this->data['datalist']=LaundryOrder::whereStatus(1)->whereDate('order_date', '>=', $startDate." 00:00:00")->whereDate('order_date', '<=', DB::raw('CURDATE()'))->orderBy('order_status','ASC')->orderBy('order_num','DESC')->get();          
@@ -76,14 +77,16 @@ class LaundryController extends Controller
         $mergeRequestArr = [];
 
         if($request->guest_type=='existing' && $request->selected_customer_id){
+
             $custData = Customer::whereId($request->selected_customer_id)->first();
             $mergeRequestArr['customer_name'] = $custData->name.' '.$custData->surname;
             $mergeRequestArr['customer_email'] = $custData->email;
             $mergeRequestArr['customer_mobile'] = $custData->mobile;
             $mergeRequestArr['customer_address'] = $custData->address;
             $mergeRequestArr['customer_gender'] = $custData->gender;
-        } 
+            $mergeRequestArr['business_id'] = $custData->business_id;
 
+        } 
         // generate order num when create new order only
         if(!$orderData){
             $mergeRequestArr['order_num'] = getNextInvoiceNo('laundry_order');
@@ -107,7 +110,6 @@ class LaundryController extends Controller
 
         $request->merge($mergeRequestArr);
         $res = LaundryOrder::updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token','item','guest_type','selected_customer_id','amount']));
-        
         if($res){
             $items = [];
             if(count($request->item)){
@@ -159,7 +161,6 @@ class LaundryController extends Controller
                     }
                 }
             }
-
             if($isOrderComplete){
                 // upload received invoice
                 $mediaData = [
@@ -269,7 +270,8 @@ class LaundryController extends Controller
      
     }
     public function listItem() {
-        if(Auth::user()->role_id == 8){
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
          $this->data['datalist']=LaundryItem::where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->get();
         } else {
              $this->data['datalist']=LaundryItem::where('is_deleted', 0)->orderBy('name','ASC')->get();
@@ -287,7 +289,12 @@ class LaundryController extends Controller
     }
 
     function getLaundryItemList(){
-        return LaundryItem::whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->pluck('name','id');
+        $userRoleId = Auth::user()->role_id;
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
+            return LaundryItem::whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->where('business_id',Auth::user()->business_id)->pluck('name','id');
+        }else{
+            return LaundryItem::whereStatus(1)->where('is_deleted', 0)->orderBy('name','ASC')->pluck('name','id');
+        }
     }
     function setDataForAddEditView(){
         $this->data['customer_list']=getCustomerList('get');

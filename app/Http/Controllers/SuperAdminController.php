@@ -121,7 +121,6 @@ class SuperAdminController extends Controller
         $permissionData = DB::table('permissions')
             ->select('parent_id','description','slug','category','admin', 'receptionist','store_manager','financial_manager','customer','housekeeper','business','permission_type')
             ->get();
-            //echo "<pre>";print_r($permissionData);die;
          foreach ($permissionData as $permission) {
             $businessPermission = BusinessPermission::create([
                 'parent_id'         => $permission->parent_id,
@@ -164,6 +163,10 @@ class SuperAdminController extends Controller
                     $settings->value=$data['business_name'];
                 }elseif($settings->name=="site_theme"){
                     $settings->value='light';
+                }elseif($settings->name=="site_logo_height"){
+                    $settings->value=50;
+                }elseif($settings->name=="site_logo_width"){
+                    $settings->value=50;
                 }else{
                     if ($settings->name=="gst_num" || $settings->name=="gst" || $settings->name=="cgst" || $settings->name=="food_gst" || $settings->name=="food_cgst" ) {
                         $settings->value=0;

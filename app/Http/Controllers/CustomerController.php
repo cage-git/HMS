@@ -29,7 +29,13 @@ class CustomerController extends Controller
         if (Auth::check()) {
         $BusinessUserId = Auth::user()->business_id;
         }
-        $existingPhone = Customer::where('mobile', $request->mobile)->where('id', '!=', $request->id)->first();
+        $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
+         $existingPhone = Customer::where('mobile', $request->mobile)->where('id', '!=', $request->id)->where('business_id',Auth::user()->business_id)->first();
+        }else{
+            $existingPhone = Customer::where('mobile', $request->mobile)->where('id', '!=', $request->id)->first();
+        }
+
         if ($existingPhone) {
             return redirect()->back()->with(['error' => 'Contact Number already exists']);
         }
@@ -44,7 +50,7 @@ class CustomerController extends Controller
             $error = config('constants.FLASH_REC_ADD_0');
         }
         $request->merge(['password'=>Hash::make($request->mobile)]);
-        $res = Customer::where('cat','=','user')->updateOrCreate(['id'=>$request->id,'business_id'=>$BusinessUserId],$request->except(['_token']));
+        $res = Customer::where('cat','=','user')->updateOrCreate(['id'=>$request->id,'hotel_id'=>$request->hotel,'business_id'=>$BusinessUserId],$request->except(['_token']));
         if($res){
             // sync user and customer
             $this->core->syncUserAndCustomer();
@@ -76,7 +82,8 @@ class CustomerController extends Controller
         return redirect()->back()->with(['error' => config('constants.FLASH_REC_DELETE_0')]);
     }
     public function searchFromCustomer(Request $request) {
-        $userRoleId = Auth::user()->role_id; if(in_array($userRoleId,config("business_roles.business_roles"))){
+        $userRoleId = Auth::user()->role_id; 
+        if(in_array($userRoleId,config("business_roles.business_roles"))){
             $data=Customer::where('cat','=',$request->category)
                 ->where('is_deleted',0)
                 ->where('mobile',$request->search_from_phone_idcard)->where('business_id',Auth::user()->business_id)
